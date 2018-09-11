@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+
+    <animator
+        android:duration="2000"
+        android:repeatCount="1"
+        android:valueFrom="1"
+        android:valueTo="0.5"
+        android:valueType="floatType" />
+
+    <animator
+        android:duration="1000"
+        android:repeatCount="1"
+        android:valueFrom="100"
+        android:valueTo="136"
+        android:valueType="intType" />
+</set>
+

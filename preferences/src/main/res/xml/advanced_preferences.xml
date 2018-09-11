@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="inline_preferences">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="title_checkbox_preference"
+            android:summary="summary_checkbox_preference" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
+
+    <!--<PreferenceCategory-->
+        <!--android:title="@string/launch_preferences">-->
+
+        <!--&lt;!&ndash; This PreferenceScreen tag sends the user to a new fragment of-->
+             <!--preferences.  If running in a large screen, they can be embedded-->
+             <!--inside of the overall preferences UI. &ndash;&gt;-->
+        <!--<PreferenceScreen-->
+            <!--android:fragment="com.example.android.apis.preference.PreferenceWithHeaders$Prefs1FragmentInner"-->
+            <!--android:title="@string/title_fragment_preference"-->
+            <!--android:summary="@string/summary_fragment_preference">-->
+            <!--&lt;!&ndash; Arbitrary key/value pairs can be included for fragment arguments &ndash;&gt;-->
+            <!--<extra android:name="someKey" android:value="somePrefValue" />-->
+        <!--</PreferenceScreen>-->
+
+        <!--&lt;!&ndash; This PreferenceScreen tag sends the user to a completely different-->
+             <!--activity, switching out of the current preferences UI. &ndash;&gt;-->
+        <!--<PreferenceScreen-->
+            <!--android:title="@string/title_intent_preference"-->
+            <!--android:summary="@string/summary_intent_preference">-->
+
+            <!--<intent android:action="android.intent.action.VIEW"-->
+                    <!--android:data="http://www.android.com" />-->
+
+        <!--</PreferenceScreen>-->
+
+    <!--</PreferenceCategory>-->
+

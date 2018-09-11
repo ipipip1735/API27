@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/itemOne"
+          android:title="ItemOne"
+          app:showAsAction="never"
+          android:icon="@drawable/w1"/>
+
+    <item android:id="@+id/action_search"
+          android:title="searchView"
+          android:icon="@drawable/w1"
+          app:showAsAction="ifRoom|collapseActionView"
+          app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item android:id="@+id/itemTwo"
+          app:showAsAction="never"
+          android:title="ItemTwo"
+          android:icon="@drawable/w1"/>
+
+    <item android:id="@+id/itemThree"
+          app:showAsAction="never"
+          android:title="ItemThree"
+          android:icon="@drawable/w1"/>
+
+    <item android:id="@+id/itemFour"
+          app:showAsAction="never"
+          android:title="ItemTwo"
+          android:icon="@drawable/w1"/>
+
+    <item android:id="@+id/itemFive"
+          app:showAsAction="never"
+          android:title="ItemThree"
+          android:icon="@drawable/w1"/>
+</menu>
+

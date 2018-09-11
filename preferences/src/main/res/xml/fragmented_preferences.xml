@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="editkey"
+        android:summary="editSummary"
+        android:title="editTitle"/>
+
+    <PreferenceScreen
+        android:key="PreferenceScreen key"
+        android:title="Preference Screen">
+        <EditTextPreference
+            android:key="editkey"
+            android:summary="editSummary"
+            android:title="editTitle"/>
+        <EditTextPreference
+            android:key="editkey"
+            android:summary="editSummary"
+            android:title="editTitle"/>
+    </PreferenceScreen>
+</PreferenceScreen>
+

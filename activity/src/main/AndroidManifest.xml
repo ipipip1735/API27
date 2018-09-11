@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mine.activity">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".TwoActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.One"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".OneActivity">
+            <intent-filter>
+                <action android:name="one"/>
+
+                <category android:name="gk"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ThreeActivity">
+            <intent-filter>
+                <action android:name="one"/>
+                <!--<data android:scheme="AA"-->
+                <!--android:host="BB"-->
+                <!--android:path="CC"-->
+                <!--android:pathPattern="DD"-->
+                <!--android:pathPrefix="EE"-->
+                <!--android:mimeType="text/plain"/>-->
+                <data android:host="BB"
+                    android:port="123"
+                    android:scheme="AA"
+                    android:path="/C?h=b"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

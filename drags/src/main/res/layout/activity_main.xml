@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <mine.drags.GVOne
+        android:layout_width="311dp"
+        android:layout_height="384dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="36dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <mine.drags.VOne
+            android:id="@+id/imageView1"
+            android:layout_width="140dp"
+            android:layout_height="159dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="31dp"
+            android:layout_weight="1"
+            app:srcCompat="@color/TURQUOISE" />
+
+        <mine.drags.VTwo
+            android:id="@+id/imageView2"
+            android:layout_width="151dp"
+            android:layout_height="124dp"
+            android:layout_alignBottom="@+id/imageView1"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="44dp"
+            android:layout_weight="1"
+            app:srcCompat="@color/PAPAYAWHIP" />
+
+    </mine.drags.GVOne>
+
+    <mine.drags.GVTwo
+        android:layout_width="287dp"
+        android:layout_height="190dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="188dp"
+        android:background="@color/KHAKI"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <mine.drags.VThree
+            android:id="@+id/imageView3"
+            android:layout_width="107dp"
+            android:layout_height="87dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="41dp"
+            android:layout_weight="1"
+            app:srcCompat="@color/DARKVIOLET" />
+
+        <mine.drags.VFour
+            android:id="@+id/imageView4"
+            android:layout_width="124dp"
+            android:layout_height="75dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="37dp"
+            android:layout_weight="1"
+            app:srcCompat="@color/LAWNGREEN" />
+    </mine.drags.GVTwo>
+
+</android.support.constraint.ConstraintLayout>
