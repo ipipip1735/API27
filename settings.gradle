@@ -1,4 +1,4 @@
-include   ':apptemp',
+include   ':apptemp', ':viewmodel',
         ':room',
 //        ':file',
 //        ':dialog',

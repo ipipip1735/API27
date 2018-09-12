@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/apptemp" />
             <option value="$PROJECT_DIR$/contentProvide" />
             <option value="$PROJECT_DIR$/room" />
+            <option value="$PROJECT_DIR$/viewmodel" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
