@@ -11,16 +11,30 @@ import java.util.List;
  * Created by Administrator on 2018/9/12.
  */
 public class BaseViewModel extends ViewModel {
-    private MutableLiveData<List<Car>> users;
-    public LiveData<List<Car>> getUsers() {
+    private MutableLiveData<String> users;
+
+    public MutableLiveData<String> getUsers() {
         if (users == null) {
-            users = new MutableLiveData<List<Car>>();
+            users = new MutableLiveData<String>(){
+                @Override
+                protected void onActive() {
+                    System.out.println("~~ onActive ~~");
+
+                }
+
+                @Override
+                protected void onInactive() {
+                    super.onInactive();
+                    System.out.println("~~ onInactive ~~");
+                }
+            };
             loadUsers();
         }
         return users;
     }
 
     private void loadUsers() {
+        System.out.println(Thread.currentThread());
         // Do an asynchronous operation to fetch users.
     }
 

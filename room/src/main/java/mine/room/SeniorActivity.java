@@ -1,6 +1,7 @@
 package mine.room;
 
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.migration.Migration;
@@ -9,6 +10,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +28,11 @@ public class SeniorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
+
+//        textView = new TextView(this);
+//        textView.setText("go go go");
+//        ViewGroup viewGroup = findViewById(R.id.fl);
+//        viewGroup.addView(textView);
     }
 
     @Override
@@ -139,10 +147,31 @@ public class SeniorActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+//        relationQuery();
+        liveDateQuery();
+
+
+    }
+
+    private void liveDateQuery() {
+
         if (Objects.isNull(db))
             db = Room.databaseBuilder(getApplicationContext(),
                     AppDatabase.class, "userDB").allowMainThreadQueries().build();
+        LiveData<List<Teacher>> listLiveData = db.teacherDao().getLiveData();
+        List<Teacher> teachers = listLiveData.getValue();
 
+        for (Teacher teacher : teachers) {
+            System.out.println(teacher);
+        }
+
+
+    }
+
+    private void relationQuery() {
+        if (Objects.isNull(db))
+            db = Room.databaseBuilder(getApplicationContext(),
+                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
 
 //        List<Teacher> teachers = db.teacherDao().getAll();
@@ -160,8 +189,6 @@ public class SeniorActivity extends AppCompatActivity {
 //                System.out.println(teacher.toString());
 //            }
         }
-
-
     }
 
 

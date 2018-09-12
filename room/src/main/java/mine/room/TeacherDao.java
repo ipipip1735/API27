@@ -17,6 +17,9 @@ public interface TeacherDao {
     @Query("SELECT * FROM teacher")
     List<TeacherRelation> getAll();
 
+    @Query("SELECT * FROM teacher")
+    LiveData<List<Teacher>> getLiveData();
+
     @Query("SELECT * FROM teacher ORDER BY tId DESC LIMIT 1")
     TeacherRelation get1();
 
