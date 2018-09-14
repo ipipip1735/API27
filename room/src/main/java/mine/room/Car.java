@@ -13,7 +13,7 @@ import java.util.Random;
 public class Car {
     public Car(String carName) {
         this.carName = carName;
-        this.carPrice = new Random(100).nextInt();
+        this.carPrice = new Random().nextInt(5000);
     }
 
     @PrimaryKey(autoGenerate = true)

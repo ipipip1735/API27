@@ -35,6 +35,7 @@ public class BaseViewModel extends ViewModel {
 
     private void loadUsers() {
         System.out.println(Thread.currentThread());
+        users.setValue("dd");
         // Do an asynchronous operation to fetch users.
     }
 

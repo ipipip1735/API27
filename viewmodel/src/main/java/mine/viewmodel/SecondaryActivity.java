@@ -1,23 +1,18 @@
 package mine.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Objects;
-
-public class MainActivity extends AppCompatActivity {
+public class SecondaryActivity extends AppCompatActivity {
 
     TextView textView;
     BaseViewModel baseViewModel;
-    MutableLiveData<User> userLiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +41,6 @@ public class MainActivity extends AppCompatActivity {
 //        baseViewModel.getUsers().observe(this, nameObserver);
         baseViewModel.getUsers().observeForever(nameObserver);
 
-        userLiveData = new MutableLiveData<>();
-        userLiveData.observe(this, user -> {
-            System.out.println("~~onChange~~");
-            System.out.println(user);
-        });
 
     }
 
@@ -114,10 +104,10 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 //        baseViewModel.getUsers().setValue("sdf");
-
 //        baseViewModel.getUsers().postValue("sdf");
 
-        startActivity(new Intent(this, SecondaryActivity.class));
+        CarLiveData carLiveData = CarLiveData.get();
+        System.out.println(carLiveData);
 
 
     }
@@ -130,21 +120,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
-        CarLiveData carLiveData = CarLiveData.get();
 
-        System.out.println(carLiveData.getValue());
+
 
     }
 
-//        userLiveData.postValue(new User("bob", "Lee"));
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
-        userLiveData.setValue(new User("bob", "Lee"));
-        if (Objects.isNull(userLiveData.getValue())) {
-            System.out.println("null");
-        }else {
-            System.out.println(userLiveData.getValue());
-        }
 
     }
 

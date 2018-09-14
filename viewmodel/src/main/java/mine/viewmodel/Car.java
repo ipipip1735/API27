@@ -6,15 +6,14 @@ import java.util.Random;
  * Created by Administrator on 2018/9/12.
  */
 public class Car {
-    public Car(String carName) {
-        this.carName = carName;
-        this.carPrice = new Random(100).nextInt();
-    }
-
     private int cid;
     private String carName;
     private int carPrice;
 
+    public Car(String carName) {
+        this.carName = carName;
+        this.carPrice = new Random().nextInt(100);
+    }
 
     public int getCarPrice() {
         return carPrice;
@@ -38,5 +37,14 @@ public class Car {
 
     public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "cid=" + cid +
+                ", carName='" + carName + '\'' +
+                ", carPrice=" + carPrice +
+                '}';
     }
 }
