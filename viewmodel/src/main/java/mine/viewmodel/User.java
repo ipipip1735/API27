@@ -15,6 +15,7 @@ public class User {
     public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.uid = new Random().nextInt(100);
         this.age = new Random().nextInt(100);
     }
 
@@ -58,7 +59,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "User" + uid +
+                "{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +

@@ -1,12 +1,12 @@
 package mine.viewmodel;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 
 
 /**
  * Created by Administrator on 2018/9/13.
  */
-public class CarLiveData extends LiveData<Car> {
+public class CarLiveData extends MutableLiveData<Car> {
     private static CarLiveData sInstance;
 
     public static CarLiveData get() {
