@@ -22,6 +22,7 @@ import java.util.Random;
  */
 public class SeniorActivity extends AppCompatActivity {
     AppDatabase db;
+    LiveData<List<Teacher>> teatcherLiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,12 +159,14 @@ public class SeniorActivity extends AppCompatActivity {
         if (Objects.isNull(db))
             db = Room.databaseBuilder(getApplicationContext(),
                     AppDatabase.class, "userDB").allowMainThreadQueries().build();
-        LiveData<List<Teacher>> listLiveData = db.teacherDao().getLiveData();
-        List<Teacher> teachers = listLiveData.getValue();
+        teatcherLiveData = db.teacherDao().getLiveData();
+        teatcherLiveData.observe(this, data->{
+            System.out.println("~~teacher.observer~~");
+            for (Teacher teacher : data) {
+                System.out.println(teacher);
+            }
+        });
 
-        for (Teacher teacher : teachers) {
-            System.out.println(teacher);
-        }
 
 
     }

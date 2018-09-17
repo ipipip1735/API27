@@ -9,18 +9,18 @@ import android.arch.persistence.room.PrimaryKey;
 /**
  * Created by Administrator on 2018/9/6.
  */
-@Entity(tableName = "User",
-//        primaryKeys= "uid",
-//        indices = {
-//            @Index(name = "indexOne", value = {"first_name", "last_name"}),
-//            @Index(name = "indexTwo", value = {"first_name", "age"})
-//        },
-        foreignKeys = {
-//            @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "user_id"),
-            @ForeignKey(entity = Car.class, parentColumns = "cid", childColumns = "car_id")
-        }
-)
-//@Entity(tableName = "User")
+//@Entity(tableName = "User",
+////        primaryKeys= "uid",
+////        indices = {
+////            @Index(name = "indexOne", value = {"first_name", "last_name"}),
+////            @Index(name = "indexTwo", value = {"first_name", "age"})
+////        },
+//        foreignKeys = {
+////            @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "user_id"),
+//            @ForeignKey(entity = Car.class, parentColumns = "cid", childColumns = "car_id")
+//        }
+//)
+@Entity(tableName = "User")
 public class User {
     public User(String firstName, String lastName, int age, int carId) {
         this.firstName = firstName;
@@ -97,5 +97,17 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", carId=" + carId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", address=" + address +
+                '}';
     }
 }

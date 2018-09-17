@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -34,9 +35,9 @@ public class BaseViewModel extends ViewModel {
     }
 
     private void loadUsers() {
-        System.out.println(Thread.currentThread());
-        users.setValue("dd");
         // Do an asynchronous operation to fetch users.
+        System.out.println(Thread.currentThread());
+        users.postValue("User" + new Random().nextInt(100));
     }
 
 }

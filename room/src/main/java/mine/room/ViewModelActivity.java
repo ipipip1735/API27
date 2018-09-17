@@ -2,31 +2,47 @@ package mine.room;
 
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
-import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.migration.Migration;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 /**
- * Created by Administrator on 2018/9/6.
+ * Created by Administrator on 2018/9/15.
  */
-public class MainActivity extends AppCompatActivity {
-    AppDatabase db;
-    LiveData<List<User>> userLiveData;
+public class ViewModelActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
-//        insertForeign();
+
+
+        UserViewModel userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        userViewModel.getUserInfo().observe(this, (List<String> data) -> {
+            System.out.println("~~update ViewModel~~");
+            System.out.println(data);
+
+            //update UI
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+            ListView listView = findViewById(R.id.lv);
+            listView.setAdapter(arrayAdapter);
+
+        });
     }
 
     @Override
@@ -89,25 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void insert(View view) {
         System.out.println("~~button.start~~");
-        insertInUI();
-//        insertInWork();
-
+        insertInWork();
     }
 
-    private void insertForeign() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
-
-        Car car = new Car("car" + new Random().nextInt(100));
-        long id = db.carDao().insert1(car);
-        System.out.println("id is " + id);
-    }
 
     private void insertInWork() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").build();
+        UserViewModel userViewModel =
+                ViewModelProviders.of(this).get(UserViewModel.class);
+        AppDatabase db = userViewModel.getDb();
 
         new Thread(new Runnable() {
             @Override
@@ -123,17 +128,6 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    @TypeConverter
-    private void insertInUI() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
-
-        User user = new User("chris" + new Random().nextInt(100), "lee", new Random().nextInt(100), 1);
-        long id = db.userDao().insert1(user);
-        System.out.println("id is " + id);
-    }
-
 
     public void update(View view) {
         System.out.println("~~button.stop~~");
@@ -141,78 +135,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void delete(View view) {
         System.out.println("~~button.delete~~");
-//        if (Objects.isNull(db))
-//            db = Room.databaseBuilder(getApplicationContext(),
-//                    AppDatabase.class, "userDB").build();
-
-//        List<UserRelation> listUserRelation = db.userDao().loadRelationUser();
-//        System.out.println(listUserRelation.size());
-
-
-
     }
 
     public void load(View view) {
         System.out.println("~~button.load~~");
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
-
-//        User user = new User("chris" + new Random().nextInt(100), "lee", new Random().nextInt(100), 1);
-        Cursor cursor = db.userDao().loadUser();
-        while (cursor.moveToNext()) {
-            for (String name : cursor.getColumnNames()) {
-                System.out.println(name + " is " + cursor.getString(cursor.getColumnIndex(name)));
-            }
-        }
-
-    }
-
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
-
-    }
-
-
-    public void liveData(View view) {
-        System.out.println("~~button.liveData~~");
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
-
-        userLiveData = db.userDao().queryUserLiveData();
-        System.out.println(userLiveData);
-        userLiveData.observe(this, (List<User> data)->{
-            System.out.println("~~observer~~");
-            for (User user : data) {
-                System.out.println(user);
-            }
-        });
-
-
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-        queryInUI();
 //        queryInWork();
 
-    }
+//        UserViewModel userViewModel =
+//                ViewModelProviders.of(this).get(UserViewModel.class);
+//        AppDatabase db = userViewModel.getDb();
 
-    private void queryInUI() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
-        List<User> users = db.userDao().getAll();
-        System.out.println("size is " + users.size());
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").build();
+
+        LiveData<List<User>> users = db.userDao()
+                .queryUserLiveData();
+        users.observe(this, data -> {
+            System.out.println(data);
+        });
+
     }
 
     private void queryInWork() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "userDB").build();
+        UserViewModel userViewModel =
+                ViewModelProviders.of(this).get(UserViewModel.class);
+        AppDatabase db = userViewModel.getDb();
 
-        AsyncTask<User, String, List<User>> asyncTask = new AsyncTask<User, String, List<User>>() {
+        new AsyncTask<User, String, List<User>>() {
             @Override
             protected List<User> doInBackground(User... users) {
                 User user = users[0];
@@ -224,15 +178,10 @@ public class MainActivity extends AppCompatActivity {
                 super.onPostExecute(users);
                 System.out.println("count is " + users.size());
                 for (User user : users) {
-                    System.out.print("firstName is "+ user.getFirstName());
-                    System.out.print(", lastName is "+ user.getLastName());
-                    System.out.print(", age is "+ user.getAge());
-                    System.out.print("\n");
+                    System.out.println(user);
                 }
             }
-        };
-
-        asyncTask.execute(new User("chris", "lee", 12, 1));
+        }.execute(new User("chris", "lee", 12, 1));
 
     }
 

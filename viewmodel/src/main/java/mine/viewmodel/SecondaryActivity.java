@@ -115,6 +115,8 @@ public class SecondaryActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+        baseViewModel = ViewModelProviders.of(this).get(BaseViewModel.class);
+        System.out.println(baseViewModel);
 
     }
 

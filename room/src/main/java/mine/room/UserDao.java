@@ -25,6 +25,9 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE first_name LIKE :first OR last_name LIKE :last")
     List<User> queryUser(String first, String last);
 
+    @Query("SELECT * FROM user")
+    LiveData<List<User>> queryUserLiveData();
+
     @Query("SELECT * FROM user WHERE first_name LIKE :first OR last_name LIKE :last LIMIT 1")
     User findByName(String first, String last);
 

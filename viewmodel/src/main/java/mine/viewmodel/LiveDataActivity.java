@@ -1,6 +1,7 @@
 package mine.viewmodel;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
@@ -23,10 +24,11 @@ public class LiveDataActivity extends AppCompatActivity {
     MutableLiveData<Car> carLiveData;
     LiveData<User> userLiveData;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_client);
 
         carLiveData = CarLiveData.get();
@@ -37,26 +39,26 @@ public class LiveDataActivity extends AppCompatActivity {
 
 
 
-//        userLiveData = Transformations.map(carLiveData, car->{
-//            System.out.println("~~Transformations~~");
-//            System.out.println(car);
-//            return new User("bob", "lee");
-//        });
-
-        userLiveData = Transformations.switchMap(carLiveData, car->{
-            System.out.println();
-            MutableLiveData<User> temp = new MutableLiveData<User>();
-            temp.setValue(new User("tom", "lee"));
-            LiveData<User> userLiveData = temp;
-            return userLiveData;
+        //方法一
+        userLiveData = Transformations.map(carLiveData, car->{
+            System.out.println("~~Transformations~~");
+            System.out.println(car);
+            return new User("bob", "lee");
         });
+
+        //方法二
+//        userLiveData = Transformations.switchMap(carLiveData, car->{
+//            System.out.println();
+//            MutableLiveData<User> temp = new MutableLiveData<User>();
+//            temp.setValue(new User("tom", "lee"));
+//            LiveData<User> userLiveData = temp;
+//            return userLiveData;
+//        });
 
         userLiveData.observe(this, user -> {
             System.out.print("observer user|");
             System.out.println(user);
         });
-
-
 
     }
 
@@ -82,6 +84,8 @@ public class LiveDataActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+
+
     }
 
     @Override
@@ -126,7 +130,6 @@ public class LiveDataActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
     }
 
     public void bind(View view) {
