@@ -104,7 +104,7 @@ public class ViewModelActivity extends AppCompatActivity {
 
 
     public void insert(View view) {
-        System.out.println("~~button.start~~");
+        System.out.println("~~button.insert~~");
         insertInWork();
     }
 

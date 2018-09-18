@@ -23,12 +23,19 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".MigrationActivity">
+        <activity android:name=".TypeConverterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--<activity android:name=".MigrationActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
         <!--<activity android:name=".ViewModelActivity">-->
             <!--<intent-filter>-->

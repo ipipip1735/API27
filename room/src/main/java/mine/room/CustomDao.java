@@ -20,4 +20,7 @@ public interface CustomDao {
     @Query("SELECT * FROM Customer")
     Cursor getAll();
 
+    @Insert
+    long insert1(CarUser carUser);
+
 }

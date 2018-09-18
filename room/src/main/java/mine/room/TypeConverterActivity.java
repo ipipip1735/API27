@@ -2,21 +2,20 @@ package mine.room;
 
 
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
-import android.arch.persistence.room.migration.Migration;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Random;
 
 /**
- * Created by Administrator on 2018/9/6.
+ * Created by Administrator on 2018/9/18.
  */
-public class ForeignKeyActivity extends AppCompatActivity {
+public class TypeConverterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +84,10 @@ public class ForeignKeyActivity extends AppCompatActivity {
 
     public void insert(View view) {
         System.out.println("~~button.insert~~");
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "userDB")
-                .allowMainThreadQueries()
-                .build();
-
-        CarUser carUser = new CarUser("Bob");
-        db.customDao().insert1(carUser);
 
     }
+
+
 
     public void update(View view) {
         System.out.println("~~button.update~~");
@@ -107,20 +101,15 @@ public class ForeignKeyActivity extends AppCompatActivity {
         System.out.println("~~button.load~~");
     }
 
+    public void reloading(View view) {
+        System.out.println("~~button.reloading~~");
+
+    }
+
+
+
     public void query(View view) {
         System.out.println("~~button.query~~");
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "userDB")
-                .allowMainThreadQueries()
-                .build();
-
-        Cursor cursor = db.customDao().getAll();
-        System.out.println("size is " + cursor.getCount());
-        for (String feild : cursor.getColumnNames()) {
-            System.out.print(feild+ ", ");
-        }
-        System.out.println("");
-
     }
 
 }
