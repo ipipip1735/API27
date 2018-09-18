@@ -29,11 +29,9 @@ public interface CarDao {
 //    @Insert
 //    void insertAll(User... users);
 
-    @Update(onConflict = OnConflictStrategy.FAIL)
 
 
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     long[] insert(Car... cars);
 
     @Insert

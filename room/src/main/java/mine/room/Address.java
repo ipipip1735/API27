@@ -13,6 +13,5 @@ public class Address {
     @ColumnInfo(name = "post_code")
     public int postCode;
 
-
 }
 

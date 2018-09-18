@@ -20,20 +20,13 @@ import java.util.Random;
 /**
  * Created by Administrator on 2018/9/6.
  */
-public class SeniorActivity extends AppCompatActivity {
-    AppDatabase db;
-    LiveData<List<Teacher>> teatcherLiveData;
+public class MigrationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
-
-//        textView = new TextView(this);
-//        textView.setText("go go go");
-//        ViewGroup viewGroup = findViewById(R.id.fl);
-//        viewGroup.addView(textView);
     }
 
     @Override
@@ -96,9 +89,8 @@ public class SeniorActivity extends AppCompatActivity {
 
     public void insert(View view) {
         System.out.println("~~button.insert~~");
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "teacherDB").allowMainThreadQueries().build();
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "teacherDB").allowMainThreadQueries().build();
 
         Teacher teacher = new Teacher();
         long id = db.teacherDao().insert1(teacher);
@@ -111,29 +103,27 @@ public class SeniorActivity extends AppCompatActivity {
         Migration MIGRATION_1_2 = new Migration(1, 2) {
             @Override
             public void migrate(SupportSQLiteDatabase database) {
-                System.out.println("database is " + database);
+                System.out.println("database is " + database.getVersion());
             }
         };
 
         Migration MIGRATION_2_3 = new Migration(2, 3) {
             @Override
             public void migrate(SupportSQLiteDatabase database) {
-                System.out.println("database is " + database);
+                System.out.println("database is " + database.getVersion());
             }
         };
 
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "teacherDB")
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "teacherDB")
                 .addMigrations(MIGRATION_1_2, MIGRATION_2_3).allowMainThreadQueries().build();
 
         List<TeacherRelation> teacherRelations = db.teacherDao().getAll();
         System.out.println("size is " + teacherRelations.size());
         for (TeacherRelation teacherRelation : teacherRelations) {
             System.out.println("teacherRelation is " + teacherRelation.getTeachers());
-//            for (Teacher teacher : teacherRelation.getTeachers()) {
-//
-//                System.out.println(teacher.toString());
-//            }
+            for (Teacher teacher : teacherRelation.getTeachers()) {
+                System.out.println(teacher.toString());
+            }
         }
 
     }
@@ -148,33 +138,14 @@ public class SeniorActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-//        relationQuery();
-        liveDateQuery();
-
-
-    }
-
-    private void liveDateQuery() {
-
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
-        teatcherLiveData = db.teacherDao().getLiveData();
-        teatcherLiveData.observe(this, data->{
-            System.out.println("~~teacher.observer~~");
-            for (Teacher teacher : data) {
-                System.out.println(teacher);
-            }
-        });
-
+        relationQuery();
 
 
     }
 
     private void relationQuery() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "teacherDB").allowMainThreadQueries().build();
 
 
 //        List<Teacher> teachers = db.teacherDao().getAll();
@@ -187,10 +158,9 @@ public class SeniorActivity extends AppCompatActivity {
         System.out.println("size is " + teacherRelations.size());
         for (TeacherRelation teacherRelation : teacherRelations) {
             System.out.println("teacherRelation is " + teacherRelation.getTeachers());
-//            for (Teacher teacher : teacherRelation.getTeachers()) {
-//
-//                System.out.println(teacher.toString());
-//            }
+            for (Teacher teacher : teacherRelation.getTeachers()) {
+                System.out.println(teacher.toString());
+            }
         }
     }
 
