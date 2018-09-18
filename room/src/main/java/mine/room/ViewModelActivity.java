@@ -144,24 +144,26 @@ public class ViewModelActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-//        queryInWork();
-
-//        UserViewModel userViewModel =
-//                ViewModelProviders.of(this).get(UserViewModel.class);
-//        AppDatabase db = userViewModel.getDb();
-
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "userDB").build();
-
-        LiveData<List<User>> users = db.userDao()
-                .queryUserLiveData();
-        users.observe(this, data -> {
-            System.out.println(data);
-        });
+//        queryLiveDate();
+        queryViewModel();
 
     }
 
-    private void queryInWork() {
+    private void queryLiveDate() {
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").build();
+
+        //LiveData简单使用
+        LiveData<List<User>> users = db.userDao().queryUserLiveData();
+
+        //LiveData是异步返回结果集，只能在观察者中接收查询结果
+        users.observe(this, data -> {
+            System.out.println(data);
+        });
+    }
+
+    private void queryViewModel() {
+        //获取ViewModel中的DB
         UserViewModel userViewModel =
                 ViewModelProviders.of(this).get(UserViewModel.class);
         AppDatabase db = userViewModel.getDb();

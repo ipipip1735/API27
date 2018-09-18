@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
-//        insertForeign();
     }
 
     @Override
@@ -94,20 +93,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void insertForeign() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
-        Car car = new Car("car" + new Random().nextInt(100));
-        long id = db.carDao().insert1(car);
-        System.out.println("id is " + id);
-    }
 
     private void insertInWork() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").build();
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").build();
 
         new Thread(new Runnable() {
             @Override
@@ -123,42 +114,60 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    @TypeConverter
-    private void insertInUI() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
-        User user = new User("chris" + new Random().nextInt(100), "lee", new Random().nextInt(100), 1);
+    private void insertInUI() {
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
+
+        User user = new User("chris" + new Random().nextInt(100),
+                "lee",
+                new Random().nextInt(100),
+                1);
+
         long id = db.userDao().insert1(user);
         System.out.println("id is " + id);
     }
 
 
     public void update(View view) {
-        System.out.println("~~button.stop~~");
+        System.out.println("~~button.update~~");
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
+
+        Random random = new Random();
+        User user = new User("chris",
+                "lee",
+                random.nextInt(100),
+                random.nextInt(10000));
+
+        user.setUid(1);
+        int count = db.userDao().update(user);
+        System.out.println("update count is " + count);
     }
 
     public void delete(View view) {
         System.out.println("~~button.delete~~");
-//        if (Objects.isNull(db))
-//            db = Room.databaseBuilder(getApplicationContext(),
-//                    AppDatabase.class, "userDB").build();
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
-//        List<UserRelation> listUserRelation = db.userDao().loadRelationUser();
-//        System.out.println(listUserRelation.size());
+        Random random = new Random();
+        User user = new User("chris",
+                "lee",
+                random.nextInt(100),
+                random.nextInt(10000));
+        user.setUid(1);
 
-
-
+        int count = db.userDao().delete(user);
+        System.out.println("count is " + count);
     }
 
     public void load(View view) {
         System.out.println("~~button.load~~");
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
-//        User user = new User("chris" + new Random().nextInt(100), "lee", new Random().nextInt(100), 1);
         Cursor cursor = db.userDao().loadUser();
         while (cursor.moveToNext()) {
             for (String name : cursor.getColumnNames()) {
@@ -176,13 +185,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void liveData(View view) {
         System.out.println("~~button.liveData~~");
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
         userLiveData = db.userDao().queryUserLiveData();
         System.out.println(userLiveData);
-        userLiveData.observe(this, (List<User> data)->{
+        userLiveData.observe(this, (List<User> data) -> {
             System.out.println("~~observer~~");
             for (User user : data) {
                 System.out.println(user);
@@ -195,22 +204,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-        queryInUI();
-//        queryInWork();
+//        queryInUI();
+        queryInWork();
 
     }
 
     private void queryInUI() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").allowMainThreadQueries().build();
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
         List<User> users = db.userDao().getAll();
         System.out.println("size is " + users.size());
     }
 
     private void queryInWork() {
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "userDB").build();
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "userDB").build();
 
         AsyncTask<User, String, List<User>> asyncTask = new AsyncTask<User, String, List<User>>() {
             @Override
@@ -224,9 +233,10 @@ public class MainActivity extends AppCompatActivity {
                 super.onPostExecute(users);
                 System.out.println("count is " + users.size());
                 for (User user : users) {
-                    System.out.print("firstName is "+ user.getFirstName());
-                    System.out.print(", lastName is "+ user.getLastName());
-                    System.out.print(", age is "+ user.getAge());
+                    System.out.print("uid is " + user.getUid());
+                    System.out.print(", firstName is " + user.getFirstName());
+                    System.out.print(", lastName is " + user.getLastName());
+                    System.out.print(", age is " + user.getAge());
                     System.out.print("\n");
                 }
             }

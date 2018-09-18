@@ -19,7 +19,7 @@ public abstract class abstractUserDao {
 
     @Delete
     public abstract void delete(User user);
-    @RawQuery
+
 
     @Transaction
     public void insertAndDeleteInTransaction(User ...users) {
