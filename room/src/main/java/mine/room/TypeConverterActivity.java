@@ -84,9 +84,20 @@ public class TypeConverterActivity extends AppCompatActivity {
 
     public void insert(View view) {
         System.out.println("~~button.insert~~");
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").build();
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Teacher teacher = new Teacher();
+                long id = db.teacherDao().insert1(teacher);
+                System.out.println("id is " + id);
+            }
+        }.start();
 
     }
-
 
 
     public void update(View view) {
@@ -103,13 +114,45 @@ public class TypeConverterActivity extends AppCompatActivity {
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
-
     }
-
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+//        queryAll();
+        queryOne();
+
+    }
+
+    private void queryOne() {
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").build();
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Teacher teacher = db.teacherDao().get1(1);
+                System.out.println(teacher);
+            }
+        }.start();
+    }
+
+    private void queryAll() {
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "userDB").build();
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+//                List<Person> persons = db.personDao().getAll();
+//                System.out.println("size is " + persons.size());
+//                for (Person person : persons) {
+//                    System.out.println(person);
+//                }
+            }
+        }.start();
     }
 
 }

@@ -23,6 +23,9 @@ public interface TeacherDao {
     @Query("SELECT * FROM teacher ORDER BY tId DESC LIMIT 1")
     TeacherRelation get1();
 
+    @Query("SELECT * FROM teacher WHERE rowid = :tId")
+    Teacher get1(int tId);
+
     @Insert
     long insert1(Teacher teacher);
 
