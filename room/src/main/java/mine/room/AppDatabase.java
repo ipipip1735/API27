@@ -10,7 +10,6 @@ import android.arch.persistence.room.TypeConverters;
 @Database(entities = {User.class, Car.class, Teacher.class, CarUser.class, Person.class},
         version = 1,
         exportSchema = false)
-@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract CarDao carDao();

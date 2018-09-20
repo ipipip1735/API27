@@ -37,7 +37,7 @@ public class TeacherRelation {
         this.tId = tId;
     }
 
-    //
+
 //    public void setTName(String tName) {
 //        this.tName = tName;
 //    }
