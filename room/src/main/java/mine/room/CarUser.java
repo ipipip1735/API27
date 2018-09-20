@@ -15,7 +15,7 @@ import java.util.Random;
 @Entity(tableName = "Customer",
         indices = {
             @Index(name = "indexOne", value = {"first_name", "last_name"}),
-            @Index(name = "indexTwo", value = {"first_name", "age"})
+            @Index(name = "indexTwo", value = {"user_post_code"})
         },
         foreignKeys = {
             @ForeignKey(entity = User.class, parentColumns = "uid", childColumns = "user_id"),

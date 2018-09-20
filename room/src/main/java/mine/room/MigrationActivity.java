@@ -90,10 +90,9 @@ public class MigrationActivity extends AppCompatActivity {
     public void insert(View view) {
         System.out.println("~~button.insert~~");
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "teacherDB").allowMainThreadQueries().build();
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
-        Teacher teacher = new Teacher();
-        long id = db.teacherDao().insert1(teacher);
+        long id = db.employeeDao().insert1(new Employee());
         System.out.println("id is " + id);
 
     }
@@ -113,19 +112,6 @@ public class MigrationActivity extends AppCompatActivity {
                 System.out.println("database is " + database.getVersion());
             }
         };
-
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "teacherDB")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3).allowMainThreadQueries().build();
-
-        List<TeacherRelation> teacherRelations = db.teacherDao().getAll();
-        System.out.println("size is " + teacherRelations.size());
-        for (TeacherRelation teacherRelation : teacherRelations) {
-            System.out.println("teacherRelation is " + teacherRelation.getTeachers());
-            for (Teacher teacher : teacherRelation.getTeachers()) {
-                System.out.println(teacher.toString());
-            }
-        }
-
     }
 
     public void delete(View view) {
@@ -138,31 +124,13 @@ public class MigrationActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-        relationQuery();
-
-
-    }
-
-    private void relationQuery() {
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "teacherDB").allowMainThreadQueries().build();
+                AppDatabase.class, "userDB").allowMainThreadQueries().build();
 
-
-//        List<Teacher> teachers = db.teacherDao().getAll();
-//        System.out.println(teachers.size());
-
-//        TeacherRelation teacherRelation = db.teacherDao().get1();
-//        System.out.println(teacherRelation);
-
-        List<TeacherRelation> teacherRelations = db.teacherDao().getAll();
-        System.out.println("size is " + teacherRelations.size());
-        for (TeacherRelation teacherRelation : teacherRelations) {
-            System.out.println("teacherRelation is " + teacherRelation.getTeachers());
-            for (Teacher teacher : teacherRelation.getTeachers()) {
-                System.out.println(teacher.toString());
-            }
+        List<Employee> employees = db.employeeDao().getAll();
+        for (Employee employee : employees) {
+            System.out.println(employee);
         }
     }
-
 
 }

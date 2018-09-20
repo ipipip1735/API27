@@ -2,7 +2,9 @@ package mine.room;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,7 +24,6 @@ public class Person {
         this.pName = "chris" + new Random().nextInt(10);
         this.pAge = new Random().nextInt(100);
     }
-
 
     public int getPId() {
         return pId;
@@ -47,6 +48,7 @@ public class Person {
     public void setPAge(int pAge) {
         this.pAge = pAge;
     }
+
 
     @Override
     public String toString() {

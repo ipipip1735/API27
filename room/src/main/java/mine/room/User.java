@@ -11,27 +11,11 @@ import android.arch.persistence.room.PrimaryKey;
  */
 @Entity(tableName = "User")
 public class User {
-    public User(String firstName, String lastName, int age, int carId) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.carId = carId;
-    }
-
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
     @ColumnInfo(name = "car_id", index = true)
     private int carId;
-
-
-    public int getCarId() {
-        return carId;
-    }
-
-    public void setCarId(int carId) {
-        this.carId = carId;
-    }
 
     @ColumnInfo(name = "first_name", collate = ColumnInfo.BINARY)
     private String firstName;
@@ -45,8 +29,20 @@ public class User {
     private Address address;
 
 
+    public User(String firstName, String lastName, int age, int carId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.carId = carId;
+    }
 
+    public int getCarId() {
+        return carId;
+    }
 
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
 
     public void setAge(int age) {
         this.age = age;

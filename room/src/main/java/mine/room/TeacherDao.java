@@ -15,13 +15,10 @@ import java.util.List;
 @Dao
 public interface TeacherDao {
     @Query("SELECT * FROM teacher")
-    List<TeacherRelation> getAll();
+    List<Teacher> getAll();
 
     @Query("SELECT * FROM teacher")
     LiveData<List<Teacher>> getLiveData();
-
-    @Query("SELECT * FROM teacher ORDER BY tId DESC LIMIT 1")
-    TeacherRelation get1();
 
     @Query("SELECT * FROM teacher WHERE rowid = :tId")
     Teacher get1(int tId);

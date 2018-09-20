@@ -1,24 +1,19 @@
 package mine.room;
 
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.db.SimpleSQLiteQuery;
 import android.arch.persistence.room.Room;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2018/9/6.
  */
-public class RawQueryActivity extends AppCompatActivity {
+public class RelationActivity extends AppCompatActivity {
     AppDatabase db;
     LiveData<List<User>> usersLiveData;
 
@@ -89,32 +84,32 @@ public class RawQueryActivity extends AppCompatActivity {
 
     public void insert(View view) {
         System.out.println("~~button.insert~~");
-        insertInUI();
-//        insertRelation();
+        insertRelation();
 
     }
 
-
-
-
-    private void insertInUI() {
+    private void insertRelation() {
 
         if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
+            db = Room.databaseBuilder(this,
                     AppDatabase.class, "userDB").build();
 
         new Thread() {
             @Override
             public void run() {
-                User user = new User("chris" + new Random().nextInt(100),
-                        "lee",
-                        new Random().nextInt(100),
-                        1);
+                long id;
+                Company company = new Company();
+                company.setCompany_name("Microsoft");
+                id= db.companyDao().insert1(company);
+                System.out.println("company'id is " + id);
 
-                long id = db.userDao().insert1(user);
-                System.out.println("id is " + id);
+                Employee employee = new Employee();
+                employee.setCname(company.getCompany_name());
+                id = db.employeeDao().insert1(employee);
+                System.out.println("employee'id is " + id);
             }
         }.start();
+
     }
 
 
@@ -124,79 +119,58 @@ public class RawQueryActivity extends AppCompatActivity {
 
     public void delete(View view) {
         System.out.println("~~button.delete~~");
-
     }
 
     public void load(View view) {
         System.out.println("~~button.load~~");
     }
 
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
-
-    }
-
-
     public void liveData(View view) {
         System.out.println("~~button.liveData~~");
     }
 
-
     public void query(View view) {
         System.out.println("~~button.query~~");
-//        rawQueryInWork();
-        liveDataRawQueryInWork();
-
+//        separateQuery();
+        relationQuery();
     }
 
-    private void liveDataRawQueryInWork() {
-
+    private void separateQuery() {
         if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
+            db = Room.databaseBuilder(this,
                     AppDatabase.class, "userDB").build();
-
-        String sql = "SELECT * FROM User";
-        SimpleSQLiteQuery query = new SimpleSQLiteQuery(sql);
-
-
-//        System.out.println(query);
-//        System.out.println("ArgCount is " + query.getArgCount());
-//        System.out.println("sql is " + query.getSql());
-
-        if (Objects.isNull(usersLiveData)) {
-            usersLiveData = db.userDao().liveDateRawQuery(query);
-            usersLiveData.observe(this, data -> {
-                System.out.println("~~observer~~");
-                System.out.println(data);
-            });
-        }
-
-    }
-
-    private void rawQueryInWork() {
-
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "userDB").build();
-        String sql = "SELECT * FROM User WHERE uid = ? LIMIT 1";
-        Object[] objects = {1};
-        SimpleSQLiteQuery query = new SimpleSQLiteQuery(sql, objects);
-
-
-//        System.out.println(query);
-//        System.out.println("ArgCount is " + query.getArgCount());
-//        System.out.println("sql is " + query.getSql());
-
 
         new Thread() {
             @Override
             public void run() {
-                User user = db.userDao().rawQuery(query);
-                System.out.println(user);
+                List<Company> companies = db.companyDao().getAll();
+                System.out.println("companies'size is " + companies.size());
+                System.out.println(companies);
+
+                List<Employee> employees = db.employeeDao().getAll();
+                System.out.println("employee'size is " + employees.size());
+                System.out.println(employees);
+            }
+        }.start();
+    }
+
+
+    private void relationQuery() {
+        if (Objects.isNull(db))
+            db = Room.databaseBuilder(this,
+                    AppDatabase.class, "userDB").build();
+
+        new Thread() {
+            @Override
+            public void run() {
+                List<CompanyEmployee> companyEmployees = db.companyDao().getCompanyEmployee();
+                System.out.println(companyEmployees.size());
+                for (CompanyEmployee companyEmployee : companyEmployees) {
+                    System.out.println(companyEmployee);
+                }
             }
         }.start();
 
-
     }
-
 
 }

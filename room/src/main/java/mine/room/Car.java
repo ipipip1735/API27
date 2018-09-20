@@ -19,11 +19,18 @@ public class Car {
 
     @PrimaryKey(autoGenerate = true)
     private int cid;
-//    @Index(name="uid", unique = )
     private int uid;
     private String carName;
     private int carPrice;
 
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public int getCarPrice() {
         return carPrice;
