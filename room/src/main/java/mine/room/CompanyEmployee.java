@@ -13,11 +13,17 @@ import java.util.Random;
 public class CompanyEmployee {
     private String company_name;
     public String company_id;
+
     @Relation(parentColumn = "company_name", entityColumn = "cname")
     private List<Employee> employees;
+
     @Relation(parentColumn = "company_name", entityColumn = "cname",
-            entity = Employee.class, projection = "employee_name")
-    public List<String> employeeAparts;
+            entity = Employee.class, projection = "employee_id")
+    public List<Integer> integers;
+
+    @Relation(parentColumn = "company_name", entityColumn = "cname",
+            entity = Employee.class, projection = "employee_id")
+    public List<EmployeeApart> employeeAparts;
 
     public String getCompany_name() {
         return company_name;
@@ -35,19 +41,13 @@ public class CompanyEmployee {
         this.employees = employees;
     }
 
-    public List<String> getEmployeeAparts() {
-        return employeeAparts;
-    }
-
-    public void setEmployeeAparts(List<String> employeeAparts) {
-        this.employeeAparts = employeeAparts;
-    }
-
     @Override
     public String toString() {
         return "CompanyEmployee{" +
                 "company_name='" + company_name + '\'' +
+                ", company_id='" + company_id + '\'' +
                 ", employees=" + employees +
+                ", integers=" + integers +
                 ", employeeAparts=" + employeeAparts +
                 '}';
     }
