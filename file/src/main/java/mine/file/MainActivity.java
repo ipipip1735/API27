@@ -80,8 +80,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void internal(View view) {
         System.out.println("~~button.internal~~");
-//        File file = getFilesDir();
-//        System.out.println("file path is " + file.getPath());
+        File file;
+
+
+        file = getDir("myfile", MODE_PRIVATE); //结果为 /data/user/0/mine.file/app_myfile
+        System.out.println("Dir is " + file.getAbsolutePath());
+
+
+//        file = getDataDir(); //结果为 /data/user/0/mine.file
+//        System.out.println("DataDir is " + file.getAbsolutePath());
+
+
+
+//        file = getFilesDir(); //结果为 /data/user/0/mine.file/files
+//        System.out.println("FilesDir is " + file.getAbsolutePath());
+
+
 
 
 //        File file = getFileStreamPath("myfile");
@@ -89,7 +103,10 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println("file path is " + file.getName());
 
 
-        other();
+
+
+
+//        other();
 //        readInternal();
 //        readInternalDir();
 //        writeInternal();
@@ -159,32 +176,48 @@ public class MainActivity extends AppCompatActivity {
     public void cache(View view) {
         System.out.println("~~button.stop~~");
 
-        File cacheFile = getCacheDir();
-        System.out.println("file path is " + cacheFile.getPath());
+        File cacheFile;
+
+        cacheFile = getCacheDir(); //结果为 /data/user/0/mine.file/cache
+        System.out.println("CacheDir is " + cacheFile.getPath());
+
+
+        cacheFile = getExternalCacheDir(); //结果为 /storage/emulated/0/Android/data/mine.file/cache
+        System.out.println("ExternalCacheDir is " + cacheFile.getPath());
+
+
+        cacheFile = Environment.getDownloadCacheDirectory(); //结果为 /data/cache
+        System.out.println("DownloadCacheDirectory is " + cacheFile.getAbsolutePath());
+
+
+
     }
 
     public void external(View view) {
         System.out.println("~~button.external~~");
 
-        environmentDir();
-//        contextDir();
+//        environmentDir();
+        contextDir();
     }
 
     private void contextDir() {
         File file;
-//        file = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        System.out.println("FilesDir is " + file.getAbsoluteFile());
-//
-//        file = getExternalFilesDir(null);
-//        System.out.println("FilesDir is " + file.getAbsoluteFile());
+        file = getExternalFilesDir(null); //结果为 /storage/emulated/0/Android/data/mine.file/files
+        System.out.println("ExternalFilesDir is " + file.getAbsoluteFile());
+
+        file = getExternalFilesDir(Environment.DIRECTORY_PICTURES); //结果为 /storage/emulated/0/Android/data/mine.file/files/Pictures
+        System.out.println("ExternalFilesDir'PICTURES is " + file.getAbsoluteFile());
 
 
         File[] files;
-        files = getExternalFilesDirs(Environment.DIRECTORY_PICTURES);
+//        files = getExternalFilesDirs(Environment.DIRECTORY_PICTURES);
+
+
+
+        files = getExternalMediaDirs(); //结果为 /storage/emulated/0/Android/media/mine.file
         for (File f : files) {
             System.out.println(f.getAbsolutePath());
         }
-
 
     }
 
@@ -192,14 +225,29 @@ public class MainActivity extends AppCompatActivity {
     private void environmentDir() {
 
         File file;
-//        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//        System.out.println("getAbsoluteFile is " + file.getAbsoluteFile());
-//
+
+
+        //外部存储根目录
+        file = Environment.getExternalStorageDirectory(); //结果为 /storage/emulated/0
+        System.out.println("ExternalStorageDirectory is " + file.getAbsoluteFile());
+
+
+        //外部存储公用目录的图片目录
+        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); //结果为 /storage/emulated/0/Pictures
+        System.out.println("ExternalStoragePublicDirectory'PICTURES is " + file.getAbsoluteFile());
+
 //        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
 //        System.out.println("getAbsoluteFile is " + file.getAbsoluteFile());
 
-        file = Environment.getExternalStorageDirectory();
-        System.out.println("getAbsoluteFile is " + file.getAbsoluteFile());
+
+        file = Environment.getRootDirectory(); //结果为 /system
+        System.out.println("RootDirectory is " + file.getAbsolutePath());
+
+
+        file = Environment.getDataDirectory(); //结果为 /data
+        System.out.println("DataDirectory is " + file.getAbsolutePath());
+
+
 
 
     }
@@ -224,6 +272,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+        String state;
+        state = Environment.getExternalStorageState(); // 结果为 mounted
+        System.out.println("state is " + state);
+
+        File file = new File("/storage/emulated/0/Pictures");
+        state = Environment.getExternalStorageState(); // 结果为 mounted
+        System.out.println("state is " + state);
+
 
     }
 }

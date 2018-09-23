@@ -1,17 +1,18 @@
-include   ':apptemp', ':viewmodel',
-        ':room',
-//        ':file',
+include   ':apptemp',
+//        ':viewmodel',
 //        ':dialog',
 //        ':bluetooth',
 //        ':menu',
 //        ':parcel',
 //        ':preferences'
 //        ':sqlitedb',
+//        ':room',
+        ':file'
 //        ':fragment',
 //        ':animation',
 //        ':threadLooper',
 //        ':drags',
-        ':contentProvide'
+//        ':contentProvide'
 //        ':adapter',
 //        ':loader',
 //        ':view',
