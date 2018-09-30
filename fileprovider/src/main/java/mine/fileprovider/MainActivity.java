@@ -4,12 +4,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,13 +89,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
-
-        Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
+    public void write(View view) {
+        System.out.println("~~button.write~~");
 
         try {
-            Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+            Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
+            System.out.println("path is " + path);
+
+            System.out.println("parent is " + path.getParent());
+            Files.createDirectories(path.getParent());
+
+            BufferedWriter bufferedWriter =
+                    Files.newBufferedWriter(path, StandardCharsets.UTF_8,
+                            CREATE, APPEND);
+            String sql = "SELECT * FROM Car;";
+            bufferedWriter.write(sql);
+            bufferedWriter.newLine();
+            bufferedWriter.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,8 +114,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
+    public void read(View view) {
+        System.out.println("~~button.read~~");
+
+        try {
+
+            Path path = Paths.get(getFilesDir().toString(), "Logs", "sql.log");
+            System.out.println("path is " + path);
+
+            BufferedReader bufferedReader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+
+            StringBuilder stringBuilder = new StringBuilder(128);
+            CharBuffer buffer = CharBuffer.allocate(1024);
+            while (bufferedReader.read(buffer) != -1) {
+                buffer.flip();
+                while (buffer.hasRemaining()) {
+                    stringBuilder.append(buffer.get());
+                }
+                buffer.clear();
+            }
+
+            bufferedReader.close();
+
+            System.out.println(stringBuilder.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
 
     }
 
