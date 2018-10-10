@@ -8,13 +8,28 @@ import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.stream.Stream;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.stream.Stream;
+
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
 
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -30,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
-
 
     }
 
@@ -97,6 +111,26 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
+        try {
+            Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
+            System.out.println("path is " + path);
+
+            System.out.println("parent is " + path.getParent());
+            Files.createDirectories(path.getParent());
+
+            BufferedWriter bufferedWriter =
+                    Files.newBufferedWriter(path, StandardCharsets.UTF_8,
+                            CREATE, APPEND);
+            String sql = "SELECT * FROM Car;";
+            bufferedWriter.write(sql);
+            bufferedWriter.newLine();
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
             if (!Files.exists(path.getParent())) Files.createDirectories(path.getParent());
 
@@ -129,6 +163,59 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void listDirAndPrint() {
+
+    public void read(View view) {
+        System.out.println("~~button.read~~");
+
+
+        //遍历打印Files目录下的所有目录
+//        try {
+//
+//            Path path = Paths.get(getFilesDir().toString());
+//            Files.walkFileTree(path, new SimpleFileVisitor() {
+//                @Override
+//                public FileVisitResult preVisitDirectory(Object dir, BasicFileAttributes attrs) throws IOException {
+//                    Path parent = Paths.get(getFilesDir().toString());
+//                    Path relative = parent.relativize((Path) dir);
+//
+//                    System.out.println("relative path is " + relative);
+//                    return super.preVisitDirectory(dir, attrs);
+//                }
+//            });
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+
+        //方法一：读取文件，使用BufferedReader
+//        try {
+//
+//            Path path = Paths.get(getFilesDir().toString(), "Logs", "sql.log");
+//            System.out.println("path is " + path);
+//
+//            BufferedReader bufferedReader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+//
+//            StringBuilder stringBuilder = new StringBuilder(128);
+//            CharBuffer buffer = CharBuffer.allocate(1024);
+//            while (bufferedReader.read(buffer) != -1) {
+//                buffer.flip();
+//                while (buffer.hasRemaining()) {
+//                    stringBuilder.append(buffer.get());
+//                }
+//                buffer.clear();
+//            }
+//
+//            bufferedReader.close();
+//
+//            System.out.println(stringBuilder.toString());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        //方法e二：读取文件，使用Stream对象
         try {
             Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
 
@@ -148,9 +235,20 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("empty");
             }
 
+            Path path = Paths.get(getFilesDir().toString(), "Logs", "sql.log");
+            System.out.println("path is " + path);
+            Stream<String> stringStream = Files.lines(path);
+            stringStream.forEach(System.out::println);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    public void bind(View view) {
     }
 
     public void writeFile(View view) {
@@ -202,5 +300,4 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println(contentUri);
 
     }
-
 }
