@@ -3,6 +3,7 @@ package mine.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 public class OneActivity extends AppCompatActivity {
 
@@ -11,6 +12,8 @@ public class OneActivity extends AppCompatActivity {
         System.out.println("**********  One.onCreate  ***********");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one);
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(getClass().getSimpleName());
     }
 
     @Override

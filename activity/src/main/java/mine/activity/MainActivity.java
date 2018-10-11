@@ -79,15 +79,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void start(View view) {
+        System.out.println("~~button.start~~");
+        //显式调用
+        beginActivity();
+
+        //隐式调用
 //        beginIntent();
-//        beginActivity();
+//        beginCategory();
 //        beginType();
-        beginURI();
+//        beginURI();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        System.out.println("requestCode is " + requestCode);
+        System.out.println("resultCode is " + resultCode);
+
 
     }
 
     private void beginActivity() {
-        Intent intent = new Intent(this, OneActivity.class);
+        Intent intent = new Intent(this, TwoActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putFloat("one.one", 1.1f);
+        startActivityForResult(intent, 999, bundle);
+
+
+    }
+
+
+    private void beginCategory() {
+        Intent intent = new Intent("one");
         intent.setPackage(this.getPackageName());
         intent.addCategory("gk");
         startActivity(intent);
@@ -108,9 +134,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void beginType() {
-        Intent intent = new Intent("one");
+        Intent intent = new Intent();
+//        Intent intent = new Intent("one");
         intent.setPackage(this.getPackageName());
-        intent.setType("text/plain");
+        intent.setType("-/-");
         startActivity(intent);
     }
+
 }
+

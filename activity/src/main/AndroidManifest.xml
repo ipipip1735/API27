@@ -12,42 +12,44 @@
 
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity android:name=".TwoActivity">
             <intent-filter>
-                <action android:name="android.intent.action.One"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="two" />
+                <!--<category android:name="to" />-->
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity android:name=".OneActivity">
             <intent-filter>
-                <action android:name="one"/>
+                <action android:name="one" />
 
-                <category android:name="gk"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="gk" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity android:name=".ThreeActivity">
             <intent-filter>
-                <action android:name="one"/>
+                <action android:name="one" />
                 <!--<data android:scheme="AA"-->
-                <!--android:host="BB"-->
+                    <!--android:host="BB" />-->
                 <!--android:path="CC"-->
                 <!--android:pathPattern="DD"-->
                 <!--android:pathPrefix="EE"-->
-                <!--android:mimeType="text/plain"/>-->
-                <data android:host="BB"
-                    android:port="123"
-                    android:scheme="AA"
-                    android:path="/C?h=b"/>
+                <!--<data android:host="BB"-->
+                <!--android:port="123"-->
+                <!--android:scheme="AA"-->
+                <!--android:path="/C?h=b"/>-->
+                <data android:mimeType="-/-" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

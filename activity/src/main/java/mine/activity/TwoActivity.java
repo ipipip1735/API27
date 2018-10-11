@@ -3,6 +3,10 @@ package mine.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
+
+import java.util.Objects;
 
 public class TwoActivity extends AppCompatActivity {
 
@@ -11,6 +15,8 @@ public class TwoActivity extends AppCompatActivity {
         System.out.println("**********  Two.onCreate  ***********");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one);
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(getClass().getSimpleName());
     }
 
     @Override
@@ -74,5 +80,19 @@ public class TwoActivity extends AppCompatActivity {
     protected void onDestroy() {
         System.out.println("**********  Two.onDestroy  ***********");
         super.onDestroy();
+    }
+
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+
+        Intent intent = getIntent();
+        float r = intent.getFloatExtra("one.one", 0);
+        if (Objects.nonNull(r)) System.out.println(r);
+        setResult(897);
+        System.out.println("---finish");
+        finish();
+
+
+
     }
 }
