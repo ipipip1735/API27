@@ -1,21 +1,9 @@
 package mine.fileprovider;
-
-import android.net.Uri;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -25,12 +13,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.stream.Stream;
-
-import static java.nio.file.StandardOpenOption.APPEND;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.WRITE;
-
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
 
@@ -108,39 +90,18 @@ public class MainActivity extends AppCompatActivity {
     public void write(View view) {
         System.out.println("~~button.write~~");
 
-
-        try {
-            Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
         try {
             Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
             System.out.println("path is " + path);
 
             System.out.println("parent is " + path.getParent());
-            Files.createDirectories(path.getParent());
-
-            BufferedWriter bufferedWriter =
-                    Files.newBufferedWriter(path, StandardCharsets.UTF_8,
-                            CREATE, APPEND);
-            String sql = "SELECT * FROM Car;";
-            bufferedWriter.write(sql);
-            bufferedWriter.newLine();
-            bufferedWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
             if (!Files.exists(path.getParent())) Files.createDirectories(path.getParent());
-
             BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardCharsets.UTF_8,
                     CREATE, APPEND);
             String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
             bufferedWriter.write(sql);
             bufferedWriter.newLine();
             bufferedWriter.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,43 +112,54 @@ public class MainActivity extends AppCompatActivity {
     public void list(View view) {
         System.out.println("~~button.list~~");
 
-
+//        listDir();
         walkDir();
-        listDirAndPrint();
+    }
+
+    private void listDir() {
+        Path path = getFilesDir().toPath();
+
+        try {
+            if (Files.exists(path.getParent())) {
+                Stream<Path> pathStream = Files.list(path);
+
+                System.out.println("--" + path.getParent().getFileName() + "--");
+                pathStream.forEach(System.out::println);
+
+            } else {
+                System.out.println("empty");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void walkDir() {
-        Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
 
+        //遍历目录树
+        try {
 
+            Path path = getFilesDir().toPath();
+            Files.walkFileTree(path, new SimpleFileVisitor() {
+                @Override
+                public FileVisitResult preVisitDirectory(Object dir, BasicFileAttributes attrs) throws IOException {
+                    Path parent = Paths.get(getFilesDir().toString());
+                    Path relative = parent.relativize((Path) dir);
+
+                    System.out.println("relative path is " + relative);
+                    return super.preVisitDirectory(dir, attrs);
+                }
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void listDirAndPrint() {
 
     public void read(View view) {
         System.out.println("~~button.read~~");
-
-
-        //遍历打印Files目录下的所有目录
-//        try {
-//
-//            Path path = Paths.get(getFilesDir().toString());
-//            Files.walkFileTree(path, new SimpleFileVisitor() {
-//                @Override
-//                public FileVisitResult preVisitDirectory(Object dir, BasicFileAttributes attrs) throws IOException {
-//                    Path parent = Paths.get(getFilesDir().toString());
-//                    Path relative = parent.relativize((Path) dir);
-//
-//                    System.out.println("relative path is " + relative);
-//                    return super.preVisitDirectory(dir, attrs);
-//                }
-//            });
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
 
         //方法一：读取文件，使用BufferedReader
 //        try {
@@ -215,31 +187,15 @@ public class MainActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        //方法e二：读取文件，使用Stream对象
+
+        //方法二：读取文件，使用Stream对象
         try {
             Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
 
-            if (Files.exists(path.getParent())) {
-                Stream<Path> pathStream = Files.list(path.getParent());
-                System.out.println("--" + path.getParent().getFileName() + "--");
-                pathStream.forEach(dir -> {
-                    System.out.println(dir);
-                });
-                System.out.println("----------");
-
-                if (Files.exists(path)) {
-                    Stream<String> stringStream = Files.lines(path);
-                    stringStream.forEach(System.out::println);
-                }
-            } else {
-                System.out.println("empty");
+            if (Files.exists(path)) {
+                Stream<String> stringStream = Files.lines(path);
+                stringStream.forEach(System.out::println);
             }
-
-            Path path = Paths.get(getFilesDir().toString(), "Logs", "sql.log");
-            System.out.println("path is " + path);
-            Stream<String> stringStream = Files.lines(path);
-            stringStream.forEach(System.out::println);
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -248,30 +204,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void bind(View view) {
     }
 
-    public void writeFile(View view) {
-        System.out.println("~~button.bind~~");
-
-//        File file = new File(getFilesDir(), "logs/first");
-//        file.mkdirs();
-//
-//        file = new File(file, "one.log");
-//        System.out.println(file);
-//
-//        try {
-//            FileOutputStream outputStream = new FileOutputStream(file, true);
-//            String sql = "[SQL]select * from Car;";
-//            outputStream.write(sql.getBytes());
-//            outputStream.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-    }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
