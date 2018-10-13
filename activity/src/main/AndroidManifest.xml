@@ -30,6 +30,7 @@
                 <action android:name="one" />
 
                 <category android:name="gk" />
+                <category android:name="gt" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

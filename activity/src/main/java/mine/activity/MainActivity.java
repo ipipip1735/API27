@@ -81,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
         //显式调用
-        beginActivity();
+//        beginActivity();
 
         //隐式调用
 //        beginIntent();
-//        beginCategory();
+        beginCategory();
 //        beginType();
 //        beginURI();
 
