@@ -18,8 +18,8 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
-        android:onClick="write"
-        android:text="write"
+        android:onClick="start"
+        android:text="start"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
@@ -29,8 +29,8 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="list"
-        android:text="list"
+        android:onClick="stop"
+        android:text="stop"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintTop_toBottomOf="@+id/button"
         tools:layout_editor_absoluteX="16dp" />
@@ -39,8 +39,8 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="read"
-        android:text="read"
+        android:onClick="bind"
+        android:text="bind"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintTop_toBottomOf="@+id/button2"
         tools:layout_editor_absoluteX="16dp" />
@@ -49,8 +49,8 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="start"
-        android:text="start"
+        android:onClick="unbind"
+        android:text="unbind"
         app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintTop_toBottomOf="@+id/button3"
         tools:layout_editor_absoluteX="16dp" />
@@ -94,5 +94,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -1,18 +1,36 @@
 package mine.fileprovider;
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Stream;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
 
@@ -91,12 +109,13 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.write~~");
 
         try {
-            Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
+            String file = "logs/sql" + new Random().nextInt(100) + ".log";
+            Path path = Paths.get(getFilesDir().toString(), file);
             System.out.println("path is " + path);
-
             System.out.println("parent is " + path.getParent());
+
             if (!Files.exists(path.getParent())) Files.createDirectories(path.getParent());
-            BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardCharsets.UTF_8,
+            BufferedWriter bufferedWriter = Files.newBufferedWriter(path, UTF_8,
                     CREATE, APPEND);
             String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
             bufferedWriter.write(sql);
@@ -164,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         //方法一：读取文件，使用BufferedReader
 //        try {
 //
-//            Path path = Paths.get(getFilesDir().toString(), "Logs", "sql.log");
+//            Path path = Paths.get(getFilesDir().toString(), "logs", "sql.log");
 //            System.out.println("path is " + path);
 //
 //            BufferedReader bufferedReader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
@@ -190,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
         //方法二：读取文件，使用Stream对象
         try {
-            Path path = Paths.get(getFilesDir().toString(), "Logs/sql.log");
+            Path path = Paths.get(getFilesDir().toString(), "logs/sql.log");
 
             if (Files.exists(path)) {
                 Stream<String> stringStream = Files.lines(path);
@@ -209,8 +228,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+
+        Intent intent = new Intent("getURI");
+        intent.setPackage(getPackageName());
+        intent.setType("log/sql");
+
+        startActivityForResult(intent, 333);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("**********  " + getClass().getSimpleName() + ".onActivityResult  **********");
+
+        System.out.println("requestCode is " + requestCode);
+        System.out.println("resultCode is " + resultCode);
+
+        Uri uri = data.getData();
+        System.out.println("uri is " + uri);
+
+
+        //获取文件内容
+        try (ParcelFileDescriptor parcelFileDescriptor =
+                     getContentResolver().openFileDescriptor(uri, "r")) {
+            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+            try (InputStream inputStream = new FileInputStream(fdp);
+                 InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
+                 BufferedReader bufferedReader = new BufferedReader(reader)) {
+
+                String s;
+                while (Objects.nonNull((s = bufferedReader.readLine()))) {
+                    System.out.println("File'Content is " + s);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //检索类型
+        String mimeType = getContentResolver().getType(uri);
+        System.out.println("MIME is " + mimeType);
+
+        //检索类型
+        Cursor cursor = getContentResolver().query(uri,
+                null, null, null, null);
+
+        int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+        cursor.moveToFirst();
+        System.out.println("name is " + (cursor.getString(nameIndex)));
+        System.out.println("size is " + (Long.toString(cursor.getLong(sizeIndex))) + " Byte");
+
+
+        //删除文件
+        int n = getContentResolver().delete(uri, null, null);
+        System.out.println(n + " file has been deleted");
+
 
     }
 
@@ -229,11 +307,25 @@ public class MainActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-//        File log = new File(getFilesDir(), "logs/first/one.log");
-//        System.out.println("File is " + log);
-//
-//        Uri contentUri = FileProvider.getUriForFile(this, "TNT", log);
-//        System.out.println(contentUri);
+        //最简实例，返回文件映射
+//        File file = new File(getFilesDir() + "/logs/sql.log");
+//        Uri contentUri = FileProvider.getUriForFile(this, "TNT", file);
+//        System.out.println(file + " -> " + contentUri);
+
+
+        //遍历目录，返回所以文件映射
+        Path logsDir = Paths.get(getFilesDir().toString(), "logs");
+        System.out.println("dir is " + logsDir);
+
+        try (Stream<Path> pathStream = Files.list(logsDir)) {
+            pathStream.forEach(path -> {
+                Uri contentUri = FileProvider.getUriForFile(this, "TNT", path.toFile());
+                System.out.println(path + " -> " + contentUri);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
