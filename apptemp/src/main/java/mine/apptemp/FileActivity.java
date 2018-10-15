@@ -141,24 +141,9 @@ public class FileActivity extends AppCompatActivity {
                 String type = getContentResolver().getType(uri);
                 System.out.println("type is " + type);
 
+                int n = getContentResolver().delete(uri, null, null);
+                System.out.println(" the number of files deleted are " + n);
 
-                try (ParcelFileDescriptor parcelFileDescriptor =
-                             getContentResolver().openFileDescriptor(uri, "r")) {
-                    FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
-
-                    try (InputStream inputStream = new FileInputStream(fdp);
-                         InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-                         BufferedReader bufferedReader = new BufferedReader(reader)) {
-
-                        String s;
-                        while (Objects.nonNull((s = bufferedReader.readLine()))) {
-                            System.out.println("File'Content is " + s);
-                        }
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             }
 
