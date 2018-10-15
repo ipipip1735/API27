@@ -1,11 +1,23 @@
 package mine.apptemp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Objects;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 public class FileActivity extends AppCompatActivity {
@@ -76,6 +88,87 @@ public class FileActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("**********  " + getClass().getSimpleName() + ".onActivityResult  **********");
+
+
+        if (requestCode == 333) {
+
+
+            if (Objects.isNull(data)) {
+                System.out.println("data is null and code is " + resultCode);
+            } else {
+                Uri uri = data.getData();
+                System.out.println("uri is " + uri);
+
+                String type = getContentResolver().getType(uri);
+                System.out.println("type is " + type);
+
+
+                try (ParcelFileDescriptor parcelFileDescriptor =
+                             getContentResolver().openFileDescriptor(uri, "r")) {
+                    FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+                    try (InputStream inputStream = new FileInputStream(fdp);
+                         InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
+                         BufferedReader bufferedReader = new BufferedReader(reader)) {
+
+                        String s;
+                        while (Objects.nonNull((s = bufferedReader.readLine()))) {
+                            System.out.println("File'Content is " + s);
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+
+
+        if (requestCode == 444) {
+
+
+            if (Objects.isNull(data)) {
+                System.out.println("data is null and code is " + resultCode);
+            } else {
+                Uri uri = data.getData();
+                System.out.println("uri is " + uri);
+
+                String type = getContentResolver().getType(uri);
+                System.out.println("type is " + type);
+
+
+                try (ParcelFileDescriptor parcelFileDescriptor =
+                             getContentResolver().openFileDescriptor(uri, "r")) {
+                    FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+                    try (InputStream inputStream = new FileInputStream(fdp);
+                         InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
+                         BufferedReader bufferedReader = new BufferedReader(reader)) {
+
+                        String s;
+                        while (Objects.nonNull((s = bufferedReader.readLine()))) {
+                            System.out.println("File'Content is " + s);
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+
+
+
+
+    }
+
     public void start(View view) {
         System.out.println("~~button.start~~");
 
@@ -103,10 +196,19 @@ public class FileActivity extends AppCompatActivity {
     public void bind(View view) {
         System.out.println("~~button.bind~~");
 
+        Intent intent = new Intent("getURI");
+        intent.setType("log/sql");
+        startActivityForResult(intent, 333);//假如333表示获取文件
+
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
+
+        Intent intent = new Intent("getURI");
+        intent.setType("log/sql");
+
+        startActivityForResult(intent, 444);//假如333表示删除文件
 
     }
 

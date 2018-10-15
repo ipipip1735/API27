@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mine.fileprovider">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -12,17 +13,17 @@
 
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.PICK"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.OPENABLE"/>
-                <data android:mimeType="text/plain"/>
-                <data android:mimeType="image/*"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity android:name=".ReceiveActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="getURI" />
+                <data android:mimeType="log/*"/>
+                <!--<data android:mimeType="image/*"/>-->
+                <category android:name="android.intent.category.OPENABLE"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
