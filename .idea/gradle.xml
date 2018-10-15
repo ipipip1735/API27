@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/activity" />
             <option value="$PROJECT_DIR$/apptemp" />
             <option value="$PROJECT_DIR$/contentProvide" />
+            <option value="$PROJECT_DIR$/documentsprovider" />
             <option value="$PROJECT_DIR$/file" />
             <option value="$PROJECT_DIR$/fileprovider" />
           </set>
