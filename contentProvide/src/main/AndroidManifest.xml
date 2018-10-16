@@ -58,7 +58,7 @@
             android:permission="x.x"
             android:grantUriPermissions="false"
             android:exported="false">
-            <grant-uri-permission android:path="*/*" />
+            <grant-uri-permission android:path="/person" />
         </provider>
 
 

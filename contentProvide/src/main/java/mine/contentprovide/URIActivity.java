@@ -120,7 +120,7 @@ public class URIActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-        Uri uri = Uri.parse("content://TNT/person");
+        Uri uri = Uri.parse("content://TNT/person/a");
 
         Intent intent = new Intent();
         intent.setData(uri);
