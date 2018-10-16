@@ -63,6 +63,8 @@ public class ReceiveActivity extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
+//                    grantUriPermission();
+
 
 
                     setResult(255, intent);

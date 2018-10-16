@@ -23,7 +23,7 @@ public class PersonSQLiteOpenHelper extends SQLiteOpenHelper implements BaseColu
         //方法一
 //        db.execSQL("PRAGMA user_version=0;");
         //方法二
-         db.setVersion(1);
+//         db.setVersion(1);
 
     }
 

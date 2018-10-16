@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mine.contentprovide">
 
+    <permission android:name="x.x" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
+
         <!--<activity android:name=".LoaderActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -17,13 +21,14 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <!--<activity android:name=".MainActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!--<activity android:name=".ContentObserverActivity">-->
             <!--<intent-filter>-->
@@ -34,17 +39,29 @@
 
         <activity android:name=".URIActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="getUIR" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
 
+        <!--<provider-->
+            <!--android:authorities="TNT"-->
+            <!--android:name=".PersonContentProvider"-->
+            <!--android:permission="x.x"-->
+            <!--android:grantUriPermissions="true"-->
+            <!--android:exported="true" />-->
+
         <provider
             android:authorities="TNT"
             android:name=".PersonContentProvider"
-            android:exported="true"/>
+            android:permission="x.x"
+            android:grantUriPermissions="false"
+            android:exported="false">
+            <grant-uri-permission android:path="*/*" />
+        </provider>
+
+
 
 
 

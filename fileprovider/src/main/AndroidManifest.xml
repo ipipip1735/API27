@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mine.fileprovider">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <application
         android:allowBackup="true"
@@ -15,6 +15,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -22,9 +23,9 @@
         <activity android:name=".ReceiveActivity">
             <intent-filter>
                 <action android:name="getURI" />
-                <data android:mimeType="log/*"/>
+                <data android:mimeType="log/*" />
                 <!--<data android:mimeType="image/*"/>-->
-                <category android:name="android.intent.category.OPENABLE"/>
+                <category android:name="android.intent.category.OPENABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -32,13 +33,21 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="TNT"
+            android:permission="op"
+            android:readPermission="dd"
+            android:writePermission="cc"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-        </provider>
 
+            <grant-uri-permission
+                android:path="string"
+                android:pathPattern="string"
+                android:pathPrefix="string" />
+
+        </provider>
 
 
     </application>

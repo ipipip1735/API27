@@ -3,6 +3,7 @@ package mine.contentprovide;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -119,6 +120,13 @@ public class URIActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
+        Uri uri = Uri.parse("content://TNT/person");
+
+        Intent intent = new Intent();
+        intent.setData(uri);
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        setResult(444, intent);
+        finish();
 
 
     }

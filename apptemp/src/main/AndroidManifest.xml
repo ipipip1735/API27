@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mine.apptemp">
 
-    <permission android:name="xx.yyy" />
-    <uses-permission android:name="xx.yyy" />
+    <!--<uses-permission android:name="x.x" />-->
 
     <application
         android:allowBackup="true"
@@ -35,12 +34,20 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".FileActivity">
+        <activity android:name=".ContentProviderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--<activity android:name=".FileActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
         <!--<activity android:name=".NotificationActivity">-->
             <!--<intent-filter>-->
