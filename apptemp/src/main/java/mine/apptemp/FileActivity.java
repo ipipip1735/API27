@@ -9,13 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Objects;
+import java.util.Random;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -124,6 +129,22 @@ public class FileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                try (ParcelFileDescriptor parcelFileDescriptor =
+                             getContentResolver().openFileDescriptor(uri, "wa")) {
+                    FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+                    try (OutputStream outputStream = new FileOutputStream(fdp);
+                         OutputStreamWriter writer = new OutputStreamWriter(outputStream, UTF_8);
+                         BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+                        String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
+                        bufferedWriter.write(sql, 0, sql.length());
+                        bufferedWriter.newLine();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
         }
@@ -148,8 +169,6 @@ public class FileActivity extends AppCompatActivity {
             }
 
         }
-
-
 
 
     }
@@ -193,7 +212,7 @@ public class FileActivity extends AppCompatActivity {
         Intent intent = new Intent("getURI");
         intent.setType("log/sql");
 
-        startActivityForResult(intent, 444);//假如333表示删除文件
+        startActivityForResult(intent, 444);//假如444表示删除文件
 
     }
 

@@ -61,6 +61,7 @@ public class ReceiveActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.setDataAndType(uriForFile, type);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
 
 

@@ -16,9 +16,12 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -270,6 +273,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        //写数据到文件
+        try (ParcelFileDescriptor parcelFileDescriptor =
+                     getContentResolver().openFileDescriptor(uri, "wa")) {
+            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+            try (OutputStream outputStream = new FileOutputStream(fdp);
+                 OutputStreamWriter writer = new OutputStreamWriter(outputStream, UTF_8);
+                 BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+                String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
+                bufferedWriter.write(sql);
+                bufferedWriter.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //检索类型
         String mimeType = getContentResolver().getType(uri);
         System.out.println("MIME is " + mimeType);
@@ -286,8 +306,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //删除文件
-        int n = getContentResolver().delete(uri, null, null);
-        System.out.println(n + " file has been deleted");
+//        int n = getContentResolver().delete(uri, null, null);
+//        System.out.println(n + " file has been deleted");
 
 
     }
