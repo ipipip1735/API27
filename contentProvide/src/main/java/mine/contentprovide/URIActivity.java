@@ -120,12 +120,19 @@ public class URIActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-        Uri uri = Uri.parse("content://TNT/person/4");
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
+        Uri uri = Uri.parse("content://TNT/person/4");
         Intent intent = new Intent();
         intent.setData(uri);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        //方法一：多次调用
+        grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION );
+        grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+
+        //方法二：位运算
+//        grantUriPermission("mine.apptemp", uri,
+//                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         setResult(444, intent);
         finish();
@@ -150,6 +157,7 @@ public class URIActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
         Uri uri = Uri.parse("content://TNT/person/4");
         revokeUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        revokeUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
     }
 
