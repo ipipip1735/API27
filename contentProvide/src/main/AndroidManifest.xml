@@ -39,7 +39,7 @@
 
         <activity android:name=".URIActivity">
             <intent-filter>
-                <action android:name="getUIR" />
+                <action android:name="getURI" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -56,9 +56,8 @@
             android:authorities="TNT"
             android:name=".PersonContentProvider"
             android:permission="x.x"
-            android:grantUriPermissions="false"
+            android:grantUriPermissions="true"
             android:exported="false">
-            <grant-uri-permission android:path="/person" />
         </provider>
 
 

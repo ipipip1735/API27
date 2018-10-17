@@ -139,7 +139,7 @@ public class ContentProviderActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        Uri uri = Uri.parse("content://TNT/person");
+        Uri uri = Uri.parse("content://TNT/person/4");
 
         String[] projection = {
                 "_id",
