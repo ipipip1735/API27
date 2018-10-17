@@ -95,26 +95,38 @@ public class URIActivity extends AppCompatActivity {
         System.out.println("~~button.add~~");
 
 
-//        Uri uri = Uri.parse("mScheme://mPacket/mPath1/mPath2/mID?mQuery1=1&mQuery2=2#mFragment");
-//        Uri.Builder builder = uri.buildUpon();
-//        uri = builder
-//                .scheme("sss")
-//                .authority("AAA")
-//                .appendPath("BBB")
-//                .appendQueryParameter("q", "23")
-//                .build();
-//        System.out.println("getScheme is " + uri.getScheme());
-//        System.out.println("getSchemeSpecificPart is " + uri.getSchemeSpecificPart());
-//        System.out.println("getQuery is " + uri.getQuery());
-//        System.out.println("getFragment is " + uri.getFragment());
+        URIBuilder();
 
+
+//        Uri uri = Uri.parse("mScheme://mPacket/mPath1/mPath2/mID?mQuery1=1&mQuery2=2#mFragment");
+//        System.out.println(uri);
+//
+//        uri = ContentUris.withAppendedId(uri, 11);
+//        System.out.println(uri.getPath());
+
+
+
+
+
+    }
+
+    private void URIBuilder() {
 
         Uri uri = Uri.parse("mScheme://mPacket/mPath1/mPath2/mID?mQuery1=1&mQuery2=2#mFragment");
+        Uri.Builder builder = uri.buildUpon();
+        System.out.println("builder is " + builder.toString());
 
-        uri = ContentUris.withAppendedId(uri, 11);
-        System.out.println(uri.getPath());
-
-
+        uri = builder
+                .scheme("sss")
+                .authority("AAA")
+                .appendPath("BBB")
+                .appendQueryParameter("q", "23")
+                .build();
+        System.out.println("uri is " + uri);
+        System.out.println("getScheme is " + uri.getScheme());
+        System.out.println("getSchemeSpecificPart is " + uri.getSchemeSpecificPart());
+        System.out.println("getQuery is " + uri.getQuery());
+        System.out.println("getFragment is " + uri.getFragment());
 
     }
 
