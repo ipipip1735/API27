@@ -58,8 +58,11 @@
             android:permission="x.x"
             android:grantUriPermissions="true"
             android:exported="false">
+            <grant-uri-permission android:pathPattern="/pers.*/" />
         </provider>
 
+            <!--<grant-uri-permission android:path="/person/4" />-->
+            <!--<grant-uri-permission android:pathPrefix="/person/" />-->
 
 
 

@@ -27,7 +27,7 @@ import java.util.Random;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Created by Administrator on 2018/8/25.
+ * Created by Administrator on 2018/10/16.
  */
 public class ContentProviderActivity extends AppCompatActivity {
 

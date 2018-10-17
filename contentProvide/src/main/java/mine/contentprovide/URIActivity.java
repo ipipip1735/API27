@@ -125,6 +125,8 @@ public class URIActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
         setResult(444, intent);
         finish();
 
@@ -146,6 +148,8 @@ public class URIActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+        Uri uri = Uri.parse("content://TNT/person/4");
+        revokeUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
     }
 
