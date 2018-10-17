@@ -27,7 +27,7 @@ import java.util.Random;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Created by Administrator on 2018/8/25.
+ * Created by Administrator on 2018/10/16.
  */
 public class ContentProviderActivity extends AppCompatActivity {
 
@@ -139,7 +139,7 @@ public class ContentProviderActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        Uri uri = Uri.parse("content://TNT/person");
+        Uri uri = Uri.parse("content://TNT/person/4");
 
         String[] projection = {
                 "_id",
