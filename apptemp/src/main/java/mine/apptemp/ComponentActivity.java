@@ -1,5 +1,6 @@
 package mine.apptemp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,7 +14,9 @@ public class ComponentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-        setContentView(R.layout.activity_edit);
+//        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_main);
+
 
     }
 
@@ -76,6 +79,11 @@ public class ComponentActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("a/a");
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, 22);
 
     }
 

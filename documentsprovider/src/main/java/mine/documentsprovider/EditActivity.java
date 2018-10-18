@@ -151,7 +151,7 @@ public class EditActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            setResult(MainActivity.SAVE);
+            setResult(RESULT_OK);
             finish();
         }
     }
@@ -161,8 +161,9 @@ public class EditActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
         intent.setData(uri);
+        System.out.println("----uri is " + uri);
         intent.putExtra("content", content);
-        setResult(MainActivity.SAVE, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }
