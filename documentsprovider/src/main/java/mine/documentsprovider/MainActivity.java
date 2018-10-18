@@ -1,5 +1,6 @@
 package mine.documentsprovider;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -28,11 +29,17 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int SHOW = 10;
-    private final int CREATE = 20;
-    private final int UPDATE = 30;
-    private final int DELET = 40;
-    private final int STATUS = 50;
+   static final int SHOW = 10;
+   static final int CREATE = 21;
+   static final int UPDATE = 22;
+   static final int EDIT = 23;
+   static final int DELET = 24;
+   static final int STATUS = 25;
+   static final int SAVE = 26;
+
+   static final int PICK = 11;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = resultData.getData();
         System.out.println("uri is " + uri);
 
+
         switch (requestCode) {
             case SHOW:
                 showFile(uri);
@@ -129,8 +137,17 @@ public class MainActivity extends AppCompatActivity {
             case UPDATE:
                 updateFile(uri);
                 break;
+            case EDIT:
+                editFile(uri);
+                break;
             case DELET:
                 deleteFile(uri);
+                break;
+            case SAVE:
+                saveFile(resultData);
+                break;
+            case PICK:
+                pickFile(uri);
                 break;
 
         }
@@ -138,9 +155,48 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void deleteFile(Uri uri) {
-        //创建文件，获取URI后写入新数据到文件
+    private void pickFile(Uri uri) {
 
+    }
+
+    private void saveFile(Intent intent) {
+        System.out.println("sssssssssssssss");
+
+        //保存文件
+        String content = intent.getStringExtra("content");
+        System.out.println(content);
+        Uri uri = getIntent().getData();
+
+        try (ParcelFileDescriptor parcelFileDescriptor =
+                     getContentResolver().openFileDescriptor(uri, "w")) {
+            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+            try (OutputStream outputStream = new FileOutputStream(fdp);
+                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+                 BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)) {
+
+                bufferedWriter.write(content);
+                bufferedWriter.newLine();
+                System.out.println("the file has been saved!!");
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void editFile(Uri uri) {
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.setData(uri);
+//        intent.setDataAndType(uri, "text/plain");
+        startActivityForResult(intent, 223);
+    }
+
+    private void deleteFile(Uri uri) {
+        //删除文件
         try (ParcelFileDescriptor parcelFileDescriptor =
                      getContentResolver().openFileDescriptor(uri, "w")) {
 
@@ -200,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showFile(Uri uri) {
+
         //打开文件，获取URI后显示文件中的内容
         try (ParcelFileDescriptor parcelFileDescriptor =
                      getContentResolver().openFileDescriptor(uri, "r")) {
@@ -278,8 +335,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
+    public void edit(View view) {
+        System.out.println("~~button.edit~~");
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/*");
+        startActivityForResult(intent, EDIT);
 
     }
 
@@ -303,10 +364,17 @@ public class MainActivity extends AppCompatActivity {
     public void show(View view) {
         System.out.println("~~button.query~~");
 
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //通过ACTION_PICK
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("text/*");
-        startActivityForResult(intent, SHOW);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, PICK);
+
+        //通过ACTION_OPEN_DOCUMENT
+//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//        intent.setType("text/*");
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        startActivityForResult(intent, SHOW);
 
     }
 
