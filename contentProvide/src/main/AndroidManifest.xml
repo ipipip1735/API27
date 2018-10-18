@@ -13,56 +13,61 @@
         android:theme="@style/AppTheme">
 
 
-
         <!--<activity android:name=".LoaderActivity">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <!--<activity android:name=".MainActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <!--<activity android:name=".ContentObserverActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <activity android:name=".URIActivity">
             <intent-filter>
                 <action android:name="getURI" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
 
         <!--<provider-->
-            <!--android:authorities="TNT"-->
-            <!--android:name=".PersonContentProvider"-->
-            <!--android:permission="x.x"-->
-            <!--android:grantUriPermissions="true"-->
-            <!--android:exported="true" />-->
+        <!--android:name=".PersonContentProvider"-->
+        <!--android:authorities="TNT"-->
+        <!--android:exported="true"-->
+        <!--android:permission="x.y">-->
+
+        <!--<path-permission-->
+        <!--android:path="/person/4"-->
+        <!--android:readPermission="x.x" />-->
+
+        <!--</provider>-->
 
         <provider
-            android:authorities="TNT"
             android:name=".PersonContentProvider"
-            android:exported="false">
-            <grant-uri-permission android:pathPattern="/pers.*/" />
-        </provider>
-
-            <!--<grant-uri-permission android:path="/person/4" />-->
+            android:authorities="TNT"
+            android:exported="false"
+            android:grantUriPermissions="false">
+            <grant-uri-permission android:path="/person/4" />
             <!--<grant-uri-permission android:pathPrefix="/person/" />-->
-
-
+            <!--<grant-uri-permission android:pathPattern="/pers.*/" />-->
+        </provider>
 
 
     </application>

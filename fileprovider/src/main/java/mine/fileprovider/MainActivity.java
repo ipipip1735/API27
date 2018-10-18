@@ -108,6 +108,77 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("**********  " + getClass().getSimpleName() + ".onActivityResult  **********");
+
+        System.out.println("requestCode is " + requestCode);
+        System.out.println("resultCode is " + resultCode);
+
+        Uri uri = data.getData();
+        System.out.println("uri is " + uri);
+
+
+        //获取文件内容
+        try (ParcelFileDescriptor parcelFileDescriptor =
+                     getContentResolver().openFileDescriptor(uri, "r")) {
+            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+            try (InputStream inputStream = new FileInputStream(fdp);
+                 InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
+                 BufferedReader bufferedReader = new BufferedReader(reader)) {
+
+                String s;
+                while (Objects.nonNull((s = bufferedReader.readLine()))) {
+                    System.out.println("File'Content is " + s);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //写数据到文件
+        try (ParcelFileDescriptor parcelFileDescriptor =
+                     getContentResolver().openFileDescriptor(uri, "wa")) {
+            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+
+            try (OutputStream outputStream = new FileOutputStream(fdp);
+                 OutputStreamWriter writer = new OutputStreamWriter(outputStream, UTF_8);
+                 BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+                String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
+                bufferedWriter.write(sql);
+                bufferedWriter.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //检索类型
+        String mimeType = getContentResolver().getType(uri);
+        System.out.println("MIME is " + mimeType);
+
+        //检索类型
+        Cursor cursor = getContentResolver().query(uri,
+                null, null, null, null);
+
+        int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+        cursor.moveToFirst();
+        System.out.println("name is " + (cursor.getString(nameIndex)));
+        System.out.println("size is " + (Long.toString(cursor.getLong(sizeIndex))) + " Byte");
+
+
+        //删除文件
+//        int n = getContentResolver().delete(uri, null, null);
+//        System.out.println(n + " file has been deleted");
+
+
+    }
+
+
     public void write(View view) {
         System.out.println("~~button.write~~");
 
@@ -242,75 +313,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("**********  " + getClass().getSimpleName() + ".onActivityResult  **********");
-
-        System.out.println("requestCode is " + requestCode);
-        System.out.println("resultCode is " + resultCode);
-
-        Uri uri = data.getData();
-        System.out.println("uri is " + uri);
-
-
-        //获取文件内容
-        try (ParcelFileDescriptor parcelFileDescriptor =
-                     getContentResolver().openFileDescriptor(uri, "r")) {
-            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
-
-            try (InputStream inputStream = new FileInputStream(fdp);
-                 InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-                 BufferedReader bufferedReader = new BufferedReader(reader)) {
-
-                String s;
-                while (Objects.nonNull((s = bufferedReader.readLine()))) {
-                    System.out.println("File'Content is " + s);
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        //写数据到文件
-        try (ParcelFileDescriptor parcelFileDescriptor =
-                     getContentResolver().openFileDescriptor(uri, "wa")) {
-            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
-
-            try (OutputStream outputStream = new FileOutputStream(fdp);
-                 OutputStreamWriter writer = new OutputStreamWriter(outputStream, UTF_8);
-                 BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-                String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
-                bufferedWriter.write(sql);
-                bufferedWriter.newLine();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //检索类型
-        String mimeType = getContentResolver().getType(uri);
-        System.out.println("MIME is " + mimeType);
-
-        //检索类型
-        Cursor cursor = getContentResolver().query(uri,
-                null, null, null, null);
-
-        int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-        cursor.moveToFirst();
-        System.out.println("name is " + (cursor.getString(nameIndex)));
-        System.out.println("size is " + (Long.toString(cursor.getLong(sizeIndex))) + " Byte");
-
-
-        //删除文件
-//        int n = getContentResolver().delete(uri, null, null);
-//        System.out.println(n + " file has been deleted");
-
-
-    }
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");

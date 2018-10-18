@@ -2,14 +2,25 @@ package mine.file;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,11 +102,8 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("DataDir is " + file.getAbsolutePath());
 
 
-
 //        file = getFilesDir(); //结果为 /data/user/0/mine.file/files
 //        System.out.println("FilesDir is " + file.getAbsolutePath());
-
-
 
 
 //        File file = getFileStreamPath("myfile");
@@ -103,13 +111,10 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println("file path is " + file.getName());
 
 
-
-
-
 //        other();
 //        readInternal();
 //        readInternalDir();
-//        writeInternal();
+        writeInternal();
 
 
     }
@@ -159,17 +164,45 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void writeInternal() {
+
+        //方法一，仅操作子目录
+//        try {
+//            FileOutputStream outputStream;
+//            String filename = "myfile";
+//            String fileContents = "Hello world!1";
+////            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+//            outputStream = openFileOutput(filename, Context.MODE_APPEND);
+//            outputStream.write(fileContents.getBytes());
+//            outputStream.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+
+        //方法二，使用文件描述符操作任意层级子目录
         try {
-            FileOutputStream outputStream;
-            String filename = "myfile";
-            String fileContents = "Hello world!1";
-//            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream = openFileOutput(filename, Context.MODE_APPEND);
-            outputStream.write(fileContents.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
+            Path path = Paths.get(getFilesDir().toString(), "logs", "slq.log");
+            Files.createDirectories(path.getParent());
+
+            ParcelFileDescriptor parcelFileDescriptor =
+                    ParcelFileDescriptor.open(path.toFile(), ParcelFileDescriptor.parseMode("wa"));
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+
+            OutputStream outputStream = new FileOutputStream(fileDescriptor);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+            String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
+            bufferedWriter.write(sql);
+            bufferedWriter.newLine();
+            bufferedWriter.close();
+            parcelFileDescriptor.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -188,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
 
         cacheFile = Environment.getDownloadCacheDirectory(); //结果为 /data/cache
         System.out.println("DownloadCacheDirectory is " + cacheFile.getAbsolutePath());
-
 
 
     }
@@ -211,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
 
         File[] files;
 //        files = getExternalFilesDirs(Environment.DIRECTORY_PICTURES);
-
 
 
         files = getExternalMediaDirs(); //结果为 /storage/emulated/0/Android/media/mine.file
@@ -246,8 +277,6 @@ public class MainActivity extends AppCompatActivity {
 
         file = Environment.getDataDirectory(); //结果为 /data
         System.out.println("DataDirectory is " + file.getAbsolutePath());
-
-
 
 
     }

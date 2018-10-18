@@ -95,37 +95,56 @@ public class URIActivity extends AppCompatActivity {
         System.out.println("~~button.add~~");
 
 
+        URIBuilder();
+
+
 //        Uri uri = Uri.parse("mScheme://mPacket/mPath1/mPath2/mID?mQuery1=1&mQuery2=2#mFragment");
-//        Uri.Builder builder = uri.buildUpon();
-//        uri = builder
-//                .scheme("sss")
-//                .authority("AAA")
-//                .appendPath("BBB")
-//                .appendQueryParameter("q", "23")
-//                .build();
-//        System.out.println("getScheme is " + uri.getScheme());
-//        System.out.println("getSchemeSpecificPart is " + uri.getSchemeSpecificPart());
-//        System.out.println("getQuery is " + uri.getQuery());
-//        System.out.println("getFragment is " + uri.getFragment());
+//        System.out.println(uri);
+//
+//        uri = ContentUris.withAppendedId(uri, 11);
+//        System.out.println(uri.getPath());
 
 
-        Uri uri = Uri.parse("mScheme://mPacket/mPath1/mPath2/mID?mQuery1=1&mQuery2=2#mFragment");
-
-        uri = ContentUris.withAppendedId(uri, 11);
-        System.out.println(uri.getPath());
 
 
 
     }
 
+    private void URIBuilder() {
+
+        Uri uri = Uri.parse("mScheme://mPacket/mPath1/mPath2/mID?mQuery1=1&mQuery2=2#mFragment");
+        Uri.Builder builder = uri.buildUpon();
+        System.out.println("builder is " + builder.toString());
+
+        uri = builder
+                .scheme("sss")
+                .authority("AAA")
+                .appendPath("BBB")
+                .appendQueryParameter("q", "23")
+                .build();
+        System.out.println("uri is " + uri);
+        System.out.println("getScheme is " + uri.getScheme());
+        System.out.println("getSchemeSpecificPart is " + uri.getSchemeSpecificPart());
+        System.out.println("getQuery is " + uri.getQuery());
+        System.out.println("getFragment is " + uri.getFragment());
+
+    }
+
     public void del(View view) {
         System.out.println("~~button.del~~");
-        Uri uri = Uri.parse("content://TNT/person/4");
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
+        Uri uri = Uri.parse("content://TNT/person/4");
         Intent intent = new Intent();
         intent.setData(uri);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        //方法一：多次调用
+        grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION );
+        grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+
+        //方法二：位运算
+//        grantUriPermission("mine.apptemp", uri,
+//                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         setResult(444, intent);
         finish();
@@ -150,6 +169,7 @@ public class URIActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
         Uri uri = Uri.parse("content://TNT/person/4");
         revokeUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        revokeUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
     }
 
