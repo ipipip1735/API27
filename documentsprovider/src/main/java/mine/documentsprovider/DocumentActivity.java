@@ -1,15 +1,14 @@
 package mine.documentsprovider;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -29,9 +28,9 @@ import java.util.Random;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Created by Administrator on 2018/10/16.
+ * Created by Administrator on 2018/10/18.
  */
-public class MainActivity extends AppCompatActivity {
+public class DocumentActivity extends AppCompatActivity {
 
     static final int SHOW = 10;
     static final int SHOW_MULTIPLE = 100;
@@ -430,6 +429,13 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("a/a");
 //        intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(intent, SHOW);
+
+//        Uri uri = Uri.parse("content://DOC/root");
+//        getContentResolver().query(uri, null ,null,null,null);
+
+
+
+
     }
 
 }

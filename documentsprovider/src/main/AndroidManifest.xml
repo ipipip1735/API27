@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".DocumentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -18,26 +18,34 @@
             </intent-filter>
         </activity>
 
+        <!--<activity android:name=".MainActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
         <activity android:name=".EditActivity">
             <intent-filter>
                 <action android:name="edit" />
-                <!--<data android:mimeType="text/plain" />-->
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
 
-        <!--<provider-->
-            <!--android:name=".BaseProvider"-->
-            <!--android:authorities="com.example.android.storageprovider.documents"-->
-            <!--android:grantUriPermissions="true"-->
-            <!--android:exported="true"-->
-            <!--android:permission="android.permission.MANAGE_DOCUMENTS"-->
-            <!--android:enabled="true">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.content.action.DOCUMENTS_PROVIDER" />-->
-            <!--</intent-filter>-->
-        <!--</provider>-->
+        <provider
+            android:name=".BaseProvider"
+            android:authorities="DOC"
+            android:grantUriPermissions="true"
+            android:exported="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
+
 
     </application>
 

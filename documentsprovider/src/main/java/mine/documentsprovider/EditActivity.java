@@ -27,6 +27,9 @@ import java.util.Random;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Created by Administrator on 2018/10/17.
+ */
 public class EditActivity extends AppCompatActivity {
 
     private StringBuffer fileContent = new StringBuffer(128);
