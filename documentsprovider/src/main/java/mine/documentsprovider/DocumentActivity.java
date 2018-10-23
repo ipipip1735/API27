@@ -33,13 +33,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class DocumentActivity extends AppCompatActivity {
 
     static final int SHOW = 10;
-    static final int SHOW_MULTIPLE = 100;
     static final int CREATE = 21;
     static final int UPDATE = 22;
     static final int EDIT = 23;
-    static final int DELETE = 24;
+    static final int SAVE = 24;
     static final int STATUS = 25;
-    static final int SAVE = 26;
+    static final int DELETE = 26;
+    static final int RENAME = 27;
+    static final int MOVE = 28;
+    static final int COPY = 29;
+    static final int CUT = 30;
 
     static final int PICK = 11;
 
@@ -131,6 +134,18 @@ public class DocumentActivity extends AppCompatActivity {
                 case DELETE:
                     deleteFiles(clipData);
                     break;
+                case RENAME:
+                    System.out.println("the function waiting for implement");
+                    break;
+                case MOVE:
+                    System.out.println("the function waiting for implement");
+                    break;
+                case COPY:
+                    System.out.println("the function waiting for implement");
+                    break;
+                case CUT:
+                    System.out.println("the function waiting for implement");
+                    break;
             }
 
         }
@@ -143,9 +158,6 @@ public class DocumentActivity extends AppCompatActivity {
             switch (requestCode) {
                 case SHOW:
                     showFile(uri);
-                    break;
-                case SHOW_MULTIPLE:
-                    showFiles(uri);
                     break;
                 case CREATE:
                     createFile(uri);
@@ -286,30 +298,11 @@ public class DocumentActivity extends AppCompatActivity {
         //打开文件，获取URI后显示文件中的内容
         try (ParcelFileDescriptor parcelFileDescriptor =
                      getContentResolver().openFileDescriptor(uri, "r")) {
-            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
 
-            statusFile(uri);
-
-            try (InputStream inputStream = new FileInputStream(fdp);
-                 InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-                 BufferedReader bufferedReader = new BufferedReader(reader)) {
-
-                String s;
-                while (Objects.nonNull((s = bufferedReader.readLine()))) {
-                    System.out.println("File'Content is " + s);
-                }
+            if (Objects.isNull(parcelFileDescriptor)) {
+                System.out.println("pfd is null");
+                return;
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showFiles(Uri uri) {
-
-        //打开文件，获取URI后显示文件中的内容
-        try (ParcelFileDescriptor parcelFileDescriptor =
-                     getContentResolver().openFileDescriptor(uri, "r")) {
             FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
 
             statusFile(uri);
@@ -330,21 +323,24 @@ public class DocumentActivity extends AppCompatActivity {
     }
 
     private void statusFile(Uri uri) {
+
+        System.out.println("file type: " + getContentResolver().getType(uri));
+
+
         try (Cursor cursor = getContentResolver()
                 .query(uri, null, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
 
                 String fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 System.out.println("file name is : " + fileName);
-                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
 
-                String size = null;
+
+                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
                 if (!cursor.isNull(sizeIndex)) {
-                    size = cursor.getString(sizeIndex);
+                    System.out.println("file size: " + cursor.getString(sizeIndex));
                 } else {
-                    size = "Unknown";
+                    System.out.println("file size: " + "Unknown");
                 }
-                System.out.println("file size: " + size);
 
             }
         }
@@ -426,14 +422,12 @@ public class DocumentActivity extends AppCompatActivity {
 
         //通过ACTION_OPEN_DOCUMENT
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("a/a");
+        intent.setType("*/*");
 //        intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(intent, SHOW);
 
 //        Uri uri = Uri.parse("content://DOC/root");
 //        getContentResolver().query(uri, null ,null,null,null);
-
-
 
 
     }

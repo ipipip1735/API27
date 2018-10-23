@@ -3,12 +3,19 @@ package mine.documentsprovider;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.CancellationSignal;
+import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsProvider;
 import android.support.annotation.Nullable;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * Created by Administrator on 2018/10/15.
@@ -30,25 +37,38 @@ public class BaseProvider extends DocumentsProvider {
             DocumentsContract.Document.COLUMN_LAST_MODIFIED};
 
 
-    final String ROOT = "/";
+    final String UUID = "8945";
+    final String ROOT = "myRoot-" + UUID;
 
     public BaseProvider() {
         System.out.println("*********  BaseProvider.Constructor  *********");
+
     }
 
     @Override
     public Cursor queryRoots(String[] projection) throws FileNotFoundException {
         System.out.println("*********  " + getClass().getSimpleName() + ".queryRoots  *********");
 
-        final MatrixCursor result = new MatrixCursor(DEFAULT_ROOT_PROJECTION);
-
-        final MatrixCursor.RowBuilder row = result.newRow();
-        row.add(DocumentsContract.Root.COLUMN_ROOT_ID, ROOT)
-                .add(DocumentsContract.Root.COLUMN_TITLE, "rootTitle")
-                .add(DocumentsContract.Root.COLUMN_FLAGS, DocumentsContract.Root.FLAG_SUPPORTS_CREATE | DocumentsContract.Root.FLAG_SUPPORTS_RECENTS | DocumentsContract.Root.FLAG_SUPPORTS_SEARCH )
+        MatrixCursor result = new MatrixCursor(DEFAULT_ROOT_PROJECTION);
+        result.newRow().add(DocumentsContract.Root.COLUMN_ROOT_ID, ROOT + "One")
+                .add(DocumentsContract.Root.COLUMN_TITLE, "rootTitle1")
+                .add(DocumentsContract.Root.COLUMN_FLAGS,
+                        DocumentsContract.Root.FLAG_SUPPORTS_CREATE |
+                                DocumentsContract.Root.FLAG_SUPPORTS_RECENTS |
+                                DocumentsContract.Root.FLAG_SUPPORTS_SEARCH)
                 .add(DocumentsContract.Root.COLUMN_MIME_TYPES, DocumentsContract.Root.MIME_TYPE_ITEM)
-                .add(DocumentsContract.Root.COLUMN_SUMMARY, "rootSummary")
-                .add(DocumentsContract.Root.COLUMN_DOCUMENT_ID, ROOT);
+                .add(DocumentsContract.Root.COLUMN_SUMMARY, "rootSummary1")
+                .add(DocumentsContract.Root.COLUMN_DOCUMENT_ID, "/text/");
+
+        result.newRow().add(DocumentsContract.Root.COLUMN_ROOT_ID, ROOT + "Two")
+                .add(DocumentsContract.Root.COLUMN_TITLE, "rootTitle2")
+                .add(DocumentsContract.Root.COLUMN_FLAGS,
+                        DocumentsContract.Root.FLAG_SUPPORTS_CREATE |
+                                DocumentsContract.Root.FLAG_SUPPORTS_RECENTS |
+                                DocumentsContract.Root.FLAG_SUPPORTS_SEARCH)
+                .add(DocumentsContract.Root.COLUMN_MIME_TYPES, DocumentsContract.Root.MIME_TYPE_ITEM)
+                .add(DocumentsContract.Root.COLUMN_SUMMARY, "rootSummary2")
+                .add(DocumentsContract.Root.COLUMN_DOCUMENT_ID, "/photo/");
 
         return result;
     }
@@ -61,30 +81,30 @@ public class BaseProvider extends DocumentsProvider {
 
         MatrixCursor result = new MatrixCursor(DEFAULT_DOCUMENT_PROJECTION);
 
-
         switch (documentId) {
-            case ROOT:
-                MatrixCursor.RowBuilder row = result.newRow();
-                row.add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, documentId + "zero/")
-                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "0")
+            //根1
+            case "/text/":
+                result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, documentId + "zero/")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "000")
                         .add(DocumentsContract.Document.COLUMN_FLAGS, DocumentsContract.Document.FLAG_SUPPORTS_WRITE)
                         .add(DocumentsContract.Document.COLUMN_MIME_TYPE, DocumentsContract.Document.MIME_TYPE_DIR);
-
                 break;
 
-//            case ROOT:
-//                MatrixCursor.RowBuilder row = result.newRow();
-//                row.add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, documentId + "zero.jpg")
-//                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "0")
-//                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "image/jpg");
-//
-//                break;
+            //根2
+            case "/photo/":
+                result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, documentId + "zero/")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "000")
+                        .add(DocumentsContract.Document.COLUMN_FLAGS, DocumentsContract.Document.FLAG_SUPPORTS_WRITE)
+                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, DocumentsContract.Document.MIME_TYPE_DIR);
+                break;
 
-//            case ROOT + "zero/" + "1f0":
-//                row.add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, documentId + "zero/") .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "0")
-//                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, DocumentsContract.Document.MIME_TYPE_DIR);
-//
-//                break;
+            case "/text/zero/0f0":
+                result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, documentId + "zero/")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "000")
+                        .add(DocumentsContract.Document.COLUMN_FLAGS, DocumentsContract.Document.FLAG_SUPPORTS_WRITE);
+//                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain");
+                break;
+
 
             default:
                 System.out.println("there isn't a vaild file");
@@ -102,23 +122,32 @@ public class BaseProvider extends DocumentsProvider {
 
         switch (parentDocumentId) {
 
-            case ROOT + "zero/":
+            case "/text/zero/":
                 result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, parentDocumentId + "0f0")
-                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "1f0.txt")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "0f0.txt")
                         .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain")
-                .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain");
+                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain");
+
                 result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, parentDocumentId + "0f1")
-                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "1f1.txt")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "0f1.txt")
                         .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain");
                 result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, parentDocumentId + "one/")
-                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "d1")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "0d1")
                         .add(DocumentsContract.Document.COLUMN_MIME_TYPE, DocumentsContract.Document.MIME_TYPE_DIR);
                 break;
 
-            case ROOT + "zero/" + "one/" :
+            case "/text/zero/one/":
                 result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, parentDocumentId + "1f0")
                         .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "1f0.jpg")
                         .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "image/jpg");
+                break;
+
+
+            case "/photo/zero/":
+                result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, parentDocumentId + "0f0")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "0f0.jpg")
+                        .add(DocumentsContract.Document.COLUMN_SIZE, 20)
+                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain");
                 break;
 
             default:
@@ -131,8 +160,60 @@ public class BaseProvider extends DocumentsProvider {
     @Override
     public ParcelFileDescriptor openDocument(String documentId, String mode, @Nullable CancellationSignal signal) throws FileNotFoundException {
         System.out.println("*********  " + getClass().getSimpleName() + ".openDocument  *********");
+        System.out.println("parentDocumentId is " + documentId);
 
-        return null;
+        Path path = null;
+        switch (documentId) {
+
+            case "/text/zero/0f0":
+                path = Paths.get(getContext().getFilesDir().toString(), "0f0.txt");
+                break;
+
+            case "/text/zero/0f1":
+                path = Paths.get(getContext().getFilesDir().toString(), "0f1.txt");
+                break;
+
+            case "/text/zero/one/1f0":
+                path = Paths.get(getContext().getFilesDir().toString(), "0f0.jpg");
+                break;
+
+
+            case "/photo/zero/0f0":
+                path = Paths.get(getContext().getFilesDir().toString(), "0f0.txt");
+                break;
+
+            default:
+                System.out.println("there isn't a vaild file!");
+                return null;
+        }
+
+
+
+        ParcelFileDescriptor pfd = null;
+        if (Objects.nonNull(path)) {
+            if (!Files.exists(path)) {
+                try {
+                    path = Files.createFile(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            Handler handler = new Handler(getContext().getMainLooper());
+            try {
+                pfd = ParcelFileDescriptor.open(path.toFile(), ParcelFileDescriptor.parseMode(mode),
+                        handler, new ParcelFileDescriptor.OnCloseListener() {
+                    @Override
+                    public void onClose(IOException e) {
+                        System.out.println("close pfd");
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return pfd;
     }
 
     @Override
