@@ -421,8 +421,10 @@ public class DocumentActivity extends AppCompatActivity {
 //        startActivityForResult(intent, PICK);
 
         //通过ACTION_OPEN_DOCUMENT
+        Uri docUri = DocumentsContract.buildDocumentUri("DOC", "/photo/");
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, docUri);
 //        intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(intent, SHOW);
 

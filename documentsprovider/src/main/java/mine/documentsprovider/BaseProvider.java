@@ -99,10 +99,10 @@ public class BaseProvider extends DocumentsProvider {
                 break;
 
             case "/text/zero/0f0":
-                result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, documentId + "zero/")
-                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "000")
-                        .add(DocumentsContract.Document.COLUMN_FLAGS, DocumentsContract.Document.FLAG_SUPPORTS_WRITE);
-//                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain");
+                result.newRow().add(DocumentsContract.Document.COLUMN_DOCUMENT_ID, "/text/zero/0f0")
+                        .add(DocumentsContract.Document.COLUMN_DISPLAY_NAME, "080")
+                        .add(DocumentsContract.Document.COLUMN_FLAGS, DocumentsContract.Document.FLAG_SUPPORTS_WRITE)
+                        .add(DocumentsContract.Document.COLUMN_MIME_TYPE, "text/plain");
                 break;
 
 
