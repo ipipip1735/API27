@@ -305,7 +305,7 @@ public class DocumentActivity extends AppCompatActivity {
             }
             FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
 
-            statusFile(uri);
+//            statusFile(uri);
 
             try (InputStream inputStream = new FileInputStream(fdp);
                  InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
@@ -417,19 +417,19 @@ public class DocumentActivity extends AppCompatActivity {
 
         //通过ACTION_PICK
 //        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
 //        intent.setType("video/*");
 //        startActivityForResult(intent, PICK);
 
+
+
         //通过ACTION_OPEN_DOCUMENT
-        Uri docUri = DocumentsContract.buildDocumentUri("DOC", "/photo/");
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
+        Uri docUri = DocumentsContract.buildDocumentUri("DOC", "myRootOne/");
         intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, docUri);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(intent, SHOW);
 
-//        Uri uri = Uri.parse("content://DOC/root");
-//        getContentResolver().query(uri, null ,null,null,null);
 
 
     }
