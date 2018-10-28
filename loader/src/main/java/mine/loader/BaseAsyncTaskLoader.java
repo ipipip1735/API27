@@ -14,14 +14,14 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
 
     @Override
     public void registerListener(int id, OnLoadCompleteListener listener) {
-        super.registerListener(id, listener);
         System.out.println("~~ " + getClass().getSimpleName() + ".registerListener ~~");
+        super.registerListener(id, listener);
     }
 
     @Override
     public void registerOnLoadCanceledListener(OnLoadCanceledListener listener) {
-        super.registerOnLoadCanceledListener(listener);
         System.out.println("~~ " + getClass().getSimpleName() + ".registerOnLoadCanceledListener ~~");
+        super.registerOnLoadCanceledListener(listener);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
 
     @Override
     public void onCanceled(String data) {
-        super.onCanceled(data);
         System.out.println("~~ " + getClass().getSimpleName() + ".onCanceled ~~");
+        super.onCanceled(data);
 
         data = null;
     }
@@ -50,9 +50,9 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
 
     @Override
     public void cancelLoadInBackground() {
-        super.cancelLoadInBackground();
         System.out.println("~~ " + getClass().getSimpleName() + ".cancelLoadInBackground ~~");
-
+        super.cancelLoadInBackground();
+        System.out.println(Thread.currentThread());
     }
 
     @Override
@@ -81,22 +81,22 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
 
     @Override
     protected void onForceLoad() {
-        super.onForceLoad();
         System.out.println("~~ " + getClass().getSimpleName() + ".onForceLoad ~~");
+        super.onForceLoad();
 
     }
 
     @Override
     protected void onStopLoading() {
-        super.onStopLoading();
         System.out.println("~~ " + getClass().getSimpleName() + ".onStopLoading ~~");
+        super.onStopLoading();
         cancelLoad();
     }
 
     @Override
     protected void onAbandon() {
-        super.onAbandon();
         System.out.println("~~ " + getClass().getSimpleName() + ".onAbandon ~~");
+        super.onAbandon();
 
     }
 
@@ -108,15 +108,15 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
 
     @Override
     protected void onReset() {
-        super.onReset();
         System.out.println("~~ " + getClass().getSimpleName() + ".onReset ~~");
+        super.onReset();
         stopLoading();
     }
 
     @Override
     public void onContentChanged() {
-        super.onContentChanged();
         System.out.println("~~ " + getClass().getSimpleName() + ".onContentChanged ~~");
+        super.onContentChanged();
 
     }
 }

@@ -6,7 +6,9 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -92,6 +94,35 @@ public class CurserLoaderActivity extends AppCompatActivity {
 
     public void cancelling(View view) {
         System.out.println("~~button.cancelling~~");
+        ContentObserver observer = new ContentObserver(new Handler(getMainLooper())) {
+            @Override
+            public boolean deliverSelfNotifications() {
+                System.out.println("deliverSelfNotifications");
+                return true;
+//                return super.deliverSelfNotifications();
+            }
+
+            @Override
+            public void onChange(boolean selfChange) {
+                System.out.println("selfChange is " + selfChange);
+                super.onChange(selfChange);
+            }
+
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                System.out.println("selfChange is " + selfChange);
+                System.out.println("uri is " + uri);
+                super.onChange(selfChange, uri);
+            }
+        };
+        MatrixCursor matrixCursor = new MatrixCursor(new String[]{"AA"});
+        matrixCursor.addRow(new String[]{"aa11"});
+        Cursor cursor = matrixCursor;
+        cursor.registerContentObserver(observer);
+        System.out.println(cursor.getNotificationUri());
+
+//        Uri uri = Uri.parse("content://TNT/AA");
+//        getContentResolver().notifyChange(uri, );
     }
 
     public void reloading(View view) {

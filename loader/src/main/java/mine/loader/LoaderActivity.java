@@ -21,7 +21,7 @@ public class LoaderActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  Example  onCreate  ***********");
 
-        setContentView(R.layout.activity_button);
+        setContentView(R.layout.activity_loader);
         TextView textView = (TextView) findViewById(R.id.textView);
 
 

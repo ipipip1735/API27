@@ -15,9 +15,9 @@ include   ':apptemp',
 //        ':animation',
 //        ':threadLooper',
 //        ':drags',
-        ':contentProvide'
+        ':contentProvide',
 //        ':adapter',
-//        ':loader',
+        ':loader'
 //        ':view',
 //        ':broadcast',
 //        ':services',
