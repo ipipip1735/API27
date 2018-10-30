@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(feild + " = " + cursor.getString(index));
             }
         }
-
         cursor.close();
     }
 
