@@ -21,20 +21,20 @@ public class BaseLoader extends Loader {
 
     @Override
     public void registerListener(int id, OnLoadCompleteListener listener) {
-        super.registerListener(id, listener);
         System.out.println("~~ " + getClass().getSimpleName() + ".registerListener ~~");
+        super.registerListener(id, listener);
     }
 
     @Override
     public void registerOnLoadCanceledListener(OnLoadCanceledListener listener) {
-        super.registerOnLoadCanceledListener(listener);
         System.out.println("~~ " + getClass().getSimpleName() + ".registerOnLoadCanceledListener ~~");
+        super.registerOnLoadCanceledListener(listener);
     }
 
     @Override
     protected void onStartLoading() {
-        super.onStartLoading();
         System.out.println("~~ " + getClass().getSimpleName() + ".onStartLoading ~~");
+        super.onStartLoading();
         forceLoad();
 
     }
@@ -48,37 +48,42 @@ public class BaseLoader extends Loader {
 
     @Override
     protected void onForceLoad() {
-        super.onForceLoad();
         System.out.println("~~ " + getClass().getSimpleName() + ".onForceLoad ~~");
+        super.onForceLoad();
+        try {
+            Thread.sleep(2000l);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         deliverResult("Ok");
     }
 
     @Override
     protected void onStopLoading() {
-        super.onStopLoading();
         System.out.println("~~ " + getClass().getSimpleName() + ".onStopLoading ~~");
+        super.onStopLoading();
 
 
     }
 
     @Override
     protected void onAbandon() {
-        super.onAbandon();
         System.out.println("~~ " + getClass().getSimpleName() + ".onAbandon ~~");
+        super.onAbandon();
 
     }
 
     @Override
     protected void onReset() {
-        super.onReset();
         System.out.println("~~ " + getClass().getSimpleName() + ".onReset ~~");
+        super.onReset();
 
     }
 
     @Override
     public void onContentChanged() {
-        super.onContentChanged();
         System.out.println("~~ " + getClass().getSimpleName() + ".onContentChanged ~~");
+        super.onContentChanged();
 
     }
 }

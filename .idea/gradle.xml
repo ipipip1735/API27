@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/apptemp" />
             <option value="$PROJECT_DIR$/contactProvider" />
             <option value="$PROJECT_DIR$/contentProvide" />
+            <option value="$PROJECT_DIR$/loader" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

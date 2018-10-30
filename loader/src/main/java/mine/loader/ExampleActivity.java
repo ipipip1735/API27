@@ -41,7 +41,7 @@ public class ExampleActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  Example  onCreate  ***********");
 
-        setContentView(R.layout.activity_task);
+        setContentView(R.layout.activity_loader);
         if (bundle == null) {
             System.out.println("Example bundle is empty");
         } else {

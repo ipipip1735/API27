@@ -84,18 +84,19 @@ public class BaseLoaderActivity extends AppCompatActivity {
 
     public void loading(View view) {
         System.out.println("~~loading~~");
-        getLoaderManager().initLoader(0, null, new LoaderCallback(this));
+        getLoaderManager().initLoader(0, null, new MyLoaderCallback(this));
 
     }
 
     public void cancelling(View view) {
         System.out.println("~~cancelling~~");
+        getLoaderManager().getLoader(0).cancelLoad();
     }
 
     public void reloading(View view) {
         System.out.println("~~reloading~~");
 
-        getLoaderManager().restartLoader(0, null, new LoaderCallback(this));
+        getLoaderManager().restartLoader(0, null, new MyLoaderCallback(this));
 
     }
 
@@ -115,11 +116,11 @@ public class BaseLoaderActivity extends AppCompatActivity {
 
 
 
-class LoaderCallback implements LoaderManager.LoaderCallbacks {
+class MyLoaderCallback implements LoaderManager.LoaderCallbacks {
 
     Context context;
 
-    public LoaderCallback(Context context) {
+    public MyLoaderCallback(Context context) {
         this.context = context;
     }
 
@@ -142,7 +143,7 @@ class LoaderCallback implements LoaderManager.LoaderCallbacks {
     @Override
     public void onLoaderReset(Loader loader) {
         System.out.println("--- " + getClass().getSimpleName() + ".onLoaderReset ---");
-//        loader.onContentChanged();
+        loader.rollbackContentChanged();
 
 
     }

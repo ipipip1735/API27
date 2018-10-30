@@ -20,14 +20,14 @@
         <!--</intent-filter>-->
         <!--</activity>-->
 
-        <!--<activity android:name=".MainActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!--<activity android:name=".ContentObserverActivity">-->
         <!--<intent-filter>-->
@@ -36,38 +36,38 @@
         <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".URIActivity">
-            <intent-filter>
-                <action android:name="getURI" />
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!--<activity android:name=".URIActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="getURI" />-->
+                <!--&lt;!&ndash;<category android:name="android.intent.category.DEFAULT" />&ndash;&gt;-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
 
-        <!--<provider-->
-        <!--android:name=".PersonContentProvider"-->
-        <!--android:authorities="TNT"-->
-        <!--android:exported="true"-->
-        <!--android:permission="x.y">-->
+        <provider
+        android:name=".PersonContentProvider"
+        android:authorities="TNT"
+        android:exported="true">
+        <!--android:permission="x.y"-->
 
         <!--<path-permission-->
         <!--android:path="/person/4"-->
         <!--android:readPermission="x.x" />-->
 
-        <!--</provider>-->
-
-        <provider
-            android:name=".PersonContentProvider"
-            android:authorities="TNT"
-            android:exported="false"
-            android:grantUriPermissions="false">
-            <grant-uri-permission android:path="/person/4" />
-            <!--<grant-uri-permission android:pathPrefix="/person/" />-->
-            <!--<grant-uri-permission android:pathPattern="/pers.*/" />-->
         </provider>
+
+        <!--<provider-->
+            <!--android:name=".PersonContentProvider"-->
+            <!--android:authorities="TNT"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="false">-->
+            <!--<grant-uri-permission android:path="/person/4" />-->
+            <!--&lt;!&ndash;<grant-uri-permission android:pathPrefix="/person/" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<grant-uri-permission android:pathPattern="/pers.*/" />&ndash;&gt;-->
+        <!--</provider>-->
 
 
     </application>
