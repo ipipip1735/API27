@@ -122,19 +122,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void queryEntities() {
+
+
         String[] projection =
                 {
-                        ContactsContract.Contacts.Entity.RAW_CONTACT_ID,
-                        ContactsContract.Contacts.Entity.DATA1,
-                        ContactsContract.Contacts.Entity.MIMETYPE
+                        ContactsContract.Contacts._ID,
+                        ContactsContract.Contacts.LOOKUP_KEY,
                 };
 
-        String sortOrder =
-                ContactsContract.Contacts.Entity.RAW_CONTACT_ID +
-                        " ASC";
+        String selection = "_id > ?";
+        String[] selectionArgs = {"0"};
+        String sortOrder = ContactsContract.Contacts._ID + " ASC";
         Cursor cursor =
                 getContentResolver().query(
-                        ContactsContract.Profile.CONTENT_URI,
+                        ContactsContract.Contacts.CONTENT_URI,
                         projection ,
                         null,
                         null,
@@ -167,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor cursor =
                 getContentResolver().query(
-                        ContactsContract.Profile.CONTENT_URI,
+//                        ContactsContract.Profile.CONTENT_URI,
+                        ContactsContract.Data.CONTENT_URI,
                         projection ,
                         null,
                         null,
