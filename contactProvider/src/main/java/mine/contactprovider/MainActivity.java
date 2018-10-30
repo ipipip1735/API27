@@ -1,8 +1,17 @@
 package mine.contactprovider;
 
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -106,7 +115,97 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+//        queryProfile();
+        queryEntities();
+    }
+
+
+
+    private void queryEntities() {
+        String[] projection =
+                {
+                        ContactsContract.Contacts.Entity.RAW_CONTACT_ID,
+                        ContactsContract.Contacts.Entity.DATA1,
+                        ContactsContract.Contacts.Entity.MIMETYPE
+                };
+
+        String sortOrder =
+                ContactsContract.Contacts.Entity.RAW_CONTACT_ID +
+                        " ASC";
+        Cursor cursor =
+                getContentResolver().query(
+                        ContactsContract.Profile.CONTENT_URI,
+                        projection ,
+                        null,
+                        null,
+                        sortOrder);
+
+        if(Objects.isNull(cursor))return;
+
+        System.out.println("count is " + cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            for (String feild : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(feild);
+                System.out.println(feild + " = " + cursor.getString(index));
+            }
+        }
+
+        cursor.close();
+    }
+
+
+    private void queryProfile() {
+        String[] projection = new String[]
+                {
+                        ContactsContract.Profile._ID,
+                        ContactsContract.Profile.DISPLAY_NAME_PRIMARY,
+                        ContactsContract.Profile.LOOKUP_KEY,
+                        ContactsContract.Profile.PHOTO_THUMBNAIL_URI
+                };
+
+
+        Cursor cursor =
+                getContentResolver().query(
+                        ContactsContract.Profile.CONTENT_URI,
+                        projection ,
+                        null,
+                        null,
+                        null);
+
+        if(Objects.isNull(cursor))return;
+
+        System.out.println("count is " + cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            for (String feild : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(feild);
+                System.out.println(feild + " = " + cursor.getString(index));
+            }
+        }
+
+        cursor.close();
+    }
+
+}
+
+
+class Callback implements LoaderCallbacks{
+
+    @NonNull
+    @Override
+    public Loader onCreateLoader(int i, @Nullable Bundle bundle) {
+
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader loader, Object o) {
 
     }
 
+    @Override
+    public void onLoaderReset(@NonNull Loader loader) {
+
+    }
 }
