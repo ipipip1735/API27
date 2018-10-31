@@ -11,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.lang.reflect.Field;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,6 +84,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+        Field[] fields = ContactsContract.Contacts.class.getFields();
+
+
+        for (Field field : fields) {
+            try {
+                System.out.println(field + " = " + field.get(null));
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -116,32 +129,27 @@ public class MainActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 //        queryProfile();
-        queryEntities();
+        queryContact();
     }
 
-
-
-    private void queryEntities() {
-
-
-        String[] projection =
-                {
-                        ContactsContract.Contacts._ID,
-                        ContactsContract.Contacts.LOOKUP_KEY,
-                };
+    private void queryContact() {
+        String[] projection = {ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.LOOKUP_KEY,
+                ContactsContract.Contacts.PHOTO_ID,
+                ContactsContract.Contacts.STARRED,
+                ContactsContract.Contacts.DISPLAY_NAME};
 
         String selection = "_id > ?";
         String[] selectionArgs = {"0"};
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
-        Cursor cursor =
-                getContentResolver().query(
-                        ContactsContract.Contacts.CONTENT_URI,
-                        projection ,
-                        null,
-                        null,
-                        sortOrder);
+        Cursor cursor = getContentResolver().query(
+                ContactsContract.Contacts.CONTENT_URI,
+                projection,
+                null,
+                null,
+                sortOrder);
 
-        if(Objects.isNull(cursor))return;
+        if (Objects.isNull(cursor)) return;
 
         System.out.println("count is " + cursor.getCount());
 
@@ -155,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
-
     private void queryProfile() {
         String[] projection = new String[]
                 {
@@ -166,16 +173,14 @@ public class MainActivity extends AppCompatActivity {
                 };
 
 
-        Cursor cursor =
-                getContentResolver().query(
-//                        ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Data.CONTENT_URI,
-                        projection ,
-                        null,
-                        null,
-                        null);
+        Cursor cursor = getContentResolver().query(
+                ContactsContract.Profile.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
 
-        if(Objects.isNull(cursor))return;
+        if (Objects.isNull(cursor)) return;
 
         System.out.println("count is " + cursor.getCount());
 
@@ -191,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 }
 
 
-class Callback implements LoaderCallbacks{
+class Callback implements LoaderCallbacks {
 
     @NonNull
     @Override
