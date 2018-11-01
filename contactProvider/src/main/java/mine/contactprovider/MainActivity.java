@@ -82,10 +82,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
+    public void URI(View view) {
         System.out.println("~~button.start~~");
-        Field[] fields = ContactsContract.Contacts.class.getFields();
-
+//        Field[] fields = ContactsContract.class.getFields();
+//        Field[] fields = ContactsContract.Contacts.class.getFields();
+        Field[] fields = ContactsContract.RawContacts.class.getFields();
+//        Field[] fields = ContactsContract.Contacts.class.getFields();
+//        Field[] fields = ContactsContract.Contacts.class.getFields();
 
         for (Field field : fields) {
             try {
@@ -128,9 +131,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+
+
+
+
+
 //        queryProfile();
-        queryContact();
-//        queryRawContact();
+//        queryContact();
+        queryRawContact();
 //        queryPhoneLookup();
     }
 
@@ -167,24 +176,9 @@ public class MainActivity extends AppCompatActivity {
     private void queryRawContact() {
         System.out.println("=queryRawContact=");
 
-//        Uri uri = ContactsContract.Contacts.CONTENT_URI;
-        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI, "0r2-4F45413F3131/2");
-//        Uri uri = ContactsContract.Contacts.CONTENT_FILTER_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_FREQUENT_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_GROUP_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_ITEM_TYPE;
-//        Uri uri = ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_FILTER_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_TYPE;
-//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_TYPE;
-//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_URI;
-//        Uri uri = ContactsContract.Contacts.CORP_CONTENT_URI;
-//        Uri uri = ContactsContract.Contacts.ENTERPRISE_CONTENT_FILTER_URI;
+        Uri uri = ContactsContract.RawContacts.CONTENT_URI;
+        ContactsContract.RawContacts.STARRED;
 
-
-        String selection = "_id > ?";
-        String[] selectionArgs = {"0"};
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
         Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
 
@@ -251,20 +245,10 @@ public class MainActivity extends AppCompatActivity {
     private void queryProfile() {
         System.out.println("=queryProfile=");
 
-        String[] projection = new String[]
-                {
-                        ContactsContract.Profile._ID,
-                        ContactsContract.Profile.DISPLAY_NAME_PRIMARY,
-                        ContactsContract.Profile.LOOKUP_KEY,
-                        ContactsContract.Profile.PHOTO_THUMBNAIL_URI
-                };
 
-        Cursor cursor = getContentResolver().query(
-                ContactsContract.Profile.CONTENT_URI,
-                projection,
-                null,
-                null,
-                null);
+
+        String sortOrder = ContactsContract.Contacts._ID + " ASC";
+        Cursor cursor = getContentResolver().query(ContactsContract.Profile.CONTENT_URI, null, null, null, sortOrder);
 
         if (Objects.isNull(cursor)) return;
 
