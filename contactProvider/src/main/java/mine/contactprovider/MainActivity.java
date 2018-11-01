@@ -130,30 +130,31 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 //        queryProfile();
         queryContact();
+//        queryRawContact();
+//        queryPhoneLookup();
     }
 
-    private void queryContact() {
-        String[] projection = {ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.LOOKUP_KEY,
-                ContactsContract.Contacts.PHOTO_ID,
-                ContactsContract.Contacts.STARRED,
-                ContactsContract.Contacts.DISPLAY_NAME};
+    private void queryPhoneLookup() {
+        System.out.println("=queryPhoneLookup=");
 
-        String selection = "_id > ?";
-        String[] selectionArgs = {"0"};
+        //查询电话
+//        String phoneNumber = "+12011231234";
+//        String phoneNumber = "12011231234";
+//        String phoneNumber = "2011231234";
+//        String phoneNumber = "1231234";
+        String phoneNumber = "5205653232";
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
-        Cursor cursor = getContentResolver().query(
-                ContactsContract.Contacts.CONTENT_URI,
-                projection,
-                null,
-                null,
-                sortOrder);
+        Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
 
         if (Objects.isNull(cursor)) return;
 
+        System.out.println("URI is " + uri);
         System.out.println("count is " + cursor.getCount());
 
         while (cursor.moveToNext()) {
+            System.out.println("----");
             for (String feild : cursor.getColumnNames()) {
                 int index = cursor.getColumnIndex(feild);
                 System.out.println(feild + " = " + cursor.getString(index));
@@ -163,7 +164,93 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    private void queryRawContact() {
+        System.out.println("=queryRawContact=");
+
+//        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI, "0r2-4F45413F3131/2");
+//        Uri uri = ContactsContract.Contacts.CONTENT_FILTER_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_FREQUENT_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_GROUP_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_ITEM_TYPE;
+//        Uri uri = ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_FILTER_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_TYPE;
+//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_TYPE;
+//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_URI;
+//        Uri uri = ContactsContract.Contacts.CORP_CONTENT_URI;
+//        Uri uri = ContactsContract.Contacts.ENTERPRISE_CONTENT_FILTER_URI;
+
+
+        String selection = "_id > ?";
+        String[] selectionArgs = {"0"};
+        String sortOrder = ContactsContract.Contacts._ID + " ASC";
+        Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
+
+        if (Objects.isNull(cursor)) return;
+
+        System.out.println("URI is " + uri);
+        System.out.println("count is " + cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            System.out.println("----");
+            for (String feild : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(feild);
+                System.out.println(feild + " = " + cursor.getString(index));
+            }
+        }
+
+        cursor.close();
+    }
+
+    private void queryContact() {
+        System.out.println("=queryContact=");
+
+//        Uri uri = ContactsContract.Contacts.CONTENT_FREQUENT_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_GROUP_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_ITEM_TYPE;
+//        Uri uri = ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_FILTER_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_URI;
+//        Uri uri = ContactsContract.Contacts.CONTENT_TYPE;
+//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_TYPE;
+//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_URI;
+//        Uri uri = ContactsContract.Contacts.CORP_CONTENT_URI;
+//        Uri uri = ContactsContract.Contacts.ENTERPRISE_CONTENT_FILTER_URI;
+
+        //查询所有
+//        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+
+        //查询lookup key
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131");
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131/2");
+
+        //查询人名
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Tom");
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Lee");
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Lee Tom");
+
+
+        String sortOrder = ContactsContract.Contacts._ID + " ASC";
+        Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
+
+        if (Objects.isNull(cursor)) return;
+        System.out.println("URI is " + uri);
+        System.out.println("count is " + cursor.getCount());
+        while (cursor.moveToNext()) {
+            System.out.println("----");
+            for (String feild : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(feild);
+                System.out.println(feild + " = " + cursor.getString(index));
+            }
+        }
+        cursor.close();
+    }
+
     private void queryProfile() {
+        System.out.println("=queryProfile=");
+
         String[] projection = new String[]
                 {
                         ContactsContract.Profile._ID,
@@ -171,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
                         ContactsContract.Profile.LOOKUP_KEY,
                         ContactsContract.Profile.PHOTO_THUMBNAIL_URI
                 };
-
 
         Cursor cursor = getContentResolver().query(
                 ContactsContract.Profile.CONTENT_URI,
