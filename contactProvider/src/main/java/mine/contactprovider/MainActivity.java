@@ -87,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
 //        Field[] fields = ContactsContract.class.getFields();
 //        Field[] fields = ContactsContract.Contacts.class.getFields();
         Field[] fields = ContactsContract.RawContacts.class.getFields();
-//        Field[] fields = ContactsContract.Contacts.class.getFields();
-//        Field[] fields = ContactsContract.Contacts.class.getFields();
+//        Field[] fields = ContactsContract.Data.class.getFields();
 
         for (Field field : fields) {
             try {
@@ -177,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("=queryRawContact=");
 
         Uri uri = ContactsContract.RawContacts.CONTENT_URI;
-        ContactsContract.RawContacts.STARRED;
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
         Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
