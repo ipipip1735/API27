@@ -1,7 +1,12 @@
 package mine.contactprovider;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +17,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -101,8 +107,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void stop(View view) {
+    public void insert(View view) {
         System.out.println("~~button.stop~~");
+
+//        insertContact();
+        insertRawContact();
+        insertRawContactBatch();
+
+    }
+
+    private void insertRawContactBatch() {
+        String accountType = "yahoo";
+        String accountName = "Tom Lee";
+
+
+        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Uri.parse("A://B/C"));
+        ContentProviderOperation operation = builder.withValue("key1", "value1")
+                                                    .withValue("key2", "value2")
+                                                    .build();
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+
+
+        int rawContactInsertIndex = ops.size();
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, accountType)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, accountName)
+                .build());
+
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "Mike Sullivan")
+                .build());
+
+        try {
+            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        } catch (OperationApplicationException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void insertRawContact() {
+        System.out.println("=insertRawContact=");
+
+        String accountType = "yahoo";
+        String accountName = "Tom Lee";
+
+        ContentValues values = new ContentValues();
+        values.put(ContactsContract.RawContacts.ACCOUNT_TYPE, accountType);
+        values.put(ContactsContract.RawContacts.ACCOUNT_NAME, accountName);
+        Uri rawContactUri = getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, values);
+        long rawContactId = ContentUris.parseId(rawContactUri);
+        System.out.println("rawContactId is " + rawContactId);
+
+        values.clear();
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
+        values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "Tom Lee");
+        getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
 
     }
 
@@ -122,19 +187,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void del(View view) {
+    public void delete(View view) {
         System.out.println("~~button.del~~");
+
 
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
-
-
-
-
 
 //        queryProfile();
 //        queryContact();
@@ -242,7 +303,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void queryProfile() {
         System.out.println("=queryProfile=");
-
 
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
