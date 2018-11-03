@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 
 //        insertContact();
-        insertRawContact();
+//        insertRawContact();
         insertRawContactBatch();
 
     }
@@ -128,15 +128,13 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
-
-        int rawContactInsertIndex = ops.size();
         ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                 .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, accountType)
                 .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, accountName)
                 .build());
 
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                 .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
                 .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "Mike Sullivan")
                 .build());
