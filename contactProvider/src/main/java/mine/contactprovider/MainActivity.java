@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void insert(View view) {
-        System.out.println("~~button.stop~~");
+        System.out.println("~~button.insert~~");
 
 //        insertContact();
 //        insertRawContact();
@@ -169,8 +169,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void bind(View view) {
+    public void update(View view) {
         System.out.println("~~button.bind~~");
+
+
+        String accountType = "yahoo";
+        String accountName = "Tom Lee";
+
+        Uri uri = ContactsContract.RawContacts.CONTENT_URI;
+
+        ContentValues values = new ContentValues();
+        values.put(ContactsContract.RawContacts.ACCOUNT_TYPE, accountType);
+        values.put(ContactsContract.RawContacts.ACCOUNT_NAME, accountName);
+
+        String where = ContactsContract.RawContacts._ID + " = ?";
+
+        getContentResolver().update(uri, values, where, );
+
 
     }
 
@@ -197,8 +212,40 @@ public class MainActivity extends AppCompatActivity {
 
 //        queryProfile();
 //        queryContact();
-        queryRawContact();
+//        queryRawContact();
+//        queryWithEtity();
 //        queryPhoneLookup();
+    }
+
+    private void queryWithEtity() {
+        int rawContactId = 0;
+        Uri rawContactUri = ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId);
+        Uri entityUri = Uri.withAppendedPath(rawContactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
+
+        String[] selects = new String[]{ContactsContract.RawContacts.SOURCE_ID,
+                ContactsContract.Contacts.Entity.DATA_ID,
+                ContactsContract.Contacts.Entity.MIMETYPE,
+                ContactsContract.Contacts.Entity.DATA1};
+
+        Cursor cursor = getContentResolver().query(entityUri, null, null, null, null);
+
+//        Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
+
+        if (Objects.isNull(cursor)) return;
+
+        System.out.println("URI is " + entityUri);
+        System.out.println("count is " + cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            System.out.println("----");
+            for (String feild : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(feild);
+                System.out.println(feild + " = " + cursor.getString(index));
+            }
+        }
+
+        cursor.close();
+
     }
 
     private void queryPhoneLookup() {
