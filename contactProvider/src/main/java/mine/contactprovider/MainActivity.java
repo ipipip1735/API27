@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void update(View view) {
-        System.out.println("~~button.bind~~");
+        System.out.println("~~button.update~~");
 
 
         String accountType = "yahoo";
@@ -183,8 +183,10 @@ public class MainActivity extends AppCompatActivity {
         values.put(ContactsContract.RawContacts.ACCOUNT_NAME, accountName);
 
         String where = ContactsContract.RawContacts._ID + " = ?";
+        String[] selectArgs = {"3"};
+        getContentResolver().update(uri, values, where, selectArgs);
 
-        getContentResolver().update(uri, values, where, );
+
 
 
     }
@@ -213,23 +215,60 @@ public class MainActivity extends AppCompatActivity {
 //        queryProfile();
 //        queryContact();
 //        queryRawContact();
+        queryData();
 //        queryWithEtity();
 //        queryPhoneLookup();
     }
 
-    private void queryWithEtity() {
-        int rawContactId = 0;
-        Uri rawContactUri = ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId);
-        Uri entityUri = Uri.withAppendedPath(rawContactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
+    private void queryData() {
 
-        String[] selects = new String[]{ContactsContract.RawContacts.SOURCE_ID,
-                ContactsContract.Contacts.Entity.DATA_ID,
-                ContactsContract.Contacts.Entity.MIMETYPE,
-                ContactsContract.Contacts.Entity.DATA1};
+
+        Uri uri = ContactsContract.Data.CONTENT_URI;
+
+        String[] projection = {ContactsContract.Data._ID};
+        String selection = ContactsContract.Data.RAW_CONTACT_ID + " = ?";
+        String[] selectionArgs = {"1"};
+
+        Cursor cursor = getContentResolver().query(uri, null, selection, selectionArgs, null);
+
+
+        if (Objects.isNull(cursor)) return;
+
+        System.out.println("URI is " + uri);
+        System.out.println("count is " + cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            System.out.println("----");
+            for (String feild : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(feild);
+                System.out.println(feild + " = " + cursor.getString(index));
+            }
+        }
+
+        cursor.close();
+    }
+
+    private void queryWithEtity() {
+        //Contacts实体
+        int rawContactId = 2;
+        Uri rawContactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, rawContactId);
+        Uri entityUri = Uri.withAppendedPath(rawContactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
+        String[] projection = new String[]{
+                ContactsContract.Contacts.Entity.DATA_ID};
+
+        //Raw_Contacts实体
+//        int rawContactId = 1;
+//        Uri rawContactUri = ContentUris.withAppendedId(
+//                ContactsContract.RawContacts.CONTENT_URI, rawContactId);
+//        Uri entityUri = Uri.withAppendedPath(rawContactUri,
+//                ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
+
+
+
+
 
         Cursor cursor = getContentResolver().query(entityUri, null, null, null, null);
 
-//        Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
 
         if (Objects.isNull(cursor)) return;
 
