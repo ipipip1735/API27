@@ -19,6 +19,7 @@ import android.view.View;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class MainActivity extends AppCompatActivity {
@@ -112,7 +113,43 @@ public class MainActivity extends AppCompatActivity {
 
 //        insertContact();
 //        insertRawContact();
-        insertRawContactBatch();
+        insertData();
+//        insertRawContactBatch(); //批量插入
+
+    }
+
+    private void insertData() {
+
+        System.out.println("=insertData=");
+
+        String name = "Tom Lee100" + new Random().nextInt(100);
+
+        ContentValues values = new ContentValues();
+        values.put(ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY, name);
+        Uri rawContactUri = getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, values);
+        long rawContactId = ContentUris.parseId(rawContactUri);
+        System.out.println("rawContactId is " + rawContactId);
+
+        values.clear();
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
+        values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "Tom Le1111eeeee");
+
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+        values.put(ContactsContract.CommonDataKinds.Phone.DATA, "(230) 000-6363");
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
+        values.put(ContactsContract.CommonDataKinds.Phone.DATA, "000-6363");
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME);
+
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE);
+        values.put(ContactsContract.CommonDataKinds.Email.DATA, "a@b.com");
+        values.put(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK);
+        values.put(ContactsContract.CommonDataKinds.Email.DATA, "c@d.com");
+        values.put(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_HOME);
+
+
+
+        getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
 
     }
 
