@@ -252,8 +252,8 @@ public class MainActivity extends AppCompatActivity {
 //        queryProfile();
 //        queryContact();
 //        queryRawContact();
-        queryData();
-//        queryWithEtity();
+//        queryData();
+        queryWithEtity();
 //        queryPhoneLookup();
     }
 
@@ -287,14 +287,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void queryWithEtity() {
         //Contacts实体
-        int rawContactId = 2;
-        Uri rawContactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, rawContactId);
-        Uri entityUri = Uri.withAppendedPath(rawContactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
+        int contactId = 2;
+        Uri contactUri = ContentUris.withAppendedId(
+                ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri entityUri = Uri.withAppendedPath(
+                contactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
         String[] projection = new String[]{
                 ContactsContract.Contacts.Entity.DATA_ID};
 
         //Raw_Contacts实体
-//        int rawContactId = 1;
+//        int rawContactId = 2;
 //        Uri rawContactUri = ContentUris.withAppendedId(
 //                ContactsContract.RawContacts.CONTENT_URI, rawContactId);
 //        Uri entityUri = Uri.withAppendedPath(rawContactUri,
@@ -302,9 +304,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-        Cursor cursor = getContentResolver().query(entityUri, null, null, null, null);
+        Cursor cursor = getContentResolver().query(entityUri,
+                null, null, null, null);
 
 
         if (Objects.isNull(cursor)) return;
