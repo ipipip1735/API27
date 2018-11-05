@@ -1,6 +1,7 @@
 package mine.contactprovider;
 
 import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.OperationApplicationException;
@@ -119,55 +120,107 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertData() {
-
         System.out.println("=insertData=");
-
-        String name = "Tom Lee100" + new Random().nextInt(100);
-
-        ContentValues values = new ContentValues();
-        values.put(ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY, name);
-        Uri rawContactUri = getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, values);
-        long rawContactId = ContentUris.parseId(rawContactUri);
-        System.out.println("rawContactId is " + rawContactId);
-
-        values.clear();
-        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
-        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
-        values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "Tom Le1111eeeee");
-
-        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
-        values.put(ContactsContract.CommonDataKinds.Phone.DATA, "(230) 000-6363");
-        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
-        values.put(ContactsContract.CommonDataKinds.Phone.DATA, "000-6363");
-        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME);
-
-        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE);
-        values.put(ContactsContract.CommonDataKinds.Email.DATA, "a@b.com");
-        values.put(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK);
-        values.put(ContactsContract.CommonDataKinds.Email.DATA, "c@d.com");
-        values.put(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_HOME);
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
 
+        int rawContactInsertIndex = ops.size();
+        //add item to raw_contacts
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build());
 
-        getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
+        //Phone Number
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "9X-XXXXXXXXX")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, "1")
+                .build());
+
+        //Display name/Contact name
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "KXX OXX")
+                .build());
+
+        //Email details
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Email.DATA, "abc@aho.com")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, "2").build());
+
+
+        //Postal Address
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.POBOX, "Postbox")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.STREET, "street")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.CITY, "city")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.REGION, "region")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE, "postcode")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY, "country")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.TYPE, "3")
+                .build());
+
+
+        //Organization details
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, "Devindia")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, "Developer")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, "0")
+                .build());
+
+        //IM details
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Im.DATA, "ImName")
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.CommonDataKinds.Im.DATA5, "2")
+                .build());
+
+        try {
+            ContentProviderResult[] res = getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
 
     }
 
     private void insertRawContactBatch() {
-        String accountType = "yahoo";
-        String accountName = "Tom Lee";
-
 
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Uri.parse("A://B/C"));
         ContentProviderOperation operation = builder.withValue("key1", "value1")
-                                                    .withValue("key2", "value2")
-                                                    .build();
+                .withValue("key2", "value2")
+                .build();
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
         ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, accountType)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, accountName)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
                 .build());
 
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
@@ -216,11 +269,12 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = ContactsContract.RawContacts.CONTENT_URI;
 
         ContentValues values = new ContentValues();
-        values.put(ContactsContract.RawContacts.ACCOUNT_TYPE, accountType);
-        values.put(ContactsContract.RawContacts.ACCOUNT_NAME, accountName);
+//        values.put(ContactsContract.RawContacts.ACCOUNT_TYPE, accountType);
+//        values.put(ContactsContract.RawContacts.ACCOUNT_NAME, accountName);
+        values.put(ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY, "kkkkkkkk");
 
         String where = ContactsContract.RawContacts._ID + " = ?";
-        String[] selectArgs = {"3"};
+        String[] selectArgs = {"1"};
         getContentResolver().update(uri, values, where, selectArgs);
 
 
@@ -288,12 +342,9 @@ public class MainActivity extends AppCompatActivity {
     private void queryWithEtity() {
         //Contacts实体
         int contactId = 2;
-        Uri contactUri = ContentUris.withAppendedId(
-                ContactsContract.Contacts.CONTENT_URI, contactId);
-        Uri entityUri = Uri.withAppendedPath(
-                contactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
-        String[] projection = new String[]{
-                ContactsContract.Contacts.Entity.DATA_ID};
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri entityUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
+        String[] projection = new String[]{ContactsContract.Contacts.Entity.DATA_ID};
 
         //Raw_Contacts实体
 //        int rawContactId = 2;
@@ -303,9 +354,7 @@ public class MainActivity extends AppCompatActivity {
 //                ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
 
 
-
-        Cursor cursor = getContentResolver().query(entityUri,
-                null, null, null, null);
+        Cursor cursor = getContentResolver().query(entityUri, null, null, null, null);
 
 
         if (Objects.isNull(cursor)) return;
@@ -443,25 +492,4 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
-}
-
-
-class Callback implements LoaderCallbacks {
-
-    @NonNull
-    @Override
-    public Loader onCreateLoader(int i, @Nullable Bundle bundle) {
-
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(@NonNull Loader loader, Object o) {
-
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader loader) {
-
-    }
 }
