@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
                 .build());
 
-
         //Display name/Contact name
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
@@ -154,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                 .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, TYPE_WORK)
                 .build());
 
-
         //Email details
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
@@ -162,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                 .withValue(ContactsContract.CommonDataKinds.Email.DATA, "abc@aho.com")
                 .withValue(ContactsContract.CommonDataKinds.Email.TYPE, TYPE_HOME)
                 .build());
-
 
         //Postal Address
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
@@ -334,10 +331,37 @@ public class MainActivity extends AppCompatActivity {
 
 //        queryProfile();
 //        queryContact();
+        queryWithLookupKey();
 //        queryRawContact();
 //        queryData();
-        queryWithEtity();
+//        queryWithEtity();
 //        queryPhoneLookup();
+    }
+
+    private void queryWithLookupKey() {
+
+
+        Uri lookupUri = ContactsContract.Contacts.getLookupUri(
+                getContentResolver(),
+                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "1"));
+        Cursor cursor = getContentResolver().query(lookupUri, null, null, null, null);
+
+
+
+        if (Objects.isNull(cursor)) return;
+
+        System.out.println("URI is " + lookupUri);
+        System.out.println("count is " + cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            System.out.println("----");
+            for (String feild : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(feild);
+                System.out.println(feild + " = " + cursor.getString(index));
+            }
+        }
+
+        cursor.close();
     }
 
     private void queryData() {
@@ -370,17 +394,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void queryWithEtity() {
         //Contacts实体
-        int contactId = 2;
-        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-        Uri entityUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
-        String[] projection = new String[]{ContactsContract.Contacts.Entity.DATA_ID};
+//        int contactId = 2;
+//        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+//        Uri entityUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
+//        String[] projection = new String[]{ContactsContract.Contacts.Entity.DATA_ID};
 
         //Raw_Contacts实体
-//        int rawContactId = 2;
-//        Uri rawContactUri = ContentUris.withAppendedId(
-//                ContactsContract.RawContacts.CONTENT_URI, rawContactId);
-//        Uri entityUri = Uri.withAppendedPath(rawContactUri,
-//                ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
+        int rawContactId = 2;
+        Uri rawContactUri = ContentUris.withAppendedId(
+                ContactsContract.RawContacts.CONTENT_URI, rawContactId);
+        Uri entityUri = Uri.withAppendedPath(rawContactUri,
+                ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
 
 
         Cursor cursor = getContentResolver().query(entityUri, null, null, null, null);
