@@ -23,6 +23,11 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
+import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_WORK;
+import static android.provider.ContactsContract.CommonDataKinds.Im.PROTOCOL_MSN;
+import static android.provider.ContactsContract.CommonDataKinds.Im.PROTOCOL_QQ;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -131,29 +136,32 @@ public class MainActivity extends AppCompatActivity {
                 .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
                 .build());
 
-        //Phone Number
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "9X-XXXXXXXXX")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, "1")
-                .build());
 
         //Display name/Contact name
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
                 .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
                 .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "KXX OXX")
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, "KXX")
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, "OXX")
                 .build());
+
+        //Phone Number
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "9X-XXXXXXXXX")
+                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, TYPE_WORK)
+                .build());
+
 
         //Email details
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
                 .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
                 .withValue(ContactsContract.CommonDataKinds.Email.DATA, "abc@aho.com")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, "2").build());
+                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, TYPE_HOME)
+                .build());
 
 
         //Postal Address
@@ -161,18 +169,12 @@ public class MainActivity extends AppCompatActivity {
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
                 .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.POBOX, "Postbox")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.STREET, "street")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.CITY, "city")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.REGION, "region")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE, "postcode")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY, "country")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
-                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.TYPE, "3")
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.TYPE, TYPE_HOME)
                 .build());
 
 
@@ -181,23 +183,50 @@ public class MainActivity extends AppCompatActivity {
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
                 .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, "Devindia")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE )
-                .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, "Developer")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE )
                 .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, "0")
+                .withValue(ContactsContract.CommonDataKinds.Organization.LABEL, "D.V.")
+                .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, "Developer")
+                .build());
+
+
+        rawContactInsertIndex = ops.size();
+        //add item to raw_contacts
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, "QQ")
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, "qq.tnt")
                 .build());
 
         //IM details
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
                 .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Im.DATA, "ImName")
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE )
-                .withValue(ContactsContract.CommonDataKinds.Im.DATA5, "2")
+                .withValue(ContactsContract.CommonDataKinds.Im.DATA, "520520520")
+                .withValue(ContactsContract.CommonDataKinds.Im.TYPE, TYPE_HOME)
+                .withValue(ContactsContract.CommonDataKinds.Im.PROTOCOL, PROTOCOL_QQ)
                 .build());
 
+        rawContactInsertIndex = ops.size();
+        //add item to raw_contacts
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, "MSN")
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, "msn.tnt")
+                .build());
+
+        //IM details
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Im.DATA, "kkkk_msn")
+                .withValue(ContactsContract.CommonDataKinds.Im.TYPE, TYPE_HOME)
+                .withValue(ContactsContract.CommonDataKinds.Im.PROTOCOL, PROTOCOL_MSN)
+                .build());
+
+
         try {
-            ContentProviderResult[] res = getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            ContentProviderResult[] results = getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            for (ContentProviderResult result : results) {
+                System.out.println("result is " + result);
+            }
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
