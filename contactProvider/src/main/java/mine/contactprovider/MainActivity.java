@@ -6,7 +6,9 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
@@ -17,7 +19,10 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -104,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
 //        Field[] fields = ContactsContract.Data.class.getFields();
 //        Field[] fields = ContactsContract.PhoneLookup.class.getFields();
 //        Field[] fields = ContactsContract.Groups.class.getFields();
-        Field[] fields = ContactsContract.Profile.class.getFields();
+//        Field[] fields = ContactsContract.Profile.class.getFields();
+//        Field[] fields = ContactsContract.QuickContact.class.getFields();
+        Field[] fields = ContactsContract.DisplayPhoto.class.getFields();
 
         for (Field field : fields) {
             try {
@@ -168,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         //Postal Address
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.POBOX, "Postbox")
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.STREET, "street")
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.CITY, "city")
@@ -182,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         //Organization details
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE )
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
                 .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, "Devindia")
                 .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, "0")
                 .withValue(ContactsContract.CommonDataKinds.Organization.LABEL, "D.V.")
@@ -308,8 +315,6 @@ public class MainActivity extends AppCompatActivity {
         getContentResolver().update(uri, values, where, selectArgs);
 
 
-
-
     }
 
     public void start(View view) {
@@ -336,16 +341,78 @@ public class MainActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-        queryProfile();
+//        queryProfile();
 //        queryContact();
 //        queryWithLookupKey();
 //        queryRawContact();
 //        queryData();
 //        queryWithEtity();
 //        queryPhoneLookup();
+//        queryQuickContact();
+        queryPhoto();
+    }
+
+    private void queryPhoto() {
+
+
+        //方法一，使用RawContacts获取URI
+//        Uri displayPhotoUri = Uri.withAppendedPath(
+//                ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, 4),
+//                ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
+//        System.out.println(rawContactPhotoUri);
+
+
+        //方法二，使用RawContacts获取URI
+
+        long photoKey = -1;
+        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 4);
+        String[] projection = {ContactsContract.Contacts.PHOTO_FILE_ID};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            photoKey = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_FILE_ID));
+            cursor.close();
+        } else {
+            cursor.close();
+            return;
+        }
+
+        Uri displayPhotoUri = ContentUris.withAppendedId(ContactsContract.DisplayPhoto.CONTENT_URI, photoKey);
+
+
+        System.out.println("displayPhotoUri is " + displayPhotoUri);
+        try {
+            AssetFileDescriptor fd = getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
+            System.out.println("lenght is " + fd.getLength());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void queryQuickContact() {
+        System.out.println("=queryQuickContact=");
+
+
+//        TextView view = new TextView(this);
+//        Uri lookupUri = ContactsContract.Contacts.getLookupUri(getContentResolver(),
+//                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "4"));
+//        ContactsContract.QuickContact.showQuickContact(this, view, lookupUri,
+//                ContactsContract.QuickContact.MODE_LARGE, null);
+
+
+        Rect rect = new Rect(50, 50, 150, 250);
+        Uri lookupUri = ContactsContract.Contacts.getLookupUri(getContentResolver(),
+                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "4"));
+        ContactsContract.QuickContact.showQuickContact(this, rect, lookupUri,
+                null, null);
+
+
     }
 
     private void queryWithLookupKey() {
+        System.out.println("=queryWithLookupKey=");
 
 
         //contacts lookupURI
@@ -379,6 +446,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void queryData() {
+        System.out.println("=queryData=");
 
 
         Uri uri = ContactsContract.Data.CONTENT_URI;
@@ -407,6 +475,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void queryWithEtity() {
+        System.out.println("=queryWithEtity=");
+
         //Contacts实体
         int contactId = 2;
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
