@@ -4,6 +4,7 @@ import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
@@ -99,8 +100,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 //        Field[] fields = ContactsContract.class.getFields();
 //        Field[] fields = ContactsContract.Contacts.class.getFields();
-        Field[] fields = ContactsContract.RawContacts.class.getFields();
+//        Field[] fields = ContactsContract.RawContacts.class.getFields();
 //        Field[] fields = ContactsContract.Data.class.getFields();
+//        Field[] fields = ContactsContract.PhoneLookup.class.getFields();
+//        Field[] fields = ContactsContract.Groups.class.getFields();
+        Field[] fields = ContactsContract.Profile.class.getFields();
 
         for (Field field : fields) {
             try {
@@ -308,8 +312,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+
+        Intent intent = new Intent(ContactsContract.Intents.ATTACH_IMAGE);
+        startActivity(intent);
 
     }
 
@@ -329,9 +336,9 @@ public class MainActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-//        queryProfile();
+        queryProfile();
 //        queryContact();
-        queryWithLookupKey();
+//        queryWithLookupKey();
 //        queryRawContact();
 //        queryData();
 //        queryWithEtity();
@@ -341,11 +348,18 @@ public class MainActivity extends AppCompatActivity {
     private void queryWithLookupKey() {
 
 
+        //contacts lookupURI
         Uri lookupUri = ContactsContract.Contacts.getLookupUri(
                 getContentResolver(),
-                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "1"));
-        Cursor cursor = getContentResolver().query(lookupUri, null, null, null, null);
+                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "2"));
 
+
+        //raw_contacts lookupURI
+//        Uri lookupUri = ContactsContract.RawContacts.getContactLookupUri(getContentResolver(),
+//                Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI, "2"));
+
+
+        Cursor cursor = getContentResolver().query(lookupUri, null, null, null, null);
 
 
         if (Objects.isNull(cursor)) return;
@@ -394,17 +408,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void queryWithEtity() {
         //Contacts实体
-//        int contactId = 2;
-//        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-//        Uri entityUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
-//        String[] projection = new String[]{ContactsContract.Contacts.Entity.DATA_ID};
+        int contactId = 2;
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri entityUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Entity.CONTENT_DIRECTORY);
+        String[] projection = new String[]{ContactsContract.Contacts.Entity.DATA_ID};
 
         //Raw_Contacts实体
-        int rawContactId = 2;
-        Uri rawContactUri = ContentUris.withAppendedId(
-                ContactsContract.RawContacts.CONTENT_URI, rawContactId);
-        Uri entityUri = Uri.withAppendedPath(rawContactUri,
-                ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
+//        int rawContactId = 2;
+//        Uri rawContactUri = ContentUris.withAppendedId(
+//                ContactsContract.RawContacts.CONTENT_URI, rawContactId);
+//        Uri entityUri = Uri.withAppendedPath(rawContactUri,
+//                ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
 
 
         Cursor cursor = getContentResolver().query(entityUri, null, null, null, null);
@@ -460,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
     private void queryRawContact() {
         System.out.println("=queryRawContact=");
 
-        Uri uri = ContactsContract.RawContacts.CONTENT_URI;
+        Uri uri = Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI, "2");
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
         Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
