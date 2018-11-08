@@ -111,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
 //        Field[] fields = ContactsContract.Groups.class.getFields();
 //        Field[] fields = ContactsContract.Profile.class.getFields();
 //        Field[] fields = ContactsContract.QuickContact.class.getFields();
-        Field[] fields = ContactsContract.DisplayPhoto.class.getFields();
+//        Field[] fields = ContactsContract.DisplayPhoto.class.getFields();
+//        Field[] fields = ContactsContract.Intents.class.getFields();
+        Field[] fields = ContactsContract.Intents.Insert.class.getFields();
 
         for (Field field : fields) {
             try {
@@ -320,8 +322,58 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        Intent intent = new Intent(ContactsContract.Intents.ATTACH_IMAGE);
-        startActivity(intent);
+        //新增联系人基本信息
+        Intent insertIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+        insertIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+
+
+        insertIntent.putExtra(ContactsContract.Intents.Insert.NAME, "name|Jone");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, "company|albbb");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, "job_title|ceo");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.IM_HANDLE, "im_handle|xx");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.EMAIL, "email|x@x.com");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.POSTAL, "postal_0000");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.PHONE, "phone_123");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.NOTES, "notes_xx");
+        insertIntent.putExtra(ContactsContract.Intents.Insert.EXTRA_DATA_SET, "notes_xx");
+
+        startActivity(insertIntent);
+
+
+
+
+
+        //新增联系人详细信息
+//        Intent insertIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+//        insertIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+//
+//
+//        insertIntent.putExtra(ContactsContract.Intents.Insert.NAME, "Jone");
+//        insertIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, "TNT");
+//        insertIntent.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, "ceo");
+//
+//        ArrayList<ContentValues> contactData = new ArrayList<ContentValues>();
+//        ContentValues rawContactRow = new ContentValues();
+//        rawContactRow.put(ContactsContract.RawContacts.ACCOUNT_TYPE, "");
+//        rawContactRow.put(ContactsContract.RawContacts.ACCOUNT_NAME, "");
+//        contactData.add(rawContactRow);
+//
+//        ContentValues phoneRow = new ContentValues();
+//        phoneRow.put(ContactsContract.Data.MIMETYPE,
+//                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+//        phoneRow.put(ContactsContract.CommonDataKinds.Phone.NUMBER, "(303) 000-1234");
+//        contactData.add(phoneRow);
+//
+//        ContentValues emailRow = new ContentValues();
+//        emailRow.put(ContactsContract.Data.MIMETYPE,
+//                ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE);
+//        emailRow.put(ContactsContract.CommonDataKinds.Email.ADDRESS, "ee@ff.com");
+//        contactData.add(emailRow);
+//
+//        insertIntent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
+//
+//        startActivity(insertIntent);
+
 
     }
 
@@ -350,6 +402,7 @@ public class MainActivity extends AppCompatActivity {
 //        queryPhoneLookup();
 //        queryQuickContact();
         queryPhoto();
+
     }
 
     private void queryPhoto() {
@@ -362,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println(rawContactPhotoUri);
 
 
-        //方法二，使用RawContacts获取URI
+        //方法二，使用RawContacts.DisplayPhoto获取URI
 
         long photoKey = -1;
         Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 4);
@@ -378,7 +431,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Uri displayPhotoUri = ContentUris.withAppendedId(ContactsContract.DisplayPhoto.CONTENT_URI, photoKey);
-
 
         System.out.println("displayPhotoUri is " + displayPhotoUri);
         try {
