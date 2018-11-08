@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void URI(View view) {
-        System.out.println("~~button.start~~");
+        System.out.println("~~button.URI~~");
 //        Field[] fields = ContactsContract.class.getFields();
 //        Field[] fields = ContactsContract.Contacts.class.getFields();
 //        Field[] fields = ContactsContract.RawContacts.class.getFields();
@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
 //        Field[] fields = ContactsContract.QuickContact.class.getFields();
 //        Field[] fields = ContactsContract.DisplayPhoto.class.getFields();
 //        Field[] fields = ContactsContract.Intents.class.getFields();
-        Field[] fields = ContactsContract.Intents.Insert.class.getFields();
+//        Field[] fields = ContactsContract.Intents.Insert.class.getFields();
+        Field[] fields = ContactsContract.SyncState.class.getFields();
 
         for (Field field : fields) {
             try {
@@ -145,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
         int rawContactInsertIndex = ops.size();
         //add item to raw_contacts
         ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, "YaHoo")
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, "yh_mine")
                 .build());
 
         //Display name/Contact name
@@ -319,13 +320,68 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onActivityResult  *********");
+
+        System.out.println("requestCode is " + requestCode);
+        System.out.println("resultCode is " + resultCode);
+        System.out.println(data);
+
+//        System.out.println("Uri is " + data.getData());
+
+
+    }
+
     public void start(View view) {
         System.out.println("~~button.start~~");
+
+        startForEdit(); //编辑联系人
+//        startForPick(); //选择联系人
+//        startForInsert(); //新增联系人
+
+
+    }
+
+    private void startForEdit() {
+        System.out.println("=startForEdit=");
+
+        Uri uri = ContactsContract.Contacts.CONTENT_FILTER_URI;
+        uri = Uri.withAppendedPath(uri, "KXX");
+
+        Uri lookupURI = ContactsContract.Contacts.getLookupUri(getContentResolver(), uri);
+        System.out.println("lookupURI is " + lookupURI);
+
+
+//        Intent insertIntent = new Intent(Intent.ACTION_EDIT);
+        Intent insertIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+        insertIntent.setData(lookupURI);
+        startActivityForResult(insertIntent, 200);
+
+
+    }
+
+    private void startForPick() {
+        System.out.println("=startForPick=");
+
+        //新增联系人基本信息
+        Intent insertIntent = new Intent(Intent.ACTION_PICK);
+//        insertIntent.setData(ContactsContract.Contacts.CONTENT_URI);
+//        insertIntent.setData(ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+//        insertIntent.setData(ContactsContract.CommonDataKinds.Email.CONTENT_URI);
+        insertIntent.setData(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI);
+        startActivityForResult(insertIntent, 200);
+
+    }
+
+
+    private void startForInsert() {
+        System.out.println("=StartForInsert=");
+
 
         //新增联系人基本信息
         Intent insertIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
         insertIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-
 
         insertIntent.putExtra(ContactsContract.Intents.Insert.NAME, "name|Jone");
         insertIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, "company|albbb");
@@ -337,10 +393,7 @@ public class MainActivity extends AppCompatActivity {
         insertIntent.putExtra(ContactsContract.Intents.Insert.NOTES, "notes_xx");
         insertIntent.putExtra(ContactsContract.Intents.Insert.EXTRA_DATA_SET, "notes_xx");
 
-        startActivity(insertIntent);
-
-
-
+        startActivityForResult(insertIntent, 200);
 
 
         //新增联系人详细信息
@@ -394,14 +447,14 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
 //        queryProfile();
-//        queryContact();
+        queryContact();
 //        queryWithLookupKey();
 //        queryRawContact();
 //        queryData();
 //        queryWithEtity();
 //        queryPhoneLookup();
 //        queryQuickContact();
-        queryPhoto();
+//        queryPhoto();
 
     }
 
