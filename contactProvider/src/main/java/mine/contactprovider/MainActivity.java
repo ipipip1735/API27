@@ -8,26 +8,22 @@ import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.QuickContactBadge;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
-import java.util.stream.Stream;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_WORK;
@@ -430,14 +426,53 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
+    public void quickbadge(View view) {
+        System.out.println("~~button.quickbadge~~");
 
-    }
+        //方法一
+
+//        Uri lookupURI = ContactsContract.Contacts.getLookupUri(getContentResolver(),
+//                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Jobs Lee"));
+//
+//        QuickContactBadge mBadge = findViewById(R.id.quickbadge);
+//        mBadge.assignContactUri(lookupURI);
 
 
-    public void delete(View view) {
-        System.out.println("~~button.del~~");
+        //方法二
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Jobs");
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        if (Objects.isNull(cursor)) return;
+
+
+        int mIdColumn;
+        int mLookupKeyColumn;
+        Uri lookupUri;
+
+        cursor.moveToFirst();
+        mIdColumn = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+        mLookupKeyColumn = cursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY);
+        lookupUri = ContactsContract.Contacts.getLookupUri(cursor.getLong(mIdColumn),
+                cursor.getString(mLookupKeyColumn));
+        System.out.println("mContactUri is " + lookupUri);
+
+
+        String thmubnailUri = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI));
+        System.out.println("mThmubnailColum is " + thmubnailUri);
+        cursor.close();
+
+
+        QuickContactBadge mBadge = findViewById(R.id.quickbadge);
+        mBadge.assignContactUri(lookupUri);
+
+        try {
+            AssetFileDescriptor afd = getContentResolver().openAssetFileDescriptor(Uri.parse(thmubnailUri), "r");
+            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(afd.getFileDescriptor(), null, null);
+            mBadge.setImageBitmap(bitmap);
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -447,7 +482,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
 //        queryProfile();
-        queryContact();
+//        queryContact();
 //        queryWithLookupKey();
 //        queryRawContact();
 //        queryData();
