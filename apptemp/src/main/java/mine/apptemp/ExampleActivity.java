@@ -1,8 +1,12 @@
 package mine.apptemp;
 
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by Administrator on 2018/8/25.
@@ -110,6 +114,13 @@ public class ExampleActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
+    }
+
+    private void getMethods(Class<?> c) {
+        Method[] methods = c.getMethods();
+        for (Method method : methods) {
+            System.out.print(method.getName());
+        }
     }
 
 }

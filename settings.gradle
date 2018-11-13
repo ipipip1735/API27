@@ -1,4 +1,4 @@
-include   ':apptemp',
+include   ':apptemp', ':connectivity',
         ':contactProvider',
 //        ':documentsprovider',
 //        ':fileprovider',
