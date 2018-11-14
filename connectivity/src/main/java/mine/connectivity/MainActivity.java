@@ -1,0 +1,245 @@
+package mine.connectivity;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
+
+/**
+ * Created by Administrator on 2018/11/13.
+ */
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        setContentView(R.layout.activity_main);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
+    }
+
+    private void getMethods(Class<?> c) {
+        Method[] methods = c.getMethods();
+        for (Method method : methods) {
+            System.out.print(method.getName());
+        }
+    }
+
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+
+//        status();
+//        url();
+//        listen();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                donwload();
+            }
+        }).start();
+    }
+
+    private String donwload() {
+        URL url = null;
+        try {
+            url = new URL("https://www.baidu.com/cache/sethelp/help.html");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        InputStream stream = null;
+        HttpsURLConnection connection = null;
+        String result = null;
+
+
+        try {
+            connection = (HttpsURLConnection) url.openConnection();
+            connection.setReadTimeout(2000);
+            connection.setConnectTimeout(2000);
+            connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+            connection.connect();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    private void listen() {
+
+//        ConnectivityManager cm = getSystemService(ConnectivityManager.class);
+//        cm.registerNetworkCallback();
+
+
+    }
+
+    private void url() {
+        String u = "http://test1:test2@abc:8181/e/f/g?p=1&q=2#opts";
+        try {
+            URL url = new URL(u);
+
+            System.out.println("getProtocol is " + url.getProtocol());
+            System.out.println("getAuthority is " + url.getAuthority());
+            System.out.println("getHost is " + url.getHost());
+            System.out.println("getDefaultPort is " + url.getDefaultPort());
+            System.out.println("getPort is " + url.getPort());
+            System.out.println("getPath is " + url.getPath());
+            System.out.println("getQuery is " + url.getQuery());
+            System.out.println("getRef is " + url.getRef());
+
+
+            System.out.println("getFile is " + url.getFile());
+            System.out.println("getUserInfo is " + url.getUserInfo());
+            System.out.println("toExternalForm is " + url.toExternalForm());
+
+
+//            System.out.println("getContent is " + url.getContent());
+
+//            System.out.println("getContent is " + url.getContent(Class[]classes));
+//            System.out.println("openConnection is " + url.openConnection(Proxy proxy));
+
+//            System.out.println("openConnection is " + url.openConnection());
+//            System.out.println("openStream is " + url.openStream());
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void status() {
+
+//        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = getSystemService(ConnectivityManager.class);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        System.out.println("getClass is " + activeNetwork.getClass());
+        System.out.println("getExtraInfo is " + activeNetwork.getExtraInfo());
+        System.out.println("getReason is " + activeNetwork.getReason());
+        System.out.println("getState is " + activeNetwork.getState());
+        System.out.println("getSubtype is " + activeNetwork.getSubtype());
+        System.out.println("getSubtypeName is " + activeNetwork.getSubtypeName());
+        System.out.println("getType is " + activeNetwork.getType());
+        System.out.println("getTypeName is " + activeNetwork.getTypeName());
+        System.out.println("hashCode is " + activeNetwork.hashCode());
+        System.out.println("isAvailable is " + activeNetwork.isAvailable());
+        System.out.println("isConnected is " + activeNetwork.isConnected());
+        System.out.println("isConnectedOrCo is " + activeNetwork.isConnectedOrConnecting());
+        System.out.println("isFailover is " + activeNetwork.isFailover());
+        System.out.println("isRoaming is " + activeNetwork.isRoaming());
+//        System.out.println("notify is " + activeNetwork.notify());
+//        System.out.println("notifyAll is " + activeNetwork.notifyAll());
+
+
+    }
+
+
+    public void stop(View view) {
+        System.out.println("~~button.stop~~");
+
+    }
+
+    public void bind(View view) {
+        System.out.println("~~button.bind~~");
+
+    }
+
+    public void unbind(View view) {
+        System.out.println("~~button.unbind~~");
+
+    }
+
+    public void reloading(View view) {
+        System.out.println("~~button.reloading~~");
+
+    }
+
+
+    public void del(View view) {
+        System.out.println("~~button.del~~");
+
+    }
+
+
+    public void query(View view) {
+        System.out.println("~~button.query~~");
+
+    }
+}
