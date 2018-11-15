@@ -1,22 +1,23 @@
 package mine.connectivity;
 
-import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Created by Administrator on 2018/11/13.
@@ -104,13 +105,52 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                donwload();
+//                httpConnection();
+                connection();
             }
+
+
         }).start();
     }
 
-    private String donwload() {
+    private void connection() {
+
+        URL url = null;
+        try {
+            url = new URL("https://www.baidu.com/cache/sethelp/help.html");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        InputStream stream = null;
+        HttpsURLConnection connection = null;
+        String result = null;
+
+
+        //获取数据流
+        try {
+            connection = (HttpsURLConnection) url.openConnection();
+            stream = connection.getInputStream();
+
+            InputStreamReader reader = new InputStreamReader(stream, UTF_8);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                System.out.println(s);
+            }
+
+
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private String http() {
         URL url = null;
         try {
             url = new URL("https://www.baidu.com/cache/sethelp/help.html");
@@ -124,11 +164,38 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
+            //请求类型、回应码、回应码对应的信息
+//            connection = (HttpsURLConnection) url.openConnection();
+//            System.out.println("getRequestMethod is " + connection.getRequestMethod());
+//            System.out.println("getResponseCode is " + connection.getResponseCode());
+//            System.out.println("getResponseMessage is " + connection.getResponseMessage());
+//            connection.connect();
+
+            //重定向
+//            connection = (HttpsURLConnection) url.openConnection();
+//            System.out.println("getInstanceFollowRedirects is " + connection.getInstanceFollowRedirects());
+//            System.out.println("getPermission is " + connection.getPermission());
+//            connection.connect();
+
+
+            //回应头信息
+//            connection = (HttpsURLConnection) url.openConnection();
+//            for (int i = 0; i < 5; i++) {
+//                String value = connection.getHeaderField(i);
+//                String key = connection.getHeaderFieldKey(i);
+//
+//                System.out.println(key + " is " + value);
+//                System.out.println(key + " is " + connection.getHeaderField(key));
+//            }
+
+
+//            System.out.println("getInstanceFollowRedirects is " + connection.getInstanceFollowRedirects());
+//            System.out.println("getPermission is " + connection.getPermission());
+//            connection.connect();
+
+
+            //获取数据流
             connection = (HttpsURLConnection) url.openConnection();
-            connection.setReadTimeout(2000);
-            connection.setConnectTimeout(2000);
-            connection.setRequestMethod("GET");
-            connection.setDoInput(true);
             connection.connect();
 
 
