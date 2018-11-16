@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                httpConnection();
-                connection();
+                httpConnection();
+//                connection();
             }
 
 
@@ -150,10 +150,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private String http() {
+    private String httpConnection() {
         URL url = null;
         try {
             url = new URL("https://www.baidu.com/cache/sethelp/help.html");
+//            url = new URL("https://192.168.0.103:6666/cache/sethelp/help.html");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -164,22 +165,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            //请求类型、回应码、回应码对应的信息
+            //请求类型、请求键值对
 //            connection = (HttpsURLConnection) url.openConnection();
 //            System.out.println("getRequestMethod is " + connection.getRequestMethod());
+//
+//            connection.setRequestProperty("Accept", "text/html,application/xhtml+xml");
+//            connection.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
+//            System.out.println("getRequestProperties is " + connection.getRequestProperties());
+
+
+
+
+
+
+
+            //回应码、回应码对应的信息
+//            connection = (HttpsURLConnection) url.openConnection();
 //            System.out.println("getResponseCode is " + connection.getResponseCode());
 //            System.out.println("getResponseMessage is " + connection.getResponseMessage());
-//            connection.connect();
 
-            //重定向
-//            connection = (HttpsURLConnection) url.openConnection();
-//            System.out.println("getInstanceFollowRedirects is " + connection.getInstanceFollowRedirects());
-//            System.out.println("getPermission is " + connection.getPermission());
-//            connection.connect();
+
 
 
             //回应头信息
-//            connection = (HttpsURLConnection) url.openConnection();
+            connection = (HttpsURLConnection) url.openConnection();
 //            for (int i = 0; i < 5; i++) {
 //                String value = connection.getHeaderField(i);
 //                String key = connection.getHeaderFieldKey(i);
@@ -188,15 +197,34 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(key + " is " + connection.getHeaderField(key));
 //            }
 
+//            System.out.println("getHeaderFields is " + connection.getHeaderFields());
+//            System.out.println("getContentLength is " + connection.getContentLength());
+//            System.out.println("getContentLengthLong is " + connection.getContentLengthLong());
+//            System.out.println("getContentType is " + connection.getContentType());
+//            System.out.println("getExpiration is " + connection.getExpiration());
+//            System.out.println("getDate is " + connection.getDate());
+//            System.out.println("getLastModified is " + connection.getLastModified());
+            System.out.println("getContent is " + connection.getContent());
+
+
+
+
+
+            //重定向
+//            connection = (HttpsURLConnection) url.openConnection();
+//            System.out.println("getInstanceFollowRedirects is " + connection.getInstanceFollowRedirects());
+//            System.out.println("getPermission is " + connection.getPermission());
+
+
+
+
 
 //            System.out.println("getInstanceFollowRedirects is " + connection.getInstanceFollowRedirects());
 //            System.out.println("getPermission is " + connection.getPermission());
-//            connection.connect();
 
 
-            //获取数据流
-            connection = (HttpsURLConnection) url.openConnection();
-            connection.connect();
+
+
 
 
         } catch (IOException e) {
