@@ -12,8 +12,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookieStore;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -105,13 +113,79 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                httpConnection();
+//                httpsConnection();
 //                connection();
+//                cookiesPut();
+                cookiesGet();
             }
-
 
         }).start();
     }
+
+
+    private void cookiesGet() {
+
+        try {
+            URL url = new URL("http://192.168.0.126:8008/android.php");
+
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            String cookies = httpURLConnection.getHeaderField("Set-Cookie");
+            System.out.println(cookies);
+
+            InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), UTF_8);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String s;
+
+            while ((s = bufferedReader.readLine()) != null) {
+                System.out.println(s);
+            }
+
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void cookiesPut() {
+        try {
+
+            CookieHandler.setDefault(new CookieManager());
+            CookieHandler cookieHandler = CookieHandler.getDefault();
+
+//            cookieHandler.get()
+
+
+            URL url = new URL("https://www.baidu.com/cache/sethelp/help.html");
+            HashMap<String, List<String>> map = new HashMap<>();
+            map.put("one", Arrays.asList("aa", "bb"));
+
+            try {
+                cookieHandler.put(url.toURI(), map);
+
+                HashMap<String, List<String>> map1 = new HashMap<>();
+                CookieStore cookieStore = (CookieStore) cookieHandler.get(url.toURI(), map1);
+                System.out.println(cookieStore);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     private void connection() {
 
@@ -140,9 +214,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -150,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private String httpConnection() {
+    private String httpsConnection() {
         URL url = null;
         try {
             url = new URL("https://www.baidu.com/cache/sethelp/help.html");
@@ -174,21 +245,15 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println("getRequestProperties is " + connection.getRequestProperties());
 
 
-
-
-
-
-
             //回应码、回应码对应的信息
 //            connection = (HttpsURLConnection) url.openConnection();
 //            System.out.println("getResponseCode is " + connection.getResponseCode());
 //            System.out.println("getResponseMessage is " + connection.getResponseMessage());
 
 
-
-
             //回应头信息
             connection = (HttpsURLConnection) url.openConnection();
+            connection.connect();
 //            for (int i = 0; i < 5; i++) {
 //                String value = connection.getHeaderField(i);
 //                String key = connection.getHeaderFieldKey(i);
@@ -207,24 +272,14 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("getContent is " + connection.getContent());
 
 
-
-
-
             //重定向
 //            connection = (HttpsURLConnection) url.openConnection();
 //            System.out.println("getInstanceFollowRedirects is " + connection.getInstanceFollowRedirects());
 //            System.out.println("getPermission is " + connection.getPermission());
 
 
-
-
-
 //            System.out.println("getInstanceFollowRedirects is " + connection.getInstanceFollowRedirects());
 //            System.out.println("getPermission is " + connection.getPermission());
-
-
-
-
 
 
         } catch (IOException e) {
