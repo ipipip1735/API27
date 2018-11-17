@@ -15,10 +15,12 @@ import java.lang.reflect.Method;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookieStore;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -114,32 +116,67 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 //                httpsConnection();
-//                connection();
-//                cookiesPut();
-                cookiesGet();
+//                connection()
+                cookies();
             }
 
         }).start();
     }
 
 
-    private void cookiesGet() {
+    private void cookies() {
 
         try {
-            URL url = new URL("http://192.168.0.126:8008/android.php");
 
+            //方法一
+//            URL url = new URL("http://192.168.0.126:8008/cookies.php");
+//
+//            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+//            String cookies = httpURLConnection.getHeaderField("Set-Cookie");
+//            System.out.println(cookies);
+
+
+            //方法二
+            CookieManager cookieManager = new CookieManager();
+            CookieHandler.setDefault(cookieManager);
+
+            String urlString = "http://192.168.0.126:8008/cookies.php";
+            URL url = new URL(urlString);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            String cookies = httpURLConnection.getHeaderField("Set-Cookie");
-            System.out.println(cookies);
+            httpURLConnection.getContent();
 
-            InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), UTF_8);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            String s;
+            String cookie = httpURLConnection.getHeaderField("Set-Cookie");
+            System.out.println(cookie);
+            cookie = httpURLConnection.getHeaderField("Set-Cookie");
+            System.out.println(cookie);
 
-            while ((s = bufferedReader.readLine()) != null) {
-                System.out.println(s);
+            CookieStore cookieStore = cookieManager.getCookieStore();
+            List<HttpCookie> cookies = cookieStore.getCookies();
+
+            int cookieIdx = 0;
+            for (HttpCookie ck : cookies) {
+                System.out.println("-- Cookie." + ++cookieIdx + " --");
+                System.out.println("Cookie name: " + ck.getName());
+                System.out.println("Domain: " + ck.getDomain());
+                System.out.println("Max age: " + ck.getMaxAge());
+                System.out.println("Server path: " + ck.getPath());
+                System.out.println("Is secured: " + ck.getSecure());
+                System.out.println("Cookie value: " + ck.getValue());
+                System.out.println("Cookie protocol version: " + ck.getVersion());
+                System.out.println("toString: " + ck);
             }
 
+            System.out.println(cookies);
+
+
+            //打印回应主体
+//            InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), UTF_8);
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+//            String s;
+//
+//            while ((s = bufferedReader.readLine()) != null) {
+//                System.out.println(s);
+//            }
 
 
         } catch (MalformedURLException e) {
