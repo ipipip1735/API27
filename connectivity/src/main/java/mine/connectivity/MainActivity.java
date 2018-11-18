@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
-            //方法一
+            //方法一：直接获取回应头中Set-Cookie字段的值
 //            URL url = new URL("http://192.168.0.126:8008/cookies.php");
 //
 //            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -136,19 +136,16 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println(cookies);
 
 
-            //方法二
+            //方法二：使用CookieManager
             CookieManager cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
 
-            String urlString = "http://192.168.0.126:8008/cookies.php";
+//            String urlString = "http://192.168.0.126:8008/cookies.php";
+            String urlString = "http://192.168.0.126:8008/sup/showCookies.php";
+
             URL url = new URL(urlString);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.getContent();
-
-            String cookie = httpURLConnection.getHeaderField("Set-Cookie");
-            System.out.println(cookie);
-            cookie = httpURLConnection.getHeaderField("Set-Cookie");
-            System.out.println(cookie);
 
             CookieStore cookieStore = cookieManager.getCookieStore();
             List<HttpCookie> cookies = cookieStore.getCookies();
