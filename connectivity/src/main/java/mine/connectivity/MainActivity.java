@@ -6,6 +6,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,9 +28,11 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -33,6 +42,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Created by Administrator on 2018/11/13.
  */
 public class MainActivity extends AppCompatActivity {
+
+    CookieManager cookieManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 //                httpsConnection();
 //                connection()
-                cookies();
+//                cookies();
+                connectWithCookie();
             }
 
         }).start();
@@ -137,11 +149,11 @@ public class MainActivity extends AppCompatActivity {
 
 
             //方法二：使用CookieManager
-            CookieManager cookieManager = new CookieManager();
+            if (Objects.isNull(cookieManager)) cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
 
-//            String urlString = "http://192.168.0.126:8008/cookies.php";
-            String urlString = "http://192.168.0.126:8008/sup/showCookies.php";
+            String urlString = "http://192.168.0.126:8008/cookies.php";
+//            String urlString = "http://192.168.0.126:8008/sup/showCookies.php";
 
             URL url = new URL(urlString);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -162,18 +174,17 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Cookie protocol version: " + ck.getVersion());
                 System.out.println("toString: " + ck);
             }
-
             System.out.println(cookies);
 
 
             //打印回应主体
-//            InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), UTF_8);
-//            BufferedReader bufferedReader = new BufferedReader(reader);
-//            String s;
-//
-//            while ((s = bufferedReader.readLine()) != null) {
-//                System.out.println(s);
-//            }
+            InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), UTF_8);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String s;
+
+            while ((s = bufferedReader.readLine()) != null) {
+                System.out.println(s);
+            }
 
 
         } catch (MalformedURLException e) {
@@ -185,35 +196,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void cookiesPut() {
+    private void connectWithCookie() {
         try {
 
-            CookieHandler.setDefault(new CookieManager());
-            CookieHandler cookieHandler = CookieHandler.getDefault();
+            String urlString = "http://192.168.0.126:8008/cookies.php";
+//            String urlString = "http://192.168.0.126:8008/sup/showCookies.php";
+            URL url = new URL(urlString);
 
-//            cookieHandler.get()
+            if (Objects.isNull(cookieManager)) {
 
+                HttpCookie httpCookie = new HttpCookie("MMM", "mock");
+                cookieManager = new CookieManager();
+                cookieManager.getCookieStore().add(url.toURI(), httpCookie);
+            }
 
-            URL url = new URL("https://www.baidu.com/cache/sethelp/help.html");
-            HashMap<String, List<String>> map = new HashMap<>();
-            map.put("one", Arrays.asList("aa", "bb"));
+            CookieHandler.setDefault(cookieManager);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-            try {
-                cookieHandler.put(url.toURI(), map);
+            InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), UTF_8);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String s;
 
-                HashMap<String, List<String>> map1 = new HashMap<>();
-                CookieStore cookieStore = (CookieStore) cookieHandler.get(url.toURI(), map1);
-                System.out.println(cookieStore);
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
+            while ((s = bufferedReader.readLine()) != null) {
+                System.out.println(s);
             }
 
 
         } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -395,8 +408,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
+    public void volley(View view) {
+        System.out.println("~~button.volley~~");
+
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url = "http://192.168.0.126:8008/cookies.php";
+        String url = "http://192.168.0.126:8008/index.html";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("Response is: " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("RThat didn't work!");
+            }
+        });
+
+        queue.add(stringRequest);
 
     }
 
