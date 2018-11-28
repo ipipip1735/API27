@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/contactProvider" />
             <option value="$PROJECT_DIR$/contentProvide" />
             <option value="$PROJECT_DIR$/loader" />
+            <option value="$PROJECT_DIR$/parcel" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

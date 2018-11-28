@@ -6,7 +6,7 @@ include   ':apptemp', ':connectivity',
 //        ':dialog',
 //        ':bluetooth',
 //        ':menu',
-//        ':parcel',
+        ':parcel',
 //        ':preferences'
 //        ':sqlitedb',
 //        ':room',
