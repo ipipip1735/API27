@@ -6,10 +6,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -412,6 +417,46 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.volley~~");
 
 
+//        volleyBasic();
+//        volleyWithCacheAndNetwork();
+//        volleyWithMultiple();
+        volleyWithSingleton();
+
+    }
+
+    private void volleyWithSingleton() {
+        RequestQueue mRequestQueue =
+                Volley.newRequestQueue(this.getApplicationContext().getApplicationContext());
+    }
+
+    private void volleyWithCacheAndNetwork() {
+
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024);
+        Network network = new BasicNetwork(new HurlStack());
+
+
+        RequestQueue queue = new RequestQueue(cache, network);
+//        String url = "http://192.168.0.126:8008/cookies.php";
+        String url = "http://192.168.0.126:8008/index.html";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("Response is: " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("RThat didn't work!");
+            }
+        });
+
+        queue.add(stringRequest);
+    }
+
+    private void volleyBasic() {
         RequestQueue queue = Volley.newRequestQueue(this);
 //        String url = "http://192.168.0.126:8008/cookies.php";
         String url = "http://192.168.0.126:8008/index.html";
@@ -431,7 +476,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         queue.add(stringRequest);
-
     }
 
     public void bind(View view) {

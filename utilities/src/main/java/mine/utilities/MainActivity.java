@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.LruCache;
 import android.view.View;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -78,13 +80,61 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
 
-        int cacheSize = 4 * 1024 * 1024; // 4MiB
-        LruCache<String, Integer> bitmapCache = new LruCache<String, Integer>(cacheSize) {
-            protected int sizeOf(String key,  Integer value) {
-                return 4;
+//        int cacheSize = 4 * 1024 * 1024; // 4MiB
+//        LruCache<String, Integer> bitmapCache = new LruCache<String, Integer>(cacheSize) {
+//            protected int sizeOf(String key,  Integer value) {
+//                return 4;
+//            }
+//        };
+
+        LruCache<String, Integer> cache = new LruCache<String, Integer>(5){
+            @Override
+            protected Integer create(String key) {
+                System.out.println("~~create~~");
+                System.out.println("key is " + key);
+//                return super.create(key);
+                return Integer.valueOf(55);
+            }
+
+            @Override
+            protected void entryRemoved(boolean evicted, String key, Integer oldValue, Integer newValue) {
+                System.out.println("~~entryRemoved~~");
+                System.out.println("evicted is " + evicted);
+                System.out.println("key is " + key);
+                System.out.println("oldValue is " + oldValue);
+                System.out.println("newValue is " + newValue);
+
+                super.entryRemoved(evicted, key, oldValue, newValue);
             }
         };
+        cache.put("zero", 0);
+        cache.put("one", 1);
+        cache.put("two", 2);
+        cache.put("three", 3);
+        cache.put("four", 4);
+        System.out.println(cache);
 
+//        Integer integer = cache.get("one");
+//        System.out.println(integer);
+//        Integer integer = cache.get("one");
+//        System.out.println(integer);
+
+//        cache.trimToSize(25);
+//        cache.resize(3);
+//        cache.remove("one");
+//        cache.put("five", 12);
+//        System.out.println(cache.get("five"));
+//        cache.put("four", 12);
+//        Map map = cache.snapshot();
+//        System.out.println(map);
+
+
+
+//        cache.entryRemoved();
+
+
+
+        System.out.println(cache);
 
     }
 
