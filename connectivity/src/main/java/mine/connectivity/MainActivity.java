@@ -15,8 +15,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -420,7 +423,61 @@ public class MainActivity extends AppCompatActivity {
 //        volleyBasic();
 //        volleyWithCacheAndNetwork();
 //        volleyWithMultiple();
-        volleyWithSingleton();
+//        volleyWithSingleton();
+//        volleyForJSON();
+        volleyWithCustom();
+
+    }
+
+    private void volleyWithCustom() {
+
+        String url = "http://localhost:8008/index.html";
+        TRequest<String> tRequest = new TRequest<String>(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("response is " + response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("R That didn't work!");
+            }
+        });
+
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(tRequest);
+
+
+    }
+
+    private void volleyForJSON() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+
+//        String url = "http://192.168.0.126:8008/cookies.php";
+        String url = "http://192.168.0.126:8008/index.html";
+
+
+        JsonObjectRequest jsonObjectRequest =
+                new JsonObjectRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                            }
+                        }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
 
     }
 
@@ -437,7 +494,8 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue queue = new RequestQueue(cache, network);
 //        String url = "http://192.168.0.126:8008/cookies.php";
-        String url = "http://192.168.0.126:8008/index.html";
+//        String url = "http://192.168.0.126:8008/index.html";
+        String url = "https://help.aliyun.com/knowledge_detail/57888.html";
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

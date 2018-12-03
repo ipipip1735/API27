@@ -1,16 +1,24 @@
 package mine.apptemp;
 
+import android.content.ComponentName;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import mine.services.IRemoteService;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 /**
- * Created by Administrator on 2018/9/6.
+ * Created by Administrator on 2018/12/3.
  */
-public class MainActivity extends AppCompatActivity {
+public class SingletonActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,14 +88,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        startActivity(new Intent(this, SingletonActivity.class));
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
-        Singleton singleton = Singleton.getThis("Mary", this);
+        Singleton singleton = Singleton.getThis("Tom", this);
         System.out.println(singleton);
     }
 
@@ -117,5 +124,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
     }
+
 
 }
