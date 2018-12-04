@@ -420,26 +420,28 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.volley~~");
 
 
-//        volleyBasic();
+        volleyBasic();
 //        volleyWithCacheAndNetwork();
 //        volleyWithMultiple();
 //        volleyWithSingleton();
 //        volleyForJSON();
-        volleyWithCustom();
+//        volleyWithCustom();
 
     }
 
     private void volleyWithCustom() {
 
-        String url = "http://localhost:8008/index.html";
-        TRequest<String> tRequest = new TRequest<String>(Request.Method.GET, url, new Response.Listener<String>() {
+        String url = "http://192.168.0.127/one.html";
+        TRequest tRequest = new TRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                System.out.println("~~onResponse~~");
                 System.out.println("response is " + response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                System.out.println("~~onErrorResponse~~");
                 System.out.println("R That didn't work!");
             }
         });
@@ -493,6 +495,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         RequestQueue queue = new RequestQueue(cache, network);
+        queue.start();
+
 //        String url = "http://192.168.0.126:8008/cookies.php";
 //        String url = "http://192.168.0.126:8008/index.html";
         String url = "https://help.aliyun.com/knowledge_detail/57888.html";
@@ -515,21 +519,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void volleyBasic() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = "http://192.168.0.126:8008/cookies.php";
-        String url = "http://192.168.0.126:8008/index.html";
+        final RequestQueue queue = Volley.newRequestQueue(this);
 
+
+//        String url = "http://192.168.0.126:8008/cookies.php";
+//        String url = "http://192.168.0.126:8008/index.html";
+        String url = "http://192.168.0.126/index.html";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        System.out.println("...onResponse...");
                         System.out.println("Response is: " + response);
+                        queue.stop();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("RThat didn't work!");
+                System.out.println("...onErrorResponse...");
+                System.out.println("didn't work!");
+                queue.stop();
             }
         });
 

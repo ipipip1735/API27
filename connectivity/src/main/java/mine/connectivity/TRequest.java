@@ -8,25 +8,30 @@ import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 
-public class TRequest<T> extends Request<T> {
-    private final Listener<T> listener;
+public class TRequest extends Request<String> {
+    private final Listener<String> listener;
 
-    public TRequest(int method, String url, Listener<T> listener, @Nullable Response.ErrorListener errorListener) {
+    public TRequest(int method, String url, Listener<String> listener, @Nullable Response.ErrorListener errorListener) {
         super(method, url, errorListener);
         System.out.println("--Request Constructor--");
         this.listener = listener;
     }
 
     @Override
-    protected Response<T> parseNetworkResponse(NetworkResponse response) {
+    protected Response<String> parseNetworkResponse(NetworkResponse response) {
         System.out.println("~~parseNetworkResponse~~");
         System.out.println("reposne is " + response);
-        return (Response<T>) Response.success("ds", HttpHeaderParser.parseCacheHeaders(response));
+
+
+
+
+        return Response.success("ok", HttpHeaderParser.parseCacheHeaders(response));
     }
 
     @Override
-    protected void deliverResponse(T response) {
+    protected void deliverResponse(String response) {
         System.out.println("~~deliverResponse~~");
         System.out.println("reposne is " + response);
+//        listener.onResponse(response);
     }
 }
