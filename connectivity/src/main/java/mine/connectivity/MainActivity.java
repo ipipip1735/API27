@@ -21,7 +21,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,10 +34,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.sql.SQLOutput;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -420,35 +415,41 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.volley~~");
 
 
-        volleyBasic();
+//        volleyBasic();
 //        volleyWithCacheAndNetwork();
 //        volleyWithMultiple();
 //        volleyWithSingleton();
 //        volleyForJSON();
-//        volleyWithCustom();
+        volleyWithCustom();
 
     }
 
     private void volleyWithCustom() {
 
-        String url = "http://192.168.0.127/one.html";
-        TRequest tRequest = new TRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("~~onResponse~~");
-                System.out.println("response is " + response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("~~onErrorResponse~~");
-                System.out.println("R That didn't work!");
-            }
-        });
+        final RequestQueue queue = Volley.newRequestQueue(this);
 
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(tRequest);
+        String url = "http://192.168.0.126:8008/android.php";
+        CustomRequest customRequest = new CustomRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("~~onResponse~~");
+                        System.out.println("response is " + response);
+                        queue.stop();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("~~onErrorResponse~~");
+                        System.out.println("error is " + error);
+                        queue.stop();
+                    }
+                });
+
+
+        queue.add(customRequest);
 
 
     }
@@ -524,7 +525,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        String url = "http://192.168.0.126:8008/cookies.php";
 //        String url = "http://192.168.0.126:8008/index.html";
-        String url = "http://192.168.0.126/index.html";
+        String url = "http://192.168.0.126:8008/index.html";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
