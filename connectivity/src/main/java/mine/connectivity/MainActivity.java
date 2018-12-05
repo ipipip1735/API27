@@ -415,12 +415,12 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.volley~~");
 
 
-//        volleyBasic();
+        volleyBasic();
 //        volleyWithCacheAndNetwork();
 //        volleyWithMultiple();
 //        volleyWithSingleton();
 //        volleyForJSON();
-        volleyWithCustom();
+//        volleyWithCustom();
 
     }
 
@@ -525,7 +525,8 @@ public class MainActivity extends AppCompatActivity {
 
 //        String url = "http://192.168.0.126:8008/cookies.php";
 //        String url = "http://192.168.0.126:8008/index.html";
-        String url = "http://192.168.0.126:8008/index.html";
+//        String url = "http://192.168.0.126:8008/index.html";
+        String url = "http://192.168.0.127/index.html";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
