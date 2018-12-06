@@ -43,6 +43,7 @@ import java.util.Objects;
 public class VolleyActivity extends AppCompatActivity {
 
     CookieManager cookieManager = null;
+    ImageLoader.ImageCache cache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,19 +127,20 @@ public class VolleyActivity extends AppCompatActivity {
 //        volleyWithCacheAndNetwork();
 
     }
-//    ImageLoader.ImageCache cache;
+
+
     private void volleyImageLoaderBasic() {
-        RequestQueue queue = Volley.newRequestQueue(this);
 
+        final RequestQueue queue = Volley.newRequestQueue(this);
 
+        if (Objects.isNull(cache)) cache = new ImageLoader.ImageCache() {
+            final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
 
-//        if(Objects.isNull(cache))cache = new ImageLoader.ImageCache() {
-        ImageLoader.ImageCache cache = new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
             public void putBitmap(String url, Bitmap bitmap) {
                 System.out.println("-->putBitmap");
                 mCache.put(url, bitmap);
             }
+
             public Bitmap getBitmap(String url) {
                 System.out.println("<--getBitmap~~");
                 return mCache.get(url);
@@ -147,27 +149,32 @@ public class VolleyActivity extends AppCompatActivity {
 
         final ImageLoader imageLoader = new ImageLoader(queue, cache);
 
-        final String url = "http://192.168.0.127/w1.jpg";
+        final String url = "http://192.168.0.126:8008/a.jpg";
         ImageLoader.ImageContainer container = imageLoader.get(url, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 System.out.println("~~onResponse~~");
                 System.out.println("getBitmap is " + response.getBitmap());
-        System.out.println("isCache is " + imageLoader.isCached(url, 0, 0));
+                System.out.println("isCache is " + imageLoader.isCached(url, 0, 0));
+                if (Objects.isNull(response.getBitmap())) {
+                    ImageView imageView = findViewById(R.id.imageView);
+                    imageView.setImageResource(R.drawable.w2);
+                } else {
+                    ImageView imageView = findViewById(R.id.imageView);
+                    imageView.setImageBitmap(response.getBitmap());
+                    queue.stop();
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("~~onErrorResponse~~");
                 System.out.println(error);
+                queue.stop();
             }
         });
 
-
-
-
-
-
+        container.cancelRequest();
 
     }
 
@@ -180,10 +187,12 @@ public class VolleyActivity extends AppCompatActivity {
 
         ImageLoader.ImageCache cache = new ImageLoader.ImageCache() {
             private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
+
             public void putBitmap(String url, Bitmap bitmap) {
                 System.out.println("~~putBitmap~~");
                 mCache.put(url, bitmap);
             }
+
             public Bitmap getBitmap(String url) {
                 System.out.println("~~getBitmap~~");
                 return mCache.get(url);
