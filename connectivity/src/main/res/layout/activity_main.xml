@@ -97,8 +97,8 @@
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/networkImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="76dp"
             app:srcCompat="@android:color/background_light" />
     </FrameLayout>
 

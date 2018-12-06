@@ -119,10 +119,55 @@ public class VolleyActivity extends AppCompatActivity {
 
         //加载图片
 //        volleyForImage();
-        volleyImageLoader();
+//        volleyImageLoader();
+        volleyImageLoaderBasic();
 
         //自定义Cache接口和NetWork接口
 //        volleyWithCacheAndNetwork();
+
+    }
+//    ImageLoader.ImageCache cache;
+    private void volleyImageLoaderBasic() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+
+
+//        if(Objects.isNull(cache))cache = new ImageLoader.ImageCache() {
+        ImageLoader.ImageCache cache = new ImageLoader.ImageCache() {
+            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
+            public void putBitmap(String url, Bitmap bitmap) {
+                System.out.println("-->putBitmap");
+                mCache.put(url, bitmap);
+            }
+            public Bitmap getBitmap(String url) {
+                System.out.println("<--getBitmap~~");
+                return mCache.get(url);
+            }
+        };
+
+        final ImageLoader imageLoader = new ImageLoader(queue, cache);
+
+        final String url = "http://192.168.0.127/w1.jpg";
+        ImageLoader.ImageContainer container = imageLoader.get(url, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                System.out.println("~~onResponse~~");
+                System.out.println("getBitmap is " + response.getBitmap());
+        System.out.println("isCache is " + imageLoader.isCached(url, 0, 0));
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("~~onErrorResponse~~");
+                System.out.println(error);
+            }
+        });
+
+
+
+
+
+
 
     }
 
@@ -148,7 +193,10 @@ public class VolleyActivity extends AppCompatActivity {
         ImageLoader imageLoader = new ImageLoader(queue, cache);
 
         NetworkImageView networkImageView = findViewById(R.id.networkImageView);
-        networkImageView.setImageUrl("http://192.168.0.126:8008/a.jpg", imageLoader);
+//        networkImageView.setImageUrl("http://192.168.0.126:8008/a.jpg", imageLoader);
+
+        networkImageView.setDefaultImageResId(R.drawable.w2);
+        networkImageView.setImageUrl("http://192.168.0.127/w1.jpg", imageLoader);
 
     }
 
@@ -385,6 +433,11 @@ class CustomRequest extends Request<String> {
         System.out.println("allHeaders is " + response.headers);
         System.out.println("allHeaders is " + response.notModified);
         System.out.println("allHeaders is " + response.data);
+
+
+        long date = HttpHeaderParser.parseDateAsEpoch(response.headers.get("Date"));
+        System.out.println("timestamp is " + date);
+
 
         Charset charset = Charset.forName(HttpHeaderParser.parseCharset(response.headers, "utf8"));
         System.out.println("charset is " + charset.name());
