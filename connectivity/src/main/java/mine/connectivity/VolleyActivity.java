@@ -44,6 +44,7 @@ public class VolleyActivity extends AppCompatActivity {
 
     CookieManager cookieManager = null;
     ImageLoader.ImageCache cache;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,9 +120,8 @@ public class VolleyActivity extends AppCompatActivity {
 //        volleyWithCookie();
 
         //加载图片
-//        volleyForImage();
-//        volleyImageLoader();
-        volleyImageLoaderBasic();
+//        volleyForNetworkImageView();
+        volleyForImageView();
 
         //自定义Cache接口和NetWork接口
 //        volleyWithCacheAndNetwork();
@@ -129,9 +129,9 @@ public class VolleyActivity extends AppCompatActivity {
     }
 
 
-    private void volleyImageLoaderBasic() {
+    private void volleyForImageView() {
 
-        final RequestQueue queue = Volley.newRequestQueue(this);
+        if (Objects.isNull(queue)) queue = Volley.newRequestQueue(this);
 
         if (Objects.isNull(cache)) cache = new ImageLoader.ImageCache() {
             final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
@@ -142,27 +142,28 @@ public class VolleyActivity extends AppCompatActivity {
             }
 
             public Bitmap getBitmap(String url) {
-                System.out.println("<--getBitmap~~");
+                System.out.println("<--getBitmap");
                 return mCache.get(url);
             }
         };
 
-        final ImageLoader imageLoader = new ImageLoader(queue, cache);
+        ImageLoader imageLoader = new ImageLoader(queue, cache);
 
-        final String url = "http://192.168.0.126:8008/a.jpg";
+//        final String url = "http://192.168.0.126:8008/a.jpg";
+        final String url = "http://192.168.0.127/w1.jpg";
         ImageLoader.ImageContainer container = imageLoader.get(url, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 System.out.println("~~onResponse~~");
-                System.out.println("getBitmap is " + response.getBitmap());
-                System.out.println("isCache is " + imageLoader.isCached(url, 0, 0));
+//                System.out.println("getBitmap is " + response.getBitmap());
+//                System.out.println("isCache is " + imageLoader.isCached(url, 0, 0));
                 if (Objects.isNull(response.getBitmap())) {
                     ImageView imageView = findViewById(R.id.imageView);
                     imageView.setImageResource(R.drawable.w2);
                 } else {
                     ImageView imageView = findViewById(R.id.imageView);
                     imageView.setImageBitmap(response.getBitmap());
-                    queue.stop();
+//                    queue.stop();
                 }
             }
 
@@ -170,57 +171,29 @@ public class VolleyActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 System.out.println("~~onErrorResponse~~");
                 System.out.println(error);
-                queue.stop();
+//                queue.stop();
             }
-        });
+        }, 1000, 10);
 
-        container.cancelRequest();
+//        container.cancelRequest();
 
     }
 
-    private void volleyImageLoader() {
-        System.out.println("...volleyImageLoader...");
-
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-
-        ImageLoader.ImageCache cache = new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
-
-            public void putBitmap(String url, Bitmap bitmap) {
-                System.out.println("~~putBitmap~~");
-                mCache.put(url, bitmap);
-            }
-
-            public Bitmap getBitmap(String url) {
-                System.out.println("~~getBitmap~~");
-                return mCache.get(url);
-            }
-        };
-
-        ImageLoader imageLoader = new ImageLoader(queue, cache);
-
-        NetworkImageView networkImageView = findViewById(R.id.networkImageView);
-//        networkImageView.setImageUrl("http://192.168.0.126:8008/a.jpg", imageLoader);
-
-        networkImageView.setDefaultImageResId(R.drawable.w2);
-        networkImageView.setImageUrl("http://192.168.0.127/w1.jpg", imageLoader);
-
-    }
-
-    private void volleyForImage() {
+    private void volleyForNetworkImageView() {
 
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final ImageView imageView = findViewById(R.id.imageView);
+        final NetworkImageView networkImageView = findViewById(R.id.networkImageView);
+        networkImageView.setDefaultImageResId(R.drawable.w2);
+
+
         String url = "http://192.168.0.126:8008/a.jpg";
         ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
                 System.out.println("~~onResponse~~");
-                imageView.setImageBitmap(response);
+                networkImageView.setImageBitmap(response);
             }
-        }, 200, 508,
+        }, 900, 508,
                 ImageView.ScaleType.CENTER,
                 Bitmap.Config.ALPHA_8, null);
 
@@ -276,6 +249,7 @@ public class VolleyActivity extends AppCompatActivity {
         queue.add(customRequest);
 
 
+        //打印Cookie
         CookieStore cookieStore = cookieManager.getCookieStore();
         List<HttpCookie> cookies = cookieStore.getCookies();
     }
