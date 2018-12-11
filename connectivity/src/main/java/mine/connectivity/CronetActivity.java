@@ -34,6 +34,7 @@ import java.net.CookieManager;
 import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,8 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Created by Administrator on 2018/12/6.
@@ -187,25 +190,60 @@ class MyUrlRequestCallback extends UrlRequest.Callback {
     public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
         System.out.println("...button.onResponseStarted...");
 
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024 * 100);
-
         System.out.println("httpStatusCode is " + info.getHttpStatusCode());
+        Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
+        System.out.println(mResponseHeaders);
 
-        request.cancel();
+//        request.cancel();
+
+
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(100);
+
+        System.out.println("position is " + byteBuffer.position());
+        System.out.println("limit is " + byteBuffer.limit());
+        System.out.println("capacity is " + byteBuffer.capacity());
+        System.out.println("hashCode() is " + byteBuffer.hashCode());
         request.read(byteBuffer);
         System.out.println("position is " + byteBuffer.position());
         System.out.println("limit is " + byteBuffer.limit());
         System.out.println("capacity is " + byteBuffer.capacity());
+        System.out.println("hashCode() is " + byteBuffer.hashCode());
 
-        Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
-        System.out.println(mResponseHeaders);
 
     }
 
     @Override
     public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
         System.out.println("...button.onReadCompleted...");
-//        request.read(ByteBuffer.allocateDirect(1024 * 100));
+        request.cancel();
+        System.out.println("info is " + info);
+
+        System.out.println("complete|position is " + byteBuffer.position());
+        System.out.println("complete|limit is " + byteBuffer.limit());
+        System.out.println("complete|capacity is " + byteBuffer.capacity());
+        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+
+        byteBuffer.flip();
+        while (byteBuffer.hasRemaining()) {
+            CharBuffer charBuffer = UTF_8.decode(byteBuffer);
+//            System.out.println(charBuffer);
+        }
+
+        System.out.println("complete|position is " + byteBuffer.position());
+        System.out.println("complete|limit is " + byteBuffer.limit());
+        System.out.println("complete|capacity is " + byteBuffer.capacity());
+        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+        byteBuffer.clear();
+        System.out.println("complete|position is " + byteBuffer.position());
+        System.out.println("complete|limit is " + byteBuffer.limit());
+        System.out.println("complete|capacity is " + byteBuffer.capacity());
+        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+        request.read(byteBuffer);
+        System.out.println("complete|position is " + byteBuffer.position());
+        System.out.println("complete|limit is " + byteBuffer.limit());
+        System.out.println("complete|capacity is " + byteBuffer.capacity());
+        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+
     }
 
     @Override
@@ -226,8 +264,9 @@ class MyUrlRequestCallback extends UrlRequest.Callback {
     @Override
     public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
         System.out.println("...button.onFailed...");
-        ;
-        System.out.println(error.fillInStackTrace());
+
+        System.out.println("info is " + info);
+        System.out.println(error);
 
     }
 }
