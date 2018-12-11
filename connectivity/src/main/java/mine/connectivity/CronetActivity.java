@@ -36,7 +36,11 @@ import java.net.HttpCookie;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Administrator on 2018/12/6.
@@ -110,7 +114,7 @@ public class CronetActivity extends AppCompatActivity {
     }
 
     public void start(View view) {
-        System.out.println("~~button.volley~~");
+        System.out.println("~~button.start~~");
 
         cronetEngine();
 
@@ -119,6 +123,23 @@ public class CronetActivity extends AppCompatActivity {
     private void cronetEngine() {
         CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
         CronetEngine cronetEngine = myBuilder.build();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+
+//        String url = "http://192.168.0.127/index.html";
+        String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
+        UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
+                new MyUrlRequestCallback(), executorService);
+
+        UrlRequest request = requestBuilder.build();
+
+        request.start();
+
 
     }
 
@@ -152,41 +173,61 @@ public class CronetActivity extends AppCompatActivity {
 }
 
 
-
 class MyUrlRequestCallback extends UrlRequest.Callback {
     private static final String TAG = "MyUrlRequestCallback";
 
     @Override
     public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
-        android.util.Log.i(TAG, "onRedirectReceived method called.");
-        // You should call the request.followRedirect() method to continue
-        // processing the request.
+        System.out.println("...button.onRedirectReceived...");
+
         request.followRedirect();
     }
 
     @Override
     public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
-        android.util.Log.i(TAG, "onResponseStarted method called.");
-        // You should call the request.read() method before the request can be
-        // further processed. The following instruction provides a ByteBuffer object
-        // with a capacity of 102400 bytes to the read() method.
-        request.read(ByteBuffer.allocateDirect(102400));
+        System.out.println("...button.onResponseStarted...");
+
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024 * 100);
+
+        System.out.println("httpStatusCode is " + info.getHttpStatusCode());
+
+        request.cancel();
+        request.read(byteBuffer);
+        System.out.println("position is " + byteBuffer.position());
+        System.out.println("limit is " + byteBuffer.limit());
+        System.out.println("capacity is " + byteBuffer.capacity());
+
+        Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
+        System.out.println(mResponseHeaders);
+
     }
 
     @Override
     public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
-        android.util.Log.i(TAG, "onReadCompleted method called.");
-        // You should keep reading the request until there's no more data.
-        request.read(ByteBuffer.allocateDirect(102400));
+        System.out.println("...button.onReadCompleted...");
+//        request.read(ByteBuffer.allocateDirect(1024 * 100));
     }
 
     @Override
     public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
-        android.util.Log.i(TAG, "onSucceeded method called.");
+        System.out.println("...button.onSucceeded...");
+
+        System.out.println(info);
+    }
+
+    @Override
+    public void onCanceled(UrlRequest request, UrlResponseInfo info) {
+        System.out.println("...button.onCanceled...");
+
+        System.out.println(info);
+
     }
 
     @Override
     public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
+        System.out.println("...button.onFailed...");
+        ;
+        System.out.println(error.fillInStackTrace());
 
     }
 }

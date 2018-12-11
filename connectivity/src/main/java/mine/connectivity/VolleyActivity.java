@@ -1,6 +1,5 @@
 package mine.connectivity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +8,7 @@ import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.NetworkResponse;
@@ -34,8 +34,13 @@ import java.net.CookieManager;
 import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Created by Administrator on 2018/12/5.
@@ -111,17 +116,19 @@ public class VolleyActivity extends AppCompatActivity {
     }
 
     public void start(View view) {
-        System.out.println("~~button.volley~~");
+        System.out.println("~~button.start~~");
 
 
 //        volleyBasic();
+//        volleyPostText();
+        volleyPostFile(); //失败了，Volley不支持multipart/form-data
 //        volleyForJSON();
 //        volleyWithCustomQuest();
 //        volleyWithCookie();
 
         //加载图片
 //        volleyForNetworkImageView();
-        volleyForImageView();
+//        volleyForImageView();
 
         //自定义Cache接口和NetWork接口
 //        volleyWithCacheAndNetwork();
@@ -338,6 +345,141 @@ public class VolleyActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
     }
+
+
+    private void volleyPostText() {
+        System.out.println("~~button.volleyPostText~~");
+
+        final RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url = "http://192.168.0.127/upload.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("...onResponse...");
+                        System.out.println("Response is: " + response);
+                        queue.stop();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("...onErrorResponse...");
+                System.out.println(error);
+                queue.stop();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                System.out.println("~~getHeaders~~");
+//                return super.getHeaders();
+
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "multipart/form-data; boundary=ABCDIEF");
+
+                return map;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                System.out.println("~~getParams~~");
+//                return super.getParams();
+
+                Map<String, String> map = new HashMap<>();
+                map.put("FirstName", "chris");
+                map.put("LastName", "Lee");
+                return map;
+            }
+
+            @Override
+            protected String getParamsEncoding() {
+                System.out.println("~~getParamsEncoding~~");
+
+                return super.getParamsEncoding();
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+
+
+    private void volleyPostFile() {
+        System.out.println("~~button.volleyPostFile~~");
+
+        final RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url = "http://192.168.0.127/upload.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("...onResponse...");
+                        System.out.println("Response is: " + response);
+                        queue.stop();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("...onErrorResponse...");
+                System.out.println(error);
+                queue.stop();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                System.out.println("~~getHeaders~~");
+//                return super.getHeaders();
+
+                String boundaryString = UUID.randomUUID().toString().substring(0,6);
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "multipart/form-data; boundary=" + boundaryString + "; charset=utf-8");
+                map.put("Accept", "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2");
+                map.put("Cache-Control", "no-cache");
+                map.put("Accept-Encoding", "br");
+
+                return map;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                System.out.println("~~getBody~~");
+//                return super.getBody();
+
+                String boundaryString = UUID.randomUUID().toString().substring(0,6);
+                StringBuffer stringBuffer = new StringBuffer(1024);
+                stringBuffer.append("--" + boundaryString + "\n");
+                stringBuffer.append("Content-Disposition: form-data; name=\"one\"" + "\n\n");
+                stringBuffer.append("11111" + "\n");
+                stringBuffer.append("--" + boundaryString + "--\n");
+
+                return stringBuffer.toString().getBytes(UTF_8);
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                System.out.println("~~getParams~~");
+//                return super.getParams();
+
+                Map<String, String> map = new HashMap<>();
+                map.put("FirstName", "chris");
+                map.put("LastName", "Lee");
+                return map;
+            }
+
+            @Override
+            protected String getParamsEncoding() {
+                System.out.println("~~getParamsEncoding~~");
+
+                return super.getParamsEncoding();
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
 
     private void volleyBasic() {
         final RequestQueue queue = Volley.newRequestQueue(this);
