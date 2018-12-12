@@ -25,10 +25,13 @@ import com.android.volley.toolbox.Volley;
 
 import org.chromium.net.CronetEngine;
 import org.chromium.net.CronetException;
+import org.chromium.net.UploadDataProvider;
+import org.chromium.net.UploadDataSink;
 import org.chromium.net.UrlRequest;
 import org.chromium.net.UrlResponseInfo;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookieStore;
@@ -127,12 +130,6 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
 
 //        String url = "http://192.168.0.127/index.html";
         String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
@@ -147,8 +144,24 @@ public class CronetActivity extends AppCompatActivity {
     }
 
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+    public void upload(View view) {
+        System.out.println("~~button.upload~~");
+
+        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
+        CronetEngine cronetEngine = myBuilder.build();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        String url = "http://192.168.0.127/upload.php";
+        UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
+                new MyUrlRequestCallback(), executorService);
+
+        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider();
+        requestBuilder.setHttpMethod("POST");
+        requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
+
+        UrlRequest request = requestBuilder.build();
+        request.start();
+
 
     }
 
@@ -204,6 +217,11 @@ class MyUrlRequestCallback extends UrlRequest.Callback {
         System.out.println("capacity is " + byteBuffer.capacity());
         System.out.println("hashCode() is " + byteBuffer.hashCode());
         request.read(byteBuffer);
+        try {
+            Thread.sleep(2000l);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("position is " + byteBuffer.position());
         System.out.println("limit is " + byteBuffer.limit());
         System.out.println("capacity is " + byteBuffer.capacity());
@@ -226,7 +244,7 @@ class MyUrlRequestCallback extends UrlRequest.Callback {
         byteBuffer.flip();
         while (byteBuffer.hasRemaining()) {
             CharBuffer charBuffer = UTF_8.decode(byteBuffer);
-//            System.out.println(charBuffer);
+            System.out.println(charBuffer);
         }
 
         System.out.println("complete|position is " + byteBuffer.position());
@@ -267,6 +285,34 @@ class MyUrlRequestCallback extends UrlRequest.Callback {
 
         System.out.println("info is " + info);
         System.out.println(error);
+
+    }
+}
+
+
+class MyUploadDataProvider extends UploadDataProvider {
+
+    @Override
+    public long getLength() throws IOException {
+        System.out.println("...button.getLength...");
+
+        long length = 1024*5;
+        return length;
+    }
+
+    @Override
+    public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
+        System.out.println("...button.read...");
+
+        byteBuffer.wrap(UTF_8.encode("aa").array());
+        uploadDataSink.onReadSucceeded(false);
+
+    }
+
+    @Override
+    public void rewind(UploadDataSink uploadDataSink) throws IOException {
+        System.out.println("...button.rewind...");
+
 
     }
 }
