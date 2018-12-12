@@ -1,27 +1,11 @@
 package mine.connectivity;
 
-import android.graphics.Bitmap;
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.os.ParcelFileDescriptor;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
-
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.chromium.net.CronetEngine;
 import org.chromium.net.CronetException;
@@ -30,20 +14,18 @@ import org.chromium.net.UploadDataProviders;
 import org.chromium.net.UploadDataSink;
 import org.chromium.net.UrlRequest;
 import org.chromium.net.UrlResponseInfo;
-import org.json.JSONObject;
 
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.CookieHandler;
+import java.io.InputStream;
 import java.net.CookieManager;
-import java.net.CookieStore;
-import java.net.HttpCookie;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
+import java.nio.channels.FileChannel;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -152,24 +134,51 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-//        String url = "http://192.168.0.127:8008/upload.php";
-        String url = "http://192.168.0.126:8008/upload.php";
+        String url = "http://192.168.0.127/upload.php";
+//        String url = "http://192.168.0.126:8008/upload.php";
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new MyUploadCallback(), executorService);
 
         requestBuilder.setHttpMethod("POST");
         requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+//        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        Uri uri = Uri.parse("android.resource://mine.connectivity/raw/w2");
+        System.out.println("uri  is " + uri);
+        try {
+            InputStream stream = getContentResolver().openInputStream(uri);
+            ParcelFileDescriptor fileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+            System.out.println(fileDescriptor);
+        System.out.println("size is " + stream.available());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         //使用默认实现
-//        requestBuilder.setUploadDataProvider(
-//                UploadDataProviders.create(UTF_8.encode("ab=18")), executorService);
+//        try {
+////            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
+//            Uri uri = Uri.parse("android.resource://mine.connectivity/drawable/w2");
+//            System.out.println("uri  is " + uri);
+//            ParcelFileDescriptor fileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+////            FileChannel fileChannel = new ParcelFileDescriptor.AutoCloseInputStream(fileDescriptor).getChannel();
+////            System.out.println("size is " + fileChannel.size());
+////            requestBuilder.setUploadDataProvider(
+////                    UploadDataProviders.create(fileDescriptor), executorService);
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
 
         //使用自定义实现
-        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider();
-        requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
+//        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider(null);
+//        requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
 
         UrlRequest request = requestBuilder.build();
-        request.start();
+//        request.start();
 
 
     }
@@ -358,13 +367,34 @@ class MyUploadCallback extends UrlRequest.Callback {
 
 
 class MyUploadDataProvider extends UploadDataProvider {
-    ByteBuffer byteBuffe;
+    ByteBuffer buffer;
+
+    public MyUploadDataProvider(ByteBuffer byteBuffe) {
+        if (Objects.isNull(byteBuffe)) {
+            this.buffer = UTF_8.encode("aa=15");
+        } else {
+            this.buffer = byteBuffe;
+        }
+    }
+
+    private void getData() {
+
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(128 * 1024);
+
+        byteBuffer.put(UTF_8.encode("file=15"));
+
+    }
+
 
     @Override
     public long getLength() throws IOException {
         System.out.println("...button.getLength...");
 
-        long length = 10;
+        //响应主体长度
+        long length = buffer.limit();
+        System.out.println("length is " + length);
+
+        //分块传送，返回值恒为-1
 //        long length = -1;
 
         return length;
@@ -374,18 +404,15 @@ class MyUploadDataProvider extends UploadDataProvider {
     public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
         System.out.println("...button.read...");
 
-        byteBuffe = UTF_8.encode("aa=15");
-        byteBuffer.put(byteBuffe);
+        byteBuffer.put(buffer);
         uploadDataSink.onReadSucceeded(false);
-
     }
 
     @Override
     public void rewind(UploadDataSink uploadDataSink) throws IOException {
         System.out.println("...button.rewind...");
 
-
-
+        buffer.rewind();
         uploadDataSink.onRewindSucceeded();
 
     }
