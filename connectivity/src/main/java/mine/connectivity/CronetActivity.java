@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import org.chromium.net.CronetEngine;
 import org.chromium.net.CronetException;
 import org.chromium.net.UploadDataProvider;
+import org.chromium.net.UploadDataProviders;
 import org.chromium.net.UploadDataSink;
 import org.chromium.net.UrlRequest;
 import org.chromium.net.UrlResponseInfo;
@@ -151,12 +152,20 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        String url = "http://192.168.0.127/upload.php";
+//        String url = "http://192.168.0.127:8008/upload.php";
+        String url = "http://192.168.0.126:8008/upload.php";
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
-                new MyUrlRequestCallback(), executorService);
+                new MyUploadCallback(), executorService);
 
-        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider();
         requestBuilder.setHttpMethod("POST");
+        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        //使用默认实现
+//        requestBuilder.setUploadDataProvider(
+//                UploadDataProviders.create(UTF_8.encode("ab=18")), executorService);
+
+        //使用自定义实现
+        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider();
         requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
 
         UrlRequest request = requestBuilder.build();
@@ -290,13 +299,74 @@ class MyUrlRequestCallback extends UrlRequest.Callback {
 }
 
 
+class MyUploadCallback extends UrlRequest.Callback {
+    private static final String TAG = "MyUploadCallback";
+
+    @Override
+    public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
+        System.out.println("...button.onRedirectReceived...");
+
+        request.followRedirect();
+    }
+
+    @Override
+    public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
+        System.out.println("...button.onResponseStarted...");
+
+        System.out.println("httpStatusCode is " + info.getHttpStatusCode());
+        Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
+        System.out.println(mResponseHeaders);
+        request.read(ByteBuffer.allocateDirect(32 * 1024));
+    }
+
+    @Override
+    public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
+        System.out.println("...button.onReadCompleted...");
+
+        byteBuffer.flip();
+        while (byteBuffer.hasRemaining()) {
+            CharBuffer charBuffer = UTF_8.decode(byteBuffer);
+            System.out.println(charBuffer);
+        }
+        byteBuffer.clear();
+        request.read(byteBuffer);
+    }
+
+    @Override
+    public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
+        System.out.println("...button.onSucceeded...");
+
+        System.out.println(info);
+    }
+
+    @Override
+    public void onCanceled(UrlRequest request, UrlResponseInfo info) {
+        System.out.println("...button.onCanceled...");
+        System.out.println(info);
+
+    }
+
+    @Override
+    public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
+        System.out.println("...button.onFailed...");
+
+        System.out.println("info is " + info);
+        System.out.println(error);
+
+    }
+}
+
+
 class MyUploadDataProvider extends UploadDataProvider {
+    ByteBuffer byteBuffe;
 
     @Override
     public long getLength() throws IOException {
         System.out.println("...button.getLength...");
 
-        long length = 1024*5;
+        long length = 10;
+//        long length = -1;
+
         return length;
     }
 
@@ -304,7 +374,8 @@ class MyUploadDataProvider extends UploadDataProvider {
     public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
         System.out.println("...button.read...");
 
-        byteBuffer.wrap(UTF_8.encode("aa").array());
+        byteBuffe = UTF_8.encode("aa=15");
+        byteBuffer.put(byteBuffe);
         uploadDataSink.onReadSucceeded(false);
 
     }
@@ -314,5 +385,8 @@ class MyUploadDataProvider extends UploadDataProvider {
         System.out.println("...button.rewind...");
 
 
+
+        uploadDataSink.onRewindSucceeded();
+
     }
-}
+};
