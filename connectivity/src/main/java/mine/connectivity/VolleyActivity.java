@@ -166,7 +166,7 @@ public class VolleyActivity extends AppCompatActivity {
 //                System.out.println("isCache is " + imageLoader.isCached(url, 0, 0));
                 if (Objects.isNull(response.getBitmap())) {
                     ImageView imageView = findViewById(R.id.imageView);
-                    imageView.setImageResource(R.drawable.w2);
+                    imageView.setImageResource(R.drawable.w3);
                 } else {
                     ImageView imageView = findViewById(R.id.imageView);
                     imageView.setImageBitmap(response.getBitmap());
@@ -190,7 +190,7 @@ public class VolleyActivity extends AppCompatActivity {
 
         final RequestQueue queue = Volley.newRequestQueue(this);
         final NetworkImageView networkImageView = findViewById(R.id.networkImageView);
-        networkImageView.setDefaultImageResId(R.drawable.w2);
+        networkImageView.setDefaultImageResId(R.drawable.w3);
 
 
         String url = "http://192.168.0.126:8008/a.jpg";

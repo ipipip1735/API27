@@ -1,6 +1,8 @@
 package mine.connectivity;
 
 import android.content.ContentResolver;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -15,6 +17,7 @@ import org.chromium.net.UploadDataSink;
 import org.chromium.net.UrlRequest;
 import org.chromium.net.UrlResponseInfo;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +26,8 @@ import java.net.CookieManager;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -134,43 +139,35 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        String url = "http://192.168.0.127/upload.php";
-//        String url = "http://192.168.0.126:8008/upload.php";
+//        String url = "http://192.168.0.127/upload.php";
+        String url = "http://192.168.0.126:8008/upload.php";
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new MyUploadCallback(), executorService);
 
-        requestBuilder.setHttpMethod("POST");
-        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+//        requestBuilder.setHttpMethod("POST");
+//        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
 //        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        Uri uri = Uri.parse("android.resource://mine.connectivity/raw/w2");
-        System.out.println("uri  is " + uri);
-        try {
-            InputStream stream = getContentResolver().openInputStream(uri);
-            ParcelFileDescriptor fileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
-            System.out.println(fileDescriptor);
-        System.out.println("size is " + stream.available());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
+//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/raw/w2");
+//            System.out.println("uri is " + uri);
+//            AssetFileDescriptor assetFileDescriptor = getContentResolver().openAssetFileDescriptor(uri, "r");
+//            ParcelFileDescriptor parcelFileDescriptor = assetFileDescriptor.getParcelFileDescriptor();
+//            FileDescriptor fileDescriptor = assetFileDescriptor.getFileDescriptor();
+//            System.out.println("size is " + assetFileDescriptor.getLength());
 
         //使用默认实现
-//        try {
-////            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
-//            Uri uri = Uri.parse("android.resource://mine.connectivity/drawable/w2");
-//            System.out.println("uri  is " + uri);
-//            ParcelFileDescriptor fileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
-////            FileChannel fileChannel = new ParcelFileDescriptor.AutoCloseInputStream(fileDescriptor).getChannel();
-////            System.out.println("size is " + fileChannel.size());
-////            requestBuilder.setUploadDataProvider(
-////                    UploadDataProviders.create(fileDescriptor), executorService);
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
+            ParcelFileDescriptor pfd = getContentResolver().openAssetFileDescriptor(uri, "r").getParcelFileDescriptor();
+
+            requestBuilder.setUploadDataProvider(
+                    UploadDataProviders.create(pfd), executorService);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
         //使用自定义实现
@@ -178,7 +175,7 @@ public class CronetActivity extends AppCompatActivity {
 //        requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
 
         UrlRequest request = requestBuilder.build();
-//        request.start();
+        request.start();
 
 
     }
