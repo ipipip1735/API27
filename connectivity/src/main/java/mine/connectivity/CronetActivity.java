@@ -1,8 +1,6 @@
 package mine.connectivity;
 
-import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -19,17 +17,12 @@ import org.chromium.net.UrlResponseInfo;
 
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.CookieManager;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -132,89 +125,152 @@ public class CronetActivity extends AppCompatActivity {
 
         request.start();
 
-
     }
 
 
     public void upload(View view) {
         out.println("~~button.upload~~");
 
+//        post();
+//        postWithCustom();
+        put();
+    }
+
+    private void post() {
+        //创建Cronet引擎
         CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        String url = "http://192.168.0.127/put.php";
-//        String url = "http://192.168.0.126:8008/upload.php";
+//        String url = "http://192.168.0.127/put.php";
+        String url = "http://192.168.0.126:8008/post.php";
+
+        //创建请求对象
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new MyUploadCallback(), executorService);
 
+        requestBuilder.setHttpMethod("POST");
+        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        ByteBuffer postData = UTF_8.encode("one=11&two=22");
+        UploadDataProvider provider = UploadDataProviders.create(postData);
+        requestBuilder.setUploadDataProvider(provider, executorService);
+
+        UrlRequest request = requestBuilder.build();
+        request.start();
+    }
+
+    private void postWithCustom() {
+
+        //创建Cronet引擎
+        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
+        CronetEngine cronetEngine = myBuilder.build();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+//        String url = "http://192.168.0.127/put.php";
+        String url = "http://192.168.0.126:8008/put.php";
+
+        //创建请求对象
+        UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
+                new MyUploadCallback(), executorService);
+
+        requestBuilder.setHttpMethod("POST");
+        requestBuilder.addHeader("Content-Type", "multipart/form-data;");
+
+        //设置自定义上传提供器
+        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider(null);
+        requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
+
+        UrlRequest request = requestBuilder.build();
+        request.start();
+
+    }
+
+    private void put() {
+        //创建Cronet引擎
+        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
+        CronetEngine cronetEngine = myBuilder.build();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+//        String url = "http://192.168.0.127/put.php";
+        String url = "http://192.168.0.126:8008/put.php";
+
+        //创建请求对象
+        UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
+                new MyUploadCallback(), executorService);
+
+
         requestBuilder.setHttpMethod("PUT");
-//        requestBuilder.setHttpMethod("POST");
-//        requestBuilder.addHeader("Content-Type", "multipart/form-data");
-//        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
-//        requestBuilder.addHeader("Content-Type", "useless/string");
         requestBuilder.addHeader("Content-Type", "image/jpeg");
-
-
-//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
-//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/raw/w2");
-//            System.out.println("uri is " + uri);
-//            AssetFileDescriptor assetFileDescriptor = getContentResolver().openAssetFileDescriptor(uri, "r");
-//            ParcelFileDescriptor parcelFileDescriptor = assetFileDescriptor.getParcelFileDescriptor();
-//            FileDescriptor fileDescriptor = assetFileDescriptor.getFileDescriptor();
-//            System.out.println("size is " + assetFileDescriptor.getLength());
-
-
-//        try {
-//            Files.list(Paths.get(getCacheDir().toString())).forEach(out::println);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
 
 
         //使用默认实现
         try {
-//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.a);
-//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
-//            AssetFileDescriptor afd = getContentResolver().openAssetFileDescriptor(uri, "r");
-//            System.out.println("size is " + afd.getLength());
-//
-//            ParcelFileDescriptor pfd = afd.getParcelFileDescriptor();
+////            File file = new File(getCacheDir() + "/as.txt");
+//            File file = new File(getCacheDir() + "/w1.jpg");
+//            ParcelFileDescriptor pfd = ParcelFileDescriptor.open(file, MODE_READ_WRITE);
 //            System.out.println("size is " + pfd.getStatSize());
 
-//            ParcelFileDescriptor.adoptFd()
+
+
+            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
+//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/raw/w2");
+
+//            System.out.println("uri is " + uri);
+//            AssetFileDescriptor afd = getContentResolver().openAssetFileDescriptor(uri, "r");
+//            System.out.println("afd size is " + afd.getLength());
+//
+//            ParcelFileDescriptor pfd = afd.getParcelFileDescriptor();
+//            System.out.println("pfd size is " + pfd.getStatSize());
+
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+
+            System.out.println("size is " + inputStream.available());
 
 
 
-//            File file = new File(getCacheDir() + "/as.txt");
-            File file = new File(getCacheDir() + "/w1.jpg");
-            ParcelFileDescriptor pfd = ParcelFileDescriptor.open(file, MODE_READ_WRITE);
-            System.out.println("size is " + pfd.getStatSize());
+
+//            requestBuilder.setUploadDataProvider(
+//                    UploadDataProviders.create(null), executorService);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
+        UrlRequest request = requestBuilder.build();
+//        request.start();
+    }
+
+    public void testfd(View view) {
+        out.println("~~button.testfd~~");
 
 
-            requestBuilder.setUploadDataProvider(
-                    UploadDataProviders.create(pfd), executorService);
+        try {
+
+            //RAW资源文件
+            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
+//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/raw/w2");
+
+            System.out.println("uri is " + uri);
+            AssetFileDescriptor assetFileDescriptor =
+                    getContentResolver().openAssetFileDescriptor(uri, "r");
+            System.out.println("afd size is " + assetFileDescriptor.getLength());
+
+            ParcelFileDescriptor parcelFileDescriptor = assetFileDescriptor.getParcelFileDescriptor();
+            System.out.println("pfd size is " + parcelFileDescriptor.getStatSize());
+
+
+            FileDescriptor fileDescriptor = assetFileDescriptor.getFileDescriptor();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
 
-        //使用自定义实现
-//        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider(null);
-//        requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
 
-        UrlRequest request = requestBuilder.build();
-        request.start();
-
-
-    }
-
-    public void unbind(View view) {
-        out.println("~~button.unbind~~");
 
     }
 
