@@ -19,6 +19,7 @@ import org.chromium.net.UrlResponseInfo;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,7 @@ import java.net.CookieManager;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -34,6 +36,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static android.os.ParcelFileDescriptor.MODE_READ_WRITE;
+import static java.lang.System.out;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -46,7 +50,7 @@ public class CronetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
 
     }
@@ -54,61 +58,61 @@ public class CronetActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
+        out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
     public void start(View view) {
-        System.out.println("~~button.start~~");
+        out.println("~~button.start~~");
 
         cronetEngine();
 
@@ -133,20 +137,23 @@ public class CronetActivity extends AppCompatActivity {
 
 
     public void upload(View view) {
-        System.out.println("~~button.upload~~");
+        out.println("~~button.upload~~");
 
         CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-//        String url = "http://192.168.0.127/upload.php";
-        String url = "http://192.168.0.126:8008/upload.php";
+        String url = "http://192.168.0.127/put.php";
+//        String url = "http://192.168.0.126:8008/upload.php";
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new MyUploadCallback(), executorService);
 
+        requestBuilder.setHttpMethod("PUT");
 //        requestBuilder.setHttpMethod("POST");
+//        requestBuilder.addHeader("Content-Type", "multipart/form-data");
 //        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
-//        requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+//        requestBuilder.addHeader("Content-Type", "useless/string");
+        requestBuilder.addHeader("Content-Type", "image/jpeg");
 
 
 //            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
@@ -157,10 +164,36 @@ public class CronetActivity extends AppCompatActivity {
 //            FileDescriptor fileDescriptor = assetFileDescriptor.getFileDescriptor();
 //            System.out.println("size is " + assetFileDescriptor.getLength());
 
+
+//        try {
+//            Files.list(Paths.get(getCacheDir().toString())).forEach(out::println);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+
         //使用默认实现
         try {
-            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
-            ParcelFileDescriptor pfd = getContentResolver().openAssetFileDescriptor(uri, "r").getParcelFileDescriptor();
+//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.a);
+//            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.w2);
+//            AssetFileDescriptor afd = getContentResolver().openAssetFileDescriptor(uri, "r");
+//            System.out.println("size is " + afd.getLength());
+//
+//            ParcelFileDescriptor pfd = afd.getParcelFileDescriptor();
+//            System.out.println("size is " + pfd.getStatSize());
+
+//            ParcelFileDescriptor.adoptFd()
+
+
+
+//            File file = new File(getCacheDir() + "/as.txt");
+            File file = new File(getCacheDir() + "/w1.jpg");
+            ParcelFileDescriptor pfd = ParcelFileDescriptor.open(file, MODE_READ_WRITE);
+            System.out.println("size is " + pfd.getStatSize());
+
+
+
 
             requestBuilder.setUploadDataProvider(
                     UploadDataProviders.create(pfd), executorService);
@@ -181,24 +214,24 @@ public class CronetActivity extends AppCompatActivity {
     }
 
     public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
+        out.println("~~button.unbind~~");
 
     }
 
     public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
+        out.println("~~button.reloading~~");
 
     }
 
 
     public void del(View view) {
-        System.out.println("~~button.del~~");
+        out.println("~~button.del~~");
 
     }
 
 
     public void query(View view) {
-        System.out.println("~~button.query~~");
+        out.println("~~button.query~~");
 
     }
 }
@@ -209,97 +242,97 @@ class MyUrlRequestCallback extends UrlRequest.Callback {
 
     @Override
     public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
-        System.out.println("...button.onRedirectReceived...");
+        out.println("...button.onRedirectReceived...");
 
         request.followRedirect();
     }
 
     @Override
     public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onResponseStarted...");
+        out.println("...button.onResponseStarted...");
 
-        System.out.println("httpStatusCode is " + info.getHttpStatusCode());
+        out.println("httpStatusCode is " + info.getHttpStatusCode());
         Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
-        System.out.println(mResponseHeaders);
+        out.println(mResponseHeaders);
 
 //        request.cancel();
 
 
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(100);
 
-        System.out.println("position is " + byteBuffer.position());
-        System.out.println("limit is " + byteBuffer.limit());
-        System.out.println("capacity is " + byteBuffer.capacity());
-        System.out.println("hashCode() is " + byteBuffer.hashCode());
+        out.println("position is " + byteBuffer.position());
+        out.println("limit is " + byteBuffer.limit());
+        out.println("capacity is " + byteBuffer.capacity());
+        out.println("hashCode() is " + byteBuffer.hashCode());
         request.read(byteBuffer);
         try {
             Thread.sleep(2000l);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("position is " + byteBuffer.position());
-        System.out.println("limit is " + byteBuffer.limit());
-        System.out.println("capacity is " + byteBuffer.capacity());
-        System.out.println("hashCode() is " + byteBuffer.hashCode());
+        out.println("position is " + byteBuffer.position());
+        out.println("limit is " + byteBuffer.limit());
+        out.println("capacity is " + byteBuffer.capacity());
+        out.println("hashCode() is " + byteBuffer.hashCode());
 
 
     }
 
     @Override
     public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
-        System.out.println("...button.onReadCompleted...");
+        out.println("...button.onReadCompleted...");
         request.cancel();
-        System.out.println("info is " + info);
+        out.println("info is " + info);
 
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+        out.println("complete|position is " + byteBuffer.position());
+        out.println("complete|limit is " + byteBuffer.limit());
+        out.println("complete|capacity is " + byteBuffer.capacity());
+        out.println("complete|hashCode() is " + byteBuffer.hashCode());
 
         byteBuffer.flip();
         while (byteBuffer.hasRemaining()) {
             CharBuffer charBuffer = UTF_8.decode(byteBuffer);
-            System.out.println(charBuffer);
+            out.println(charBuffer);
         }
 
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+        out.println("complete|position is " + byteBuffer.position());
+        out.println("complete|limit is " + byteBuffer.limit());
+        out.println("complete|capacity is " + byteBuffer.capacity());
+        out.println("complete|hashCode() is " + byteBuffer.hashCode());
         byteBuffer.clear();
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+        out.println("complete|position is " + byteBuffer.position());
+        out.println("complete|limit is " + byteBuffer.limit());
+        out.println("complete|capacity is " + byteBuffer.capacity());
+        out.println("complete|hashCode() is " + byteBuffer.hashCode());
         request.read(byteBuffer);
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+        out.println("complete|position is " + byteBuffer.position());
+        out.println("complete|limit is " + byteBuffer.limit());
+        out.println("complete|capacity is " + byteBuffer.capacity());
+        out.println("complete|hashCode() is " + byteBuffer.hashCode());
 
     }
 
     @Override
     public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onSucceeded...");
+        out.println("...button.onSucceeded...");
 
-        System.out.println(info);
+        out.println(info);
     }
 
     @Override
     public void onCanceled(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onCanceled...");
+        out.println("...button.onCanceled...");
 
-        System.out.println(info);
+        out.println(info);
 
     }
 
     @Override
     public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
-        System.out.println("...button.onFailed...");
+        out.println("...button.onFailed...");
 
-        System.out.println("info is " + info);
-        System.out.println(error);
+        out.println("info is " + info);
+        out.println(error);
 
     }
 }
@@ -310,29 +343,29 @@ class MyUploadCallback extends UrlRequest.Callback {
 
     @Override
     public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
-        System.out.println("...button.onRedirectReceived...");
+        out.println("...button.onRedirectReceived...");
 
         request.followRedirect();
     }
 
     @Override
     public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onResponseStarted...");
+        out.println("...button.onResponseStarted...");
 
-        System.out.println("httpStatusCode is " + info.getHttpStatusCode());
+        out.println("httpStatusCode is " + info.getHttpStatusCode());
         Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
-        System.out.println(mResponseHeaders);
+        out.println(mResponseHeaders);
         request.read(ByteBuffer.allocateDirect(32 * 1024));
     }
 
     @Override
     public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
-        System.out.println("...button.onReadCompleted...");
+        out.println("...button.onReadCompleted...");
 
         byteBuffer.flip();
         while (byteBuffer.hasRemaining()) {
             CharBuffer charBuffer = UTF_8.decode(byteBuffer);
-            System.out.println(charBuffer);
+            out.println(charBuffer);
         }
         byteBuffer.clear();
         request.read(byteBuffer);
@@ -340,24 +373,24 @@ class MyUploadCallback extends UrlRequest.Callback {
 
     @Override
     public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onSucceeded...");
+        out.println("...button.onSucceeded...");
 
-        System.out.println(info);
+        out.println(info);
     }
 
     @Override
     public void onCanceled(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onCanceled...");
-        System.out.println(info);
+        out.println("...button.onCanceled...");
+        out.println(info);
 
     }
 
     @Override
     public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
-        System.out.println("...button.onFailed...");
+        out.println("...button.onFailed...");
 
-        System.out.println("info is " + info);
-        System.out.println(error);
+        out.println("info is " + info);
+        out.println(error);
 
     }
 }
@@ -385,11 +418,11 @@ class MyUploadDataProvider extends UploadDataProvider {
 
     @Override
     public long getLength() throws IOException {
-        System.out.println("...button.getLength...");
+        out.println("...button.getLength...");
 
         //响应主体长度
         long length = buffer.limit();
-        System.out.println("length is " + length);
+        out.println("length is " + length);
 
         //分块传送，返回值恒为-1
 //        long length = -1;
@@ -399,7 +432,7 @@ class MyUploadDataProvider extends UploadDataProvider {
 
     @Override
     public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
-        System.out.println("...button.read...");
+        out.println("...button.read...");
 
         byteBuffer.put(buffer);
         uploadDataSink.onReadSucceeded(false);
@@ -407,7 +440,7 @@ class MyUploadDataProvider extends UploadDataProvider {
 
     @Override
     public void rewind(UploadDataSink uploadDataSink) throws IOException {
-        System.out.println("...button.rewind...");
+        out.println("...button.rewind...");
 
         buffer.rewind();
         uploadDataSink.onRewindSucceeded();
