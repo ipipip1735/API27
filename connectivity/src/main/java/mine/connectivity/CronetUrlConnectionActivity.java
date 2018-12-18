@@ -157,119 +157,16 @@ public class CronetUrlConnectionActivity extends AppCompatActivity {
     public void post(View view) {
         System.out.println("~~button.post~~");
 
-//        cronetUrlPost();
-        cronetUrlPostMultpleData();
+        cronetUrlPost();
+//        cronetUrlPostMultpleData();
     }
 
     private void cronetUrlPostMultpleData() {
-        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
-        CronetEngine cronetEngine = myBuilder.build();
 
-        try {
-            URL url = new URL("http://192.168.0.127/post.php");
-            CronetHttpURLConnection connection =
-                    (CronetHttpURLConnection) cronetEngine.openConnection(url);
-
-            connection.setDoOutput(true);
-
-
-            //设置请求头信息
-            String charset = "utf-8";
-            connection.setRequestProperty("Accept-Charset", charset);
-            String boundaryString = UUID.randomUUID().toString().substring(0, 6);
-            connection.addRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundaryString);
-
-//            connection.setFixedLengthStreamingMode(Integer.valueOf(postDataLength));
-//            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-//            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-
-
-            //发送请求主体
-            OutputStream outputStream = connection.getOutputStream();
-            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write("--" + boundaryString + "\n");
-            bufferedWriter.write("Content-Disposition: form-data; name=\"one\"" + "\n\n");
-            bufferedWriter.write("111" + "\n");
-
-            bufferedWriter.write("--" + boundaryString + "\n");
-            bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
-            bufferedWriter.write("222" + "\n");
-
-
-            bufferedWriter.write("\n--" + boundaryString + "--\n");
-            bufferedWriter.flush();
-            bufferedWriter.close();
-
-
-            //读取服务端回应
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String r;
-            while ((r = bufferedReader.readLine()) != null) {
-                System.out.println(r);
-            }
-            bufferedReader.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void cronetUrlPost() {
 
-        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
-        CronetEngine cronetEngine = myBuilder.build();
-
-        try {
-            URL url = new URL("http://192.168.0.127/post.php");
-            CronetHttpURLConnection connection =
-                    (CronetHttpURLConnection) cronetEngine.openConnection(url);
-
-            connection.setDoOutput(true);
-
-
-            String w = "param1=a&param2=b&param3=阿航";
-            byte[] postData = w.getBytes(UTF_8);
-            int postDataLength = postData.length;
-
-
-            //设置请求头信息
-            String charset = "utf-8";
-            connection.setRequestProperty("Accept-Charset", charset);
-            connection.setFixedLengthStreamingMode(Integer.valueOf(postDataLength));
-//            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-
-
-            //发送请求主体
-            OutputStream outputStream = connection.getOutputStream();
-            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write(w);
-            bufferedWriter.close();
-
-
-            //读取服务端回应
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String r;
-            while ((r = bufferedReader.readLine()) != null) {
-                System.out.println(r);
-            }
-            bufferedReader.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void put(View view) {
