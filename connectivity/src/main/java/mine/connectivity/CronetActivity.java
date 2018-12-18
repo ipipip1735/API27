@@ -26,19 +26,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,8 +46,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Created by Administrator on 2018/12/6.
  */
 public class CronetActivity extends AppCompatActivity {
-
-    CookieManager cookieManager = null;
     CronetEngine cronetEngine = null;
 
     @Override
@@ -116,13 +110,14 @@ public class CronetActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
+//        cronetEngine.shutdown();
     }
 
     public void get(View view) {
         System.out.println("~~button.get~~");
 
-//        cronetGet();
-        cronetWithHttpURLConnection();
+        cronetGet();
+//        cronetWithHttpURLConnection();
 
 
     }
@@ -188,7 +183,7 @@ public class CronetActivity extends AppCompatActivity {
     public void post(View view) {
         System.out.println("~~button.post~~");
 
-        cronetPost();
+//        cronetPost();
         cronetPostWithCustom();
 
 
@@ -278,7 +273,7 @@ public class CronetActivity extends AppCompatActivity {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 //        String url = "http://192.168.0.127/put.php";
-        String url = "http://192.168.0.126:8008/cronetPost.php";
+        String url = "http://192.168.0.126:8008/post.php";
 
         //创建请求对象
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
@@ -303,8 +298,8 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        String url = "http://192.168.0.127/cronetPost.php";
-//        String url = "http://192.168.0.126:8008/put.php";
+//        String url = "http://192.168.0.127/post.php";
+        String url = "http://192.168.0.126:8008/post.php";
 
         //创建请求对象
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
@@ -315,7 +310,7 @@ public class CronetActivity extends AppCompatActivity {
         requestBuilder.addHeader("Content-Type", "multipart/form-data; boundary=" + boundaryString);
 
         //设置自定义上传提供器
-        MyUploadDataProvider myUploadDataProvider = new MyUploadDataProvider(null);
+        MultipleUploadDataProvider myUploadDataProvider = new MultipleUploadDataProvider(null);
         requestBuilder.setUploadDataProvider(myUploadDataProvider, executorService);
 
         UrlRequest request = requestBuilder.build();
@@ -415,89 +410,39 @@ public class CronetActivity extends AppCompatActivity {
     }
 
 
-    public void cookie(View view) {
-        System.out.println("~~button.cookie~~");
-
-        cronetHttpCookies();
-    }
-
-    private void cronetHttpCookies() {
-
-        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
-        myBuilder.setStoragePath(getFilesDir().toString());
-
-        CronetEngine cronetEngine = myBuilder.build();
-        System.out.println("version is " + cronetEngine.getVersionString());
-
-
-//        File log = new File(getFilesDir(), "log.json");
-//        cronetEngine.startNetLogToFile(log.toString(), true);
-//        ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-
-        try {
-            URL url = new URL("http://192.168.0.127/get.php");
-            HttpURLConnection connection = (HttpURLConnection) cronetEngine.openConnection(url);
-
-            connection.getResponseCode();
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String r;
-            while ((r = bufferedReader.readLine()) != null) {
-                System.out.println(r);
-            }
-            bufferedReader.close();
-
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public void cache(View view) {
         System.out.println("~~button.cache~~");
+
 
         if (Objects.isNull(cronetEngine)) {
             CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
 
             File file = new File(getCacheDir(), "Cronet");
-
-            if(!file.exists()){
-                try {
-                    Files.createDirectories(file.toPath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                myBuilder.setStoragePath(file.toString());
+            try {
+                Files.createDirectories(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
+            //使用磁盘缓存
+//            myBuilder.setStoragePath(file.toString());
+//            myBuilder.enableHttpCache(CronetEngine.Builder.HTTP_CACHE_DISK, 1024 * 1024);
 
-//            Path path = null;
-//            try {
-//                path = Files.createDirectories(Paths.get(getCacheDir().toString() + "/" + new Random().nextInt(100)));
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            myBuilder.enableHttpCache(CronetEngine.Builder.HTTP_CACHE_DISK, 1024 * 1024);
+            //使用内存缓存
+            myBuilder.enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 1024 * 1024);
+
             cronetEngine = myBuilder.build();
-//            System.out.println("path is " + path);
-
         }
 
 //        String url = "http://192.168.0.127/get.php";
-        String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
+//        String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
+        String url = "http://192.168.0.126:8008/html/index.html";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new CacheUrlRequestCallback(), executorService);
 
         UrlRequest request = requestBuilder.build();
-
         request.start();
 
 
@@ -760,21 +705,12 @@ class PostUploadDataProvider extends UrlRequest.Callback {
 }
 
 
-class MyUploadDataProvider extends UploadDataProvider {
+class MultipleUploadDataProvider extends UploadDataProvider {
     ByteBuffer buffer;
 
-    public MyUploadDataProvider(ByteBuffer byteBuffe) {
+    public MultipleUploadDataProvider(ByteBuffer byteBuffe) {
 
     }
-
-    private void getData() {
-
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(128 * 1024);
-
-        byteBuffer.put(UTF_8.encode("file=15"));
-
-    }
-
 
     @Override
     public long getLength() throws IOException {

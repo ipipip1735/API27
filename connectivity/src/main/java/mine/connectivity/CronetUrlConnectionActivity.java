@@ -131,7 +131,7 @@ public class CronetUrlConnectionActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
 
         try {
-            URL url = new URL("http://192.168.0.127/get.php");
+            URL url = new URL("http://192.168.0.126/get.php");
             CronetHttpURLConnection cronetHttpURLConnection =
                     (CronetHttpURLConnection) cronetEngine.openConnection(url);
 
