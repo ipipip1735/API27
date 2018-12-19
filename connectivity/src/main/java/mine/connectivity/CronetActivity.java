@@ -118,14 +118,11 @@ public class CronetActivity extends AppCompatActivity {
     public void get(View view) {
         System.out.println("~~button.get~~");
 
-        cronetGet();
+//        cronetGet();
         cronetWithHttpURLConnection();
-
-
     }
 
     private void cronetWithHttpURLConnection() {
-
 
         try {
 
@@ -186,10 +183,10 @@ public class CronetActivity extends AppCompatActivity {
         System.out.println("~~button.post~~");
 
 //        cronetPost();
-        cronetMultipleDate();
+//        cronetMultipleDate();//自定义提供器复合POST
 
 //        cronetWithURLConnection();
-//        cronetMultipleDateWithURLConnection();
+        cronetMultipleDateWithURLConnection();
 
 //        rawUpload();  //JDK原生方法
     }
@@ -200,7 +197,8 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
 
         try {
-            URL url = new URL("http://192.168.0.127/post.php");
+//            URL url = new URL("http://192.168.0.127/post.php");
+            URL url = new URL("http://192.168.0.126:8008/post.php");
             CronetHttpURLConnection connection =
                     (CronetHttpURLConnection) cronetEngine.openConnection(url);
 
@@ -215,8 +213,8 @@ public class CronetActivity extends AppCompatActivity {
             //设置请求头信息
             String charset = "utf-8";
             connection.setRequestProperty("Accept-Charset", charset);
+            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             connection.setFixedLengthStreamingMode(Integer.valueOf(postDataLength));
-//            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
 
 
@@ -252,7 +250,8 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
 
         try {
-            URL url = new URL("http://192.168.0.127/post.php");
+//            URL url = new URL("http://192.168.0.127/post.php");
+            URL url = new URL("http://192.168.0.126:8008/post.php");
             CronetHttpURLConnection connection =
                     (CronetHttpURLConnection) cronetEngine.openConnection(url);
 
@@ -264,14 +263,12 @@ public class CronetActivity extends AppCompatActivity {
             connection.setRequestProperty("Accept-Charset", charset);
             String boundaryString = UUID.randomUUID().toString().substring(0, 6);
             connection.addRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundaryString);
-
-//            connection.setFixedLengthStreamingMode(Integer.valueOf(postDataLength));
-//            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-//            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+            connection.setChunkedStreamingMode(1024);
 
 
             //发送请求主体
-            OutputStream outputStream = connection.getOutputStream();
+            OutputStream outputStream = connection
+                    .getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(outputStream);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             bufferedWriter.write("--" + boundaryString + "\n");
@@ -396,7 +393,7 @@ public class CronetActivity extends AppCompatActivity {
 
         //创建请求对象
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
-                new PostUploadDataProvider(), executorService);
+                new PostUrlRequestCallback(), executorService);
 
         requestBuilder.setHttpMethod("POST");
         requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -417,12 +414,12 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        String url = "http://192.168.0.127/post.php";
-//        String url = "http://192.168.0.126:8008/post.php";
+//        String url = "http://192.168.0.127/post.php";
+        String url = "http://192.168.0.126:8008/post.php";
 
         //创建请求对象
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
-                new PostUploadDataProvider(), executorService);
+                new PostUrlRequestCallback(), executorService);
 
         requestBuilder.setHttpMethod("POST");
         String charset = "utf-8";
@@ -432,8 +429,8 @@ public class CronetActivity extends AppCompatActivity {
         requestBuilder.addHeader("Content-Type", "multipart/form-data; boundary=" + boundaryString);
 
         //设置自定义上传提供器
-        MultipleUploadDataProvider mulUpload = new MultipleUploadDataProvider(boundaryString);
-        requestBuilder.setUploadDataProvider(mulUpload, executorService);
+        MultipleUploadDataProvider multipleUploadDataProvider = new MultipleUploadDataProvider(boundaryString);
+        requestBuilder.setUploadDataProvider(multipleUploadDataProvider, executorService);
 
         UrlRequest request = requestBuilder.build();
         request.start();
@@ -458,7 +455,7 @@ public class CronetActivity extends AppCompatActivity {
 
         //创建请求对象
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
-                new PostUploadDataProvider(), executorService);
+                new PostUrlRequestCallback(), executorService);
 
 
         requestBuilder.setHttpMethod("PUT");
@@ -767,8 +764,8 @@ class CacheUrlRequestCallback extends UrlRequest.Callback {
 }
 
 
-class PostUploadDataProvider extends UrlRequest.Callback {
-    private static final String TAG = "PostUploadDataProvider";
+class PostUrlRequestCallback extends UrlRequest.Callback {
+    private static final String TAG = "PostUrlRequestCallback";
 
     @Override
     public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
@@ -825,15 +822,12 @@ class PostUploadDataProvider extends UrlRequest.Callback {
     }
 }
 
-
 class MultipleUploadDataProvider extends UploadDataProvider {
 
-    ByteBuffer uploadBuffer;
     String boundaryString;
 
     public MultipleUploadDataProvider(String boundaryString) {
         this.boundaryString = boundaryString;
-        System.out.println(Thread.currentThread());
     }
 
     @Override
@@ -845,8 +839,8 @@ class MultipleUploadDataProvider extends UploadDataProvider {
 //        System.out.println("length is " + length);
 
         //分块传送，返回值恒为-1
-        long length = 12;
-//        long length = -1;
+//        long length = 250;
+        long length = -1;
 
         return length;
     }
@@ -854,7 +848,7 @@ class MultipleUploadDataProvider extends UploadDataProvider {
     @Override
     public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
         System.out.println("...button.read...");
-        System.out.println(Thread.currentThread());
+
 
 
         byte[] bytes = null;
@@ -869,7 +863,6 @@ class MultipleUploadDataProvider extends UploadDataProvider {
             bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
             bufferedWriter.write("222" + "\n");
 
-
             bufferedWriter.write("--" + boundaryString + "--\n");
             bufferedWriter.flush();
             bytes = baos.toByteArray();
@@ -877,22 +870,12 @@ class MultipleUploadDataProvider extends UploadDataProvider {
             e.printStackTrace();
         }
 
+        byteBuffer.put(bytes);
+        uploadDataSink.onReadSucceeded(true);
 
-        uploadBuffer = ByteBuffer.allocate(bytes.length);
-        uploadBuffer.put(bytes).flip();
+    }
 
-
-
-
-        if (byteBuffer.remaining() >= uploadBuffer.remaining()) {
-            byteBuffer.put(uploadBuffer);
-        } else {
-            int oldLimit = uploadBuffer.limit();
-            uploadBuffer.limit(uploadBuffer.position() + byteBuffer.remaining());
-            byteBuffer.put(uploadBuffer);
-            uploadBuffer.limit(oldLimit);
-        }
-        uploadDataSink.onReadSucceeded(false);
+    private void updateUI() {
 
     }
 
@@ -900,11 +883,5 @@ class MultipleUploadDataProvider extends UploadDataProvider {
     public void rewind(UploadDataSink uploadDataSink) throws IOException {
         System.out.println("...button.rewind...");
 
-//        buffer.position(0);
-//        uploadDataSink.onRewindSucceeded();
-//        uploadBuffer.position(0);
-//        uploadDataSink.onRewindSucceeded();
-
-
     }
-};
+}
