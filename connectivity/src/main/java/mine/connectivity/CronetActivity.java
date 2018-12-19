@@ -112,7 +112,7 @@ public class CronetActivity extends AppCompatActivity {
         super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
 
-        if(Objects.nonNull(cronetEngine))cronetEngine.shutdown();
+        if (Objects.nonNull(cronetEngine)) cronetEngine.shutdown();
     }
 
     public void get(View view) {
@@ -186,10 +186,10 @@ public class CronetActivity extends AppCompatActivity {
         System.out.println("~~button.post~~");
 
 //        cronetPost();
-//        cronetMultipleDate();
+        cronetMultipleDate();
 
 //        cronetWithURLConnection();
-        cronetMultipleDateWithURLConnection();
+//        cronetMultipleDateWithURLConnection();
 
 //        rawUpload();  //JDK原生方法
     }
@@ -425,11 +425,14 @@ public class CronetActivity extends AppCompatActivity {
                 new PostUploadDataProvider(), executorService);
 
         requestBuilder.setHttpMethod("POST");
+        String charset = "utf-8";
+        requestBuilder.addHeader("Accept-Charset", charset);
+
         String boundaryString = UUID.randomUUID().toString().substring(0, 6);
         requestBuilder.addHeader("Content-Type", "multipart/form-data; boundary=" + boundaryString);
 
         //设置自定义上传提供器
-        MultipleUploadDataProvider mulUpload = new MultipleUploadDataProvider(null);
+        MultipleUploadDataProvider mulUpload = new MultipleUploadDataProvider(boundaryString);
         requestBuilder.setUploadDataProvider(mulUpload, executorService);
 
         UrlRequest request = requestBuilder.build();
@@ -527,7 +530,6 @@ public class CronetActivity extends AppCompatActivity {
 //        UrlRequest request = requestBuilder.build();
 //        request.start();
     }
-
 
 
     public void cache(View view) {
@@ -825,10 +827,13 @@ class PostUploadDataProvider extends UrlRequest.Callback {
 
 
 class MultipleUploadDataProvider extends UploadDataProvider {
-    ByteBuffer buffer;
 
-    public MultipleUploadDataProvider(ByteBuffer byteBuffe) {
+    ByteBuffer uploadBuffer;
+    String boundaryString;
 
+    public MultipleUploadDataProvider(String boundaryString) {
+        this.boundaryString = boundaryString;
+        System.out.println(Thread.currentThread());
     }
 
     @Override
@@ -840,7 +845,7 @@ class MultipleUploadDataProvider extends UploadDataProvider {
 //        System.out.println("length is " + length);
 
         //分块传送，返回值恒为-1
-        long length = 125;
+        long length = 12;
 //        long length = -1;
 
         return length;
@@ -849,40 +854,57 @@ class MultipleUploadDataProvider extends UploadDataProvider {
     @Override
     public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
         System.out.println("...button.read...");
+        System.out.println(Thread.currentThread());
 
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
-        OutputStreamWriter writer = new OutputStreamWriter(baos);
-        BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        byte[] bytes = null;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
+             OutputStreamWriter writer = new OutputStreamWriter(baos);
+             BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+            bufferedWriter.write("--" + boundaryString + "\n");
+            bufferedWriter.write("Content-Disposition: form-data; name=\"one\"" + "\n\n");
+            bufferedWriter.write("111" + "\n");
+
+            bufferedWriter.write("--" + boundaryString + "\n");
+            bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
+            bufferedWriter.write("222" + "\n");
 
 
-        String boundaryString = UUID.randomUUID().toString().substring(0, 6);
-        bufferedWriter.write("--" + boundaryString + "\n");
-        bufferedWriter.write("Content-Disposition: form-data; name=\"one\"" + "\n\n");
-        bufferedWriter.write("111" + "\n");
-
-        bufferedWriter.write("--" + boundaryString + "\n");
-        bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
-        bufferedWriter.write("222" + "\n");
+            bufferedWriter.write("--" + boundaryString + "--\n");
+            bufferedWriter.flush();
+            bytes = baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-        bufferedWriter.write("--" + boundaryString + "--\n");
-        System.out.println("size is " + baos.size());
-        bufferedWriter.flush();
-        byte[] bytes = baos.toByteArray();
-        System.out.println("size is " + bytes.length);
-        byteBuffer.put(bytes);
-        bufferedWriter.close();
+        uploadBuffer = ByteBuffer.allocate(bytes.length);
+        uploadBuffer.put(bytes).flip();
 
+
+
+
+        if (byteBuffer.remaining() >= uploadBuffer.remaining()) {
+            byteBuffer.put(uploadBuffer);
+        } else {
+            int oldLimit = uploadBuffer.limit();
+            uploadBuffer.limit(uploadBuffer.position() + byteBuffer.remaining());
+            byteBuffer.put(uploadBuffer);
+            uploadBuffer.limit(oldLimit);
+        }
         uploadDataSink.onReadSucceeded(false);
+
     }
 
     @Override
     public void rewind(UploadDataSink uploadDataSink) throws IOException {
         System.out.println("...button.rewind...");
 
-        buffer.rewind();
-        uploadDataSink.onRewindSucceeded();
+//        buffer.position(0);
+//        uploadDataSink.onRewindSucceeded();
+//        uploadBuffer.position(0);
+//        uploadDataSink.onRewindSucceeded();
+
 
     }
 };
