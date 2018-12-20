@@ -20,6 +20,7 @@
         <receiver android:name=".BroadcastReceiverTrial" >
             <intent-filter>
                 <action android:name="receivertrial" />
+                <action android:name="receivertrial1" />
             </intent-filter>
         </receiver>
 

@@ -28,6 +28,9 @@ public class BroadcastReceiverTrial extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("-=-=-=-=-=-=-=-=  onReceive  =-=-=-=-=-=-=-=-");
+        System.out.println("action is " + intent.getAction());
+
+
 //        getAbortBroadcast();
 //        System.out.println(intent.getExtras().get("mReceiver"));
 

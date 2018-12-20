@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent("receivertrial");
         intent.setPackage(getPackageName());
 
-//        sendBroadcast(intent, "a.b");
+//        sendBroadcast(intent, "a.b"); //增加权限限制
+//        intent.putExtra("mReceiver", "One");//携带数据
 
-//        intent.putExtra("mReceiver", "One");
         sendBroadcast(intent);
 
     }
