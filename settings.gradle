@@ -1,6 +1,6 @@
 include   ':apptemp',
         ':connectivity',
-        ':utilities'
+        ':utilities',
 //        ':contactProvider',
 //        ':documentsprovider',
 //        ':fileprovider',
@@ -21,7 +21,7 @@ include   ':apptemp',
 //        ':adapter',
 //        ':loader'
 //        ':view',
-//        ':broadcast',
+        ':broadcast'
 //        ':services',
 //        ':notification',
 //        ':clipboard',

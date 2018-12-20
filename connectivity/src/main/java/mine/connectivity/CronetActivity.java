@@ -53,7 +53,7 @@ public class CronetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_cronet);
 
     }
 

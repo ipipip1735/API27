@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
 //        broadcastReceiverTrial = new BroadcastReceiverTrial();
     }
 
-
     @Override
     protected void onResume() {
         System.out.println("****Example**onResume*****");
@@ -44,18 +43,23 @@ public class MainActivity extends AppCompatActivity {
 //        unregisterReceiver(broadcastReceiverTrial);
     }
 
-
     public void sendBC(View view) {
         System.out.println("*******sendBC*******");
 
 
-        Intent intent = new Intent(this, BroadcastReceiverTrial.class);
-        sendBroadcast(intent, "a.b");
+        //显式Intent
+//        Intent intent = new Intent(this, BroadcastReceiverTrial.class);
+
+        //隐式Intent
+        Intent intent = new Intent("receivertrial");
+        intent.setPackage(getPackageName());
+
+//        sendBroadcast(intent, "a.b");
 
 //        intent.putExtra("mReceiver", "One");
+        sendBroadcast(intent);
 
     }
-
 
     public void sendOBC(View view) {
         System.out.println("*******sendOBC*******");
