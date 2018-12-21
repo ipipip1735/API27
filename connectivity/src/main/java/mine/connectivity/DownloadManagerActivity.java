@@ -90,34 +90,38 @@ public class DownloadManagerActivity extends AppCompatActivity {
 //        versionOne();
 
 
-        String url = "http://192.168.0.126:8008/a.jpg";
+//        String url = "http://192.168.0.126:8008/a.jpg";
+        String url = "http://192.168.0.127/a.jpg";
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        request.setTitle("Logo");
-        request.setDescription("BaiDu Logo");
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        request.setTitle("thisTitle");
+        request.setDescription("thisDescription");
 
-        request.setMimeType("image/jpeg;image/png;");
+        request.setMimeType("image/jpeg");
 
 
-
+        request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 //        request.setVisibleInDownloadsUi(false);
 //        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 
-        File file = new File(getFilesDir(), "bd.png");
-        Uri uri = Uri.parse(file.toString());
-        System.out.println("dst is " + uri);
-        request.setDestinationUri(uri);
+//        File file = new File(getFilesDir(), "b.jpg");
+//        Uri uri = Uri.parse(file.toString());
+//        System.out.println("dst is " + uri);
+//        request.setDestinationUri(uri);
 
 
-        request.setDestinationInExternalFilesDir(this, DIRECTORY_PICTURES, "bd.png");
+        request.setDestinationInExternalFilesDir(this, DIRECTORY_PICTURES, "b.jpg");
 
 
         DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
         id = downloadManager.enqueue(request);
-
         System.out.println("id is " + id);
+
+
 
 
 
@@ -142,7 +146,7 @@ public class DownloadManagerActivity extends AppCompatActivity {
         System.out.println("~~button.bind~~");
 
         DownloadManager.Query query = new DownloadManager.Query();
-        query.setFilterById(id);
+//        query.setFilterById(id);
         DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
         Cursor cursor = downloadManager.query(query);
 
@@ -171,13 +175,13 @@ public class DownloadManagerActivity extends AppCompatActivity {
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
-
     }
 
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-
+        DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+        downloadManager.remove(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
     }
 
 

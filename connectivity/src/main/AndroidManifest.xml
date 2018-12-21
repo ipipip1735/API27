@@ -63,12 +63,10 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".DownloadReceiver"
-            android:enabled="true"
-            android:exported="true">
+        <receiver android:name=".DownloadReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
             </intent-filter>
         </receiver>
 

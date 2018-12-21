@@ -54,9 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent("receivertrial");
         intent.setPackage(getPackageName());
 
-//        sendBroadcast(intent, "a.b");
-
-//        intent.putExtra("mReceiver", "One");
+        intent.putExtra("one", "111");
         sendBroadcast(intent);
 
     }
