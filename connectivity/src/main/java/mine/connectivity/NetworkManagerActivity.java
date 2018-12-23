@@ -128,7 +128,7 @@ public class NetworkManagerActivity extends AppCompatActivity {
     }
 
     public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
+        System.out.println("~~button.file~~");
 
     }
 
