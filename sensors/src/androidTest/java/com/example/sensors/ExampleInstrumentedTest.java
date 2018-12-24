@@ -1,4 +1,4 @@
-package animation.mine.sensors;
+package com.example.sensors;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("animation.mine.sensors", appContext.getPackageName());
+        assertEquals("com.example.sensors", appContext.getPackageName());
     }
 }

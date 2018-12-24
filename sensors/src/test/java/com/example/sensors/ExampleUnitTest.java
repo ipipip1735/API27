@@ -1,4 +1,4 @@
-package animation.mine.sensors;
+package com.example.sensors;
 
 import org.junit.Test;
 
