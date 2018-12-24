@@ -1,4 +1,4 @@
-package com.example.sensors;
+package mine.sensors;
 
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-        setContentView(R.layout.activity_client);
+        setContentView(R.layout.activity_main);
         ViewGroup group = findViewById(R.id.fl);
         textView = new TextView(this);
         group.addView(textView);

@@ -1,4 +1,4 @@
-package com.example.sensors;
+package mine.sensors;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.sensors", appContext.getPackageName());
+        assertEquals("mine.sensors", appContext.getPackageName());
     }
 }

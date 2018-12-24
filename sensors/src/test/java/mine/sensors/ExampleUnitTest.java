@@ -1,4 +1,4 @@
-package com.example.sensors;
+package mine.sensors;
 
 import org.junit.Test;
 
