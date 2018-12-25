@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
@@ -92,13 +94,14 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        lastLocation();
+
+
+    }
+
+    private void lastLocation() {
         if (Objects.isNull(mFusedLocationClient))
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         Task task = mFusedLocationClient.getLastLocation();
 
@@ -113,19 +116,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-//        LocationRequest mlocationRequest = LocationRequest.create();
-//        mLocationRequest.setInterval(10000);
-//        mLocationRequest.setFastestInterval(5000);
-//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+
+        setting();
+
+
+//        LocationRequest locationRequest = LocationRequest.create();
+//        locationRequest.setInterval(10000);
+//        locationRequest.setFastestInterval(5000);
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+    }
+
+    private void setting() {
+        LocationRequest locationRequest = LocationRequest.create();
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                System.out.println("~~onSuccess~~");
+                System.out.println("locationSettingsResponse is " + locationSettingsResponse);
+
+                if (locationSettingsResponse != null) {
+                    textView.setText("locationSettingsResponse is " + locationSettingsResponse);
+                }
+            }
+        });
     }
 
     public void bind(View view) {
