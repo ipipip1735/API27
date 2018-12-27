@@ -1,4 +1,6 @@
-include   ':apptemp', ':sensors'
+include   ':apptemp',
+        ':sensors',
+        ':time'
 //        ':connectivity',
 //        ':utilities',
 //        ':contactProvider',
