@@ -3,6 +3,8 @@ package mine.sensors;
 import android.app.IntentService;
 import android.content.Intent;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Created by Administrator on 2018/12/25.
  */
@@ -17,7 +19,7 @@ public class FetchAddressIntentService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(@androidx.annotation.Nullable Intent intent) {
+    protected void onHandleIntent(@Nullable Intent intent) {
 
     }
 }

@@ -2,6 +2,7 @@ package mine.sensors;
 
 import android.content.IntentSender;
 import android.location.Location;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -18,6 +20,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +28,13 @@ import com.google.android.gms.tasks.Task;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
+
+import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
+import static com.google.android.gms.common.ConnectionResult.SERVICE_INVALID;
+import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
+import static com.google.android.gms.common.ConnectionResult.SERVICE_UPDATING;
+import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
+import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
 /**
  * Created by Administrator on 2018/12/24.
@@ -48,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationAvailability(LocationAvailability locationAvailability) {
                 super.onLocationAvailability(locationAvailability);
                 System.out.println("~onLocationAvailability~");
-                System.out.println(locationAvailability);
+                System.out.println(locationAvailability.isLocationAvailable());
             }
 
             @Override
@@ -59,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("null");
                     return;
                 }
+                System.out.println("getLastLocation is " + locationResult.getLastLocation());
                 for (Location location : locationResult.getLocations()) {
                     System.out.println("location is " + location);
                     textView.setText("location is " + location);
@@ -110,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+//        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
 
@@ -127,12 +138,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void check(View view) {
+        System.out.println("~~button.check~~");
+
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+
+        switch (googleApiAvailability.isGooglePlayServicesAvailable(this)) {
+            case SUCCESS:
+                System.out.println("SUCCESS");
+                break;
+            case SERVICE_MISSING:
+                System.out.println("SERVICE_MISSING");
+                break;
+            case SERVICE_UPDATING:
+                System.out.println("SERVICE_UPDATING");
+                break;
+            case SERVICE_VERSION_UPDATE_REQUIRED:
+                System.out.println("SERVICE_VERSION_U");
+                break;
+            case SERVICE_DISABLED:
+                System.out.println("SERVICE_DISABLED");
+                break;
+            case SERVICE_INVALID:
+                System.out.println("SERVICE_INVALID");
+                break;
+            default:
+                System.out.println("default");
+        }
+
+//        SystemClock.elapsedRealtimeNanos();
+
+        System.out.println("time is " + System.currentTimeMillis());
+    }
+
+
     public void start(View view) {
         System.out.println("~~button.start~~");
-
         lastLocation();
-
-
     }
 
     private void lastLocation() {
@@ -145,67 +187,92 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Location location) {
                 System.out.println("~~onSuccess~~");
-                System.out.println("location is " + location);
+                log(location);
+            }
+        });
 
-                if (location != null) {
-                    textView.setText("location is " + location);
-                }
+        task.addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("Error|" + e);
             }
         });
     }
 
-
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
-
+    public void setting(View view) {
+        System.out.println("~~button.start~~");
         setting();
-
     }
 
     private void setting() {
+        //创建请求对象
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(500);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest);
+        locationRequest.setInterval(1500);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        SettingsClient client = LocationServices.getSettingsClient(this);
-        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+        //创建配置构建器
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(locationRequest);
+
+        //创建配置对象
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        //核查配置对象
+        Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(locationSettingsRequest);
+
+
+        //增加成功监听器
         task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 System.out.println("~~onSuccess~~");
                 System.out.println("locationSettingsResponse is " + locationSettingsResponse);
-                System.out.println("status is " + locationSettingsResponse.getLocationSettingsStates());
+
+                LocationSettingsStates states = locationSettingsResponse.getLocationSettingsStates();
+                System.out.println("isBlePresent is " + states.isBlePresent());
+                System.out.println("isBleUsable is " + states.isBleUsable());
+                System.out.println("isGpsPresent is " + states.isGpsPresent());
+                System.out.println("isGpsUsable is " + states.isGpsUsable());
+                System.out.println("isLocationPresent is " + states.isLocationPresent());
+                System.out.println("isLocationUsable is " + states.isLocationUsable());
+                System.out.println("isNetworkLocationPresent is " + states.isNetworkLocationPresent());
+                System.out.println("isNetworkLocationUsable is " + states.isNetworkLocationUsable());
 
                 if (locationSettingsResponse != null) {
-                    textView.setText("locationSettingsResponse is " + locationSettingsResponse);
-                    textView.setText("status is " + locationSettingsResponse.getLocationSettingsStates());
+                    textView.setText("status is ok!");
                 }
             }
-        }).addOnFailureListener(this, new OnFailureListener() {
+        });
+
+        //增加失败监听器
+        task.addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 System.out.println("~~onFailure~~");
+                System.out.println("Error|" + e);
                 if (e instanceof ResolvableApiException) {
                     try {
                         ResolvableApiException resolvable = (ResolvableApiException) e;
                         resolvable.startResolutionForResult(MainActivity.this, 11);
                     } catch (IntentSender.SendIntentException sendEx) {
-                        // Ignore the error.
+                        System.out.println("sendEx is " + sendEx);
                     }
                 }
-
-
             }
         });
-
-
     }
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+    public void stop(View view) {
+        System.out.println("~~button.stop~~");
+        if (Objects.isNull(mFusedLocationClient)) return;
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+    }
+
+    public void request(View view) {
+        System.out.println("~~button.request~~");
+
 
         if (Objects.isNull(mFusedLocationClient))
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -214,14 +281,7 @@ public class MainActivity extends AppCompatActivity {
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest);
-
         mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, null);
-    }
-
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
 
     }
 
@@ -248,6 +308,11 @@ public class MainActivity extends AppCompatActivity {
         for (Method method : methods) {
             System.out.print(method.getName());
         }
+    }
+
+    private void log(Object o) {
+        System.out.println("location is " + o);
+        textView.setText("location is " + o);
     }
 
 
