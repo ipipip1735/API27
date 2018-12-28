@@ -108,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
+
+        if (Objects.isNull(mFusedLocationClient)) return;
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
     @Override
@@ -165,10 +168,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 System.out.println("default");
         }
-
-//        SystemClock.elapsedRealtimeNanos();
-
-        System.out.println("time is " + System.currentTimeMillis());
     }
 
 
@@ -187,7 +186,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Location location) {
                 System.out.println("~~onSuccess~~");
-                log(location);
+                if (Objects.isNull(location)) {
+                    System.out.println("location is nulll");
+                    return;
+                }
+                System.out.println("location is " + location);
+                System.out.println("getTime is " + location.getTime());
+                System.out.println("getElapsedRealtimeNanos is " + location.getElapsedRealtimeNanos());
+
+                textView.setText("location is " + location);
+
+
+
             }
         });
 
@@ -209,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval(1500);
         locationRequest.setFastestInterval(1000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         //创建配置构建器
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
@@ -278,8 +288,8 @@ public class MainActivity extends AppCompatActivity {
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
+        locationRequest.setInterval(1500);
+        locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, null);
 
@@ -302,18 +312,5 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
     }
-
-    private void getMethods(Class<?> c) {
-        Method[] methods = c.getMethods();
-        for (Method method : methods) {
-            System.out.print(method.getName());
-        }
-    }
-
-    private void log(Object o) {
-        System.out.println("location is " + o);
-        textView.setText("location is " + o);
-    }
-
 
 }
