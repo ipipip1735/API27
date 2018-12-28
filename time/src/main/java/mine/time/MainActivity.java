@@ -3,10 +3,17 @@ package mine.time;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -114,6 +121,16 @@ public class MainActivity extends AppCompatActivity {
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
 
+        TimeZone tz = TimeZone.getTimeZone("GTM+8");
+//        TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
+        Calendar c = Calendar.getInstance(tz);
+        long timestamp = System.currentTimeMillis();
+        c.setTimeInMillis(timestamp);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d k:mm:ss X");
+        sdf.setCalendar(c);
+        String s = sdf.format(c.getTime());
+        System.out.println("time is " + s);
     }
 
     public void reloading(View view) {

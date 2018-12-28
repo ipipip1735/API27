@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,7 +28,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_INVALID;
@@ -72,6 +81,19 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("getLastLocation is " + locationResult.getLastLocation());
                 for (Location location : locationResult.getLocations()) {
                     System.out.println("location is " + location);
+
+
+                    TimeZone tz = TimeZone.getTimeZone("GTM+8");
+//                    TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
+                    Calendar c = Calendar.getInstance(tz);
+                    long timestamp = System.currentTimeMillis();
+                    c.setTimeInMillis(timestamp);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d k:mm:ss X");
+                    sdf.setCalendar(c);
+                    String s = sdf.format(c.getTime());
+                    System.out.println("time is " + s);
+
                     textView.setText("location is " + location);
                 }
 
@@ -119,14 +141,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
-//        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -174,6 +193,20 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
         lastLocation();
+
+
+        TimeZone tz = TimeZone.getTimeZone("GTM+8");
+//        TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
+        Calendar c = Calendar.getInstance(tz);
+        long timestamp = System.currentTimeMillis();
+        c.setTimeInMillis(timestamp);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d k:mm:ss X");
+        sdf.setCalendar(c);
+        String s = sdf.format(c.getTime());
+        System.out.println("time is " + s);
+
+
     }
 
     private void lastLocation() {
@@ -191,11 +224,13 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 System.out.println("location is " + location);
-                System.out.println("getTime is " + location.getTime());
-                System.out.println("getElapsedRealtimeNanos is " + location.getElapsedRealtimeNanos());
+                textView.setText(location.toString());
 
-                textView.setText("location is " + location);
 
+                double hours = location.getElapsedRealtimeNanos() / 3600 / 1000 / 1000 / 1000;
+
+                System.out.println("realtime is " + hours);
+                System.out.println("devicetime is " + SystemClock.elapsedRealtimeNanos() / 3600 / 1000 / 1000 / 1000);
 
 
             }
@@ -210,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setting(View view) {
-        System.out.println("~~button.start~~");
+        System.out.println("~~button.setting~~");
         setting();
     }
 
@@ -283,7 +318,6 @@ public class MainActivity extends AppCompatActivity {
     public void request(View view) {
         System.out.println("~~button.request~~");
 
-
         if (Objects.isNull(mFusedLocationClient))
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -292,6 +326,7 @@ public class MainActivity extends AppCompatActivity {
         locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, null);
+
 
     }
 
