@@ -34,6 +34,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -83,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("location is " + location);
 
 
-                    TimeZone tz = TimeZone.getTimeZone("GTM+8");
+                    TimeZone tz = TimeZone.getTimeZone("GMT+8");
 //                    TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
+
                     Calendar c = Calendar.getInstance(tz);
                     long timestamp = System.currentTimeMillis();
                     c.setTimeInMillis(timestamp);
@@ -193,20 +195,7 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
         lastLocation();
-
-
-        TimeZone tz = TimeZone.getTimeZone("GTM+8");
-//        TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
-        Calendar c = Calendar.getInstance(tz);
-        long timestamp = System.currentTimeMillis();
-        c.setTimeInMillis(timestamp);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d k:mm:ss X");
-        sdf.setCalendar(c);
-        String s = sdf.format(c.getTime());
-        System.out.println("time is " + s);
-
-
+        dateTime();
     }
 
     private void lastLocation() {
@@ -345,6 +334,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+    }
+
+    private void dateTime() {
+
+        TimeZone tz = TimeZone.getTimeZone("GMT+8");
+//        TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
+
+        long timestamp = System.currentTimeMillis();
+        Date date = new Date(timestamp);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d H:m:s Z");
+        sdf.setTimeZone(tz);
+        String s = sdf.format(date);
+        System.out.println("time is " + s);
 
     }
 

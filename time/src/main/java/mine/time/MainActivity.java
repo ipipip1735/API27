@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("elapsedRealtimeNanos is " + SystemClock.elapsedRealtimeNanos());
         System.out.println("uptimeMillis is " + SystemClock.uptimeMillis());
 
-
     }
 
 
@@ -105,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
         //查看时间
         System.out.println("currentThreadTimeMillis is " + SystemClock.currentThreadTimeMillis());
 
@@ -121,16 +121,16 @@ public class MainActivity extends AppCompatActivity {
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
 
-        TimeZone tz = TimeZone.getTimeZone("GTM+8");
+        TimeZone tz = TimeZone.getTimeZone("GMT+8");
 //        TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
-        Calendar c = Calendar.getInstance(tz);
-        long timestamp = System.currentTimeMillis();
-        c.setTimeInMillis(timestamp);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d k:mm:ss X");
-        sdf.setCalendar(c);
-        String s = sdf.format(c.getTime());
+        long timestamp = System.currentTimeMillis();
+        Date date = new Date(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d H:m:s X");
+        sdf.setTimeZone(tz);
+        String s = sdf.format(date);
         System.out.println("time is " + s);
+
     }
 
     public void reloading(View view) {
