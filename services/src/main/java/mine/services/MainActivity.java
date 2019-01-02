@@ -53,13 +53,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("**********  Main.onBackPressed  ***********");
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
         System.out.println("**********  Main.onStop  ***********");
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -67,13 +65,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("**********  Main.onSaveInstanceState  ***********");
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         System.out.println("**********  Main.onDestroy  ***********");
     }
-
 
     public void start(View view) {
         System.out.println("~~start~~");
@@ -82,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction("bs");
         intent.setPackage(getPackageName());
         startService(intent);
-
-
+        System.out.println("000" + Thread.currentThread());
 
     }
 
@@ -100,12 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public void del(View view) {
         System.out.println("~~del~~");
     }
-
-
 
     public void query(View view) {
         System.out.println("~~query~~");

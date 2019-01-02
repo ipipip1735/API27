@@ -8,7 +8,6 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private LooperThread thread = new LooperThread();
 
 
@@ -93,15 +92,12 @@ public class MainActivity extends AppCompatActivity {
         message.setData(bundle);
         message.sendToTarget();
 
-
     }
 
     public void start(View view) {
         System.out.println("~~start~~");
         LooperThread looperThread = new LooperThread();
         looperThread.start();
-
-
 
         try {
             Thread.sleep(1000l);
@@ -125,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
         bundle.putInt("one", 1);
         message.setData(bundle);
         message.sendToTarget();
-
-
-
 
 
     }
