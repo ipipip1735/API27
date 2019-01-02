@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,17 +26,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_INVALID;
@@ -50,7 +43,7 @@ import static com.google.android.gms.common.ConnectionResult.SUCCESS;
  * Created by Administrator on 2018/12/24.
  */
 public class MainActivity extends AppCompatActivity {
-    TextView textView;
+    TextView infoTV, statusTV;
     FusedLocationProviderClient mFusedLocationClient;
     LocationCallback mLocationCallback;
 
@@ -59,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
-        ViewGroup group = findViewById(R.id.fl);
-        textView = new TextView(this);
-        group.addView(textView);
+        ViewGroup group = findViewById(R.id.ll);
+        infoTV = new TextView(this);
+        group.addView(infoTV);
+        statusTV = new TextView(this);
+        group.addView(statusTV);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -77,26 +74,17 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("~onLocationResult~");
                 if (locationResult == null) {
                     System.out.println("null");
+                    statusTV.setText("null");
                     return;
                 }
                 System.out.println("getLastLocation is " + locationResult.getLastLocation());
                 for (Location location : locationResult.getLocations()) {
                     System.out.println("location is " + location);
+                    infoTV.setText("location is " + location);
 
+                    System.out.println(interval(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()));
+                    statusTV.setText(interval(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()));
 
-                    TimeZone tz = TimeZone.getTimeZone("GMT+8");
-//                    TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
-
-                    Calendar c = Calendar.getInstance(tz);
-                    long timestamp = System.currentTimeMillis();
-                    c.setTimeInMillis(timestamp);
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d k:mm:ss X");
-                    sdf.setCalendar(c);
-                    String s = sdf.format(c.getTime());
-                    System.out.println("time is " + s);
-
-                    textView.setText("location is " + location);
                 }
 
             }
@@ -166,36 +154,44 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.check~~");
 
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-
+        statusTV.setText("");
         switch (googleApiAvailability.isGooglePlayServicesAvailable(this)) {
             case SUCCESS:
                 System.out.println("SUCCESS");
+                infoTV.setText("SUCCESS");
                 break;
             case SERVICE_MISSING:
                 System.out.println("SERVICE_MISSING");
+                infoTV.setText("SERVICE_MISSING");
                 break;
             case SERVICE_UPDATING:
                 System.out.println("SERVICE_UPDATING");
+                infoTV.setText("SERVICE_UPDATING");
                 break;
             case SERVICE_VERSION_UPDATE_REQUIRED:
                 System.out.println("SERVICE_VERSION_U");
+                infoTV.setText("SERVICE_VERSION_U");
                 break;
             case SERVICE_DISABLED:
                 System.out.println("SERVICE_DISABLED");
+                infoTV.setText("SERVICE_DISABLED");
                 break;
             case SERVICE_INVALID:
                 System.out.println("SERVICE_INVALID");
+                infoTV.setText("SERVICE_INVALID");
                 break;
             default:
                 System.out.println("default");
+                infoTV.setText("default");
         }
+
     }
 
 
     public void start(View view) {
         System.out.println("~~button.start~~");
         lastLocation();
-        dateTime();
+        nowTime();
     }
 
     private void lastLocation() {
@@ -213,14 +209,9 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 System.out.println("location is " + location);
-                textView.setText(location.toString());
-
-
-                double hours = location.getElapsedRealtimeNanos() / 3600 / 1000 / 1000 / 1000;
-
-                System.out.println("realtime is " + hours);
-                System.out.println("devicetime is " + SystemClock.elapsedRealtimeNanos() / 3600 / 1000 / 1000 / 1000);
-
+                infoTV.setText(location.toString());
+                System.out.println(interval(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()));
+                statusTV.setText(interval(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()));
 
             }
         });
@@ -275,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("isNetworkLocationUsable is " + states.isNetworkLocationUsable());
 
                 if (locationSettingsResponse != null) {
-                    textView.setText("status is ok!");
+                    infoTV.setText("status is ok!");
                 }
             }
         });
@@ -300,7 +291,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-        if (Objects.isNull(mFusedLocationClient)) return;
+        if (Objects.isNull(mFusedLocationClient)) {
+            System.out.println("again can't stop, it has stopped");
+            infoTV.setText("");
+            statusTV.setText("again can't stop, it has stopped");
+            return;
+        }
+
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
@@ -337,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void dateTime() {
+    private void nowTime() {
 
         TimeZone tz = TimeZone.getTimeZone("GMT+8");
 //        TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
@@ -345,11 +342,24 @@ public class MainActivity extends AppCompatActivity {
         long timestamp = System.currentTimeMillis();
         Date date = new Date(timestamp);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d H:m:s Z");
+        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d H:m:s z");
         sdf.setTimeZone(tz);
         String s = sdf.format(date);
-        System.out.println("time is " + s);
+        System.out.println("nowTime|" + s);
 
+    }
+
+    private String interval(long millis) {
+        if (millis < 0) {
+            return "Error|millis is " + millis;
+        }
+
+        long hours, minutes, seconds;
+        hours = TimeUnit.NANOSECONDS.toHours(millis);
+        minutes = TimeUnit.NANOSECONDS.toMinutes(millis) % 60;
+        seconds = TimeUnit.NANOSECONDS.toSeconds(millis) % 60;
+
+        return hours + ":" + minutes + ":" + seconds;
     }
 
 }

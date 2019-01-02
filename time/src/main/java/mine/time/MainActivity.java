@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     public void bind(View view) {
         System.out.println("~~button.bind~~");
 
-        //查看时间
+        //查看时间截
         System.out.println("currentThreadTimeMillis is " + SystemClock.currentThreadTimeMillis());
 
         //创建时间截
@@ -121,12 +121,14 @@ public class MainActivity extends AppCompatActivity {
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
 
+        long timestamp = System.currentTimeMillis(); //获取当前时间截
+        Date date = new Date(timestamp);
+
+
         TimeZone tz = TimeZone.getTimeZone("GMT+8");
 //        TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
+        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d H:m:s z");
 
-        long timestamp = System.currentTimeMillis();
-        Date date = new Date(timestamp);
-        SimpleDateFormat sdf = new SimpleDateFormat("Y/M/d H:m:s X");
         sdf.setTimeZone(tz);
         String s = sdf.format(date);
         System.out.println("time is " + s);
