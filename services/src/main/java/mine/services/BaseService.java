@@ -16,17 +16,18 @@ public class BaseService extends Service {
 
     private Handler serviceHandler;
 
-
     public BaseService() {
         System.out.println("+++ " + getClass().getSimpleName() + ".BaseService +++");
         System.out.println(Thread.currentThread());
 
     }
 
+
     public Handler getServiceHandler() {
         System.out.println(serviceHandler);
         return serviceHandler;
     }
+
 
     @Nullable
     @Override
@@ -55,13 +56,13 @@ public class BaseService extends Service {
         };
     }
 
+
     @Override
     public void onDestroy() {
         System.out.println("---- " + getClass().getSimpleName() + ".onDestroy ----");
         System.out.println(Thread.currentThread());
-
-
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -76,9 +77,6 @@ public class BaseService extends Service {
 
         return START_STICKY;
     }
-
-
-
 
 
     @Override
@@ -96,6 +94,7 @@ public class BaseService extends Service {
         super.onRebind(intent);
     }
 
+
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         System.out.println("---- " + getClass().getSimpleName() + ".onTaskRemoved ----");
@@ -112,6 +111,8 @@ public class BaseService extends Service {
 
         System.out.println("one is end");
     }
+
+
     public void waitTwo() {
         try {
             Thread.sleep(2000l);
