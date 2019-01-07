@@ -143,8 +143,6 @@ public class MainActivity extends AppCompatActivity {
         message.setData(bundle);
         message.sendToTarget();
 
-
-
     }
 
 

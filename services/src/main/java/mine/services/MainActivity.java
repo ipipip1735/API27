@@ -1,6 +1,9 @@
 package mine.services;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -83,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
         intent.setPackage(getPackageName());
         startService(intent);
 
-
-
     }
 
     public void stop(View view) {
@@ -95,14 +96,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void reloading(View view) {
-        System.out.println("~~reloading~~");
+    public void bind(View view) {
+        System.out.println("~~bind~~");
+
+        Intent intent = new Intent(this, BaseService.class);
+        intent.setAction("bs");
+        bindService(intent, new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                System.out.println("..onServiceConnected..");
+                System.out.println("componentName is " + componentName);
+                System.out.println("iBinder is " + iBinder);
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                System.out.println("..onServiceDisconnected..");
+                System.out.println("componentName is " + componentName);
+            }
+        }, BIND_AUTO_CREATE);
 
     }
 
 
-    public void del(View view) {
-        System.out.println("~~del~~");
+    public void unBind(View view) {
+        System.out.println("~~unBind~~");
+
     }
 
 
