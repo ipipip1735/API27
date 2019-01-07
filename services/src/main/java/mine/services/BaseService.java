@@ -45,13 +45,8 @@ public class BaseService extends Service {
         serviceHandler = new Handler(getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
-                System.out.println("service|" + msg.arg1);
-                try {
-                    msg.replyTo.send(Message.obtain(null, 0, 310, 0));
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                stopSelf(msg.arg1);
+                System.out.println("service|" + msg.what);
+                stopSelf(msg.what);
             }
         };
     }
@@ -71,9 +66,9 @@ public class BaseService extends Service {
 
         System.out.println("start id  is " + startId);
 
-//        Message message = new Message();
-//        message.arg1 = 6;
-//        serviceHandler.sendMessage(message);
+        Message message = new Message();
+        message.what = startId;
+        serviceHandler.sendMessage(message);
 
         return START_STICKY;
     }

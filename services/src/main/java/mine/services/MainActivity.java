@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
+    ServiceConnection serviceConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +84,13 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~start~~");
 
-        Intent intent = new Intent("bs");
-        intent.setAction("bs");
-        intent.setPackage(getPackageName());
+//        Intent intent = new Intent("bs");
+////        intent.setAction("bs");
+////        intent.setPackage(getPackageName());
+
+        Intent intent = new Intent(this, BaseService.class);
+
+        startService(intent);
         startService(intent);
 
     }
@@ -101,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, BaseService.class);
         intent.setAction("bs");
-        bindService(intent, new ServiceConnection() {
+
+        if(Objects.isNull(serviceConnection))
+        serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 System.out.println("..onServiceConnected..");
@@ -115,13 +124,15 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("..onServiceDisconnected..");
                 System.out.println("componentName is " + componentName);
             }
-        }, BIND_AUTO_CREATE);
+        };
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
 
     }
 
 
     public void unBind(View view) {
         System.out.println("~~unBind~~");
+        if(Objects.nonNull(serviceConnection)) unbindService(serviceConnection);
 
     }
 

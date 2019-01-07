@@ -34,13 +34,13 @@ public class MessengerService extends Service {
             public void handleMessage(Message msg) {
                 System.out.print("what is " + msg.what);
                 System.out.println(", arg1 is " + msg.arg1);
-                try {
-                    System.out.println(Thread.currentThread());
-                    msg.replyTo.send(Message.obtain(null, 0, 555, 0));
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-//                stopSelf();
+//                try {
+//                    System.out.println(Thread.currentThread());
+//                    msg.replyTo.send(Message.obtain(null, 0, 555, 0));
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+                stopSelf();
             }
         };
         messenger = new Messenger(serviceHandler);
@@ -65,6 +65,9 @@ public class MessengerService extends Service {
         System.out.println("---- " + getClass().getSimpleName() + ".onStartCommand ----");
         System.out.println(Thread.currentThread());
         System.out.println("start id  is " + startId);
+
+
+        serviceHandler.handleMessage(Message.obtain(null, startId));
 
 //        Notification notification = new Notification(R.drawable.ic_launcher_background, getText(R.string.tc),
 //                System.currentTimeMillis());

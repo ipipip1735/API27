@@ -87,12 +87,12 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
     public void start(View view) {
         System.out.println("~~start~~");
 
-//        Intent intent = new Intent(this, MessengerService.class);
-//        startService(intent);
+        Intent intent = new Intent(this, MessengerService.class);
+        startService(intent);
 //        startForegroundService(intent);
 
-        Intent intent = new Intent(this, AIDLService.class);
-        startService(intent);
+//        Intent intent = new Intent(this, AIDLService.class);
+//        startService(intent);
 
 
     }
@@ -112,6 +112,7 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
 
         Intent intent = new Intent(this, MessengerService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
+
 
     }
 
