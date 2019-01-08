@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+
+import java.util.Objects;
 
 /**
  * Created by Administrator on 2018/7/24.
@@ -42,11 +45,29 @@ public class BaseService extends Service {
         System.out.println("---- " + getClass().getSimpleName() + ".onCreate ----");
         System.out.println(Thread.currentThread());
 
-        serviceHandler = new Handler(getMainLooper()){
+        serviceHandler = new Handler(getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                System.out.println("service|" + msg.what);
-                stopSelf(msg.what);
+                System.out.println("-.- " + getClass().getSimpleName() + ".handleMessage -.-");
+
+                if (msg.what == 1) { //根据what判断服务启动类别，是bind，还是start
+                    System.out.println("service|" + msg.what);
+                } else {
+                    System.out.println("bind|" + msg.what);
+                }
+
+
+                //回应服务端信息
+                if (Objects.nonNull(msg.replyTo)) { //判断是否传递Messenger
+                    Messenger messenger = msg.replyTo;
+                    try {
+                        messenger.send(Message.obtain(null, 99));
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                stopSelf(msg.what); //是否手动终止服务取决于业务逻辑
             }
         };
     }
@@ -66,9 +87,10 @@ public class BaseService extends Service {
 
         System.out.println("start id  is " + startId);
 
-        Message message = new Message();
+        Message message = Message.obtain();
         message.what = startId;
         serviceHandler.sendMessage(message);
+
 
         return START_STICKY;
     }

@@ -3,7 +3,10 @@ package mine.services;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -84,14 +87,17 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~start~~");
 
-//        Intent intent = new Intent("bs");
-////        intent.setAction("bs");
-////        intent.setPackage(getPackageName());
-
-        Intent intent = new Intent(this, BaseService.class);
-
+        //启动服务
+        Intent intent = new Intent("bs");
+        intent.setAction("bs");
+        intent.setPackage(getPackageName());
         startService(intent);
-        startService(intent);
+
+
+        //连续启动服务，根据ID终止服务
+//        Intent intent = new Intent(this, BaseService.class);
+//        startService(intent);
+//        startService(intent);
 
     }
 
@@ -109,22 +115,37 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BaseService.class);
         intent.setAction("bs");
 
-        if(Objects.isNull(serviceConnection))
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                System.out.println("..onServiceConnected..");
-                System.out.println("componentName is " + componentName);
-                System.out.println("iBinder is " + iBinder);
+        if (Objects.isNull(serviceConnection))
+            serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                    System.out.println("..onServiceConnected..");
+                    System.out.println("componentName is " + componentName);
+                    System.out.println("iBinder is " + iBinder);
 
-            }
+                    //发送信息给服务端
+                    BaseBinder baseBinder = (BaseBinder) iBinder; //强制转换
+                    Handler serviceHandler = baseBinder.getServiceHandler();
+                    Message message = Message.obtain(null, 2);
 
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-                System.out.println("..onServiceDisconnected..");
-                System.out.println("componentName is " + componentName);
-            }
-        };
+//                    message.replyTo = new Messenger(iBinder); //方式一
+                    message.replyTo = new Messenger(new Handler(new Handler.Callback() { //方式二
+                        @Override
+                        public boolean handleMessage(Message msg) {
+                            System.out.println("Clinet|" + msg.what);
+                            return true;
+                        }
+                    }));
+
+                    serviceHandler.handleMessage(message);
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName componentName) {
+                    System.out.println("..onServiceDisconnected..");
+                    System.out.println("componentName is " + componentName);
+                }
+            };
         bindService(intent, serviceConnection, BIND_AUTO_CREATE);
 
     }
@@ -132,10 +153,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void unBind(View view) {
         System.out.println("~~unBind~~");
-        if(Objects.nonNull(serviceConnection)) unbindService(serviceConnection);
+        if (Objects.nonNull(serviceConnection)) unbindService(serviceConnection);
 
     }
-
 
 
     public void query(View view) {
