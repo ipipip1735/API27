@@ -138,14 +138,15 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
     public void del(View view) {
         System.out.println("~~del~~");
         Message message = Message.obtain(null, 0, 1221, 0);
+        message.replyTo = new Messenger(new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                System.out.println("Client|msg is " + msg.arg1);
+            }
+        });
+
         try {
             messenger.send(message);
-            message.replyTo = new Messenger(new Handler(){
-                @Override
-                public void handleMessage(Message msg) {
-                    System.out.println(msg.arg1);
-                }
-            });
         } catch (RemoteException e) {
             e.printStackTrace();
         }

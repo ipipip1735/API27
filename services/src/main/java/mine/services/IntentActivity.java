@@ -3,17 +3,20 @@ package mine.services;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by Administrator on 2019/1/9.
+ */
+public class IntentActivity extends AppCompatActivity {
 
     ServiceConnection serviceConnection;
 
@@ -88,16 +91,8 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~start~~");
 
         //启动服务
-        Intent intent = new Intent("bs");
-        intent.setAction("bs");
-        intent.setPackage(getPackageName());
+        Intent intent = new Intent(this, ThreaderService.class);
         startService(intent);
-
-
-        //连续启动服务，根据ID终止服务
-//        Intent intent = new Intent(this, BaseService.class);
-//        startService(intent);
-//        startService(intent);
 
     }
 

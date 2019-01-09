@@ -17,34 +17,37 @@ import android.support.annotation.Nullable;
 
 public class MessengerService extends Service {
     private Messenger messenger;
-    private Handler serviceHandler;
 
     public MessengerService() {
         System.out.println("+++ " + getClass().getSimpleName() + " +++");
         System.out.println(Thread.currentThread());
     }
 
+
     @Override
     public void onCreate() {
         System.out.println("---- " + getClass().getSimpleName() + ".onCreate ----");
         System.out.println(Thread.currentThread());
 
-        serviceHandler = new Handler(getMainLooper()) {
+        Handler serviceHandler = new Handler(getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                System.out.print("what is " + msg.what);
-                System.out.println(", arg1 is " + msg.arg1);
-//                try {
-//                    System.out.println(Thread.currentThread());
-//                    msg.replyTo.send(Message.obtain(null, 0, 555, 0));
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-                stopSelf();
+                System.out.println("service|" + msg.what);
+                System.out.println(Thread.currentThread());
+
+                try {
+                    msg.replyTo.send(Message.obtain(null, 0, 555, 0));
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                stopSelf(msg.what);
             }
         };
+
         messenger = new Messenger(serviceHandler);
+
     }
+
 
     @Nullable
     @Override
@@ -67,7 +70,7 @@ public class MessengerService extends Service {
         System.out.println("start id  is " + startId);
 
 
-        serviceHandler.handleMessage(Message.obtain(null, startId));
+//        serviceHandler.handleMessage(Message.obtain(null, startId));
 
 //        Notification notification = new Notification(R.drawable.ic_launcher_background, getText(R.string.tc),
 //                System.currentTimeMillis());
