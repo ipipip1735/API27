@@ -24,8 +24,8 @@ include   ':apptemp',
 //        ':loader'
 //        ':view',
 //        ':broadcast',
-        ':services'
-//        ':notification',
+        ':services',
+        ':notification'
 //        ':clipboard',
 //        ':webview',
 //        ':opengl',

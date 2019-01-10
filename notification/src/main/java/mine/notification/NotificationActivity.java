@@ -89,18 +89,26 @@ public class NotificationActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //创建通道
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
         String channelId = "c1";
         CharSequence channelName = "cf";
         int importance = NotificationManager.IMPORTANCE_LOW;
         NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
-//        notificationChannel.setShowBadge(false);
+
+        notificationChannel.setShowBadge(false);
         notificationManager.createNotificationChannel(notificationChannel);
 
-        customNotify(notificationManager);
+        //创建通知
+
+
+
+
+//        customNotify(notificationManager);
 //        groupNotify(notificationManager);
-//        actionNotify(notificationManager);
+        actionNotify(notificationManager);
 //        normalNotify(notificationManager);
 
 
