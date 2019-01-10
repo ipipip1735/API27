@@ -98,11 +98,15 @@ public class NotificationActivity extends AppCompatActivity {
 
 
 
-//        BasicNotify(notificationManager); //创建通知
+
+
+
+
+        BasicNotify(notificationManager); //创建通知
 //        StackNotify(notificationManager); //回退栈通知
 
-//        customNotify(notificationManager);
-        groupNotify(notificationManager);
+//        customNotify(notificationManager); //自定义布局通知
+//        groupNotify(notificationManager); //通知分组
 //        actionNotify(notificationManager);
 //        normalNotify(notificationManager);
 
@@ -114,7 +118,8 @@ public class NotificationActivity extends AppCompatActivity {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("My notification")
-                .setContentText("Hello World!");
+                .setContentText("Hello World!")
+                .setAutoCancel(true);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(OneActivity.class);
@@ -128,10 +133,23 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void BasicNotify(NotificationManager notificationManager) {
+
+        //Activity/Services/Broadcast都能包装为PendingIntent，点击通知后就能启动
+        //方式一：将Activity包装为PendingIntent
+        Intent intent = new Intent(this, OneActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //方式二：将Broadcast包装为PendingIntent
+//        Intent intent = new Intent(this, MBR.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("My notification")
-                .setContentText("Hello World!");
+                .setContentText("Hello World!")
+                .setContentIntent(pendingIntent); //设置点击通知后要启动的Intent
         notificationManager.notify(mId, mBuilder.build());
     }
 
@@ -146,8 +164,8 @@ public class NotificationActivity extends AppCompatActivity {
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomContentView(notificationLayout)
                 .setCustomBigContentView(notificationLayoutExpanded)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!")
+//                .setContentTitle("My notification")
+//                .setContentText("Hello World!")
                 .build();
         notificationManager.notify(mId, customNotification);
     }
@@ -158,7 +176,7 @@ public class NotificationActivity extends AppCompatActivity {
         Notification notification1 = mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("n1")
                 .setContentText("aaaaaaaaaa")
-                .setGroup("myGroup")
+                .setGroup("myGroup") //指定所属的组
                 .setNumber(15)
                 .setAutoCancel(true)
                 .build();
@@ -166,7 +184,7 @@ public class NotificationActivity extends AppCompatActivity {
         Notification notification2 = mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("n2")
                 .setContentText("bbbbbbbbbbbbbb")
-                .setGroup("myGroup")
+                .setGroup("myGroup") //指定所属的组
                 .setAutoCancel(true)
                 .build();
 
@@ -175,11 +193,11 @@ public class NotificationActivity extends AppCompatActivity {
                 .setContentText("n1, n2")
                 .setGroup("myGroup")
                 .setAutoCancel(true)
-                .setGroupSummary(true)
+                .setGroupSummary(true) //设置为组通知
                 .build();
+        notificationManager.notify(3, groupNotify);
         notificationManager.notify(1, notification1);
         notificationManager.notify(2, notification2);
-        notificationManager.notify(3, groupNotify);
 
     }
 
@@ -246,8 +264,8 @@ public class NotificationActivity extends AppCompatActivity {
                 .setAutoCancel(true)
                 .setContentText("Hello World!")
                 .setProgress(0, 0, false)
-                .setContentIntent(pendingIntent)
-                .addAction(R.drawable.w1, "MBR", mbrPendingIntent);
+                .setContentIntent(pendingIntent);
+//                .addAction(R.drawable.w1, "MBR", mbrPendingIntent);
 
 
         notificationManager.notify(mId, mBuilder.build());
