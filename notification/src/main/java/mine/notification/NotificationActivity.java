@@ -4,14 +4,11 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.media.session.MediaSession;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -92,26 +89,50 @@ public class NotificationActivity extends AppCompatActivity {
 
         //创建通道
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
-
         String channelId = "c1";
         CharSequence channelName = "cf";
         int importance = NotificationManager.IMPORTANCE_LOW;
         NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
-
         notificationChannel.setShowBadge(false);
         notificationManager.createNotificationChannel(notificationChannel);
 
-        //创建通知
 
 
-
+//        BasicNotify(notificationManager); //创建通知
+//        StackNotify(notificationManager); //回退栈通知
 
 //        customNotify(notificationManager);
-//        groupNotify(notificationManager);
-        actionNotify(notificationManager);
+        groupNotify(notificationManager);
+//        actionNotify(notificationManager);
 //        normalNotify(notificationManager);
 
 
+    }
+
+    private void StackNotify(NotificationManager notificationManager) {
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!");
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(OneActivity.class);
+        stackBuilder.addNextIntent(new Intent(this, OneActivity.class)); //增加第一个Activity
+        stackBuilder.addNextIntent(new Intent(this, MainActivity.class)); //增加第二个Activity
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_ONE_SHOT);
+        mBuilder.setContentIntent(resultPendingIntent);
+
+
+        notificationManager.notify(mId, mBuilder.build());
+    }
+
+    private void BasicNotify(NotificationManager notificationManager) {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!");
+        notificationManager.notify(mId, mBuilder.build());
     }
 
     private void customNotify(NotificationManager notificationManager) {
@@ -125,12 +146,13 @@ public class NotificationActivity extends AppCompatActivity {
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomContentView(notificationLayout)
                 .setCustomBigContentView(notificationLayoutExpanded)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!")
                 .build();
-        notificationManager.notify(1, customNotification);
+        notificationManager.notify(mId, customNotification);
     }
 
     private void groupNotify(NotificationManager notificationManager) {
-
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1");
         Notification notification1 = mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -155,9 +177,9 @@ public class NotificationActivity extends AppCompatActivity {
                 .setAutoCancel(true)
                 .setGroupSummary(true)
                 .build();
-//        notificationManager.notify(3, groupNotify);
         notificationManager.notify(1, notification1);
-//        notificationManager.notify(2, notification2);
+        notificationManager.notify(2, notification2);
+        notificationManager.notify(3, groupNotify);
 
     }
 

@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".OneActivity">
+        <activity android:name=".OneActivity" android:parentActivityName=".NotificationActivity">
             <intent-filter>
                 <action android:name="MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />

@@ -99,6 +99,19 @@ public class MainActivity extends AppCompatActivity {
 //        startService(intent);
 //        startService(intent);
 
+
+//        int code = 8;
+//        Parcel data = Parcel.obtain();
+//        data.writeString("sssss");
+//        Parcel reply = Parcel.obtain();
+//        reply.writeString("ttttt");
+//        int flags = 8;
+//        try {
+//            iBinder.transact(12, data, reply, flags);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     public void stop(View view) {
