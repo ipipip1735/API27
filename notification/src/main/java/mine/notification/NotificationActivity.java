@@ -6,6 +6,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -102,13 +105,47 @@ public class NotificationActivity extends AppCompatActivity {
 
 
 
-        BasicNotify(notificationManager); //创建通知
+//        BasicNotify(notificationManager); //创建通知
 //        StackNotify(notificationManager); //回退栈通知
 
-//        customNotify(notificationManager); //自定义布局通知
+        customNotify(notificationManager); //自定义布局通知
 //        groupNotify(notificationManager); //通知分组
 //        actionNotify(notificationManager);
 //        normalNotify(notificationManager);
+//        foldNotify(notificationManager);
+
+
+    }
+
+    private void foldNotify(NotificationManager notificationManager) {
+
+        Bitmap gg = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
+        Bitmap kk = BitmapFactory.decodeResource(getResources(), R.drawable.kk);
+        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
+
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
+//        notificationLayout.setTextViewText();
+        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
+
+
+        NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
+        style.bigPicture(gg)
+                .bigLargeIcon(ff)
+                .setBigContentTitle("ttt")
+                .setSummaryText("ttttt");
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setLargeIcon(kk)
+                .setContentTitle("1111My notification")
+                .setContentText("Hcccello World!")
+                .setStyle(style)
+                .setOngoing(true)
+                .setCustomContentView(notificationLayout)
+                .setCustomBigContentView(notificationLayoutExpanded)
+                .setAutoCancel(true);
+
+        notificationManager.notify(mId, mBuilder.build());
 
 
     }
@@ -117,7 +154,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("My notification")
+                .setContentTitle("My notizfication")
                 .setContentText("Hello World!")
                 .setAutoCancel(true);
 
@@ -151,23 +188,49 @@ public class NotificationActivity extends AppCompatActivity {
                 .setContentText("Hello World!")
                 .setContentIntent(pendingIntent); //设置点击通知后要启动的Intent
         notificationManager.notify(mId, mBuilder.build());
+
+
     }
 
     private void customNotify(NotificationManager notificationManager) {
 
-        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
-        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
+        //部分自定义
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
 
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
+//        notificationLayout.setTextViewText();
+        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
 
         Notification customNotification = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setLargeIcon(icon)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationLayoutExpanded)
-//                .setContentTitle("My notification")
-//                .setContentText("Hello World!")
+                .setCustomContentView(notificationLayout) //通知折叠时的UI
+                .setCustomBigContentView(notificationLayoutExpanded) //通知展开时的UI
+
+//                .setContentTitle("My notification") //由于使用自定义布局，此方法无效
+//                .setContentText("Hello World!") //由于使用自定义布局，此方法无效
                 .build();
         notificationManager.notify(mId, customNotification);
+
+
+        //完全自定义
+//        Intent intent = new Intent(this, OneActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
+//        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
+//
+//        Notification customNotification = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+//                .setCustomContentView(notificationLayout)
+//                .setCustomBigContentView(notificationLayoutExpanded)
+////                .setContentTitle("My notification")
+////                .setContentText("Hello World!")
+//                .build();
+//        notificationManager.notify(mId, customNotification);
+
+
     }
 
     private void groupNotify(NotificationManager notificationManager) {
@@ -336,6 +399,40 @@ public class NotificationActivity extends AppCompatActivity {
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
+        //创建通道
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        String channelId = "c2";
+        CharSequence channelName = "cth";
+        int importance = NotificationManager.IMPORTANCE_LOW;
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+        notificationChannel.setShowBadge(false);
+        notificationManager.createNotificationChannel(notificationChannel);
+
+
+
+
+        Bitmap gg = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
+        Bitmap kk = BitmapFactory.decodeResource(getResources(), R.drawable.kk);
+        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
+
+
+        NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
+        style.bigPicture(gg)
+                .bigLargeIcon(ff)
+                .setBigContentTitle("ggg")
+                .setSummaryText("ccccccc");
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c2")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setLargeIcon(kk)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!")
+                .setStyle(style)
+                .setOngoing(false)
+                .setAutoCancel(true);
+
+        notificationManager.notify(mId+1, mBuilder.build());
 
     }
 
