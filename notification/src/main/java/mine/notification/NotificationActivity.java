@@ -9,12 +9,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
 import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
+
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 
 public class NotificationActivity extends AppCompatActivity {
@@ -100,20 +107,120 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
 
-
-
-
-
-
 //        BasicNotify(notificationManager); //创建通知
+//        ComponentNotify(notificationManager); //组件通知(点击通知启动组件)
 //        StackNotify(notificationManager); //回退栈通知
 
-        customNotify(notificationManager); //自定义布局通知
 //        groupNotify(notificationManager); //通知分组
-//        actionNotify(notificationManager);
-//        normalNotify(notificationManager);
-//        foldNotify(notificationManager);
+//        actionNotify(notificationManager); //附加任通知
+        progressNotify(notificationManager); //进度条通知
 
+//        StyleNotify(notificationManager); //样式通知
+//        mediaStyleNotify(notificationManager); //媒体样式通知
+//        customNotify(notificationManager); //自定义样式通知
+//        foldNotify(notificationManager); //可折叠通知
+
+
+    }
+
+    private void ComponentNotify(NotificationManager notificationManager) {
+
+
+        //Activity/Services/Broadcast都能包装为PendingIntent，点击通知后就能启动
+        //方式一：将Activity包装为PendingIntent
+        Intent intent = new Intent(this, OneActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //方式二：将Broadcast包装为PendingIntent
+//        Intent intent = new Intent(this, MBR.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Start Component")
+                .setContentText("start Activity/Service/Broadcast")
+                .setSubText("start")
+                .setContentIntent(pendingIntent); //设置点击通知后要启动的Intent
+        notificationManager.notify(mId, mBuilder.build());
+
+    }
+
+    private void StyleNotify(NotificationManager notificationManager) {
+
+        Bitmap gg = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
+        Bitmap kk = BitmapFactory.decodeResource(getResources(), R.drawable.kk);
+        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
+
+
+        String subText = "sssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
+        String title = "ttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt";
+
+        String context = "ccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccend";
+
+
+        //长文本样式
+//        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()
+//                .setSummaryText(subText)
+//                .setBigContentTitle(title)
+//                .bigText(context);
+
+
+        //大图片样式
+//        NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle()
+//                .bigPicture(kk)
+//                .bigLargeIcon(gg)
+//                .setBigContentTitle(title)
+//                .setSummaryText(subText);
+
+
+        //短信样式
+//        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle()
+//                .addLine("XXX")
+//                .addLine("YYY")
+//                .addLine("ZZZ")
+//                .setBigContentTitle(title)
+//                .setSummaryText(subText);
+
+
+        //消息样式
+//        NotificationCompat.MessagingStyle style = new NotificationCompat.MessagingStyle("userName")
+//                .addMessage("one", System.currentTimeMillis(), "sam")
+//                .addMessage("two", System.currentTimeMillis(), "bob")
+//                .addMessage("one one", System.currentTimeMillis(), "sam")
+//                .addMessage("one one one", System.currentTimeMillis(), "sam")
+//                .addMessage("虎虎虎", System.currentTimeMillis(), "王")
+//                .setConversationTitle("conversation");
+//
+//        System.out.println("getUserDisplayName is " + style.getUserDisplayName());
+//        System.out.println("getConversationTitle is " + style.getConversationTitle());
+//        System.out.println("getMessages is " + style.getMessages());
+
+
+        //媒体样式
+
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this, "c1")
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setLargeIcon(ff)
+                        .setSubText("subText") //优先级比NotificationCompat.BigPictureStyle.setSummaryText()高
+                        .setContentTitle("title")
+                        .setContentText("context")
+//                .setStyle(style)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(mId, mBuilder.build());
 
     }
 
@@ -123,26 +230,36 @@ public class NotificationActivity extends AppCompatActivity {
         Bitmap kk = BitmapFactory.decodeResource(getResources(), R.drawable.kk);
         Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
 
-        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
-//        notificationLayout.setTextViewText();
-        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
+
+        String subText = "sssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+        String title = "ttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt";
+        String context = "ccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccend";
 
 
-        NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
-        style.bigPicture(gg)
-                .bigLargeIcon(ff)
-                .setBigContentTitle("ttt")
-                .setSummaryText("ttttt");
+        NotificationCompat.BigTextStyle style =
+                new NotificationCompat.BigTextStyle()
+                        .setBigContentTitle(title)
+                        .setSummaryText(subText)
+                        .bigText(context);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setLargeIcon(kk)
-                .setContentTitle("1111My notification")
-                .setContentText("Hcccello World!")
-                .setStyle(style)
-                .setOngoing(true)
-                .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationLayoutExpanded)
+                .setContentTitle("title")
+                .setContentText("content")
+                .setSubText("sub")
+                .setStyle(style) //增加长文本样式，通知将自动使用折叠模式
                 .setAutoCancel(true);
 
         notificationManager.notify(mId, mBuilder.build());
@@ -171,23 +288,39 @@ public class NotificationActivity extends AppCompatActivity {
 
     private void BasicNotify(NotificationManager notificationManager) {
 
-        //Activity/Services/Broadcast都能包装为PendingIntent，点击通知后就能启动
-        //方式一：将Activity包装为PendingIntent
-        Intent intent = new Intent(this, OneActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        //方式二：将Broadcast包装为PendingIntent
-//        Intent intent = new Intent(this, MBR.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!")
-                .setContentIntent(pendingIntent); //设置点击通知后要启动的Intent
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this, "c1")
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentInfo("OOOOO")
+                        .setContentTitle("ttt")
+                        .setContentText("Hello World!")
+                        .setSubText("stststst");
         notificationManager.notify(mId, mBuilder.build());
+
+
+//        String subText = "sssssssssssssssssssssssssssssssssssssssssssssssss" +
+//                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+//                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+//                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+//
+//        String title = "ttttttttttttttttttttttttttttttttttttttttttttttttt" +
+//                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+//                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+//                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt";
+//
+//        String context = "ccccccccccccccccccccccccccccccccccccccccccccccccc" +
+//                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+//                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+//                "ccccccccccccccccccccccccend";
+//
+//        NotificationCompat.Builder mBuilder =
+//                new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle(title)
+//                .setContentText(context)
+//                .setSubText(subText);
+//        notificationManager.notify(mId, mBuilder.build());
 
 
     }
@@ -195,40 +328,39 @@ public class NotificationActivity extends AppCompatActivity {
     private void customNotify(NotificationManager notificationManager) {
 
         //部分自定义
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
+//        Bitmap gg = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
+//        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
+//
+//        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small); //折叠时样式
+//        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large); //展开后样式
+////        notificationLayoutExpanded.setBitmap(R.id.imageView, "setImageBitmap", ff); //运行时，动态修改子元素
 
+//        Notification customNotification = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setLargeIcon(gg)
+//                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+//                .setCustomContentView(notificationLayout) //通知折叠时的UI
+//                .setCustomBigContentView(notificationLayoutExpanded) //通知展开时的UI
+//                .setSubText("sub")
+////                .setContentTitle("My notification") //由于使用自定义布局，此方法无效
+////                .setContentText("Hello World!") //由于使用自定义布局，此方法无效
+//                .build();
+//        notificationManager.notify(mId, customNotification);
+
+
+        //完全自定义
+        Intent intent = new Intent(this, OneActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
-//        notificationLayout.setTextViewText();
         RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
 
         Notification customNotification = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setLargeIcon(icon)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout) //通知折叠时的UI
-                .setCustomBigContentView(notificationLayoutExpanded) //通知展开时的UI
-
-//                .setContentTitle("My notification") //由于使用自定义布局，此方法无效
-//                .setContentText("Hello World!") //由于使用自定义布局，此方法无效
+                .setContent(notificationLayout)
+                .setCustomContentView(notificationLayout)
+                .setCustomBigContentView(notificationLayoutExpanded)
                 .build();
         notificationManager.notify(mId, customNotification);
-
-
-        //完全自定义
-//        Intent intent = new Intent(this, OneActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
-//        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
-//
-//        Notification customNotification = new NotificationCompat.Builder(this, "c1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-//                .setCustomContentView(notificationLayout)
-//                .setCustomBigContentView(notificationLayoutExpanded)
-////                .setContentTitle("My notification")
-////                .setContentText("Hello World!")
-//                .build();
-//        notificationManager.notify(mId, customNotification);
 
 
     }
@@ -266,70 +398,80 @@ public class NotificationActivity extends AppCompatActivity {
 
     private void actionNotify(NotificationManager notificationManager) {
 
+        Bitmap kk = BitmapFactory.decodeResource(getResources(), R.drawable.kk);
+        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
+
+        Icon icon = Icon.createWithResource(this, R.drawable.kk);
+
         Intent intent = new Intent(this, OneActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Intent mbrIntent = new Intent(this, MBR.class);
         PendingIntent mbrPendingIntent = PendingIntent.getBroadcast(this, 0, mbrIntent, 0);
 
-        MediaSession mediaSession = new MediaSession(this, "gop");
-
-        Notification.MediaStyle style = new Notification.MediaStyle();
-        style.setShowActionsInCompactView(1).setMediaSession(mediaSession.getSessionToken());
-
 
         Notification.Builder mBuilder = new Notification.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("My notification")
-                .setVisibility(Notification.VISIBILITY_PRIVATE)
-                .setGroup("ook")
+                .setLargeIcon(ff)
+                .setContentTitle("Action")
+                .setContentText("TTTTT")
+                .setSubText("ssss")
                 .setAutoCancel(true)
-                .setContentText("Hello World!")
-                .setProgress(0, 0, false)
                 .setContentIntent(pendingIntent)
-                .addAction(R.drawable.w1, "MBR", mbrPendingIntent)
-                .setStyle(style);
+                .addAction(new Notification.Action.Builder(icon, "pppp", mbrPendingIntent).build())
+                .addAction(new Notification.Action.Builder(icon, "CCC", mbrPendingIntent).build());
 
         notificationManager.notify(mId, mBuilder.build());
     }
 
 
-    private void normalNotify(NotificationManager notificationManager) {
-        String channelId = "c1";
-        CharSequence channelName = "cf";
-        int importance = NotificationManager.IMPORTANCE_LOW;
-        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+    private void mediaStyleNotify(NotificationManager notificationManager) {
 
-//        notificationChannel.enableLights(true);
-//        notificationChannel.setLightColor(R.color.colorAccent);
+        Bitmap kk = BitmapFactory.decodeResource(getResources(), R.drawable.kk);
+        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
+
+        Icon icon = Icon.createWithResource(this, R.drawable.kk);
+
+        Intent intent = new Intent(this, OneActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent mbrIntent = new Intent(this, MBR.class);
+        PendingIntent mbrPendingIntent = PendingIntent.getBroadcast(this, 0, mbrIntent, 0);
 
 
-        notificationManager.createNotificationChannel(notificationChannel);
+        MediaSession mediaSession = new MediaSession(this, "XXX");
+        Notification.MediaStyle style = new Notification.MediaStyle()
+                .setShowActionsInCompactView(1, 0);
 
 
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addParentStack(OneActivity.class);
-//        stackBuilder.addNextIntent(new Intent(this, OneActivity.class));
-//        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification.Builder mBuilder = new Notification.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setLargeIcon(ff)
+                .setContentTitle("My notification")
+                .setContentText("content text")
+                .setSubText("ssss")
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setStyle(style)
+                .addAction(new Notification.Action.Builder(icon, "pppp", mbrPendingIntent).build())
+                .addAction(new Notification.Action.Builder(icon, "CCC", mbrPendingIntent).build());
+
+        notificationManager.notify(mId, mBuilder.build());
+    }
+
+
+    private void progressNotify(NotificationManager notificationManager) {
 
 
         Intent intent = new Intent(this, OneActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        Intent mbrIntent = new Intent(this, MBR.class);
-        PendingIntent mbrPendingIntent = PendingIntent.getBroadcast(this, 0, mbrIntent, 0);
-
-
-        mBuilder = new NotificationCompat.Builder(this, "c1")
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("My notification")
-                .setGroup("ook")
                 .setAutoCancel(true)
-                .setContentText("Hello World!")
-                .setProgress(0, 0, false)
+//                .setContentTitle("cccccccc")
+//                .setContentText("tttttttttt")
+                .setProgress(100, 10, false)
                 .setContentIntent(pendingIntent);
-//                .addAction(R.drawable.w1, "MBR", mbrPendingIntent);
-
 
         notificationManager.notify(mId, mBuilder.build());
     }
@@ -410,8 +552,6 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
 
-
-
         Bitmap gg = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
         Bitmap kk = BitmapFactory.decodeResource(getResources(), R.drawable.kk);
         Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
@@ -432,7 +572,7 @@ public class NotificationActivity extends AppCompatActivity {
                 .setOngoing(false)
                 .setAutoCancel(true);
 
-        notificationManager.notify(mId+1, mBuilder.build());
+        notificationManager.notify(mId + 1, mBuilder.build());
 
     }
 
