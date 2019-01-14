@@ -111,7 +111,7 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
         System.out.println("~~bind~~");
 
         Intent intent = new Intent(this, MessengerService.class);
-        bindService(intent, this, BIND_AUTO_CREATE);
+        isBunding = bindService(intent, this, BIND_AUTO_CREATE);
 
 
     }
@@ -166,7 +166,6 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
         System.out.println("name is " + name);
         System.out.println("service is " + service);
         messenger = new Messenger(service);
-        isBunding = true;
 
     }
 

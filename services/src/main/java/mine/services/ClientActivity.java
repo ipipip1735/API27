@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.Parcel;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -119,7 +121,7 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
         Intent intent = new Intent("bs");
         intent.setAction("bs");
         intent.setPackage(getPackageName());
-        bindService(intent, this, BIND_AUTO_CREATE);
+        isBunding = bindService(intent, this, BIND_AUTO_CREATE);
 
     }
 
@@ -168,10 +170,25 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
         System.out.println("---- " + getClass().getSimpleName() + ".onServiceConnected ----");
         System.out.println(service);
 
-        isBunding = true;
-        baseService = ((BaseBinder) service).getServiceHandler();
 
-        System.out.println(baseService);
+        //传送数据
+        int code = 8;
+        Parcel data = Parcel.obtain();
+        data.writeString("sssss");
+        Parcel reply = Parcel.obtain();
+        reply.writeString("ttttt");
+        int flags = 8;
+        try {
+            service.transact(code, data, reply, flags);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+
+//        baseService = ((BaseBinder) service).getServiceHandler();
+//        System.out.println(baseService);
+
+
     }
 
     @Override

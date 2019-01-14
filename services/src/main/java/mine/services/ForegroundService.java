@@ -36,7 +36,8 @@ public class ForegroundService extends Service {
         System.out.println("---- " + getClass().getSimpleName() + ".onStartCommand ----");
 
         if (intent.getIntExtra("category", -1) == 1) {
-            stopForeground(true);
+            stopForeground(STOP_FOREGROUND_REMOVE);
+//            stopForeground(true); 等价于STOP_FOREGROUND_DETACH
             return START_STICKY;
         }
 

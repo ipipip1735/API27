@@ -3,6 +3,10 @@ package mine.services;
 import android.app.Service;
 import android.os.Binder;
 import android.os.Handler;
+import android.os.Parcel;
+import android.os.RemoteException;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by Administrator on 2018/7/24.
@@ -25,5 +29,16 @@ public class BaseBinder extends Binder{
 
 
         return serviceHandler;
+    }
+
+    @Override
+    protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
+        System.out.println("~~ " + getClass().getSimpleName() + ".onTransact ~~");
+
+        System.out.println("code is " + code);
+        System.out.println("data is " + data);
+        System.out.println("reply is " + reply);
+        System.out.println("flags is " + flags);
+        return super.onTransact(code, data, reply, flags);
     }
 }
