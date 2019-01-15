@@ -18,14 +18,6 @@ import java.util.Locale;
  * Created by Administrator on 2018/12/25.
  */
 public class FetchAddressIntentService extends IntentService {
-    ResultReceiver resultReceiver = new ResultReceiver(null){
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            System.out.println("~~ResultReceiver.onReceiveResult~~");
-            super.onReceiveResult(resultCode, resultData);
-
-        }
-    };
 
     public FetchAddressIntentService() {
         super("FetchAddressIntentService");
@@ -43,6 +35,10 @@ public class FetchAddressIntentService extends IntentService {
         Location location = intent.getParcelableExtra("Location"); //获取Intent中的Location对象
         System.out.println(location);
 
+        ResultReceiver resultReceiver = intent.getParcelableExtra("ResultReceiver");
+        System.out.println("ResultReceiver is " + resultReceiver);
+
+
         Geocoder geocoder = new Geocoder(this, Locale.getDefault()); //实例化Geocoder
 
         //解析Location对象，将其转换为Address对象
@@ -51,6 +47,12 @@ public class FetchAddressIntentService extends IntentService {
                     location.getLongitude(),
                     1);
             System.out.println("size is " + addresses.size());
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("Address", addresses.get(0));
+            resultReceiver.send(25, bundle);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }

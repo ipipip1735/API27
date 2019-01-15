@@ -2,7 +2,10 @@ package mine.sensors;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.Address;
 import android.location.Location;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
     LocationCallback mLocationCallback;
     Location location;
+    ResultReceiver resultReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -335,9 +339,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+        if(Objects.isNull(location)) return;
+
+
+        if (Objects.isNull(resultReceiver)) {
+            resultReceiver = new ResultReceiver(new Handler()){
+                @Override
+                protected void onReceiveResult(int resultCode, Bundle resultData) {
+                    System.out.println("~~ResultReceiver.onReceiveResult~~");
+                    super.onReceiveResult(resultCode, resultData);
+
+                    Address address = resultData.getParcelable("Address");
+                    System.out.println("address is " + address);
+                    System.out.println(Thread.currentThread());
+                    infoTV.setText(address.toString());
+                }
+            };
+        }
 
         Intent intent = new Intent(this, FetchAddressIntentService.class);
         intent.putExtra("Location", location);
+        intent.putExtra("ResultReceiver", resultReceiver);
         startService(intent);
 
     }
