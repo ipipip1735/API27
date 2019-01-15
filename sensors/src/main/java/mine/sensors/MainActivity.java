@@ -1,5 +1,6 @@
 package mine.sensors;
 
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.SystemClock;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     TextView infoTV, statusTV;
     FusedLocationProviderClient mFusedLocationClient;
     LocationCallback mLocationCallback;
+    Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 System.out.println("location is " + location);
+                MainActivity.this.location = location;
                 infoTV.setText(location.toString());
                 System.out.println(interval(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()));
                 statusTV.setText(interval(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()));
@@ -331,6 +335,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        intent.putExtra("Location", location);
+        startService(intent);
 
     }
 
