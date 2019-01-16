@@ -39,14 +39,35 @@ public class FetchAddressIntentService extends IntentService {
         System.out.println("ResultReceiver is " + resultReceiver);
 
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault()); //实例化Geocoder
-
         //解析Location对象，将其转换为Address对象
         try {
+
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault()); //实例化Geocoder
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),
                     location.getLongitude(),
                     1);
-            System.out.println("size is " + addresses.size());
+
+            Address address = addresses.get(0);
+            for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                System.out.println(i + " is " + address.getAddressLine(i));
+            }
+
+            System.out.println("getLatitude is " + address.getLatitude());
+            System.out.println("getLongitude is " + address.getLongitude());
+
+            System.out.println("getAdminArea is " + address.getAdminArea());
+            System.out.println("getCountryCode is " + address.getCountryCode());
+            System.out.println("getCountryName is " + address.getCountryName());
+            System.out.println("getFeatureName is " + address.getFeatureName());
+            System.out.println("getLocale is " + address.getLocale());
+            System.out.println("getLocality is " + address.getLocality());
+            System.out.println("getPhone is " + address.getPhone());
+            System.out.println("getPostalCode is " + address.getPostalCode());
+            System.out.println("getPremises is " + address.getPremises());
+            System.out.println("getSubAdminArea is " + address.getSubAdminArea());
+            System.out.println("getSubLocality is " + address.getSubLocality());
+            System.out.println("getSubThoroughfare is " + address.getSubThoroughfare());
+            System.out.println("getThoroughfare is " + address.getThoroughfare());
 
             Bundle bundle = new Bundle();
             bundle.putParcelable("Address", addresses.get(0));
