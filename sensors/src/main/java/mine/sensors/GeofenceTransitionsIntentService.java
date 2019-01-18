@@ -24,6 +24,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     public GeofenceTransitionsIntentService() {
         super("GeofenceTransitionsIntentService");
+        System.out.println("++ GeofenceTransitionsIntentService.Constructor ++");
     }
 
     @Override

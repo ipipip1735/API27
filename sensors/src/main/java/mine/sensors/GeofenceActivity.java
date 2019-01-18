@@ -28,6 +28,7 @@ public class GeofenceActivity extends AppCompatActivity {
 
     private GeofencingClient mGeofencingClient;
     private PendingIntent mGeofencePendingIntent;
+    private List<String> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,19 +106,26 @@ public class GeofenceActivity extends AppCompatActivity {
 
         //创建Geofence对象
         Geofence.Builder builder = new Geofence.Builder();
+        double latitude = 30.53723959615318D;
+        double longitude = 114.30860318934754D;
         Geofence geofence = builder.setRequestId("r1")
-                .setCircularRegion(30.532511D, 114.296106D, 100F)
+                .setCircularRegion(latitude, longitude, 100F)
                 .setExpirationDuration(NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setLoiteringDelay(5000)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setNotificationResponsiveness(1000)
                 .build();
+        ids.add(geofence.getRequestId());
+
         //放入容器
         List<Geofence> geofenceList = Arrays.asList(geofence);
 
 
         //创建GeofencingRequest
         GeofencingRequest.Builder requestBuilder = new GeofencingRequest.Builder();
-        requestBuilder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        requestBuilder.addGeofences(geofenceList);
+        requestBuilder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
+//        requestBuilder.addGeofences(geofenceList); //增加多个Geofence
+        requestBuilder.addGeofence(geofence); //增加单个Geofence
         GeofencingRequest geofencingRequest = requestBuilder.build();
 
 
@@ -140,7 +148,7 @@ public class GeofenceActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 System.out.println("~~addGeofences.onFailure~~");
-
+                System.out.println(e);
             }
         });
 
@@ -170,6 +178,16 @@ public class GeofenceActivity extends AppCompatActivity {
                         }
                     });
         }
+
+        if (!ids.isEmpty()) {
+            //清空所有Geofence
+//            mGeofencingClient.removeGeofences(ids);
+//            ids.clear();
+
+            //清空单个Geofence
+            mGeofencingClient.removeGeofences(Arrays.asList(ids.remove(0)));
+        }
+
 
     }
 
