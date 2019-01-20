@@ -1,21 +1,13 @@
-package mine.sensors;
+package mine.location;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.os.ResultReceiver;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Administrator on 2018/12/25.

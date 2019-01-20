@@ -1,4 +1,4 @@
-package mine.sensors;
+package mine.location;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +36,8 @@ public class GeofenceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
+
+        ids = new ArrayList<>();
 
     }
 
@@ -106,8 +109,8 @@ public class GeofenceActivity extends AppCompatActivity {
 
         //创建Geofence对象
         Geofence.Builder builder = new Geofence.Builder();
-        double latitude = 30.53723959615318D;
-        double longitude = 114.30860318934754D;
+        double latitude = 30.660428585329765D;
+        double longitude = 114.44033012733321D;
         Geofence geofence = builder.setRequestId("r1")
                 .setCircularRegion(latitude, longitude, 100F)
                 .setExpirationDuration(NEVER_EXPIRE)
@@ -177,15 +180,16 @@ public class GeofenceActivity extends AppCompatActivity {
                             System.out.println("~~removeGeofences.onFailure~~");
                         }
                     });
+            mGeofencePendingIntent = null;
         }
 
         if (!ids.isEmpty()) {
             //清空所有Geofence
-//            mGeofencingClient.removeGeofences(ids);
-//            ids.clear();
+            mGeofencingClient.removeGeofences(ids);
+            ids.clear();
 
             //清空单个Geofence
-            mGeofencingClient.removeGeofences(Arrays.asList(ids.remove(0)));
+//            mGeofencingClient.removeGeofences(Arrays.asList(ids.remove(0)));
         }
 
 

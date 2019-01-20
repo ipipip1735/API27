@@ -1,4 +1,4 @@
-package mine.sensors;
+package mine.location;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,8 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
-
-import org.jetbrains.annotations.Nullable;
+import android.support.annotation.Nullable;
 
 import java.io.IOException;
 import java.util.List;

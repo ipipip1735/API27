@@ -1,4 +1,4 @@
-include   ':apptemp',
+include   ':apptemp', ':location',
         ':sensors',
         ':time',
 //        ':connectivity',
