@@ -1,13 +1,19 @@
 package mine.sensors;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/1/20.
  */
 public class MainActivity extends AppCompatActivity {
+
+    private SensorManager mSensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +60,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -74,9 +78,29 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
+    public void check(View view) {
+        System.out.println("~~button.check~~");
+        mSensorManager = getSystemService(SensorManager.class);
+        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor sensor : deviceSensors) {
+            System.out.println(sensor);
+        }
+    }
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) != null){
+            List<Sensor> gravSensors = mSensorManager.getSensorList(Sensor.TYPE_GRAVITY);
+            for(int i=0; i<gravSensors.size(); i++) {
+                if ((gravSensors.get(i).getVendor().contains("Google LLC")) && (gravSensors.get(i).getVersion() == 3)){
+                    mSensor = gravSensors.get(i);
+                }
+            }
+        }
+
+
+
     }
 
 
