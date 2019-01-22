@@ -1,12 +1,15 @@
 package mine.sensors;
 
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Administrator on 2018/1/20.
@@ -14,12 +17,35 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
+    private SensorEventListener listener;
+    private Sensor mLight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
+        listener = new SensorEventListener(){
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                System.out.println("~~onSensorChanged~~");
+                System.out.println("event is  " + event);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                System.out.println("~~onAccuracyChanged~~");
+                System.out.println("sensor is  " + sensor);
+                System.out.println("accuracy is  " + accuracy);
+
+            }
+        };
+
+
+        mSensorManager = getSystemService(SensorManager.class);
+        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        System.out.println("mLight is " + mLight);
+
 
     }
 
@@ -46,12 +72,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+
+        mSensorManager.registerListener(listener, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
+        mSensorManager.unregisterListener(listener);
     }
 
     @Override
@@ -80,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void check(View view) {
         System.out.println("~~button.check~~");
+        //获取所有传感器
         mSensorManager = getSystemService(SensorManager.class);
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         for (Sensor sensor : deviceSensors) {
@@ -90,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) != null){
-            List<Sensor> gravSensors = mSensorManager.getSensorList(Sensor.TYPE_GRAVITY);
-            for(int i=0; i<gravSensors.size(); i++) {
-                if ((gravSensors.get(i).getVendor().contains("Google LLC")) && (gravSensors.get(i).getVersion() == 3)){
-                    mSensor = gravSensors.get(i);
-                }
-            }
+        //获取默认传感器
+        mSensorManager = getSystemService(SensorManager.class);
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        if (Objects.isNull(sensor)) {
+            System.out.println(sensor);
         }
+
+
 
 
 
