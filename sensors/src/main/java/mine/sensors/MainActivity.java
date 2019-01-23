@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
-        mSensorManager.registerListener(listener, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+//        mSensorManager.registerListener(listener, mLight, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -123,9 +123,31 @@ public class MainActivity extends AppCompatActivity {
 
         //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
-        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        if (Objects.isNull(sensor)) {
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+
+        if (Objects.nonNull(sensor)) {
             System.out.println(sensor);
+            System.out.println("getFifoMaxEventCount is " + sensor.getFifoMaxEventCount());
+            System.out.println("getFifoReservedEventCount is " + sensor.getFifoReservedEventCount());
+//            System.out.println("getHighestDirectReportRateLevel is " + sensor.getHighestDirectReportRateLevel());
+            System.out.println("getReportingMode is " + sensor.getReportingMode());
+            System.out.println("getMaxDelay is " + sensor.getMaxDelay());
+            System.out.println("getMinDelay is " + sensor.getMinDelay());
+            System.out.println("getMaximumRange is " + sensor.getMaximumRange());
+
+            System.out.println("getId is " + sensor.getId());
+            System.out.println("getStringType is " + sensor.getStringType());
+            System.out.println("getName is " + sensor.getName());
+            System.out.println("getType is " + sensor.getType());
+            System.out.println("getVendor is " + sensor.getVendor());
+            System.out.println("getVersion is " + sensor.getVersion());
+            System.out.println("getPower is " + sensor.getPower());
+            System.out.println("getResolution is " + sensor.getResolution());
+
         }
 
 
@@ -139,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
     }
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+    public void request(View view) {
+        System.out.println("~~button.request~~");
+        mSensorManager.registerListener(listener, mLight, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
