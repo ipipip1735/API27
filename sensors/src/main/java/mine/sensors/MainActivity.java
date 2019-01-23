@@ -4,6 +4,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.TriggerEvent;
+import android.hardware.TriggerEventListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
     private SensorEventListener listener;
+    TriggerEventListener triggerEventListener;
     private Sensor mLight;
 
     @Override
@@ -41,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        triggerEventListener = new TriggerEventListener(){
+            @Override
+            public void onTrigger(TriggerEvent event) {
+                System.out.println("~~TriggerEventListener.onTrigger~~");
+                System.out.println("event is " + event);
+            }
+        };
 
         mSensorManager = getSystemService(SensorManager.class);
         mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -110,12 +120,34 @@ public class MainActivity extends AppCompatActivity {
 
     public void check(View view) {
         System.out.println("~~button.check~~");
-        //获取所有传感器
         mSensorManager = getSystemService(SensorManager.class);
-        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-        for (Sensor sensor : deviceSensors) {
-            System.out.println(sensor);
-        }
+        //获取所有传感器
+//        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+//        for (Sensor sensor : deviceSensors) {
+//            System.out.println(sensor);
+//        }
+
+
+
+        //触发监听器
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        System.out.println("sensor is " + sensor.getName());
+        boolean b = mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
+        System.out.println(b);
+//        mSensorManager.cancelTriggerSensor(triggerEventListener, sensor);
+
+
+
+
+
+//        mSensorManager.createDirectChannel(mem);
+//        mSensorManager.createDirectChannel(mem);
+//        mSensorManager.flush(listener);
+
+
+
+
+
     }
 
     public void start(View view) {
@@ -124,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
         Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
-//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //陀螺仪
 //        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 //        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 //        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
