@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -21,18 +20,22 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager mSensorManager;
     private SensorEventListener listener;
     TriggerEventListener triggerEventListener;
-    private Sensor mLight;
+    private Sensor sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
-        listener = new SensorEventListener(){
+        listener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 System.out.println("~~onSensorChanged~~");
-                System.out.println("event is  " + event);
+                System.out.println("sensor is  " + event.sensor);
+
+                for (float f : event.values) {
+                    System.out.println("value is  " + f);
+                }
             }
 
             @Override
@@ -40,11 +43,10 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("~~onAccuracyChanged~~");
                 System.out.println("sensor is  " + sensor);
                 System.out.println("accuracy is  " + accuracy);
-
             }
         };
 
-        triggerEventListener = new TriggerEventListener(){
+        triggerEventListener = new TriggerEventListener() {
             @Override
             public void onTrigger(TriggerEvent event) {
                 System.out.println("~~TriggerEventListener.onTrigger~~");
@@ -52,9 +54,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+
+
         mSensorManager = getSystemService(SensorManager.class);
-        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        System.out.println("mLight is " + mLight);
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+
+        System.out.println("sensor is " + sensor);
 
 
     }
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
-//        mSensorManager.registerListener(listener, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+//        mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -128,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-
         //触发监听器
         Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         System.out.println("sensor is " + sensor.getName());
@@ -137,15 +142,9 @@ public class MainActivity extends AppCompatActivity {
 //        mSensorManager.cancelTriggerSensor(triggerEventListener, sensor);
 
 
-
-
-
 //        mSensorManager.createDirectChannel(mem);
 //        mSensorManager.createDirectChannel(mem);
 //        mSensorManager.flush(listener);
-
-
-
 
 
     }
@@ -155,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
 
         //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
-        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
 //        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //陀螺仪
-//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR); //旋转向量
 //        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 //        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
@@ -183,9 +182,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-
-
     }
 
 
@@ -195,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void request(View view) {
         System.out.println("~~button.request~~");
-        mSensorManager.registerListener(listener, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
