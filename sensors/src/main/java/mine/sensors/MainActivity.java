@@ -12,6 +12,11 @@ import android.view.View;
 
 import java.util.Objects;
 
+import static android.hardware.Sensor.REPORTING_MODE_CONTINUOUS;
+import static android.hardware.Sensor.REPORTING_MODE_ONE_SHOT;
+import static android.hardware.Sensor.REPORTING_MODE_ON_CHANGE;
+import static android.hardware.Sensor.REPORTING_MODE_SPECIAL_TRIGGER;
+
 /**
  * Created by Administrator on 2018/1/20.
  */
@@ -27,24 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
-        listener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                System.out.println("~~onSensorChanged~~");
-                System.out.println("sensor is  " + event.sensor);
 
-                for (float f : event.values) {
-                    System.out.println("value is  " + f);
-                }
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                System.out.println("~~onAccuracyChanged~~");
-                System.out.println("sensor is  " + sensor);
-                System.out.println("accuracy is  " + accuracy);
-            }
-        };
 
         triggerEventListener = new TriggerEventListener() {
             @Override
@@ -55,12 +43,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
-
         mSensorManager = getSystemService(SensorManager.class);
-//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-
-        System.out.println("sensor is " + sensor);
 
 
     }
@@ -89,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
-//        mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -97,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-        mSensorManager.unregisterListener(listener);
+        if(Objects.nonNull(listener)) mSensorManager.unregisterListener(listener);
     }
 
     @Override
@@ -127,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public void check(View view) {
         System.out.println("~~button.check~~");
         mSensorManager = getSystemService(SensorManager.class);
+
         //获取所有传感器
 //        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
 //        for (Sensor sensor : deviceSensors) {
@@ -155,24 +140,41 @@ public class MainActivity extends AppCompatActivity {
         //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
 //        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
-//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //陀螺仪
-        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR); //旋转向量
-//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION); //线性加速的
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //陀螺仪
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR); //旋转向量
+
 
         if (Objects.nonNull(sensor)) {
             System.out.println(sensor);
             System.out.println("getFifoMaxEventCount is " + sensor.getFifoMaxEventCount());
             System.out.println("getFifoReservedEventCount is " + sensor.getFifoReservedEventCount());
 //            System.out.println("getHighestDirectReportRateLevel is " + sensor.getHighestDirectReportRateLevel());
-            System.out.println("getReportingMode is " + sensor.getReportingMode());
+
+            switch (sensor.getReportingMode()) {
+                case REPORTING_MODE_CONTINUOUS:
+                    System.out.println("sensor.getReportingMode() is REPORTING_MODE_CONTINUOUS");
+                    break;
+                case REPORTING_MODE_ON_CHANGE:
+                    System.out.println("sensor.getReportingMode() is REPORTING_MODE_ON_CHANGE");
+                    break;
+                case REPORTING_MODE_ONE_SHOT:
+                    System.out.println("sensor.getReportingMode() is REPORTING_MODE_ONE_SHOT");
+                    break;
+                case REPORTING_MODE_SPECIAL_TRIGGER:
+                    System.out.println("sensor.getReportingMode() is REPORTING_MODE_SPECIAL_TRIGGER");
+                    break;
+                default:
+                    System.out.println("sensor.getReportingMode() is unknown!");
+            }
+
             System.out.println("getMaxDelay is " + sensor.getMaxDelay());
             System.out.println("getMinDelay is " + sensor.getMinDelay());
             System.out.println("getMaximumRange is " + sensor.getMaximumRange());
 
             System.out.println("getId is " + sensor.getId());
-            System.out.println("getStringType is " + sensor.getStringType());
             System.out.println("getName is " + sensor.getName());
+            System.out.println("getStringType is " + sensor.getStringType());
             System.out.println("getType is " + sensor.getType());
             System.out.println("getVendor is " + sensor.getVendor());
             System.out.println("getVersion is " + sensor.getVersion());
@@ -181,16 +183,37 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
     }
-
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+        if(Objects.nonNull(listener)) mSensorManager.unregisterListener(listener);
     }
 
     public void request(View view) {
         System.out.println("~~button.request~~");
+
+        if (Objects.isNull(listener)) {
+            listener = new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    System.out.println("~~onSensorChanged~~");
+                    System.out.println("sensor is  " + event.sensor);
+
+                    for (float f : event.values) {
+                        System.out.println("value is  " + f);
+                    }
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                    System.out.println("~~onAccuracyChanged~~");
+                    System.out.println("sensor is  " + sensor);
+                    System.out.println("accuracy is  " + accuracy);
+                }
+            };
+        }
+
         mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
@@ -204,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.reloading~~");
 
     }
-
 
     public void del(View view) {
         System.out.println("~~button.del~~");
