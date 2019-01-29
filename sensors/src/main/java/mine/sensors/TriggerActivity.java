@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
 import java.util.Objects;
 
 import static android.hardware.Sensor.REPORTING_MODE_CONTINUOUS;
@@ -23,10 +22,9 @@ import static android.hardware.Sensor.REPORTING_MODE_SPECIAL_TRIGGER;
 /**
  * Created by Administrator on 2018/1/20.
  */
-public class MainActivity extends AppCompatActivity {
+public class TriggerActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
-    private SensorEventListener listener;
     TriggerEventListener triggerEventListener;
     private Sensor sensor;
     private TextView textView;
@@ -38,12 +36,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewGroup viewById = findViewById(R.id.ll);
         textView = new TextView(this);
-        textView.setText("");
         viewById.addView(textView);
 
 
-        mSensorManager = getSystemService(SensorManager.class);
+        triggerEventListener = new TriggerEventListener() {
+            @Override
+            public void onTrigger(TriggerEvent event) {
+                System.out.println("~~TriggerEventListener.onTrigger~~");
+                StringBuffer buffer = new StringBuffer();
 
+                for (int i = 0; i < event.values.length; i++) {
+                    System.out.println("value[" + i + "] is  " + event.values[i]);
+                    buffer.append("value[" + i + "] is  " + event.values[i] + "\n");
+                }
+                textView.setText(buffer.toString());
+            }
+        };
+
+
+        mSensorManager = getSystemService(SensorManager.class);
+        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
 
     }
 
@@ -71,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
-
-        mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
 
     }
 
@@ -80,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-        if (Objects.nonNull(listener)) mSensorManager.unregisterListener(listener);
+        if (Objects.nonNull(triggerEventListener))
+            mSensorManager.cancelTriggerSensor(triggerEventListener, sensor);
     }
 
     @Override
@@ -110,25 +122,7 @@ public class MainActivity extends AppCompatActivity {
     public void check(View view) {
         System.out.println("~~button.check~~");
         mSensorManager = getSystemService(SensorManager.class);
-
-        //获取所有传感器
-        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-        for (Sensor sensor : deviceSensors) {
-            System.out.println(sensor);
-        }
-
-
-        //触发监听器
-        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        System.out.println("sensor is " + sensor.getName());
-        boolean b = mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
-        System.out.println(b);
-
-
-//        mSensorManager.createDirectChannel(mem);
-//        mSensorManager.createDirectChannel(mem);
-//        mSensorManager.flush(listener);
-
+        textView.setText("");
 
     }
 
@@ -137,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
-        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
+
 
         if (Objects.nonNull(sensor)) {
             System.out.println(sensor);
@@ -174,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("getVersion is " + sensor.getVersion());
             System.out.println("getPower is " + sensor.getPower());
             System.out.println("getResolution is " + sensor.getResolution());
-
-            System.out.println();
+            
 
         }
 
@@ -183,39 +176,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-        if (Objects.nonNull(listener)) mSensorManager.unregisterListener(listener);
+
+        if (Objects.nonNull(triggerEventListener))
+            mSensorManager.cancelTriggerSensor(triggerEventListener, sensor);
+
     }
 
     public void request(View view) {
         System.out.println("~~button.request~~");
 
-        if (Objects.isNull(listener)) {
-            listener = new SensorEventListener() {
+        if (Objects.isNull(triggerEventListener)) {
+            triggerEventListener = new TriggerEventListener() {
                 @Override
-                public void onSensorChanged(SensorEvent event) {
-                    System.out.println("~~onSensorChanged~~");
-                    System.out.println("sensor is  " + event.sensor);
-
-                    StringBuffer buffer = new StringBuffer();
-
-                    for (int i = 0; i < event.values.length; i++) {
-                        System.out.println("value[" + i + "] is  " + event.values[i]);
-                        buffer.append("value[" + i + "] is  " + event.values[i] + "\n");
-                    }
-                    textView.setText(buffer.toString());
-                }
-
-                @Override
-                public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                    System.out.println("~~onAccuracyChanged~~");
-                    System.out.println("sensor is  " + sensor);
-                    System.out.println("accuracy is  " + accuracy);
+                public void onTrigger(TriggerEvent event) {
+                    System.out.println("~~TriggerEventListener.onTrigger~~");
+                    System.out.println("event is " + event);
                 }
             };
         }
 
-        mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-
+        mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
     }
 
     public void unbind(View view) {

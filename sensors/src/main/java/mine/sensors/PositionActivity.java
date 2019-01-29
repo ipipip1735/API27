@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
 import java.util.Objects;
 
 import static android.hardware.Sensor.REPORTING_MODE_CONTINUOUS;
@@ -23,7 +22,7 @@ import static android.hardware.Sensor.REPORTING_MODE_SPECIAL_TRIGGER;
 /**
  * Created by Administrator on 2018/1/20.
  */
-public class MainActivity extends AppCompatActivity {
+public class PositionActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
     private SensorEventListener listener;
@@ -40,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
         textView = new TextView(this);
         textView.setText("");
         viewById.addView(textView);
+
+
+        triggerEventListener = new TriggerEventListener() {
+            @Override
+            public void onTrigger(TriggerEvent event) {
+                System.out.println("~~TriggerEventListener.onTrigger~~");
+                System.out.println("event is " + event);
+            }
+        };
 
 
         mSensorManager = getSystemService(SensorManager.class);
@@ -111,24 +119,12 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.check~~");
         mSensorManager = getSystemService(SensorManager.class);
 
-        //获取所有传感器
-        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-        for (Sensor sensor : deviceSensors) {
-            System.out.println(sensor);
-        }
-
 
         //触发监听器
         Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         System.out.println("sensor is " + sensor.getName());
         boolean b = mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
         System.out.println(b);
-
-
-//        mSensorManager.createDirectChannel(mem);
-//        mSensorManager.createDirectChannel(mem);
-//        mSensorManager.flush(listener);
-
 
     }
 
@@ -137,7 +133,10 @@ public class MainActivity extends AppCompatActivity {
 
         //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
-        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);//游戏旋度传感器
+        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);//地磁传感器
+
+
 
         if (Objects.nonNull(sensor)) {
             System.out.println(sensor);
@@ -174,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("getVersion is " + sensor.getVersion());
             System.out.println("getPower is " + sensor.getPower());
             System.out.println("getResolution is " + sensor.getResolution());
-
-            System.out.println();
 
         }
 
