@@ -33,7 +33,15 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".MessengerActivity">
+        <!--<activity android:name=".MessengerActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <activity android:name=".ScheduleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -49,6 +57,7 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
+        <service android:name=".BasicJobService" android:permission="android.permission.BIND_JOB_SERVICE" />
         <service android:name=".AIDLService"  android:exported="true" />
         <service android:name=".ThreaderService"  android:exported="true" />
         <service android:name=".ForegroundService"  android:exported="true" />
