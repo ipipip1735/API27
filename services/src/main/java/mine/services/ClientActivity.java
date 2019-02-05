@@ -20,7 +20,7 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("**********  Client.onStart  ***********");
+        System.out.println("**********  Client.onCreate  ***********");
         setContentView(R.layout.activity_main);
     }
 

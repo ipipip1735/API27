@@ -23,7 +23,7 @@ public class IntentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("**********  Main.onStart  ***********");
+        System.out.println("**********  Main.onCreate  ***********");
         setContentView(R.layout.activity_main);
     }
 

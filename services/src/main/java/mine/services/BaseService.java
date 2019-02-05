@@ -43,7 +43,6 @@ public class BaseService extends Service {
     @Override
     public void onCreate() {
         System.out.println("---- " + getClass().getSimpleName() + ".onCreate ----");
-        System.out.println(Thread.currentThread());
 
         serviceHandler = new Handler(getMainLooper()) {
             @Override
@@ -67,7 +66,7 @@ public class BaseService extends Service {
                     }
                 }
 
-                stopSelf(msg.what); //是否手动终止服务取决于业务逻辑
+//                stopSelf(msg.what); //是否手动终止服务取决于业务逻辑
             }
         };
     }
@@ -76,20 +75,19 @@ public class BaseService extends Service {
     @Override
     public void onDestroy() {
         System.out.println("---- " + getClass().getSimpleName() + ".onDestroy ----");
-        System.out.println(Thread.currentThread());
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("---- " + getClass().getSimpleName() + ".onStartCommand ----");
-        System.out.println(Thread.currentThread());
 
         System.out.println("start id  is " + startId);
 
         Message message = Message.obtain();
         message.what = startId;
         serviceHandler.sendMessage(message);
+
 
 
         return START_STICKY;
@@ -99,8 +97,10 @@ public class BaseService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         System.out.println("---- " + getClass().getSimpleName() + ".onUnbind ----");
-//        stopSelf();
 //        return super.onUnbind(intent);
+
+//        stopSelf();
+
         return true;
     }
 

@@ -12,6 +12,7 @@ import android.os.Process;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 
 public class MessengerActivity extends AppCompatActivity implements ServiceConnection {
     BaseService baseService;
@@ -21,7 +22,7 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("**********  Client.onStart  ***********");
+        System.out.println("**********  Client.onCreate  ***********");
         setContentView(R.layout.activity_main);
     }
 
@@ -87,10 +88,34 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
     public void start(View view) {
         System.out.println("~~start~~");
 
-        Intent intent = new Intent(this, MessengerService.class);
-        startService(intent);
+        //方式一：直接启动服务
+        //        Intent intent = new Intent(this, MessengerService.class);
+        //        startService(intent);
+
+
+
+
+        //方式二：直接通过Intent传递Messenger对象
+        //        Handler handler = new Handler(){
+        //            @Override
+        //            public void handleMessage(Message msg) {
+        //                System.out.println("~~Activity.handleMessage~~");
+        //                System.out.println(msg.what);
+        //            }
+        //        };
+        //        Messenger messenger = new Messenger(handler);
+        //
+        //        Intent intent = new Intent(this, MessengerService.class);
+        //        intent.putExtra("Messenger", messenger);
+        //
+        //        startService(intent);
+
+
+        //方式三：启动前台服务
 //        startForegroundService(intent);
 
+
+        //方式四：使用AIDL
 //        Intent intent = new Intent(this, AIDLService.class);
 //        startService(intent);
 
@@ -155,7 +180,9 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
 
     public void query(View view) {
         System.out.println("~~query~~");
-        baseService.waitTwo();
+//        baseService.waitTwo();
+
+
 
     }
 

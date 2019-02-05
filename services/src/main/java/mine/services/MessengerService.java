@@ -10,6 +10,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.widget.Button;
 
 /**
  * Created by Administrator on 2018/7/24.
@@ -45,7 +46,6 @@ public class MessengerService extends Service {
         };
 
         messenger = new Messenger(serviceHandler);
-
     }
 
 
@@ -69,7 +69,17 @@ public class MessengerService extends Service {
         System.out.println(Thread.currentThread());
         System.out.println("start id  is " + startId);
 
+        //方式一：直接从Intent中获取Messenger对象
+//        Messenger messenger = intent.getParcelableExtra("Messenger");
+//        System.out.println(messenger);
+//        try {
+//            messenger.send(Message.obtain(null, 3232));
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
 
+
+        //方式二：启动前台服务
 //        serviceHandler.handleMessage(Message.obtain(null, startId));
 
 //        Notification notification = new Notification(R.drawable.ic_launcher_background, getText(R.string.tc),
