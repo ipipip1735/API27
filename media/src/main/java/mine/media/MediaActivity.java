@@ -78,6 +78,16 @@ public class MediaActivity extends AppCompatActivity {
             }
         });
 
+        //使用流模式，通过网络分段加载时才会触发本监听器
+        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                System.out.println("~~onBufferingUpdate~~");
+                System.out.println("mp is " + mp);
+                System.out.println("percent is " + percent);
+            }
+        });
+
         mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
