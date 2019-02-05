@@ -1,4 +1,6 @@
-include   ':apptemp', ':media', 
+include   ':apptemp',
+        ':media',
+        ':power',
 //        ':location',
 //        ':sensors',
 //        ':time',
@@ -25,7 +27,7 @@ include   ':apptemp', ':media',
 //        ':loader'
 //        ':view',
 //        ':broadcast',
-//        ':services',
+        ':services',
         ':notification'
 //        ':clipboard',
 //        ':webview',
