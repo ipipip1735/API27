@@ -4,16 +4,11 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.Objects;
 
@@ -26,6 +21,8 @@ import static android.os.IBinder.INTERFACE_TRANSACTION;
 public class TransactActivity extends AppCompatActivity {
 
     ServiceConnection serviceConnection;
+    IBinder iBinder;
+    boolean isbind = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,62 +94,81 @@ public class TransactActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~start~~");
 
+        startService(new Intent(this, TransactService.class));
 
     }
 
     public void stop(View view) {
         System.out.println("~~stop~~");
-        Intent intent = new Intent(this, BaseService.class);
-        intent.setAction("bs");
-        stopService(intent);
+//        Intent intent = new Intent(this, BaseService.class);
+//        intent.setAction("bs");
+//        stopService(intent);
+
+        stopService(new Intent(this, TransactService.class));
+
 
     }
 
     public void bind(View view) {
         System.out.println("~~bind~~");
 
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
+        if (!isbind) {
 
-                int code = INTERFACE_TRANSACTION;
-                Parcel data = Parcel.obtain();
-                data.writeString("75");
-                Parcel reply = Parcel.obtain();
-                int flags = 0;
 
-                try {
-                    service.transact(code, data, reply, flags);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+            serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    System.out.println("~~bind.onServiceConnected~~");
+
+                    TransactActivity.this.iBinder = service;
                 }
 
-                System.out.println("reply is " + reply.readInt());
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    System.out.println("~~bind.onServiceDisconnected~~");
 
-            }
+                }
+            };
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-        };
-
-
-        Intent intent = new Intent(this, TransactService.class);
-        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
-
+            Intent intent = new Intent(this, TransactService.class);
+            isbind = bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        }
     }
 
 
     public void unbind(View view) {
         System.out.println("~~unbind~~");
-        if (Objects.nonNull(serviceConnection)) unbindService(serviceConnection);
+
+        if (isbind) {
+            unbindService(serviceConnection);
+            serviceConnection = null;
+            iBinder = null;
+            isbind = false;
+        }
+
 
     }
 
 
     public void query(View view) {
         System.out.println("~~query~~");
+
+
+        int code = INTERFACE_TRANSACTION;
+        Parcel data = Parcel.obtain();
+        data.writeString("75");
+        Parcel reply = Parcel.obtain();
+        int flags = 0;
+
+        try {
+            iBinder.transact(code, data, reply, flags);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("reply is " + reply.readInt());
+        reply.recycle();
+
 
     }
 }

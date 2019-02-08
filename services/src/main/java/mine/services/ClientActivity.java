@@ -185,7 +185,7 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
         }
 
 
-//        baseService = ((BaseBinder) service).getServiceHandler();
+//        baseService = ((BaseBinder) iBinder).getServiceHandler();
 //        System.out.println(baseService);
 
 

@@ -19,16 +19,26 @@ import java.util.Objects;
  */
 
 public class TransactService extends Service {
+    private int n = 0;
 
-    class TransactBinder extends Binder {
+    private class TransactBinder extends Binder {
         @Override
         protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
-            int result = parseString(data.readString());
-            reply.writeInt(result);
+
+            if (code == INTERFACE_TRANSACTION) {
+                int result = parseString(data.readString());
+                reply.writeInt(result);
+            }
+            xxx();
             return true;
         }
+
+
     }
 
+    public void xxx() {
+        System.out.println("xxx" + n);
+    }
 
     public TransactService() {
         System.out.println("+++ " + getClass().getSimpleName() + ".Constructor +++");
@@ -66,6 +76,17 @@ public class TransactService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("---- " + getClass().getSimpleName() + ".onStartCommand ----");
 
+
+        //卡死UI
+//        try {
+//            Thread.sleep(1000L * 10);  //睡10秒，一般8秒就会卡死
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+        n = startId;
+        System.out.println("startId is " + n);
+
         return START_STICKY;
     }
 
@@ -73,7 +94,7 @@ public class TransactService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         System.out.println("---- " + getClass().getSimpleName() + ".onUnbind ----");
-        return super.onUnbind(intent);
+        return false;
     }
 
 

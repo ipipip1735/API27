@@ -50,7 +50,7 @@ public class BaseService extends Service {
                 System.out.println("-.- " + getClass().getSimpleName() + ".handleMessage -.-");
 
                 if (msg.what == 1) { //根据what判断服务启动类别，是bind，还是start
-                    System.out.println("service|" + msg.what);
+                    System.out.println("iBinder|" + msg.what);
                 } else {
                     System.out.println("bind|" + msg.what);
                 }

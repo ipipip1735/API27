@@ -191,7 +191,7 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
     public void onServiceConnected(ComponentName name, IBinder service) {
         System.out.println("---- " + getClass().getSimpleName() + ".onServiceConnected ----");
         System.out.println("name is " + name);
-        System.out.println("service is " + service);
+        System.out.println("iBinder is " + service);
         messenger = new Messenger(service);
 
     }

@@ -33,7 +33,7 @@ public class MessengerService extends Service {
         Handler serviceHandler = new Handler(getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                System.out.println("service|" + msg.what);
+                System.out.println("iBinder|" + msg.what);
                 System.out.println(Thread.currentThread());
 
                 try {
