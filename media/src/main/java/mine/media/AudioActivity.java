@@ -4,34 +4,52 @@ import android.media.AudioAttributes;
 import android.media.AudioDeviceInfo;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
-import android.media.AudioPlaybackConfiguration;
 import android.media.MediaPlayer;
+import android.media.MicrophoneInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import java.sql.SQLOutput;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import static android.media.AudioManager.ADJUST_RAISE;
+import static android.media.AudioDeviceInfo.TYPE_AUX_LINE;
+import static android.media.AudioDeviceInfo.TYPE_BLUETOOTH_A2DP;
+import static android.media.AudioDeviceInfo.TYPE_BLUETOOTH_SCO;
+import static android.media.AudioDeviceInfo.TYPE_BUILTIN_EARPIECE;
+import static android.media.AudioDeviceInfo.TYPE_BUILTIN_MIC;
+import static android.media.AudioDeviceInfo.TYPE_BUILTIN_SPEAKER;
+import static android.media.AudioDeviceInfo.TYPE_BUS;
+import static android.media.AudioDeviceInfo.TYPE_DOCK;
+import static android.media.AudioDeviceInfo.TYPE_FM;
+import static android.media.AudioDeviceInfo.TYPE_FM_TUNER;
+import static android.media.AudioDeviceInfo.TYPE_HDMI;
+import static android.media.AudioDeviceInfo.TYPE_HDMI_ARC;
+import static android.media.AudioDeviceInfo.TYPE_HEARING_AID;
+import static android.media.AudioDeviceInfo.TYPE_IP;
+import static android.media.AudioDeviceInfo.TYPE_LINE_ANALOG;
+import static android.media.AudioDeviceInfo.TYPE_LINE_DIGITAL;
+import static android.media.AudioDeviceInfo.TYPE_TELEPHONY;
+import static android.media.AudioDeviceInfo.TYPE_TV_TUNER;
+import static android.media.AudioDeviceInfo.TYPE_UNKNOWN;
+import static android.media.AudioDeviceInfo.TYPE_USB_ACCESSORY;
+import static android.media.AudioDeviceInfo.TYPE_USB_DEVICE;
+import static android.media.AudioDeviceInfo.TYPE_USB_HEADSET;
+import static android.media.AudioDeviceInfo.TYPE_WIRED_HEADPHONES;
+import static android.media.AudioDeviceInfo.TYPE_WIRED_HEADSET;
+import static android.media.AudioManager.AUDIOFOCUS_REQUEST_DELAYED;
 import static android.media.AudioManager.AUDIOFOCUS_REQUEST_FAILED;
 import static android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
-import static android.media.AudioManager.AUDIOFOCUS_REQUEST_DELAYED;
-import static android.media.AudioManager.FLAG_PLAY_SOUND;
-import static android.media.AudioManager.FLAG_SHOW_UI;
-import static android.media.AudioManager.FLAG_VIBRATE;
+import static android.media.AudioManager.GET_DEVICES_INPUTS;
+import static android.media.AudioManager.MODE_IN_CALL;
+import static android.media.AudioManager.MODE_IN_COMMUNICATION;
+import static android.media.AudioManager.MODE_NORMAL;
+import static android.media.AudioManager.MODE_RINGTONE;
 import static android.media.AudioManager.RINGER_MODE_NORMAL;
 import static android.media.AudioManager.RINGER_MODE_SILENT;
 import static android.media.AudioManager.RINGER_MODE_VIBRATE;
-import static android.media.AudioManager.MODE_NORMAL;
-import static android.media.AudioManager.MODE_RINGTONE;
-import static android.media.AudioManager.MODE_IN_CALL;
-import static android.media.AudioManager.MODE_IN_COMMUNICATION;
 import static android.media.AudioManager.STREAM_MUSIC;
-
 
 /**
  * Created by Administrator on 2019/2/1.
@@ -49,7 +67,6 @@ public class AudioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_audio);
-
 
 
     }
@@ -157,6 +174,99 @@ public class AudioActivity extends AppCompatActivity {
 //        System.out.println("ggetStreamVolumeDb is " + db);
 
 
+        //获取设备上的音频视频
+        AudioDeviceInfo[] audioDeviceInfos = audioManager.getDevices(GET_DEVICES_INPUTS);//获取输入设备
+        for (AudioDeviceInfo info : audioDeviceInfos) {
+            switch (info.getType()) {
+                case TYPE_AUX_LINE:
+                    System.out.println("getType is TYPE_AUX_LINE");
+                    break;
+                case TYPE_BLUETOOTH_A2DP:
+                    System.out.println("getType is TYPE_BLUETOOTH_A2DP");
+                    break;
+                case TYPE_BLUETOOTH_SCO:
+                    System.out.println("getType is TYPE_BLUETOOTH_SCO");
+                    break;
+                case TYPE_BUILTIN_EARPIECE:
+                    System.out.println("getType is TYPE_BUILTIN_EARPIECE");
+                    break;
+                case TYPE_BUILTIN_MIC:
+                    System.out.println("getType is TYPE_BUILTIN_MIC");
+                    break;
+                case TYPE_BUILTIN_SPEAKER:
+                    System.out.println("getType is TYPE_BUILTIN_SPEAKER");
+                    break;
+                case TYPE_BUS:
+                    System.out.println("getType is TYPE_BUS");
+                    break;
+                case TYPE_DOCK:
+                    System.out.println("getType is TYPE_DOCK");
+                    break;
+                case TYPE_FM:
+                    System.out.println("getType is TYPE_FM");
+                    break;
+                case TYPE_FM_TUNER:
+                    System.out.println("getType is TYPE_FM_TUNER");
+                    break;
+                case TYPE_HDMI:
+                    System.out.println("getType is TYPE_HDMI");
+                    break;
+                case TYPE_HDMI_ARC:
+                    System.out.println("getType is TYPE_HDMI_ARC");
+                    break;
+                case TYPE_HEARING_AID:
+                    System.out.println("getType is TYPE_HEARING_AID");
+                    break;
+                case TYPE_IP:
+                    System.out.println("getType is TYPE_IP");
+                    break;
+                case TYPE_LINE_ANALOG:
+                    System.out.println("getType is TYPE_LINE_ANALOG");
+                    break;
+                case TYPE_LINE_DIGITAL:
+                    System.out.println("getType is TYPE_LINE_DIGITAL");
+                    break;
+                case TYPE_TELEPHONY:
+                    System.out.println("getType is TYPE_TELEPHONY");
+                    break;
+                case TYPE_TV_TUNER:
+                    System.out.println("getType is TYPE_TV_TUNER");
+                    break;
+                case TYPE_UNKNOWN:
+                    System.out.println("getType is TYPE_UNKNOWN");
+                    break;
+                case TYPE_USB_ACCESSORY:
+                    System.out.println("getType is TYPE_USB_ACCESSORY");
+                    break;
+                case TYPE_USB_DEVICE:
+                    System.out.println("getType is TYPE_USB_DEVICE");
+                    break;
+                case TYPE_USB_HEADSET:
+                    System.out.println("getType is TYPE_USB_HEADSET");
+                    break;
+                case TYPE_WIRED_HEADPHONES:
+                    System.out.println("getType is TYPE_WIRED_HEADPHONES");
+                    break;
+                case TYPE_WIRED_HEADSET:
+                    System.out.println("getType is TYPE_WIRED_HEADSET");
+                    break;
+                default:
+                    System.out.println("getType is unknown");
+            }
+        }
+
+
+        try {
+            //获取设备上所有麦克风
+            List<MicrophoneInfo> list = audioManager.getMicrophones();
+            for (MicrophoneInfo info : list) {
+                System.out.println(info);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -174,8 +284,6 @@ public class AudioActivity extends AppCompatActivity {
 //        audioManager.adjustStreamVolume(STREAM_MUSIC, ADJUST_RAISE, FLAG_SHOW_UI);
 
 
-
-
     }
 
     public void prepare(View view) {
@@ -188,13 +296,6 @@ public class AudioActivity extends AppCompatActivity {
 //                .build();
 //        mediaPlayer = new MediaPlayer();
 //        mediaPlayer.setAudioAttributes(audioAttributes);//设置属性，可选的
-
-
-
-
-
-
-
 
 
         //创建请求对象
@@ -226,7 +327,6 @@ public class AudioActivity extends AppCompatActivity {
                 .build();
 
 
-
     }
 
     public void request(View view) {
@@ -251,7 +351,6 @@ public class AudioActivity extends AppCompatActivity {
         }
 
     }
-
 
 
     public void abandon(View view) {
@@ -322,12 +421,7 @@ public class AudioActivity extends AppCompatActivity {
         }
 
 
-
-
-
-
     }
-
 
 
     public void delay(View view) {
@@ -375,11 +469,6 @@ public class AudioActivity extends AppCompatActivity {
                 System.out.println("focus is unknown!");
         }
     }
-
-
-
-
-
 
 
 }
