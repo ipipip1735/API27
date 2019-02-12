@@ -47,7 +47,7 @@ public class ExampleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
 
 
-        XmlResourceParser parser = getResources().getXml(R.layout.activity_task);
+//        XmlResourceParser parser = getResources().getXml(R.layout.activity_task);
         XmlResourceParser xmlResourceParser = getResources().getLayout(R.layout.activity_task);
 
 
@@ -123,74 +123,74 @@ public class ExampleActivity extends AppCompatActivity {
 
         System.out.println("---------  initLoad  --------");
 
-        try {
-            XmlPullParserFactory  factory  =  XmlPullParserFactory.newInstance();
-//            factory.setFeature("FEATURE_XML_ROUNDTRIP",true);
-//            factory.setFeature("FEATURE_PROCESS_NAMESPACES",true);
-//            factory.setFeature("FEATURE_PROCESS_DOCDECL",true);
-
-            XmlResourceParser xrp = getResources().getXml(R.xml.mytest);
-
-
-            System.out.println(xrp.TYPES[xrp.next()]);
-            System.out.println("getLineNumber = " + xrp.getLineNumber());
-            System.out.println("getColumnNumber = " + xrp.getColumnNumber());
-
-            System.out.println("----------------");
-            System.out.println("");
-
-            System.out.println("getName= " + xrp.getName());
-            System.out.println("----------------");
-            System.out.println("getNamespace = " + xrp.getNamespace());
-            System.out.println("getAttributeCount = " + xrp.getAttributeCount());
-            System.out.println("----------------");
-            System.out.println("getText= " + xrp.getText());
-            System.out.println("=========================");
-
-
-
-
-            System.out.println(xrp.TYPES[xrp.next()]);
-            System.out.println("getLineNumber = " + xrp.getLineNumber());
-            System.out.println("getColumnNumber = " + xrp.getColumnNumber());
-
-            System.out.println("----------------");
-            System.out.println("");
-
-            System.out.println("getName= " + xrp.getName());
-            System.out.println("----------------");
-            System.out.println("getNamespace = " + xrp.getNamespace());
-            System.out.println("getAttributeCount = " + xrp.getAttributeCount());
-            System.out.println("----------------");
-            System.out.println("getText= " + xrp.getText());
-            System.out.println("=========================");
-
-
-
-
-            System.out.println(xrp.TYPES[xrp.next()]);
-            System.out.println("getLineNumber = " + xrp.getLineNumber());
-            System.out.println("getColumnNumber = " + xrp.getColumnNumber());
-
-            System.out.println("----------------");
-            System.out.println("");
-
-            System.out.println("getName= " + xrp.getName());
-            System.out.println("----------------");
-            System.out.println("getNamespace = " + xrp.getNamespace());
-            System.out.println("getAttributeCount = " + xrp.getAttributeCount());
-            System.out.println("----------------");
-            System.out.println("getText= " + xrp.getText());
-            System.out.println("=========================");
-
-
-
-
-
-
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            XmlPullParserFactory  factory  =  XmlPullParserFactory.newInstance();
+////            factory.setFeature("FEATURE_XML_ROUNDTRIP",true);
+////            factory.setFeature("FEATURE_PROCESS_NAMESPACES",true);
+////            factory.setFeature("FEATURE_PROCESS_DOCDECL",true);
+//
+//            XmlResourceParser xrp = getResources().getXml(R.xml.mytest);
+//
+//
+//            System.out.println(xrp.TYPES[xrp.next()]);
+//            System.out.println("getLineNumber = " + xrp.getLineNumber());
+//            System.out.println("getColumnNumber = " + xrp.getColumnNumber());
+//
+//            System.out.println("----------------");
+//            System.out.println("");
+//
+//            System.out.println("getName= " + xrp.getName());
+//            System.out.println("----------------");
+//            System.out.println("getNamespace = " + xrp.getNamespace());
+//            System.out.println("getAttributeCount = " + xrp.getAttributeCount());
+//            System.out.println("----------------");
+//            System.out.println("getText= " + xrp.getText());
+//            System.out.println("=========================");
+//
+//
+//
+//
+//            System.out.println(xrp.TYPES[xrp.next()]);
+//            System.out.println("getLineNumber = " + xrp.getLineNumber());
+//            System.out.println("getColumnNumber = " + xrp.getColumnNumber());
+//
+//            System.out.println("----------------");
+//            System.out.println("");
+//
+//            System.out.println("getName= " + xrp.getName());
+//            System.out.println("----------------");
+//            System.out.println("getNamespace = " + xrp.getNamespace());
+//            System.out.println("getAttributeCount = " + xrp.getAttributeCount());
+//            System.out.println("----------------");
+//            System.out.println("getText= " + xrp.getText());
+//            System.out.println("=========================");
+//
+//
+//
+//
+//            System.out.println(xrp.TYPES[xrp.next()]);
+//            System.out.println("getLineNumber = " + xrp.getLineNumber());
+//            System.out.println("getColumnNumber = " + xrp.getColumnNumber());
+//
+//            System.out.println("----------------");
+//            System.out.println("");
+//
+//            System.out.println("getName= " + xrp.getName());
+//            System.out.println("----------------");
+//            System.out.println("getNamespace = " + xrp.getNamespace());
+//            System.out.println("getAttributeCount = " + xrp.getAttributeCount());
+//            System.out.println("----------------");
+//            System.out.println("getText= " + xrp.getText());
+//            System.out.println("=========================");
+//
+//
+//
+//
+//
+//
+//        } catch (XmlPullParserException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }
