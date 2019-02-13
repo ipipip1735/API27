@@ -23,7 +23,7 @@
         android:id="@+id/CustomGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/SKYBLUE">
+        android:background="@color/Beige">
 
         <mine.view.CustomView
             android:id="@+id/Custom"

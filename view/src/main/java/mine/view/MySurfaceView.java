@@ -13,7 +13,7 @@ import android.view.View;
  * Created by Administrator on 2017/7/18.
  */
 
-public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+public class MySurfaceView extends SurfaceView {
 
     private SurfaceHolder mSurfaceHolder;
     private Context mContext;
@@ -24,16 +24,16 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     public MySurfaceView(Context context) {
         super(context);
-        System.out.println("**********  MySurfaceView.Constructor0  ***********");
-        mSurfaceHolder = this.getHolder();
-        mSurfaceHolder.addCallback(this);
+        System.out.println("++++++++++  MySurfaceView.Constructor0  +++++++++++");
     }
 
     public MySurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        System.out.println("**********  MySurfaceView.Constructor1  ***********");
-        mSurfaceHolder = getHolder();
-        mSurfaceHolder.addCallback(this);
+
+        System.out.println("*********  " + getClass().getSimpleName() + ".Constructor1  *********");
+
+//        mSurfaceHolder = getHolder();
+//        mSurfaceHolder.addCallback(this);
 //        this.mContext = context;
 //        mx = 100f;
 //        my = 100f;
@@ -51,27 +51,45 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     public MySurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        System.out.println("**********  MySurfaceView.Constructor2  ***********");
+
+        System.out.println("*********  " + getClass().getSimpleName() + ".Constructor2  *********");
+
     }
 
     public MySurfaceView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        System.out.println("**********  MySurfaceView.Constructor3  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".Constructor3  *********");
+
     }
 
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        System.out.println("**********  MySurfaceView.onMeasure  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onMeasure  *********");
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        System.out.println(getMeasuredWidth());
-        System.out.println(getMeasuredHeight());
+        System.out.println("getMeasuredWidth is "  + getMeasuredWidth());
+        System.out.println("getMeasuredHeight is "  + getMeasuredHeight());
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onLayout  *********");
+
+        super.onLayout(changed, left, top, right, bottom);
+
+        System.out.println("changed is "  + changed);
+        System.out.println("left is "  + left);
+        System.out.println("top is "  + top);
+        System.out.println("right is "  + right);
+
+
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        System.out.println("**********  MySurfaceView.onDraw  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDraw  *********");
+
 //        super.onDraw(canvas);
 //        canvas = mSurfaceHolder.lockCanvas();
 //        System.out.println("my canvas is " + canvas);
@@ -86,42 +104,6 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
 
     }
-
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-
-        final SurfaceHolder h = holder;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    Canvas canvas = null;
-                    ToolClass.sleep(1000l);
-                    System.out.println("--");
-                    Paint p = new Paint();
-                    canvas = mSurfaceHolder.lockCanvas();
-                    canvas.drawARGB(255,255, 0, 0);
-                    p.setColor(getContext().getColor(R.color.AliceBlue));
-                    canvas.drawCircle(100f, 100f, 100f, p);
-                    mSurfaceHolder.unlockCanvasAndPost(canvas);
-                }
-
-            }
-        }).start();
-
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int frmt, int w, int h) {
-
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-    }
-
 
 }
 

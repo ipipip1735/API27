@@ -21,8 +21,8 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="stopService"
-            android:text="stop-Service"/>
+            android:onClick="stop"
+            android:text="stop-view"/>
 
         <Button
             android:id="@+id/button3"
