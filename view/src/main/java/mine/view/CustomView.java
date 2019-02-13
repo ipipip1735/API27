@@ -160,14 +160,14 @@ public class CustomView extends View {
 //        canvas.drawBitmap(bitmap, 0, 0, paint);
 
 
-        canvas.drawColor(getResources().getColor(R.color.MEDIUMPURPLE, null));
+        canvas.drawColor(getResources().getColor(R.color.MediumOrchid, null));
 
         canvas.save();
         canvas.scale(1f, 0.5f);
         canvas.rotate(degree);
         canvas.translate(0, 3);
 //        canvas.skew(0, degree);
-        paint.setColor(getResources().getColor(R.color.IVORY, null));
+        paint.setColor(getResources().getColor(R.color.Ivory, null));
         canvas.drawCircle(250, 200, 100, paint);
 
 
