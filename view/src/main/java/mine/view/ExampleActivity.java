@@ -1,12 +1,19 @@
 package mine.view;
 
 import android.content.Intent;
+import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -41,7 +48,7 @@ public class ExampleActivity extends AppCompatActivity {
 
 
 //        XmlResourceParser parser = getResources().getXml(R.layout.activity_task);
-//        XmlResourceParser xmlResourceParser = getResources().getLayout(R.layout.activity_task);
+        XmlResourceParser xmlResourceParser = getResources().getLayout(R.layout.activity_task);
 
 
 
