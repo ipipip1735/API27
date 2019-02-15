@@ -1,7 +1,9 @@
 package mine.view;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
@@ -13,6 +15,9 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import java.util.Random;
+
+import static android.graphics.PixelFormat.RGBA_8888;
+import static android.graphics.PixelFormat.TRANSPARENT;
 
 /**
  * Created by Administrator on 2017/8/27.
@@ -40,6 +45,8 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
 
         surfaceHolder = surfaceView.getHolder();
+//        surfaceHolder.setFormat(TRANSPARENT);
+        surfaceHolder.setFormat(RGBA_8888);
 //        surfaceHolder.setKeepScreenOn(true);//设置屏幕常亮
 //        surfaceHolder.setFixedSize(5000, 5000); //使用固定Buffer尺寸
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
@@ -111,38 +118,117 @@ public class SurfaceViewActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("*********  button.start  *********");
 
-//        thread.start();
+//        thread.start();//启动线程，每秒绘制一帧
 
-        boolean b = surfaceView.gatherTransparentRegion(new Region(920, 12400, 924, 1242));
-        System.out.println(b);
+
+//        getRegion();//测试区域对象
+
+//        gatherTransparent();//获取透明区域，并绘制
+
+
+    }
+
+    private void gatherTransparent() {
+        Region region = new Region(0, 0, 1080, 1300);
+        boolean b = surfaceView.gatherTransparentRegion(region); // 获取透明区域
+
+        System.out.println("b is " + b);
+        System.out.println("region is " + region);
+
         System.out.println("getX is " + surfaceView.getX());
         System.out.println("getY is " + surfaceView.getY());
         System.out.println("getWidth is " + surfaceView.getWidth());
         System.out.println("getHeight is " + surfaceView.getHeight());
 
 
+        Paint p = new Paint();
+        p.setColor(getResources().getColor(R.color.maroon, null));
+
+        Canvas canvas = surfaceHolder.lockCanvas();
+        canvas.drawPath(region.getBoundaryPath(), p);
+        surfaceHolder.unlockCanvasAndPost(canvas);
+    }
+
+    private void getRegion() {
+
+        boolean b;
+        Region region1 = new Region(0, 0, 100, 100);
+        Region region2 = new Region(50, 10, 850, 400);
+        System.out.println(region1);
+        System.out.println(region2);
+
+
+//       b = region1.op(region2, Region.Op.DIFFERENCE);
+//        System.out.println("DIFFERENCE is " + b);
+//        System.out.println(region1);
+//        System.out.println(region2);
+//
+//
+//       b = region1.op(region2, Region.Op.INTERSECT);
+//        System.out.println("INTERSECT is " + b);
+//        System.out.println(region1);
+//        System.out.println(region2);
+//
+//
+//       b = region1.op(region2, Region.Op.REPLACE);
+//        System.out.println("REPLACE is " + b);
+//        System.out.println(region1);
+//        System.out.println(region2);
+//
+//
+//       b = region1.op(region2, Region.Op.REVERSE_DIFFERENCE);
+//        System.out.println("REVERSE_DIFFERENCE is " + b);
+//        System.out.println(region1);
+//        System.out.println(region2);
+
+
+        b = region1.op(region2, Region.Op.UNION);
+        System.out.println("UNION is " + b);
+        System.out.println(region1);
+        System.out.println(region2);
+
+//       b = region1.op(region2, Region.Op.XOR);
+//        System.out.println("XOR is " + b);
+//        System.out.println(region1);
+//        System.out.println(region2);
+
+
+
+        Paint p = new Paint();
+        p.setColor(getResources().getColor(R.color.maroon, null));
+
+        Canvas canvas = surfaceHolder.lockCanvas();
+        canvas.drawPath(region1.getBoundaryPath(), p);
+        surfaceHolder.unlockCanvasAndPost(canvas);
 
     }
 
     public void stop(View view) {
         System.out.println("*********  button.stop  *********");
 
-//        thread.interrupt();
+//        thread.interrupt();//终止线程，不要再每秒绘制Canvas，让Canvas显示最后一帧
 
+
+        surfaceHolder.setFixedSize(1080, 1333); //使用固定尺寸Buffer
     }
 
     public void rect(View view) {
         System.out.println("*********  button.rect  *********");
 
 
-
         //渲染
         Paint p = new Paint();
         p.setColor(getResources().getColor(R.color.AliceBlue, null));
-
         Canvas canvas = surfaceHolder.lockCanvas();
-        canvas.drawARGB(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextInt(255));
+
+        canvas.drawARGB(random.nextInt(255), //填充颜色
+                random.nextInt(255),
+                random.nextInt(255),
+                random.nextInt(255));
         canvas.drawRect(0, 0, 1700, 1700, p);
+//        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); //填充为透明背景
+
+        canvas.drawRect(0, 0, 170, 170, p);
         surfaceHolder.unlockCanvasAndPost(canvas);
 
 
@@ -173,9 +259,6 @@ public class SurfaceViewActivity extends AppCompatActivity {
 //        d.setBounds(200, 200, 600, 800);
 //        d.draw(canvas);
 //        surfaceHolder.unlockCanvasAndPost(canvas);
-
-
-
 
 
     }
