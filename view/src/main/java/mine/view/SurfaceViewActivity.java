@@ -3,6 +3,7 @@ package mine.view;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,11 +34,14 @@ public class SurfaceViewActivity extends AppCompatActivity {
         //方式一：窗口模式
         setContentView(R.layout.activity_surface);
         surfaceView = (SurfaceView) findViewById(R.id.msfv);
-        surfaceView.setZOrderOnTop(true);//设置顺序策略
+//        surfaceView.setZOrderOnTop(true);//设置顺序策略
 //        surfaceView.setZOrderMediaOverlay(true);//置还顺序策略
-//        surfaceView.setSecure(false);
+//        surfaceView.setSecure(false);//使用安全截屏
+
 
         surfaceHolder = surfaceView.getHolder();
+//        surfaceHolder.setKeepScreenOn(true);//设置屏幕常亮
+//        surfaceHolder.setFixedSize(5000, 5000); //使用固定Buffer尺寸
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -109,8 +113,13 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
 //        thread.start();
 
-        //设置屏幕常亮
-//        surfaceHolder.setKeepScreenOn(true);
+        boolean b = surfaceView.gatherTransparentRegion(new Region(920, 12400, 924, 1242));
+        System.out.println(b);
+        System.out.println("getX is " + surfaceView.getX());
+        System.out.println("getY is " + surfaceView.getY());
+        System.out.println("getWidth is " + surfaceView.getWidth());
+        System.out.println("getHeight is " + surfaceView.getHeight());
+
 
 
     }
@@ -120,27 +129,23 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
 //        thread.interrupt();
 
-        System.out.println(surfaceHolder.getSurfaceFrame());
-//        surfaceHolder.setFixedSize(5000, 5000);
-        System.out.println(surfaceHolder.getSurfaceFrame());
-
     }
 
     public void rect(View view) {
         System.out.println("*********  button.rect  *********");
-        System.out.println(surfaceHolder.getSurfaceFrame());
 
 
 
         //渲染
-        surfaceView.setZOrderMediaOverlay(true);
-        Canvas canvas = surfaceHolder.lockCanvas();
         Paint p = new Paint();
         p.setColor(getResources().getColor(R.color.AliceBlue, null));
+
+        Canvas canvas = surfaceHolder.lockCanvas();
         canvas.drawARGB(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextInt(255));
-//        canvas.drawCircle(5000f, 5000f, 5000f, p);
         canvas.drawRect(0, 0, 1700, 1700, p);
         surfaceHolder.unlockCanvasAndPost(canvas);
+
+
 
 
         //测试混合模式
