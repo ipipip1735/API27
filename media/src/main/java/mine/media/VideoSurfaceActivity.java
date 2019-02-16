@@ -168,7 +168,7 @@ public class VideoSurfaceActivity extends AppCompatActivity {
         System.out.println("~~button.resume~~");
 
         if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+            mediaPlayer.start();
             mediaPlayer.setScreenOnWhilePlaying(true); //视频暂停后不要让屏幕一直亮着
         }
     }

@@ -38,9 +38,12 @@ import static android.media.AudioDeviceInfo.TYPE_USB_DEVICE;
 import static android.media.AudioDeviceInfo.TYPE_USB_HEADSET;
 import static android.media.AudioDeviceInfo.TYPE_WIRED_HEADPHONES;
 import static android.media.AudioDeviceInfo.TYPE_WIRED_HEADSET;
+import static android.media.AudioManager.ADJUST_RAISE;
 import static android.media.AudioManager.AUDIOFOCUS_REQUEST_DELAYED;
 import static android.media.AudioManager.AUDIOFOCUS_REQUEST_FAILED;
 import static android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+import static android.media.AudioManager.FLAG_PLAY_SOUND;
+import static android.media.AudioManager.FLAG_SHOW_UI;
 import static android.media.AudioManager.GET_DEVICES_INPUTS;
 import static android.media.AudioManager.MODE_IN_CALL;
 import static android.media.AudioManager.MODE_IN_COMMUNICATION;
@@ -275,13 +278,13 @@ public class AudioActivity extends AppCompatActivity {
 
         AudioManager audioManager = getSystemService(AudioManager.class);
 
-        //调整音量
-//        int volume = audioManager.getStreamVolume(STREAM_MUSIC);
-//        System.out.println(volume);
-//        audioManager.setStreamVolume(STREAM_MUSIC, ++volume, FLAG_PLAY_SOUND);
+        int volume = audioManager.getStreamVolume(STREAM_MUSIC);//获取音量
+        System.out.println(volume);
 
-//        audioManager.setRingerMode(RINGER_MODE_VIBRATE);
-//        audioManager.adjustStreamVolume(STREAM_MUSIC, ADJUST_RAISE, FLAG_SHOW_UI);
+        audioManager.setStreamVolume(STREAM_MUSIC, ++volume, FLAG_PLAY_SOUND);//调整音量
+        audioManager.adjustStreamVolume(STREAM_MUSIC, ADJUST_RAISE, FLAG_SHOW_UI);
+
+//        audioManager.setRingerMode(RINGER_MODE_VIBRATE); //设置响铃模式
 
 
     }

@@ -125,14 +125,15 @@ public class RecoderVideoActivity extends AppCompatActivity {
 
         //DataSourceConfigured
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP); //设置输出格式
-        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP); //设置音频编码
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB); //设置编码方式
-        File path = new File(getExternalFilesDir(DIRECTORY_MOVIES), "/rc" + n + ".mp4"); //设置输出路径
+        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP); //设置视频编码方式
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB); //设置音频编码方式
+
+        File path = new File(getExternalFilesDir(DIRECTORY_MOVIES), "/rc" + n + ".mp4");
         System.out.println(path);
-        recorder.setOutputFile(path.toString());
+        recorder.setOutputFile(path.toString());//设置输出路径
 
         SurfaceView surfaceView = findViewById(R.id.surfaceView);
-        recorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
+        recorder.setPreviewDisplay(surfaceView.getHolder().getSurface()); //设置预览
 
 
 
