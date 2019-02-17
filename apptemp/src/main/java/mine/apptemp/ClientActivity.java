@@ -163,6 +163,10 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
         System.out.println("~~query~~");
 //        baseService.waitTwo();
 
+        Intent intent = new Intent("one");
+        intent.setPackage("mine.activity");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 

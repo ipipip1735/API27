@@ -3,6 +3,7 @@ package mine.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 public class ThreeActivity extends AppCompatActivity {
@@ -77,5 +78,16 @@ public class ThreeActivity extends AppCompatActivity {
     protected void onDestroy() {
         System.out.println("**********  Three.onDestroy  ***********");
         super.onDestroy();
+    }
+
+
+    public void startMode(View view) {
+        System.out.println("..starMode..");
+
+        Intent intent = new Intent(this, OneActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(intent);
+
     }
 }

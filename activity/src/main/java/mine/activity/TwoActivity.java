@@ -93,6 +93,17 @@ public class TwoActivity extends AppCompatActivity {
         finish();
 
 
+    }
+
+
+    public void startMode(View view) {
+        System.out.println("..starMode..");
+
+        Intent intents = new Intent(this, ThreeActivity.class);
+//        intents.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivity(intents);
 
     }
 }

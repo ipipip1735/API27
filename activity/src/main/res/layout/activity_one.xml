@@ -13,11 +13,17 @@
         android:text="one activity"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button"
         android:onClick="start"/>
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="startMode"
+        android:text="start_mode"/>
 
 </LinearLayout>
 

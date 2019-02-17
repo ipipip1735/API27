@@ -6,90 +6,80 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.sql.SQLOutput;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("**********  Main.onCreate  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        System.out.println("**********  Main.onNewIntent  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onNewIntent  *********");
         super.onNewIntent(intent);
     }
 
 
     @Override
     protected void onStart() {
-        System.out.println("**********  Main.onStart  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         super.onStart();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        System.out.println("**********  Main.onRestoreInstanceState  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
         super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
     protected void onRestart() {
-        System.out.println("**********  Main.onRestart  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
         super.onRestart();
     }
 
     @Override
     protected void onResume() {
-        System.out.println("**********  Main.onResume  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        System.out.println("**********  Main.onPause  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
         super.onPause();
     }
 
     @Override
     public void onBackPressed() {
-        System.out.println("**********  Main.onBackPressed  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
         super.onBackPressed();
     }
 
 
     @Override
     protected void onStop() {
-        System.out.println("**********  Main.onStop  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
         super.onStop();
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        System.out.println("**********  Main.onSaveInstanceState  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
-        System.out.println("**********  Main.onDestroy  ***********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
         super.onDestroy();
     }
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
-        //显式调用
-//        beginActivity();
-
-        //隐式调用
-//        beginIntent();
-        beginCategory();
-//        beginType();
-//        beginURI();
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -101,6 +91,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+        //显式调用
+        beginActivity();
+
+        //隐式调用
+//        beginIntent();
+//        beginCategory();
+//        beginType();
+//        beginURI();
+
+    }
+
     private void beginActivity() {
         Intent intent = new Intent(this, TwoActivity.class);
 
@@ -108,11 +112,10 @@ public class MainActivity extends AppCompatActivity {
         bundle.putFloat("one.one", 1.1f);
         startActivityForResult(intent, 999, bundle);
 
-
     }
 
-
     private void beginCategory() {
+        System.out.println("..beginCategory..");
         Intent intent = new Intent("one");
         intent.setPackage(this.getPackageName());
         intent.addCategory("gk");
@@ -122,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     private void beginIntent() {
         Intent intent = new Intent("one");
         intent.setPackage(this.getPackageName());
-        intent.addCategory("gk");
+//        intent.addCategory("gk");
         startActivity(intent);
     }
 
@@ -141,5 +144,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startMode(View view) {
+        System.out.println("..starMode..");
+
+        Intent intents = new Intent(this, OneActivity.class);
+//        intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intents);
+
+    }
 }
 
