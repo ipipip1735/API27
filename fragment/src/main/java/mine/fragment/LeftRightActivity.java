@@ -79,18 +79,10 @@ public class LeftRightActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void del(View view) {
-        System.out.println("~~del~~");
-
-        TextView textView = findViewById(R.id.textView);
-        textView.setText("gogoggoog");
-        System.out.println(textView);
 
 
-    }
     public void add(View view) {
         System.out.println("~~add~~");
-
 
 
     }
@@ -108,4 +100,15 @@ public class LeftRightActivity extends AppCompatActivity {
 
 
     }
+
+    public void del(View view) {
+        System.out.println("~~del~~");
+
+        TextView textView = findViewById(R.id.textView);
+        textView.setText("gogoggoog");
+        System.out.println(textView);
+
+    }
+
+
 }

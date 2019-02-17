@@ -1,26 +1,37 @@
 package mine.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by Administrator on 2019/2/17.
+ */
+public class FragmentTransactionActivity extends AppCompatActivity {
 
     Fragment fragment = null;
     FragmentManager fragmentManager;
+    FragmentManager.OnBackStackChangedListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("**********  Main.onCreate  ***********");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_transation);
         fragmentManager = getSupportFragmentManager();
+
+        //注册监听器
+        listener = new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                System.out.println("-- addOnBackStackChangedListener.onBackStackChanged --");
+            }
+        };
+        fragmentManager.addOnBackStackChangedListener(listener);
 
     }
 
@@ -35,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+        fragment = fragmentManager.getFragment(savedInstanceState, "basic");
     }
 
     @Override
@@ -73,67 +85,76 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
+        fragmentManager.putFragment(outState, "basic", fragment);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
+
+        //注销监听器
+        fragmentManager.removeOnBackStackChangedListener(listener);
+        listener = null;
     }
 
-
-    public void del(View view) {
-        System.out.println("~~del~~");
-
-
-
-    }
     public void add(View view) {
-        System.out.println("~~button.add~~");
-
-
-//        fragmentManager = getSupportFragmentManager();
-//        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-//            @Override
-//            public void onBackStackChanged() {
-//                System.out.println("++ onBackStackChanged ++");
-//            }
-//        });
+        System.out.println("~~button.button.add~~");
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        BasicFragment fragment = new BasicFragment();
-        fragmentTransaction.add(R.id.ll, fragment, "trialFragment");
-        fragmentTransaction.addToBackStack("one");
+        fragment = new BasicFragment();
+        fragmentTransaction.add(R.id.ll, fragment, "frag1")
+                .addToBackStack("one");
         fragmentTransaction.commit();
 
+    }
 
 
-//        ViewGroup viewGroup = findViewById(R.id.ll);
-//        Button button = new Button(this);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                System.out.println("buttonnnnnnnnn");
-//            }
-//        });
-//        button.setText("gooooo");
-//        viewGroup.addView(button);
 
+    public void remove(View view) {
+        System.out.println("~~button.remove~~");
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragmentManager.findFragmentByTag("frag1"))
+                .addToBackStack("two");
+        fragmentTransaction.commit();
 
     }
 
-    public void start(View view) {
-        System.out.println("~~start~~");
+    public void replace(View view) {
+        System.out.println("~~button.replace~~");
 
-        startActivity(new Intent(this, MainActivity.class));
-
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.ll, new RightFragment(), "NewFrag")
+                .addToBackStack("three");
+        fragmentTransaction.commit();
 
     }
 
-    public void stop(View view) {
-        System.out.println("~~stop~~");
+    public void show(View view) {
+        System.out.println("~~button.show~~");
 
+        int count  = fragmentManager.getBackStackEntryCount();
+        System.out.println("count is " + count);
+    }
 
+    public void hide(View view) {
+        System.out.println("~~button.hide~~");
+    }
+
+    public void attach(View view) {
+        System.out.println("~~button.attach~~");
+
+    }
+
+    public void detach(View view) {
+        System.out.println("~~button.detach~~");
+    }
+
+    public void pop(View view) {
+        System.out.println("~~button.pop~~");
+
+        fragmentManager.popBackStack();
 
     }
 }

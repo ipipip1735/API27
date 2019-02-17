@@ -8,100 +8,100 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class LeftFragment extends Fragment {
+import java.util.Random;
+
+public class BasicFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        System.out.println("~~~ LeftFragment.onAttach ~~~");
-
+        System.out.println("*********  " + getClass().getSimpleName() + ".onAttach  *********");
         super.onAttach(context);
+
+        System.out.println(context);
+        System.out.println(getActivity());
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
+
         super.onCreate(savedInstanceState);
-        System.out.println("~~~ LeftFragment.onCreate ~~~");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        System.out.println("~~~ LeftFragment.onCreateView ~~~");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
 
         View view = inflater.inflate(R.layout.fragment_left, container, false);
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onViewCreated  *********");
         super.onViewCreated(view, savedInstanceState);
-        System.out.println("~~~ LeftFragment.onViewCreated ~~~");
 
-        Button button = view.findViewById(R.id.button3);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RightFragment rightFragment = (RightFragment) getFragmentManager().findFragmentByTag("right");
-                System.out.println(rightFragment);
-                TextView textView = rightFragment.getView().findViewById(R.id.textView);
-                textView.setText("XX");
+        TextView textView = new TextView(getActivity());
+        textView.setText("ZZZZZZZZZ" + new Random().nextInt(100));
+        ViewGroup viewGroup = getActivity().findViewById(R.id.ll);
+        viewGroup.addView(textView);
 
 
-            }
-        });
+
+
 
     }
 
     @Override
     public void onStart() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         super.onStart();
-        System.out.println("~~~ LeftFragment.onStart ~~~");
 
     }
 
     @Override
     public void onResume() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
         super.onResume();
-        System.out.println("~~~ LeftFragment.onResume ~~~");
 
     }
 
     @Override
     public void onPause() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
         super.onPause();
-        System.out.println("~~~ LeftFragment.onPause ~~~");
 
     }
 
     @Override
     public void onStop() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
         super.onStop();
-        System.out.println("~~~ LeftFragment.onStop ~~~");
 
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        System.out.println("~~~ LeftFragment.onDestroyView ~~~");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroyView  *********");
 
     }
 
     @Override
     public void onDestroy() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
         super.onDestroy();
-        System.out.println("~~~ LeftFragment.onDestroy ~~~");
 
     }
 
     @Override
     public void onDetach() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDetach  *********");
         super.onDetach();
-        System.out.println("~~~ LeftFragment.onDetach ~~~");
 
     }
 

@@ -10,11 +10,11 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="del"
         android:onClick="del"
+        android:text="del"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="spread"
         tools:layout_editor_absoluteX="16dp" />
 
     <Button
