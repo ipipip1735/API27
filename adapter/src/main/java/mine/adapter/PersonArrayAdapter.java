@@ -34,11 +34,13 @@ public class PersonArrayAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         System.out.println("--- " + getClass().getSimpleName() + ".getView ---");
 
+        System.out.println("convertView is " + convertView);
+        System.out.println("parent is " + parent);
 //        TextView textView = new TextView(this);
 
 
 //        return
-
         return super.getView(position, convertView, parent);
+
     }
 }

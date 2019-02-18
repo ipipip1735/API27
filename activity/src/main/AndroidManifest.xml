@@ -10,31 +10,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <activity android:name=".SytleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-
-        <!--<activity android:name=".MainActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-
+        </activity> <!-- <activity android:name=".MainActivity"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity android:name=".TwoActivity">
             <intent-filter>
                 <action android:name="two" />
-                <!--<category android:name="to" />-->
+                <!-- <category android:name="to" /> -->
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".OneActivity">
             <intent-filter>
                 <action android:name="one" />
@@ -44,21 +40,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ThreeActivity">
             <intent-filter>
                 <action android:name="one" />
-                <!--<data android:scheme="AA"-->
-                    <!--android:host="BB" />-->
-                <!--android:path="CC"-->
-                <!--android:pathPattern="DD"-->
-                <!--android:pathPrefix="EE"-->
-                <!--<data android:host="BB"-->
-                <!--android:port="123"-->
-                <!--android:scheme="AA"-->
-                <!--android:path="/C?h=b"/>-->
+                <!-- <data android:scheme="AA" -->
+                <!-- android:host="BB" /> -->
+                <!-- android:path="CC" -->
+                <!-- android:pathPattern="DD" -->
+                <!-- android:pathPrefix="EE" -->
+                <!-- <data android:host="BB" -->
+                <!-- android:port="123" -->
+                <!-- android:scheme="AA" -->
+                <!-- android:path="/C?h=b"/> -->
                 <data android:mimeType="-/-" />
-
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

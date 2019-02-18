@@ -155,11 +155,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intents);
 
     }
-
-    public void elevation(View view) {
-        System.out.println("~~button.elevation~~");
-        TextView textView = findViewById(R.id.textView);
-        textView.setElevation(0.5f);
-    }
 }
 

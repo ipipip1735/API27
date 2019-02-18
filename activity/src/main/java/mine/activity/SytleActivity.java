@@ -1,14 +1,20 @@
 package mine.activity;
 
 import android.content.Intent;
+import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewOutlineProvider;
+import android.widget.TextView;
 
 
 /**
  * Created by Administrator on 2019/2/17.
  */
 public class SytleActivity extends AppCompatActivity {
+
+    float n = 0.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,5 +99,23 @@ public class SytleActivity extends AppCompatActivity {
 
 
     }
+
+
+    public void elevation(View view) {
+        System.out.println("~~button.elevation~~");
+        TextView textView = findViewById(R.id.textView);
+        System.out.println(textView.getElevation());
+        textView.setElevation(++n);
+        textView.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                System.out.println("..getOutline..");
+                System.out.println("view is " + view);
+                System.out.println("outline is " + outline);
+            }
+        });
+        System.out.println(textView.getElevation());
+    }
+
 
 }

@@ -2,26 +2,20 @@ package mine.adapter;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by Administrator on 2018/8/25.
+ */
+public class ArrayListActivity extends AppCompatActivity {
 
     private BaseCursorAdapter baseCursorAdapter;
 

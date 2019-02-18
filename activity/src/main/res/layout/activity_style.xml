@@ -8,18 +8,19 @@
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
-        style="@style/BigText.Font"
         android:id="@+id/textView"
-        android:elevation="2dp"
+        style="@style/MyTest"
+        android:text="?attr/os"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="click to start Activity"
+        android:layout_marginTop="204dp"
+        android:background="@drawable/rect"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/button"
+        android:drawableLeft="@drawable/ic_launcher_foreground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyTest">
+        <item name="os">true</item>
+    </style>
+
+    <style name="MyTrail">
+        <item name="os">false</item>
+    </style>
+
     <style name="BigText">
         <item name="android:textColor">#FF0000</item>
         <item name="android:textSize">50dp</item>
