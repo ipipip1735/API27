@@ -1,21 +1,21 @@
 package mine.activity;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+import android.support.v7.app.AppCompatActivity;
 
-import java.sql.SQLOutput;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by Administrator on 2019/2/17.
+ */
+public class SytleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_style);
+
     }
 
     @Override
@@ -94,72 +94,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    public void start(View view) {
-        System.out.println("~~button.start~~");
-        //显式调用
-        beginActivity();
-
-        //隐式调用
-//        beginIntent();
-//        beginCategory();
-//        beginType();
-//        beginURI();
-
-    }
-
-    private void beginActivity() {
-        Intent intent = new Intent(this, TwoActivity.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putFloat("one.one", 1.1f);
-        startActivityForResult(intent, 999, bundle);
-
-    }
-
-    private void beginCategory() {
-        System.out.println("..beginCategory..");
-        Intent intent = new Intent("one");
-        intent.setPackage(this.getPackageName());
-        intent.addCategory("gk");
-        startActivity(intent);
-    }
-
-    private void beginIntent() {
-        Intent intent = new Intent("one");
-        intent.setPackage(this.getPackageName());
-//        intent.addCategory("gk");
-        startActivity(intent);
-    }
-
-    private void beginURI() {
-        Intent intent = new Intent("one");
-        intent.setPackage(this.getPackageName());
-        intent.setData(Uri.parse("AA://BB:123/C?h=a"));
-        startActivity(intent);
-    }
-
-    private void beginType() {
-        Intent intent = new Intent();
-//        Intent intent = new Intent("one");
-        intent.setPackage(this.getPackageName());
-        intent.setType("-/-");
-        startActivity(intent);
-    }
-
-    public void startMode(View view) {
-        System.out.println("..starMode..");
-
-        Intent intents = new Intent(this, OneActivity.class);
-//        intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intents);
-
-    }
-
-    public void elevation(View view) {
-        System.out.println("~~button.elevation~~");
-        TextView textView = findViewById(R.id.textView);
-        textView.setElevation(0.5f);
-    }
 }
-

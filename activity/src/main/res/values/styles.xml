@@ -8,4 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="BigText">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textSize">50dp</item>
+    </style>
+    <style name="SmallSize">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="BigText.Font" parent="SmallSize">
+        <item name="android:inputType">numberSigned</item>
+    </style>
+    <style name="MineLayout">
+        <!--<item name="android:layout_margin"></item>-->
+    </style>
 </resources>
