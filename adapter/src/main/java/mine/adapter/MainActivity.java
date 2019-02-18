@@ -2,23 +2,14 @@ package mine.adapter;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("**********  Main.onStart  ***********");
-        setContentView(R.layout.activity_adapter);
+        setContentView(R.layout.activity_list_view);
     }
 
 
@@ -125,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup viewGroup = findViewById(android.R.id.content);
 
 
-        viewGroup.add()
+//        viewGroup.add();
 
 
 

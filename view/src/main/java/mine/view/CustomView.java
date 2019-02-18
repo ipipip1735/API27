@@ -51,7 +51,7 @@ public class CustomView extends View {
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomView);
         direction = array.getInt(R.styleable.CustomView_direction, 0);
-
+        array.recycle();
 
 //        for (int i = 0; i < attrs.getAttributeCount(); i++) {
 //            System.out.println("AttributeName is " + attrs.getAttributeName(i));
@@ -64,6 +64,7 @@ public class CustomView extends View {
 //
 //        Object direction = array.getString(R.styleable.direction_dir);
 //        System.out.println(direction);
+//        array.recycle();
 
 
     }
@@ -153,8 +154,6 @@ public class CustomView extends View {
 //        c.drawCircle(w/2, h/2, max(w, h)-0.5f, paint);
 
 //        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-
-
 
 
 //        canvas.drawBitmap(bitmap, 0, 0, paint);

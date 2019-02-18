@@ -1,30 +1,41 @@
 package mine.adapter;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import java.util.Random;
+import android.widget.TextView;
 
 /**
- * Created by Administrator on 2018/8/25.
+ * Created by Administrator on 2019/2/18.
  */
 public class ArrayListActivity extends AppCompatActivity {
 
-    private BaseCursorAdapter baseCursorAdapter;
+    ArrayAdapter<String> arrayAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("**********  Main.onStart  ***********");
-        setContentView(R.layout.activity_adapter);
+        setContentView(R.layout.activity_array_adapter);
+
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.item);
+        arrayAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                System.out.println("~~onChanged~~");
+                ViewGroup viewGroup = findViewById(R.id.ll);
+            }
+
+            @Override
+            public void onInvalidated() {
+                System.out.println("~~onInvalidated~~");
+            }
+        });
     }
 
 
@@ -88,15 +99,16 @@ public class ArrayListActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~add~~");
 
-        addWithCR();
+        arrayAdapter.add("asdfs");
+
+
+
+
 
     }
 
     public void notify(View view) {
         System.out.println("~~notify~~");
-
-        getContentResolver().notifyChange(Uri.parse("content://TNT/person"), null);
-
 
 
     }
@@ -104,7 +116,7 @@ public class ArrayListActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~query~~");
 
-        queryWithCR();
+
 
 
     }
@@ -113,13 +125,18 @@ public class ArrayListActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~start~~");
 
+        TextView textView;
 
+        textView = (TextView) arrayAdapter.getView(0, null, null);
+        System.out.println(textView);
 
+//        textView = new TextView(this);
+//        textView.setText("ASDJFLS;AJDLF");
 
-        ViewGroup viewGroup = findViewById(android.R.id.content);
+        ViewGroup viewGroup = findViewById(R.id.ll);
+        System.out.println(viewGroup);
+        viewGroup.addView(textView);
 
-
-        viewGroup.add()
 
 
 
@@ -127,67 +144,6 @@ public class ArrayListActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~stop~~");
-
-    }
-
-
-    private void addWithCR() {
-
-        String table = "person";
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("person_name", "jack" + new Random().nextInt(256));
-        contentValues.put("person_gender", new Random().nextInt(2));
-        contentValues.put("person_age", new Random().nextInt(120));
-
-        ContentResolver contentResolver = getContentResolver();
-        Uri uri = Uri.parse("content://TNT/person");
-        uri = contentResolver.insert(uri, contentValues);
-        contentResolver.notifyChange(uri, null);
-
-
-    }
-
-
-    private void queryWithCR() {
-
-        Uri uri = Uri.parse("content://TNT/person");
-
-        String[] projection = {
-                "_id",
-                "name",
-                "age",
-                "gender",
-        };
-
-        String selection = "_id > ?";
-        String[] selectionArgs = {"0"};
-        String sortOrder = "_id DESC";
-
-        ContentResolver contentResolver = getContentResolver();
-        Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, sortOrder);
-
-
-
-        System.out.println("Position is " + cursor.getPosition());
-        System.out.println("count is " + cursor.getCount());
-
-
-
-//        while (cursor.moveToNext()) {
-//            for (String name : cursor.getColumnNames()) {
-//                System.out.println(name + " is " + cursor.getString(cursor.getColumnIndex(name)));
-//            }
-//            System.out.println("--------");
-//        }
-
-        cursor.setNotificationUri(contentResolver, uri);
-        baseCursorAdapter = new BaseCursorAdapter(this, cursor, true);
-
-        ListView listView = findViewById(R.id.myLV);
-        listView.setAdapter(baseCursorAdapter);
-
-
-
 
     }
 
