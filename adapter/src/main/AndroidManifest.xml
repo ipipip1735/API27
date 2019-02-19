@@ -33,7 +33,7 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".CursorLoaderActivity">
+        <activity android:name=".CursorAdapterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
