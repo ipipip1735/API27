@@ -1,47 +1,34 @@
 package mine.adapter;
 
-import android.database.DataSetObserver;
-import android.os.Bundle;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-/**
- * Created by Administrator on 2019/2/18.
- */
-public class ArrayListActivity extends AppCompatActivity {
+import java.util.Random;
 
-    ArrayAdapter<String> arrayAdapter;
+public class ListViewActivity extends AppCompatActivity {
+
+
+    private PersonArrayAdapter personArrayAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("**********  Main.onStart  ***********");
-        setContentView(R.layout.activity_array_adapter);
+        setContentView(R.layout.activity_list_view);
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item);
-        arrayAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                System.out.println("~~onChanged~~");
-                ViewGroup viewGroup = findViewById(R.id.ll);
-            }
-
-            @Override
-            public void onInvalidated() {
-                System.out.println("~~onInvalidated~~");
-            }
-        });
-
-
-
+        personArrayAdapter = new PersonArrayAdapter(this, R.layout.item);
+        ListView listView = findViewById(R.id.myLV);
+        listView.setAdapter(personArrayAdapter);
     }
 
 
@@ -105,10 +92,7 @@ public class ArrayListActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~add~~");
 
-        arrayAdapter.add("asdfs");
-
-
-
+        personArrayAdapter.add("go" + new Random().nextInt(100));
 
 
     }
@@ -117,17 +101,10 @@ public class ArrayListActivity extends AppCompatActivity {
         System.out.println("~~notify~~");
 
 
-        arrayAdapter.notifyDataSetChanged();//通知数据集变更
-//        arrayAdapter.notifyDataSetInvalidated();//通知数据集无效
-
-
     }
 
     public void query(View view) {
         System.out.println("~~query~~");
-
-
-
 
     }
 
@@ -135,28 +112,11 @@ public class ArrayListActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~start~~");
 
-        //方式一：convertView和parent都为空
-//        TextView textView = (TextView) arrayAdapter.getView(0, null, null); //获取View,convertView和parent都为空
-//        ViewGroup viewGroup = findViewById(R.id.ll);
-//        viewGroup.addView(textView);
-
-
-        //方式二：parent都为空
-//        Button button = new Button(this);
-//        button.setText("gogo");
-//        View v = arrayAdapter.getView(0, button, null); //获取View
-//        ViewGroup viewGroup = findViewById(R.id.ll);
-//        viewGroup.addView(v);
-
-
-
-
     }
 
     public void stop(View view) {
         System.out.println("~~stop~~");
 
     }
-
 
 }

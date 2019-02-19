@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class PersonArrayAdapter extends ArrayAdapter {
 
     private String[] nameArray = new String[]{
@@ -26,6 +28,7 @@ public class PersonArrayAdapter extends ArrayAdapter {
         super(context, resource);
         System.out.println("--- " + getClass().getSimpleName() + ".constructor ---");
 
+//        addAll(nameArray);
     }
 
 
@@ -33,14 +36,18 @@ public class PersonArrayAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         System.out.println("--- " + getClass().getSimpleName() + ".getView ---");
-
+        System.out.println("position is " + position);
         System.out.println("convertView is " + convertView);
         System.out.println("parent is " + parent);
-//        TextView textView = new TextView(this);
 
 
-//        return
-        return super.getView(position, convertView, parent);
+        TextView textView = new TextView(getContext());
+        textView.setText((CharSequence) getItem(position));
+
+
+        return textView;
+//        return super.getView(position, convertView, parent);
 
     }
+
 }
