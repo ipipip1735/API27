@@ -19,6 +19,7 @@ public class ContentObserverActivity extends AppCompatActivity {
 
     private SQLiteDatabase sqLiteDatabase;
     private CursorContentObserver cursorContentObserver;
+    private boolean isRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,8 @@ public class ContentObserverActivity extends AppCompatActivity {
         System.out.println("**********  Main.onStart  ***********");
         setContentView(R.layout.activity_main);
 
-        cursorContentObserver = new CursorContentObserver(new Handler(getMainLooper()));
+//        cursorContentObserver = new CursorContentObserver(new Handler(getMainLooper()));
+        cursorContentObserver = new CursorContentObserver(null);
 
     }
 
@@ -98,8 +100,9 @@ public class ContentObserverActivity extends AppCompatActivity {
     private void cursorNotify() {
 
 
+//        getContentResolver().notifyChange(Uri.parse("content://TNT/A/3/a"), null); //没有改变源
+        getContentResolver().notifyChange(Uri.parse("content://TNT/A/3/a"), cursorContentObserver); //有改变源
 
-        getContentResolver().notifyChange(Uri.parse("content://TNT/A/3/a"), cursorContentObserver);
 
 //        Handler handler = new Handler(getMainLooper());
 //        CursorContentObserver cursorContentObserver = new CursorContentObserver(handler);
@@ -114,9 +117,14 @@ public class ContentObserverActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~query~~");
         Uri uri = Uri.parse("content://TNT/A/3");
-        getContentResolver().
-                registerContentObserver(Uri.parse("content://TNT/A/3"), true,
-                        cursorContentObserver);
+
+
+        if (!isRegister) {
+            getContentResolver().registerContentObserver(Uri.parse("content://TNT/A/3"),
+                    true,
+                    cursorContentObserver);
+            isRegister = true;
+        }
 
     }
 
