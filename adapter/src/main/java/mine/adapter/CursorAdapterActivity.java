@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -107,8 +108,8 @@ public class CursorAdapterActivity extends AppCompatActivity {
 
     }
 
-    public void notify(View view) {
-        System.out.println("~~button.notify~~");
+    public void del(View view) {
+        System.out.println("~~button.del~~");
 
 
     }
@@ -132,21 +133,19 @@ public class CursorAdapterActivity extends AppCompatActivity {
 
         ContentResolver contentResolver = getContentResolver();
         Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, sortOrder);
-
+        cursor.setNotificationUri(contentResolver, uri);
         System.out.println("Position is " + cursor.getPosition());
         System.out.println("count is " + cursor.getCount());
 
 
-
-
-        cursorAdapter = new CursorAdapter(this, cursor, true){
+        cursorAdapter = new CursorAdapter(this, cursor, true) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 System.out.println("..CursorAdapter.newView..");
                 System.out.println("context is " + context);
                 System.out.println("cursor is " + cursor);
                 System.out.println("parent is " + parent);
-                return null;
+                return new TextView(context);
             }
 
             @Override
@@ -156,8 +155,12 @@ public class CursorAdapterActivity extends AppCompatActivity {
                 System.out.println("context is " + context);
                 System.out.println("cursor is " + cursor);
 
+                ((TextView) view).setText(cursor.getString(cursor.getColumnIndex("name")));
+
             }
         };
+
+        listView.setAdapter(cursorAdapter);
 
     }
 
