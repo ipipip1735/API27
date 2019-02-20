@@ -38,7 +38,8 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
         System.out.println("~~ " + getClass().getSimpleName() + ".onCanceled ~~");
         super.onCanceled(data);
 
-        data = null;
+        System.out.println("data is " + data);
+        data = null; //将数据只靠
     }
 
     @Override
@@ -64,17 +65,21 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
         while (n++ < 30) {
 
             System.out.println(Thread.currentThread());
+            result = String.valueOf(n); //中间结果
+            System.out.println("result is " + result);
             try {
                 Thread.sleep(1000l);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            if (isLoadInBackgroundCanceled())break;
+            if (isLoadInBackgroundCanceled())break; //终止线程
 
         }
 
-        result = "ok";
+        if (!isLoadInBackgroundCanceled())
+            result = "ok"; //如果线程没有终止，是正常结束，就出最终结果;
+
 
         return result;
     }

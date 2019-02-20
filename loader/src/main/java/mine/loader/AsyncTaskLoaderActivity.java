@@ -128,14 +128,15 @@ class AsyncTaskLoaderCallback implements LoaderManager.LoaderCallbacks {
     @Override
     public void onLoadFinished(Loader loader, Object data) {
         System.out.println("--- " + getClass().getSimpleName() + ".onLoadFinished ---");
+
+        System.out.println("loader is " + loader);
         System.out.println(loader.dataToString(data) + " is " + data);
-
-
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
         System.out.println("--- " + getClass().getSimpleName() + ".onLoaderReset ---");
 
+        System.out.println("loader is " + loader);
     }
 }

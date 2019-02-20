@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="122dp" />
+        app:layout_constraintGuide_begin="141dp" />
 
     <Button
         android:id="@+id/button"
@@ -32,6 +32,7 @@
         android:text="loading"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:layout_editor_absoluteX="18dp" />
 
     <Button
@@ -42,7 +43,7 @@
         android:text="cancelling"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintTop_toBottomOf="@+id/button"
-        tools:layout_editor_absoluteX="18dp" />
+        tools:layout_editor_absoluteX="9dp" />
 
     <Button
         android:id="@+id/button3"
