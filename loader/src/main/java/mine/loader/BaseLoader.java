@@ -4,16 +4,9 @@ import android.content.Context;
 import android.content.Loader;
 
 public class BaseLoader extends Loader {
-    /**
-     * Stores away the application context associated with context.
-     * Since Loaders can be used across multiple activities it's dangerous to
-     * store the context directly; always use {@link #getContext()} to retrieve
-     * the Loader's Context, don't use the constructor argument directly.
-     * The Context returned by {@link #getContext} is safe to use across
-     * Activity instances.
-     *
-     * @param context used to retrieve the application context.
-     */
+
+    Thread thread;
+
     public BaseLoader(Context context) {
         super(context);
         System.out.println("~~ " + getClass().getSimpleName() + ".BaseLoader ~~");
@@ -35,27 +28,43 @@ public class BaseLoader extends Loader {
     protected void onStartLoading() {
         System.out.println("~~ " + getClass().getSimpleName() + ".onStartLoading ~~");
         super.onStartLoading();
-        forceLoad();
+        forceLoad(); //开始加载
 
     }
 
     @Override
     protected boolean onCancelLoad() {
         System.out.println("~~ " + getClass().getSimpleName() + ".onCancelLoad ~~");
-        return super.onCancelLoad();
+//        return super.onCancelLoad();
+        thread.interrupt();
+        thread = null;
+        deliverCancellation(); //分发取消
 
+        return true;
     }
 
     @Override
     protected void onForceLoad() {
         System.out.println("~~ " + getClass().getSimpleName() + ".onForceLoad ~~");
+        System.out.println(Thread.currentThread());
         super.onForceLoad();
-        try {
-            Thread.sleep(2000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        deliverResult("Ok");
+
+        //必须使用子线程，否则速度太快，系统将调用2次回调
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000l);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("######OK!");
+                System.out.println(Thread.currentThread());
+                deliverResult("Ok"); //分发结果
+            }
+        });
+        thread.start();
+
     }
 
     @Override

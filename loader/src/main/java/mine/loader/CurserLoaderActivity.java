@@ -191,7 +191,10 @@ class CursorLoaderCallback implements LoaderManager.LoaderCallbacks {
     @Override
     public void onLoadFinished(Loader loader, Object data) {
         System.out.println("--- " + getClass().getSimpleName() + ".onLoadFinished ---");
+        System.out.println("loader is " + loader);
         System.out.println(loader.dataToString(data) + " is " + data);
+        System.out.println("count is " + ((Cursor)data).getCount());
+
 
         CursorLoader cursorLoader = (CursorLoader) loader;
         Cursor cursor = (Cursor) data;
