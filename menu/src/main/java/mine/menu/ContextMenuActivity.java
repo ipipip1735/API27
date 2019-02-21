@@ -24,7 +24,7 @@ public class ContextMenuActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_task);
 
-        registerForContextMenu(findViewById(R.id.textView));
+//        registerForContextMenu(findViewById(R.id.textView));
 
 
     }
@@ -33,7 +33,7 @@ public class ContextMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        unregisterForContextMenu(findViewById(R.id.textView));
+//        unregisterForContextMenu(findViewById(R.id.textView));
         super.onStop();
     }
 
@@ -109,7 +109,7 @@ public class ContextMenuActivity extends AppCompatActivity {
 
     public void initLoad(View view) {
 
-        openContextMenu(findViewById(R.id.textView));
+//        openContextMenu(findViewById(R.id.textView));
 
 
     }

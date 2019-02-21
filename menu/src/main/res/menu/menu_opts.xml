@@ -23,13 +23,13 @@
           android:icon="@drawable/w1"/>
 
     <item android:id="@+id/itemFour"
-          app:showAsAction="never"
-          android:title="ItemTwo"
+          app:showAsAction="ifRoom"
+          android:title="ItemFour"
           android:icon="@drawable/w1"/>
 
     <item android:id="@+id/itemFive"
           app:showAsAction="never"
-          android:title="ItemThree"
+          android:title="ItemFive"
           android:icon="@drawable/w1"/>
 </menu>
 

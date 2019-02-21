@@ -9,15 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar">-->
+
 
         <!--<activity android:name=".MainActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
-        <!--android:theme="@style/AppTheme">-->
+
 
 
         <!--<activity android:name=".ExampleActivity">-->
@@ -28,21 +30,20 @@
         <!--</activity>-->
 
 
+        <activity android:name=".OptionMenuActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+        </activity>
 
-
-        <!--<activity android:name=".OptionMenuActivity">-->
+        <!--<activity android:name=".ActionModeActivity">-->
         <!--<intent-filter>-->
         <!--<action android:name="android.intent.action.MAIN"/>-->
         <!--<category android:name="android.intent.category.LAUNCHER"/>-->
         <!--</intent-filter>-->
         <!--</activity>-->
-
-        <activity android:name=".ActionModeActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-        </activity>
 
 
         <!--<activity android:name=".PopupMenuActivity">-->
@@ -55,8 +56,10 @@
 
         <!--<activity android:name=".ToolbarActivity">-->
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
 
@@ -64,6 +67,7 @@
         <!--<activity android:name=".ActionBarActivity">-->
         <!--<intent-filter>-->
         <!--<action android:name="android.intent.action.MAIN"/>-->
+        <!--<action android:name="android.intent.action.VIEW"/>-->
         <!--<category android:name="android.intent.category.LAUNCHER"/>-->
         <!--</intent-filter>-->
         <!--</activity>-->
@@ -75,7 +79,6 @@
         <!--<category android:name="android.intent.category.LAUNCHER"/>-->
         <!--</intent-filter>-->
         <!--</activity>-->
-
 
 
         <!--<activity android:name=".OptionMenuActivity">-->
