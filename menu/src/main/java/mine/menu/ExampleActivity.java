@@ -1,15 +1,9 @@
 package mine.menu;
 
 import android.content.Intent;
-import android.content.Loader;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-
-import java.util.Set;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -40,7 +34,7 @@ public class ExampleActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  Example  onCreate  ***********");
 
-        setContentView(R.layout.activity_task);
+        setContentView(R.layout.activity_option_menu);
 
 
 //        if (bundle == null) {

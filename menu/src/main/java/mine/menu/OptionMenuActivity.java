@@ -2,11 +2,8 @@ package mine.menu;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -21,7 +18,8 @@ public class OptionMenuActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
 
 
-        setContentView(R.layout.activity_task);
+        setContentView(R.layout.activity_option_menu);
+
 
     }
 
@@ -89,7 +87,8 @@ public class OptionMenuActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.menu_opts, menu);
 
-        return super.onCreateOptionsMenu(menu);
+        return super.onPrepareOptionsMenu(menu);
+//        return false;
     }
 
 
@@ -98,11 +97,24 @@ public class OptionMenuActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onPrepareOptionsMenu  *********");
 
         System.out.println(menu.size());
-//        System.out.println(menu.getItem(0).setTitle("DD"));
-//        System.out.println(menu.findItem(R.id.itemOne).setTitle("One"));
+        System.out.println(menu.getItem(4).setTitle("DD"));
+        System.out.println(menu.findItem(R.id.itemThree).setTitle("333"));
 
         return super.onPrepareOptionsMenu(menu);
+//        return false;
     }
+
+
+
+    @Override
+    public void onOptionsMenuClosed(Menu menu) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onOptionsMenuClosed  *********");
+        super.onOptionsMenuClosed(menu);
+
+        System.out.println("menu is " + menu);
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -111,38 +123,14 @@ public class OptionMenuActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void openOptionsMenu() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".openOptionsMenu  *********");
-        super.openOptionsMenu();
-    }
 
-    @Override
-    public void closeOptionsMenu() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".closeOptionsMenu  *********");
-        super.closeOptionsMenu();
-    }
-
-    @Override
-    public void onPanelClosed(int featureId, Menu menu) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onPanelClosed  *********");
-
-//        featureId = 0;
-        super.onPanelClosed(featureId, menu);
-    }
-
-    @Override
-    public void onOptionsMenuClosed(Menu menu) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onOptionsMenuClosed  *********");
-//        return super.onOptionsItemSelected(item);
-        super.onOptionsMenuClosed(menu);
-
-    }
 
 
     public void itemOne(MenuItem item) {
         System.out.println(" click itemone ");
     }
+
+
 
 
 }

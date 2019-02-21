@@ -2,18 +2,11 @@ package mine.menu;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.view.ActionMode;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -72,7 +65,7 @@ public class ActionModeActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  ContextMenuActivity  onCreate  ***********");
 
-        setContentView(R.layout.activity_task);
+        setContentView(R.layout.activity_option_menu);
 
 //        registerForContextMenu(findViewById(R.id.textView));
 
@@ -126,51 +119,51 @@ public class ActionModeActivity extends AppCompatActivity {
 
     public void destroyLoad(View view) {
         System.out.println("~~button.destroyLoad~~");
-        ListView listView = (ListView) findViewById(R.id.lv);
-        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"aa", "bb"}));
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                System.out.println("*******  onItemCheckedStateChanged  *********");
-
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                System.out.println("*******  onCreateActionMode  *********");
-                MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.menu_actionmove, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                System.out.println("*******  onPrepareActionMode  *********");
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                System.out.println("*******  onActionItemClicked  *********");
-                System.out.println("item is " + item.getItemId());
-
-                switch (item.getItemId()) {
-                    case R.id.itemOne:
-                        System.out.println("one is " +R.id.itemOne);
-                        mode.finish(); // Action picked, so close the CAB
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                System.out.println("*******  onDestroyActionMode  *********");
-
-            }
-        });
+//        ListView listView = (ListView) findViewById(R.id.lv);
+//        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"aa", "bb"}));
+//        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+//        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+//            @Override
+//            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+//                System.out.println("*******  onItemCheckedStateChanged  *********");
+//
+//            }
+//
+//            @Override
+//            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//                System.out.println("*******  onCreateActionMode  *********");
+//                MenuInflater inflater = mode.getMenuInflater();
+//                inflater.inflate(R.menu.menu_actionmove, menu);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+//                System.out.println("*******  onPrepareActionMode  *********");
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+//                System.out.println("*******  onActionItemClicked  *********");
+//                System.out.println("item is " + item.getItemId());
+//
+//                switch (item.getItemId()) {
+//                    case R.id.itemOne:
+//                        System.out.println("one is " +R.id.itemOne);
+//                        mode.finish(); // Action picked, so close the CAB
+//                        return true;
+//                    default:
+//                        return false;
+//                }
+//            }
+//
+//            @Override
+//            public void onDestroyActionMode(ActionMode mode) {
+//                System.out.println("*******  onDestroyActionMode  *********");
+//
+//            }
+//        });
     }
 
 }

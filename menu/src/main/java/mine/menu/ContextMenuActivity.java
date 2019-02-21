@@ -21,48 +21,65 @@ public class ContextMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         System.out.println("**********  ContextMenuActivity  onCreate  ***********");
-
-        setContentView(R.layout.activity_task);
-
-//        registerForContextMenu(findViewById(R.id.textView));
-
+        setContentView(R.layout.activity_context_menu);
 
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
+    }
 
 
     @Override
     protected void onStop() {
-//        unregisterForContextMenu(findViewById(R.id.textView));
         super.onStop();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
 
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        System.out.println("*******Menu*********");
-        getMenuInflater().inflate(R.menu.menu_opts, menu);
-
-
-        return super.onCreateOptionsMenu(menu);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        System.out.println("******Prepare*Menu********");
-
-        System.out.println(menu.size());
-//        System.out.println(menu.getItem(0).setTitle("DD"));
-//        System.out.println(menu.findItem(R.id.itemOne).setTitle("One"));
-
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void onOptionsMenuClosed(Menu menu) {
-        super.onOptionsMenuClosed(menu);
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
 
@@ -76,21 +93,6 @@ public class ContextMenuActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_item, menu);
 
         super.onCreateContextMenu(menu, v, menuInfo);
-    }
-
-
-    @Override
-    public void openContextMenu(View view) {
-        System.out.println("*******  ContextMenuActivity  openContextMenu  *********");
-        super.openContextMenu(view);
-    }
-
-
-
-    @Override
-    public void closeContextMenu() {
-        System.out.println("*******  ContextMenuActivity  closeContextMenu  *********");
-        super.closeContextMenu();
     }
 
     @Override
@@ -107,17 +109,37 @@ public class ContextMenuActivity extends AppCompatActivity {
     }
 
 
-    public void initLoad(View view) {
-
-//        openContextMenu(findViewById(R.id.textView));
-
-
-    }
-
-
     public void itemOne(MenuItem item) {
         System.out.println(" click itemone ");
     }
 
+
+
+
+
+
+
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+
+        registerForContextMenu(findViewById(R.id.textView));
+
+    }
+
+
+    public void stop(View view) {
+        System.out.println("~~button.stop~~");
+    }
+
+    public void add(View view) {
+        System.out.println("~~button.add~~");
+        openContextMenu(findViewById(R.id.textView));
+    }
+
+    public void del(View view) {
+        System.out.println("~~button.del~~");
+        closeContextMenu();
+
+    }
 }
 

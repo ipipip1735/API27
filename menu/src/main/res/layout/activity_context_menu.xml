@@ -45,12 +45,16 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lv"
+    <TextView
+        android:id="@+id/textView"
+        android:textSize="@android:dimen/app_icon_size"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/BlanchedAlmond">
+        android:layout_height="wrap_content"
+        android:text="tttttttttttt" />
 
-
-    </ListView>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss" />
 </LinearLayout>

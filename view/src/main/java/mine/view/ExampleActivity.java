@@ -47,7 +47,7 @@ public class ExampleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
 
 
-//        XmlResourceParser parser = getResources().getXml(R.layout.activity_task);
+//        XmlResourceParser parser = getResources().getXml(R.layout.activity_option_menu);
         XmlResourceParser xmlResourceParser = getResources().getLayout(R.layout.activity_task);
 
 
