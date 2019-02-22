@@ -1,20 +1,22 @@
 package mine.menu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ActionProvider;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 /**
- * Created by Administrator on 2017/4/14.
+ * Created by Administrator on 2019/2/21.
  */
 
-public class ActionBarActivity extends AppCompatActivity {
+public class ActionProviderActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -104,8 +106,7 @@ public class ActionBarActivity extends AppCompatActivity {
 
 
         MenuItem actionMenuItem = menu.findItem(R.id.action_search);
-        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);
-
+        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);//增加坍塌/扩展监听器
 
         return super.onPrepareOptionsMenu(menu);
 //        return false;
@@ -142,7 +143,6 @@ public class ActionBarActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.itemTwo:
                 startActivity(new Intent(this, MainActivity.class));
-//                item.setActionProvider();
                 break;
             default:
         }
@@ -159,22 +159,8 @@ public class ActionBarActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
-        //窗口变色
         getWindow().setBackgroundDrawableResource(R.color.MediumOrchid);
-
-
-        //ActionBar变色，默认的状态条颜色太深
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(
-                getResources().getDrawable(R.color.BurlyWood, null));
-
-        System.out.println("getTitle is " + actionBar.getTitle());
-        System.out.println("getSubtitle is " + actionBar.getSubtitle());
-
-
-
-
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.BurlyWood, null));
     }
 
     public void stop(View view) {
@@ -182,3 +168,47 @@ public class ActionBarActivity extends AppCompatActivity {
     }
 }
 
+class BasicActionProvider extends ActionProvider {
+
+    public BasicActionProvider(Context context) {
+        super(context);
+        System.out.println("+++ " + getClass().getSimpleName() + ".Constructor +++");
+    }
+
+    @Override
+    public View onCreateActionView() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreateActionView  *********");
+
+        //方式一：代码方式
+//        Button button = new Button(getContext());
+//        button.setText("btn1");
+//        return button;
+
+
+        //方式二：布局配置文件
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        View view = layoutInflater.inflate(R.layout.activity_action_provider, null);
+        view.findViewById(R.id.ib1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~button.ib1~~");
+            }
+        });
+        view.findViewById(R.id.ib2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~button.ib2~~");
+            }
+        });
+
+        return view;
+
+    }
+
+    @Override
+    public boolean onPerformDefaultAction() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPerformDefaultAction  *********");
+
+        return super.onPerformDefaultAction();
+    }
+}

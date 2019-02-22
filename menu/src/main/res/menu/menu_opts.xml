@@ -2,12 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/itemOne"
-        android:icon="@drawable/w1"
-        android:onClick="itemOne"
-        android:title="ItemOne"
+        android:id="@+id/action_provider"
+        android:icon="@drawable/w2"
+        android:title="actionProvider"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+        app:actionProviderClass="mine.menu.BasicActionProvider"/>
 
     <item
         android:id="@+id/action_search"
@@ -18,25 +17,21 @@
 
     <item
         android:id="@+id/itemTwo"
-        android:icon="@drawable/w1"
         android:title="ItemTwo"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/itemThree"
-        android:icon="@drawable/w1"
         android:title="ItemThree"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/itemFour"
-        android:icon="@drawable/w1"
         android:title="ItemFour"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/itemFive"
-        android:icon="@drawable/w1"
         android:title="ItemFive"
         app:showAsAction="never" />
 </menu>
