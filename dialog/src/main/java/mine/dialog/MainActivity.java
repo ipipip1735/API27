@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     public void alertDialog(View view) {
         System.out.println("~~button.alertDialog~~");
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         AlertDialog alertDialog = builder.setTitle("title")
                 .setMessage("message")
@@ -162,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-        alertDialog.registerForContextMenu(findViewById(R.id.textView));
+//        alertDialog.registerForContextMenu(findViewById(R.id.textView));
 //        alertDialog.
 
 
