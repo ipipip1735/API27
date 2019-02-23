@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         baseGLSurfaceView = new BaseGLSurfaceView(this);
         setContentView(baseGLSurfaceView);
 
-//        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_alert_dialog);
 //
 //        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.linearLayout3);
 //        MyGLSurfaceView myGLSurfaceView = new MyGLSurfaceView(this);

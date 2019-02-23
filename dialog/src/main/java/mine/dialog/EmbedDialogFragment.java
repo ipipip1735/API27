@@ -5,15 +5,20 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 
 
 /**
  * Created by Administrator on 2018/8/29.
  */
-public class DataDialogFragment extends DialogFragment {
+public class EmbedDialogFragment extends DialogFragment {
     public boolean[] booleans;
 
     @Override
@@ -37,46 +42,30 @@ public class DataDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
+
+        View view = inflater.inflate(R.layout.dialog_embed, container, false);
+        Button button = view.findViewById(R.id.button9);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        return view;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateDialog  *********");
-        LayoutInflater inflator = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View header = inflator.inflate(R.layout.dialog_header, null);
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.getWindow().setBackgroundDrawableResource(R.color.colorAccent);
 
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setCustomTitle(header)
-                .setMultiChoiceItems(R.array.dialogs, booleans,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                System.out.println("dialog is " + dialog);
-                                System.out.println("which is " + which);
-                                System.out.println("isCh.ecked is " + isChecked);
-                                booleans[which]=isChecked;
-                            }
-                })
-                .setView(R.layout.dialog_bottom)
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-//                        finish();
-                        System.out.println("~~positive~~");
-
-                        MainActivity mainActivity = (MainActivity) getActivity();
-                        mainActivity.update(booleans);
-
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        System.out.println("id is " + id);
-                        System.out.println("~~negative~~");
-                        dialog.cancel();
-                    }
-                })
-                .show();
-        return alertDialog;
+        return dialog;
     }
 
     @Override
