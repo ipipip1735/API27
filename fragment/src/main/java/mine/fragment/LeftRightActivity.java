@@ -1,5 +1,6 @@
 package mine.fragment;
 
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,7 +19,17 @@ public class LeftRightActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("**********  Main.onCreate  ***********");
         super.onCreate(savedInstanceState);
+
+        //方式一：
         setContentView(R.layout.activity_main);
+
+        //方式二：
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(android.R.id.content, new RightFragment())
+//                .add(android.R.id.content, new LeftFragment())
+//                .addToBackStack("lr")
+//                .commit();
+
 
     }
 
