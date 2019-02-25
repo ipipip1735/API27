@@ -14,7 +14,7 @@ include   ':apptemp',
 //        ':bluetooth',
         ':menu',
 //        ':parcel',
-//        ':preferences'
+        ':preferences',
 //        ':sqlitedb',
 //        ':room',
 //        ':file',

@@ -1,34 +1,24 @@
 package mine.preferences;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 /**
- * Created by Administrator on 2018/8/25.
+ * Created by Administrator on 2018/9/6.
  */
-public class MainActivity extends AppCompatActivity
-        implements PreferenceFragment.OnPreferenceStartFragmentCallback,
-        SharedPreferences.OnSharedPreferenceChangeListener{
-
-    private BasePreferencesFragment basePreferencesFragment;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_base_preferences);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        setContentView(R.layout.activity_main);
 
-        basePreferencesFragment = new BasePreferencesFragment();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.fl, basePreferencesFragment)
-                .commit();
     }
 
     @Override
@@ -89,42 +79,27 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void framgentPreference(View view) {
-        System.out.println("~~button.framgentPreference~~");
+    public void start(View view) {
+        System.out.println("~~button.start~~");
 
-        BasePreferencesFragment basePreferencesFragment = new BasePreferencesFragment();
         getFragmentManager().beginTransaction()
-                .replace(R.id.fl, basePreferencesFragment)
+                .add(android.R.id.content, new HeaderPreferencesFragment())
                 .commit();
     }
 
-    public void editPreference(View view) {
-        System.out.println("~~button.editPreference~~");
-        EditTextPreference preference = (EditTextPreference) basePreferencesFragment.getPreferenceScreen().getPreference(1);
-        String r = basePreferencesFragment.getPreferenceManager().getSharedPreferences().getString("editkeytt", "ccc");
-        System.out.println("r is " + r);
-    }
 
-    public void runtimeAddDialogPreference(View view) {
-        System.out.println("~~button.runtimeAddDialogPreference~~");
-
-        PreferenceScreen preferenceScreen = basePreferencesFragment.getPreferenceManager()
-                .createPreferenceScreen(this);
-
-
-        preferenceScreen.addPreference(new CustomDialogPreference(this));
-        basePreferencesFragment.setPreferenceScreen(preferenceScreen);
-
-
-    }
-
-
-    public void query(View view) {
-        System.out.println("~~button.query~~");
-
-    }
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+
+    }
+
+    public void bind(View view) {
+        System.out.println("~~button.bind~~");
+
+    }
+
+    public void unbind(View view) {
+        System.out.println("~~button.unbind~~");
 
     }
 
@@ -133,19 +108,26 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
-        System.out.println("~~~onPreferenceStartFragment~~~");
-        System.out.println("caller is " + caller);
-        System.out.println("pref is " + pref);
-        return false;
-    }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        System.out.println("~~~onSharedPreferenceChanged~~~");
-        System.out.println("sharedPreferences is " + sharedPreferences);
-        System.out.println("key is " + key);
+    public void del(View view) {
+        System.out.println("~~button.del~~");
 
     }
+
+
+    public void query(View view) {
+        System.out.println("~~button.query~~");
+
+        //方式一
+//        SharedPreferences sharedPreferences = getSharedPreferences("mine.preferences_preferences", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        System.out.println(sharedPreferences.getAll());
+
+
+        //方式二
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        System.out.println(sharedPreferences.getAll());
+
+    }
+
 }

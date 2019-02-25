@@ -3,7 +3,7 @@
 
 
     <EditTextPreference
-        android:key="editkey"
+        android:key="editkey1"
         android:summary="editSummary"
         android:title="editTitle"/>
 
@@ -11,11 +11,11 @@
         android:key="PreferenceScreen key"
         android:title="Preference Screen">
         <EditTextPreference
-            android:key="editkey"
+            android:key="editkey21"
             android:summary="editSummary"
             android:title="editTitle"/>
         <EditTextPreference
-            android:key="editkey"
+            android:key="editkey22"
             android:summary="editSummary"
             android:title="editTitle"/>
     </PreferenceScreen>
@@ -24,17 +24,17 @@
         android:key="CategoryValue"
         android:title="Category">
         <EditTextPreference
-            android:key="editkey"
+            android:key="editkey31"
             android:summary="editSummary"
             android:title="editTitle"/>
         <EditTextPreference
-            android:key="editkey"
+            android:key="editkey32"
             android:summary="editSummary"
             android:title="editTitle"/>
     </PreferenceCategory>
 
     <EditTextPreference
-        android:key="editkey"
+        android:key="editkey4"
         android:summary="editSummary"
         android:title="editTitle"/>
 

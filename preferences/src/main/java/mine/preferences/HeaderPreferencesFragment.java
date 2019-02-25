@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,8 +14,8 @@ import android.view.ViewGroup;
 /**
  * Created by Administrator on 2018/8/25.
  */
-public class BasePreferencesFragment extends PreferenceFragment {
-    public BasePreferencesFragment() {
+public class HeaderPreferencesFragment extends PreferenceFragment {
+    public HeaderPreferencesFragment() {
         System.out.println("+++ " + getClass().getSimpleName() + " +++");
     }
 
@@ -24,10 +23,7 @@ public class BasePreferencesFragment extends PreferenceFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
-//        addPreferencesFromResource(R.xml.preference_category);
-//        addPreferencesFromResource(R.xml.preference_headers);
-//        addPreferencesFromResource(R.xml.custom_preferences);
+        addPreferencesFromResource(R.xml.preference_headers);
 
 
         //配置值改变监听器

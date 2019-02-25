@@ -5,11 +5,11 @@
         android:key="CategoryValue"
         android:title="Category111">
         <EditTextPreference
-            android:key="editkey"
+            android:key="editkeya1"
             android:summary="editSummary"
             android:title="editTitle"/>
         <EditTextPreference
-            android:key="editkey"
+            android:key="editkeya2"
             android:summary="editSummary"
             android:title="editTitle"/>
     </PreferenceCategory>
@@ -19,7 +19,7 @@
         android:key="CategoryValue"
         android:title="Category222">
         <EditTextPreference
-            android:key="editkey"
+            android:key="editkeya3"
             android:summary="editSummary"
             android:title="editTitle"/>
         <EditTextPreference
