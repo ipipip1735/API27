@@ -23,9 +23,8 @@ public class PreferenceFragmentActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-//      preferenceFragment = new BasePreferencesFragment();
-        preferenceFragment = new HeaderPreferencesFragment();
-        
+      preferenceFragment = new BasePreferencesFragment();
+
         getFragmentManager().beginTransaction()
                 .add(android.R.id.content, preferenceFragment)
                 .commit();

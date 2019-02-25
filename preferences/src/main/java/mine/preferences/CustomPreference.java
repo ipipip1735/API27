@@ -28,7 +28,7 @@ public class CustomPreference extends Preference {
         super(context, attrs);
         System.out.println("++++++  " + getClass().getSimpleName() + ".BasePreference3  ++++++");
 
-        setWidgetLayoutResource(R.layout.preference_base);
+
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomPreference);
         for (int i = a.getIndexCount() - 1; i >= 0; i--) {
             int attr = a.getIndex(i);
@@ -53,9 +53,12 @@ public class CustomPreference extends Preference {
 
     }
 
+
+
     @Override
     protected View onCreateView(ViewGroup parent) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
+        setWidgetLayoutResource(R.layout.preference_base); //自定义布局
         return super.onCreateView(parent);
 
     }

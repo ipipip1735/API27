@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<SwitchPreference
+    android:key="switch1"
+    android:summary="editSummary"
+    android:title="editTitle"
+    android:defaultValue="false"/>
+
+    <Preference
+        android:key="car"
+        android:summary="car setting"
+        android:title="cars"
+        android:fragment="mine.preferences.SubFragment" />
+
+    <EditTextPreference
+        android:key="edit"
+        android:summary="editSummary"
+        android:title="editTitle" />
+
+</PreferenceScreen>

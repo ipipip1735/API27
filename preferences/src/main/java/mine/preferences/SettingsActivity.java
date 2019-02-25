@@ -5,12 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.List;
@@ -117,8 +114,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public void onBuildHeaders(List<Header> target) {
         System.out.println(" ***** SettingsActivity . onBuildHeaders*****");
+        System.out.println(target);
+
+
         loadHeadersFromResource(R.xml.preference_headers, target);
-//        System.out.println(target);
     }
 
 //    @Override
@@ -180,7 +179,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             Log.i("args", "Arguments: " + getArguments());
 
             // Load the preferences from an XML resource
-            addPreferencesFromResource(R.xml.preference_dependencies);
+            addPreferencesFromResource(R.xml.fregment_preference_mix);
         }
     }
 
