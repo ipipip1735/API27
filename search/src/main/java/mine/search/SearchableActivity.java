@@ -1,10 +1,12 @@
 package mine.search;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchableActivity extends AppCompatActivity {
 
 
     @Override
@@ -25,6 +27,17 @@ public class SearchActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onNewIntent  *********");
+        super.onNewIntent(intent);
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            System.out.println("query is " + query);
+        }
+
     }
 
     @Override
@@ -74,7 +87,8 @@ public class SearchActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
+        boolean b = onSearchRequested();
+        System.out.println(b);
     }
 
 
