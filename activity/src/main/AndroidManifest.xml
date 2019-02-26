@@ -11,52 +11,77 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".SytleActivity">
+        <meta-data android:name="five" android:value="\I'm MT" />
+        <meta-data android:name="color" android:resource="@color/colorPrimary" />
+
+
+        <!--<activity android:name=".SytleActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity> &lt;!&ndash; <activity android:name=".MainActivity"> &ndash;&gt;-->
+        <!--&lt;!&ndash; <intent-filter> &ndash;&gt;-->
+        <!--&lt;!&ndash; <action android:name="android.intent.action.MAIN" /> &ndash;&gt;-->
+        <!--&lt;!&ndash; <action android:name="android.intent.action.VIEW" /> &ndash;&gt;-->
+        <!--&lt;!&ndash; <category android:name="android.intent.category.LAUNCHER" /> &ndash;&gt;-->
+        <!--&lt;!&ndash; </intent-filter> &ndash;&gt;-->
+        <!--&lt;!&ndash; </activity> &ndash;&gt;-->
+
+
+
+        <!--<activity android:name=".TwoActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="two" />-->
+                <!--&lt;!&ndash; <category android:name="to" /> &ndash;&gt;-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+
+        <!--<activity android:name=".OneActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="one" />-->
+
+                <!--<category android:name="gk" />-->
+                <!--<category android:name="gt" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <!--<activity android:name=".ThreeActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="one" />-->
+                <!--&lt;!&ndash; <data android:scheme="AA" &ndash;&gt;-->
+                <!--&lt;!&ndash; android:host="BB" /> &ndash;&gt;-->
+                <!--&lt;!&ndash; android:path="CC" &ndash;&gt;-->
+                <!--&lt;!&ndash; android:pathPattern="DD" &ndash;&gt;-->
+                <!--&lt;!&ndash; android:pathPrefix="EE" &ndash;&gt;-->
+                <!--&lt;!&ndash; <data android:host="BB" &ndash;&gt;-->
+                <!--&lt;!&ndash; android:port="123" &ndash;&gt;-->
+                <!--&lt;!&ndash; android:scheme="AA" &ndash;&gt;-->
+                <!--&lt;!&ndash; android:path="/C?h=b"/> &ndash;&gt;-->
+                <!--<data android:mimeType="-/-" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+
+
+        <activity android:name=".MetaDataActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- <activity android:name=".MainActivity"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <action android:name="android.intent.action.VIEW" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <activity android:name=".TwoActivity">
-            <intent-filter>
-                <action android:name="two" />
-                <!-- <category android:name="to" /> -->
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            <meta-data
+                android:name="one"
+                android:value="11" />
         </activity>
-        <activity android:name=".OneActivity">
-            <intent-filter>
-                <action android:name="one" />
 
-                <category android:name="gk" />
-                <category android:name="gt" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ThreeActivity">
-            <intent-filter>
-                <action android:name="one" />
-                <!-- <data android:scheme="AA" -->
-                <!-- android:host="BB" /> -->
-                <!-- android:path="CC" -->
-                <!-- android:pathPattern="DD" -->
-                <!-- android:pathPrefix="EE" -->
-                <!-- <data android:host="BB" -->
-                <!-- android:port="123" -->
-                <!-- android:scheme="AA" -->
-                <!-- android:path="/C?h=b"/> -->
-                <data android:mimeType="-/-" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
