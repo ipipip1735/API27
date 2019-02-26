@@ -113,6 +113,7 @@ public class PreferenceCURDActivity extends AppCompatActivity{
 //            addPreferencesFromResource(R.xml.preference_curd);
 
 
+
             //方式二：
             Context context = getContext();
             PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
@@ -130,6 +131,34 @@ public class PreferenceCURDActivity extends AppCompatActivity{
             screen.addPreference(feedbackPreference);
 
             setPreferenceScreen(screen);
+
+
+            //方式三：多PreferenceScreen嵌套
+//            Context context = getContext();
+//            PreferenceScreen screen1 = getPreferenceManager().createPreferenceScreen(context);
+//            screen1.setKey("screen1");
+//            screen1.setSummary("screen one");
+//
+//            PreferenceScreen screen2 = getPreferenceManager().createPreferenceScreen(context);
+//            screen2.setKey("screen2");
+//            screen2.setSummary("screen two");
+//
+//
+//            SwitchPreference notificationPreference = new SwitchPreference(context);
+//            notificationPreference.setKey("notifications");
+//            notificationPreference.setTitle("Enable message notifications");
+//
+//            Preference feedbackPreference = new Preference(context);
+//            feedbackPreference.setKey("feedback");
+//            feedbackPreference.setTitle("Send feedback");
+//            feedbackPreference.setSummary("Report technical issues or suggest new features");
+//
+//            screen1.addPreference(notificationPreference);//PreferenceScreen2嵌套在PreferenceScreen1中
+//            screen1.addPreference(screen2);
+//            screen2.addPreference(feedbackPreference);
+//
+//            setPreferenceScreen(screen1);
+//            setPreferenceScreen(screen2);//绑定PreferenceScreen2，则PreferenceScreen1被忽略
         }
     }
 
