@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.util.Objects;
+
 public class SearchableActivity extends AppCompatActivity {
 
 
@@ -14,6 +16,21 @@ public class SearchableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
+
+        //获取查询数据
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            System.out.println("query is " + query);
+        }
+
+        //获取额外数据
+        Bundle bundle = intent.getBundleExtra(SearchManager.APP_DATA);
+        if (Objects.nonNull(bundle)) {
+
+            int n = bundle.getInt("one");
+            System.out.println(n);
+        }
 
     }
 
