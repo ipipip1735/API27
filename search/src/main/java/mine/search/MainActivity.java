@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); //显示输入框，而不是图标
         searchView.setSubmitButtonEnabled(true); //显示提交按钮
-//        searchView.setQueryRefinementEnabled(true);
+        searchView.setQueryRefinementEnabled(true); //在每个查询提示的item尾部增加精化按钮
         return true;
     }
 
@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
+
 
     }
 
