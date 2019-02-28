@@ -17,9 +17,12 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!--<meta-data-->
+                <!--android:name="android.app.default_searchable"-->
+                <!--android:value=".SearchableActivity" />-->
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:value=".SuggestionSearchableActivity" />
         </activity>
 
         <activity android:name=".SearchableActivity"
@@ -35,17 +38,19 @@
                 android:resource="@xml/searchable"/>
         </activity>
 
-        <!--<activity android:name=".BaseSearchableActivity"-->
-            <!--android:launchMode="singleTop">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEARCH" />-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
-            <!--<meta-data android:name="android.app.searchable"-->
-                <!--android:resource="@xml/searchable"/>-->
-        <!--</activity>-->
+        <activity android:name=".SuggestionSearchableActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/suggestion_searchable"/>
+        </activity>
+
+        <provider
+            android:authorities="xxx"
+            android:name=".BaseSearchRecentSuggestionsProvider" />
     </application>
 
 </manifest>

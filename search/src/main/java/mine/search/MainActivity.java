@@ -13,6 +13,7 @@ import android.widget.SearchView;
 
 public class MainActivity extends AppCompatActivity {
 
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +87,11 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.search, menu);
 
         SearchManager searchManager = getSystemService(SearchManager.class);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-        searchView.setSubmitButtonEnabled(true);
+        searchView.setIconifiedByDefault(false); //显示输入框，而不是图标
+        searchView.setSubmitButtonEnabled(true); //显示提交按钮
+//        searchView.setQueryRefinementEnabled(true);
         return true;
     }
 
@@ -142,8 +144,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void add(View view) {
-        System.out.println("~~button.add~~");
+    public void trigger(View view) {
+        System.out.println("~~button.trigger~~");
+
 
     }
 

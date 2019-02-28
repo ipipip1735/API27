@@ -3,10 +3,13 @@ package mine.search;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class BaseSearchableActivity extends AppCompatActivity {
+import java.util.Objects;
+
+public class SuggestionSearchableActivity extends AppCompatActivity {
 
 
     @Override
@@ -14,6 +17,35 @@ public class BaseSearchableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
+
+        //获取查询数据
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            System.out.println("query is " + query);
+            //获取额外数据
+            Bundle bundle = intent.getBundleExtra(SearchManager.APP_DATA);
+            if (Objects.nonNull(bundle)) {
+
+                int n = bundle.getInt("one");
+                System.out.println(n);
+            }
+
+            if (Objects.nonNull(query)) {
+
+                //方式二：保存查询内容
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                        BaseSearchRecentSuggestionsProvider.AUTHORITY, BaseSearchRecentSuggestionsProvider.MODE);
+                suggestions.saveRecentQuery(query, null);
+
+                //方式二：保存查询内容，并附加详情
+//                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+//                        BaseSearchRecentSuggestionsProvider.AUTHORITY, BaseSearchRecentSuggestionsProvider.MODE);
+//                suggestions.saveRecentQuery(query, null);
+
+            }
+        }
+
 
     }
 
