@@ -18,7 +18,10 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
 
-        System.out.println(getIntent().getAction());
+        System.out.println("getAction is " + getIntent().getAction());
+        System.out.println("getData is " + getIntent().getData());
+        System.out.println("getDataString is " + getIntent().getDataString());
+
 
         //获取查询数据
         Intent intent = getIntent();
@@ -35,6 +38,7 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
 
             if (Objects.nonNull(query)) {
 
+
                 //方式二：保存查询内容
 //                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
 //                        BaseSearchRecentSuggestionsProvider.AUTHORITY, BaseSearchRecentSuggestionsProvider.MODE);
@@ -44,6 +48,7 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
                 SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                         BaseSearchRecentSuggestionsProvider.AUTHORITY, BaseSearchRecentSuggestionsProvider.MODE);
                 suggestions.saveRecentQuery(query, "AAAAAAAAAAA");
+                System.out.println("saved!");
 
             }
         }
