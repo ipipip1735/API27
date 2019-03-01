@@ -48,7 +48,6 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
                 SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                         BaseSearchRecentSuggestionsProvider.AUTHORITY, BaseSearchRecentSuggestionsProvider.MODE);
                 suggestions.saveRecentQuery(query, "AAAAAAAAAAA");
-                System.out.println("saved!");
 
             }
         }
