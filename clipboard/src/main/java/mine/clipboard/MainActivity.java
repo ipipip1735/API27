@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("**********  " + getClass().getSimpleName() + ".onStart  **********");
+        System.out.println("**********  " + getClass().getSimpleName() + ".onCreate  **********");
         setContentView(R.layout.activity_clip);
 
     }
@@ -83,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
-//        copyTC();
-//        baseTC();
+    public void copy(View view) {
+        System.out.println("~~button.copy~~");
+        copyText(); //复制文本
+//        copyUri(); //复制URI
 //        copyPIC();
 //        readRAW();
 //        readFile();
-        copyFile();
-        pasteFile();
+//        copyFile();
+//        pasteFile();
     }
 
     private void pasteFile() {
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(contentResolver);
 
 //        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" +R.raw.gg);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" +R.raw.gg);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.gg);
 //        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/raw/gg");
 
 
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             final StringBuilder builder = new StringBuilder(128);
             char[] buffer = new char[8192];
             int len;
-            while ((len=reader.read(buffer)) > 0) {
+            while ((len = reader.read(buffer)) > 0) {
                 builder.append(buffer, 0, len);
             }
             System.out.println(builder.toString());
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             final StringBuilder builder = new StringBuilder(128);
             char[] buffer = new char[8192];
             int len;
-            while ((len=reader.read(buffer)) > 0) {
+            while ((len = reader.read(buffer)) > 0) {
                 builder.append(buffer, 0, len);
             }
             System.out.println(builder.toString());
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             final StringBuilder builder = new StringBuilder(128);
             char[] buffer = new char[8192];
             int len;
-            while ((len=reader.read(buffer)) > 0) {
+            while ((len = reader.read(buffer)) > 0) {
                 builder.append(buffer, 0, len);
             }
             String result = builder.toString();
@@ -212,76 +212,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void baseTC() {
-//        clipData.addItem(new ContentResolver(), new ClipData.Item("two", "222"));
+    private void copyUri() {
+        System.out.println("~~copyUri~~");
 
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         ClipDescription clipDescription = clipboardManager.getPrimaryClipDescription();
 
-
-        ClipData clipData = ClipData.newPlainText("one", "111");
+        Uri uri = Uri.parse("content://TNT/");
+        ClipData clipData = ClipData.newUri(getContentResolver(), "One", uri);
+        clipData.addItem(getContentResolver(), new ClipData.Item(Uri.parse("content://TNT/1")));
         clipboardManager.setPrimaryClip(clipData);
-
-
-        ClipData.Item item = clipData.getItemAt(0);
-        String MIME = clipDescription.getMimeType(0);
-
-        System.out.println("item is " + item);
-        System.out.println("MIME is " + MIME);
-
-
-//        System.out.println("describeContents is " + clipDescription.describeContents());
-//        System.out.println("getExtras is " + clipDescription.getExtras());
-//        System.out.println("getLabel is " + clipDescription.getLabel().toString());
-//        System.out.println("getMimeTypeCount is " + clipDescription.getMimeTypeCount());
-//        System.out.println("getTimestamp is " + clipDescription.getTimestamp());
-
-//        ClipData.Item item = clipData.getItemAt(0);
-//        System.out.println("item data is " + item.getText());
-
 
     }
 
-    private void copyTC() {
+    private void copyText() {
+        System.out.println("..copyText..");
 
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("one", "111");
-        clipData.addItem(new ClipData.Item("two", "222"));
-//        ClipData clipData = ClipData.newPlainText("host clipboard", "0000");
-        clipboardManager.setPrimaryClip(clipData);
+        ClipData clipData = ClipData.newPlainText("one", "Mary"); //创建ClipDate对象
+        clipboardManager.setPrimaryClip(clipData); //复制到剪切板
+
+    }
 
 
-        ClipDescription clipDescription = clipboardManager
-                .getPrimaryClipDescription();
-        System.out.println("describeContents is " + clipDescription.describeContents());
+    public void paste(View view) {
+        System.out.println("~~button.paste~~");
+
+        //获取剪切板
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+
+
+        //获取数据
+        ClipData clipData = clipboardManager.getPrimaryClip();
+        for (int i = 0; i < clipData.getItemCount(); i++) {
+            ClipData.Item item = clipData.getItemAt(i);
+            System.out.println("item is " + item);
+        }
+
+        System.out.println("--------");
+
+        //获取描述对象
+        ClipDescription clipDescription = clipboardManager.getPrimaryClipDescription();
+        System.out.println(clipDescription);
         System.out.println("getExtras is " + clipDescription.getExtras());
         System.out.println("getLabel is " + clipDescription.getLabel().toString());
-        System.out.println("getMimeTypeCount is " + clipDescription.getMimeTypeCount());
         System.out.println("getTimestamp is " + clipDescription.getTimestamp());
-
-        ClipData.Item item = clipData.getItemAt(0);
-        System.out.println("item data is " + item.getText());
-
-    }
+        for (int i = 0; i < clipDescription.getMimeTypeCount(); i++) {
+            System.out.println("getMimeType is " + clipDescription.getMimeType(i));
+        }
 
 
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = clipboardManager.getPrimaryClip();
-
-        int count = clipData.getItemCount();
-        System.out.println(count);
-        ClipData.Item item = clipData.getItemAt(0);
-        System.out.println("item data is " + item.getText());
 
 
-        ClipDescription clipDescription = clipboardManager.getPrimaryClipDescription();
-        System.out.println("describeContents is " + clipDescription.describeContents());
-        System.out.println("getExtras is " + clipDescription.getExtras());
-        System.out.println("getLabel is " + clipDescription.getLabel());
-        System.out.println("getMimeTypeCount is " + clipDescription.getMimeTypeCount());
-        System.out.println("getTimestamp is " + clipDescription.getTimestamp());
 
 
     }
@@ -301,6 +283,17 @@ public class MainActivity extends AppCompatActivity {
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
 
+
+        System.out.println("a/bcd VS a/bcd is " + ClipDescription.compareMimeTypes("a/bcd", "a/bcd"));
+        System.out.println("a/bcd VS a/* is " + ClipDescription.compareMimeTypes("a/bcd", "a/*"));
+        System.out.println("a/bcd VS a/*d is " + ClipDescription.compareMimeTypes("a/bcd", "a/*d"));
+        System.out.println("a/bcd VS a/b* is " + ClipDescription.compareMimeTypes("a/bcd", "a/b*"));
+        System.out.println("a/bcd VS */* is " + ClipDescription.compareMimeTypes("a/bcd", "*/*"));
+        System.out.println("a/bcd VS */b is " + ClipDescription.compareMimeTypes("a/bcd", "*/bcd"));
+
+
+
+
     }
 
     public void reloading(View view) {
@@ -318,6 +311,11 @@ public class MainActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
+        ContentResolver contentResolver = getContentResolver();
+
+        Uri uri = Uri.parse("content://TNT");
+        String mime = contentResolver.getType(uri);
+        System.out.println("mime is " + mime);
     }
 
 

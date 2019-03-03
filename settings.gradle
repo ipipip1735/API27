@@ -29,7 +29,7 @@ include   ':apptemp', ':search',
 //        ':broadcast',
 //        ':services',
 //        ':notification'
-//        ':clipboard',
+        ':clipboard',
 //        ':webview',
 //        ':opengl',
         ':activity'

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.io.FileNotFoundException;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2018/8/12.
@@ -57,7 +58,8 @@ public class ClipContentProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         System.out.println("**********  " + getClass().getSimpleName() + ".getType  **********");
-        return "text/og";
+
+        return "text/og" + new Random().nextInt(100);
     }
 
     @Nullable
