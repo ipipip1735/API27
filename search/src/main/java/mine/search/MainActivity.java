@@ -3,6 +3,8 @@ package mine.search;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -165,6 +169,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+
+        int n=0;
+        Random random = new Random();
+        String[] colums = {"_id", "name", "age"};
+        MatrixCursor matrixCursor = new MatrixCursor(colums);
+        matrixCursor.newRow().add(n++).add("name" + random.nextInt(100)).add(random.nextInt(100));
+        matrixCursor.newRow().add(n++).add("name" + random.nextInt(100)).add(random.nextInt(100));
+        matrixCursor.newRow().add(n++).add("name" + random.nextInt(100)).add(random.nextInt(100));
+        matrixCursor.newRow().add(n++).add("name" + random.nextInt(100)).add(random.nextInt(100));
+        matrixCursor.newRow().add(n++).add("name" + random.nextInt(100)).add(random.nextInt(100));
+        matrixCursor.newRow().add(n++).add("name" + random.nextInt(100)).add(random.nextInt(100));
+
+
+        Cursor cursor = matrixCursor;
+
+
+        while (cursor.moveToNext()) {
+            for (String name : cursor.getColumnNames())
+                System.out.println(name + " is " + cursor.getString(cursor.getColumnIndex(name)));
+        }
 
     }
 }

@@ -7,9 +7,19 @@
 
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/app_name"
-    android:hint="Search YouTube"
-    android:searchSuggestAuthority="xxx"
+    android:hint="YYY"
     android:searchSuggestIntentAction="sss"
     android:searchSuggestIntentData="kkk"
-    android:searchSuggestSelection="id=?">
+    android:searchSuggestAuthority="xxx"
+    android:searchSuggestSelection=" ?">
 </searchable>
+
+<!--<searchable xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:label="@string/app_name"-->
+    <!--android:hint="YYY"-->
+    <!--android:searchSuggestPath="ppp"-->
+    <!--android:searchSuggestAuthority="xxx"-->
+    <!--android:searchSuggestIntentAction="sss"-->
+    <!--android:searchSuggestIntentData="kkk"-->
+    <!--android:searchSuggestSelection="id=?">-->
+<!--</searchable>-->

@@ -1,13 +1,8 @@
 package mine.search;
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import java.util.Arrays;
 
