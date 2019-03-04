@@ -22,57 +22,58 @@ public class GVOne extends RelativeLayout {
 
     public GVOne(Context context, AttributeSet attrs) {
         super(context, attrs);
-        System.out.println("++++++++++  " + getClass().getSimpleName() + ".dispatchTouchEvent  ++++++++++");
+        System.out.println("+++  " + getClass().getSimpleName() + ".Constructor  +++");
 
-        setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                System.out.println("**********  " + getClass().getSimpleName() + ".onLongClick  **********");
-
-                String[] mineType = {"aa", "bb"};
-                ClipData clipData = new ClipData("ok", mineType, new ClipData.Item("cia"));
-                DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(v) {
-                    @Override
-                    public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
-                        System.out.println("~~ onProvideShadowMetrics ~~");
-//                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint);
-
-                        outShadowSize.set(400, 500);
-                        outShadowTouchPoint.set(0, 0);
-
-                    }
-
-                    @Override
-                    public void onDrawShadow(Canvas canvas) {
-                        System.out.println("~~ onDrawShadow ~~");
-
-                        Paint paint = new Paint();
-                        canvas.drawColor(getResources().getColor(R.color.MEDIUMPURPLE, null));
-
-                        canvas.scale(1f, 0.5f);
-                        canvas.rotate(30f);
-                        paint.setColor(getResources().getColor(R.color.IVORY, null));
-                        canvas.drawCircle(300, 200, 100, paint);
-
-//                        canvas.save();
-
-
-//                        canvas.scale(1f, 1f);
+        //长按监听器
+//        setOnLongClickListener(new OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                System.out.println("**********  " + getClass().getSimpleName() + ".onLongClick  **********");
+//
+//                String[] mineType = {"aa", "bb"};
+//                ClipData clipData = new ClipData("ok", mineType, new ClipData.Item("cia"));
+//                DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(v) {
+//                    @Override
+//                    public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
+//                        System.out.println("~~ onProvideShadowMetrics ~~");
+////                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint);
+//
+//                        outShadowSize.set(400, 500);
+//                        outShadowTouchPoint.set(0, 0);
+//
+//                    }
+//
+//                    @Override
+//                    public void onDrawShadow(Canvas canvas) {
+//                        System.out.println("~~ onDrawShadow ~~");
+//
+//                        Paint paint = new Paint();
+//                        canvas.drawColor(getResources().getColor(R.color.MEDIUMPURPLE, null));
+//
+//                        canvas.scale(1f, 0.5f);
 //                        canvas.rotate(30f);
-//                        paint.setColor(getResources().getColor(R.color.PERU, null));
-//                        canvas.drawCircle(200, 420, 100, paint);
-//                        canvas.save();
-
-
-
-
-                    }
-                };
-
-                startDragAndDrop(clipData, dragShadowBuilder, null, View.DRAG_FLAG_GLOBAL);
-                return true;
-            }
-        });
+//                        paint.setColor(getResources().getColor(R.color.IVORY, null));
+//                        canvas.drawCircle(300, 200, 100, paint);
+//
+////                        canvas.save();
+//
+//
+////                        canvas.scale(1f, 1f);
+////                        canvas.rotate(30f);
+////                        paint.setColor(getResources().getColor(R.color.PERU, null));
+////                        canvas.drawCircle(200, 420, 100, paint);
+////                        canvas.save();
+//
+//
+//
+//
+//                    }
+//                };
+//
+//                startDragAndDrop(clipData, dragShadowBuilder, null, View.DRAG_FLAG_GLOBAL);
+//                return true;
+//            }
+//        });
     }
 
 
@@ -94,21 +95,11 @@ public class GVOne extends RelativeLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onTouchEvent  **********");
-        int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                System.out.println(getClass().getSimpleName() + "'action is ACTION_DOWN");
-                break;
-            case MotionEvent.ACTION_UP:
-                System.out.println(getClass().getSimpleName() + "'action is ACTION_UP");
-                break;
-            case MotionEvent.ACTION_MOVE:
-                System.out.println(getClass().getSimpleName() + "'action is ACTION_MOVE");
-                break;
-            default:
-                System.out.println();
-        }
-        return super.onTouchEvent(event);
+        System.out.println("action is " + event.actionToString(event.getAction()));
+
+//        return false;
+        return true;
+//        return super.onTouchEvent(event);
     }
 
     @Override

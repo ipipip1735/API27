@@ -12,8 +12,7 @@ import android.view.MotionEvent;
 public class VTwo extends android.support.v7.widget.AppCompatImageView {
     public VTwo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        System.out.println("++++++++++  " + getClass().getSimpleName() + "  ++++++++++");
-
+        System.out.println("+++  " + getClass().getSimpleName() + ".Constructor  +++");
     }
 
 
@@ -28,20 +27,8 @@ public class VTwo extends android.support.v7.widget.AppCompatImageView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onTouchEvent  **********");
-        int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                System.out.println(getClass().getSimpleName() + "'action is ACTION_DOWN");
-                break;
-            case MotionEvent.ACTION_UP:
-                System.out.println(getClass().getSimpleName() + "'action is ACTION_UP");
-                break;
-            case MotionEvent.ACTION_MOVE:
-                System.out.println(getClass().getSimpleName() + "'action is ACTION_MOVE");
-                break;
-            default:
-                System.out.println("Default");
-        }
+        System.out.println("action is " + event.actionToString(event.getAction()));
+
         return false;
 //        return true;
     }

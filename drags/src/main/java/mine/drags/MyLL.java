@@ -13,12 +13,13 @@ import android.widget.LinearLayout;
 public class MyLL extends LinearLayout {
     public MyLL(Context context) {
         super(context);
-        System.out.println("--------  MyLL Constructor  --------");
+        System.out.println("+++  " + getClass().getSimpleName() + ".Constructor1  +++");
+
     }
 
     public MyLL(Context context, AttributeSet attrs) {
         super(context, attrs);
-        System.out.println("--------  MyLL Constructor  --------");
+        System.out.println("+++  " + getClass().getSimpleName() + ".Constructor2  +++");
 
     }
 
@@ -88,33 +89,25 @@ public class MyLL extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println("*****  myll.onTouchEvent  *******");
-        System.out.println(event);
-//        System.out.println(event.getAction());
-//        System.out.println(event.getActionMasked());
-        return readMotionAction(event.getAction());
+        System.out.println("*********  " + getClass().getSimpleName() + ".onTouchEvent  *********");
+
+//        System.out.println(event);
+//        System.out.println("getAction is " + event.getAction());
+//        System.out.println("getActionIndex is " + event.getActionIndex());
+//        System.out.println("getActionMasked is " + event.getActionMasked());
+
+        System.out.println("action is " + event.actionToString(event.getAction()));
+
+
 //        return super.onTouchEvent(event);
-    }
-
-
-    private boolean readMotionAction(int action) {
-        switch (action) {
-
-            case MotionEvent.ACTION_DOWN:
-                System.out.println("---->>  ACTION_DOWN  <<----");
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                System.out.println("---->>  ACTION_MOVE  <<----");
-                return true;
-            case MotionEvent.ACTION_UP:
-                System.out.println("---->>  ACTION_UP  <<----");
-                return true;
-            default:
-                System.out.println("---->>  DRAG_default  <<----");
-                break;
-        }
         return false;
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".dispatchTouchEvent  *********");
 
+        System.out.println("action is " + ev.actionToString(ev.getAction()));
+        return super.dispatchTouchEvent(ev);
+    }
 }
