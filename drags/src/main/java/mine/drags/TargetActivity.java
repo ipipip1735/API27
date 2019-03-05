@@ -42,15 +42,7 @@ public class TargetActivity extends AppCompatActivity {
         System.out.println("**********  Example  onCreate  ***********");
 
         setContentView(R.layout.activity_example);
-        if (bundle == null) {
-            System.out.println("Example bundle is empty");
-        } else {
-            System.out.println("bundle's total is " + bundle.size());
-            Set<String> keySet = bundle.keySet();
-            for (String i : keySet) {
-                System.out.println(i);
-            }
-        }
+
 
 
         this.imageView = (ImageView) findViewById(R.id.imageView);

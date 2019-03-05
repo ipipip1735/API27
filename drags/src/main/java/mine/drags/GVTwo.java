@@ -23,6 +23,7 @@ public class GVTwo extends RelativeLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         System.out.println("**********  " + getClass().getSimpleName() + ".dispatchTouchEvent  **********");
+        System.out.println("action is " + ev.actionToString(ev.getAction()));
 
         return super.dispatchTouchEvent(ev);
     }

@@ -31,7 +31,7 @@ public class VOne extends android.support.v7.widget.AppCompatImageView {
         System.out.println("**********  " + getClass().getSimpleName() + ".onTouchEvent  **********");
         System.out.println("action is " + event.actionToString(event.getAction()));
 
-        return false;
-//        return true;
+//        return false;
+        return true;
     }
 }
