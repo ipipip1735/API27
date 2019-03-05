@@ -82,10 +82,6 @@ public class MyLL extends LinearLayout {
 
 //        System.out.println("action is " + ev.actionToString(ev.getAction()));
 
-////        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-////            return true;
-////        }
-
 //        return true;
         return super.onInterceptTouchEvent(ev);
     }

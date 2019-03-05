@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -20,8 +22,8 @@ import java.util.Set;
  */
 public class DragActivity extends AppCompatActivity {
 
-    private ImageView imageView;
-    private ImageView targetImageView;
+    private AppCompatImageView one;
+    private AppCompatImageView two;
 
 
     @Override
@@ -32,12 +34,12 @@ public class DragActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drag_event);
 
 
-        this.imageView = (ImageView) findViewById(R.id.imageView);
-        this.targetImageView = (ImageView) findViewById(R.id.targetImageView);
+        this.one = (AppCompatImageView) findViewById(R.id.VOne);
+        this.two = (AppCompatImageView) findViewById(R.id.VTwo);
 
 
         //长按监听器
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+        one.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 System.out.println("**********  " + getClass().getSimpleName() + ".onLongClick  **********");
@@ -149,9 +151,18 @@ public class DragActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+//        two.setImageDrawable(getDrawable(R.drawable.b));
+//        two.setImageResource(R.color.DARKORCHID);
+//        two.setBackgroundDrawable(new ColorDrawable(getColor(R.color.ORCHID)));
+//        two.invalidate();
+
+//        two.setImageResource(R.drawable.b);
 
 
 
+//        two.imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.your_image));
+//        two.setColorFilter(getResources().getColor(R.color.AZURE, null));
+//        two.invalidate();
     }
 
 

@@ -26,13 +26,14 @@ public class GVOne extends RelativeLayout {
     }
 
 
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         System.out.println("**********  " + getClass().getSimpleName() + ".dispatchTouchEvent  **********");
         System.out.println("action is " + ev.actionToString(ev.getAction()));
 
-        return true;
-//        return super.dispatchTouchEvent(ev);
+//        return true;
+        return super.dispatchTouchEvent(ev);
     }
 
 
@@ -40,8 +41,8 @@ public class GVOne extends RelativeLayout {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onInterceptTouchEvent  **********");
 
-        return true;
-//        return super.onInterceptTouchEvent(ev);
+//        return true;
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override
@@ -49,7 +50,6 @@ public class GVOne extends RelativeLayout {
         System.out.println("**********  " + getClass().getSimpleName() + ".onTouchEvent  **********");
         System.out.println("action is " + event.actionToString(event.getAction()));
 
-//        return false;
         return true;
 //        return super.onTouchEvent(event);
     }
@@ -82,7 +82,7 @@ public class GVOne extends RelativeLayout {
                 System.out.println("Default");
         }
 
-//        return false;
-        return true;
+        return false;
+//        return true;
     }
 }
