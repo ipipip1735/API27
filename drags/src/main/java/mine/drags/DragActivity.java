@@ -35,7 +35,7 @@ public class DragActivity extends AppCompatActivity {
 
 
         this.one = (AppCompatImageView) findViewById(R.id.VOne);
-        this.two = (AppCompatImageView) findViewById(R.id.VTwo);
+        this.two = (AppCompatImageView) findViewById(R.id.VTWO);
 
 
         //长按监听器
@@ -151,18 +151,6 @@ public class DragActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-//        two.setImageDrawable(getDrawable(R.drawable.b));
-//        two.setImageResource(R.color.DARKORCHID);
-//        two.setBackgroundDrawable(new ColorDrawable(getColor(R.color.ORCHID)));
-//        two.invalidate();
-
-//        two.setImageResource(R.drawable.b);
-
-
-
-//        two.imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.your_image));
-//        two.setColorFilter(getResources().getColor(R.color.AZURE, null));
-//        two.invalidate();
     }
 
 

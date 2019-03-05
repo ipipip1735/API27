@@ -28,34 +28,34 @@
         app:layout_constraintStart_toEndOf="@+id/button7" />
 
     <mine.drags.GVOne
-            android:id="@+id/GVOne"
-            android:layout_width="match_parent"
-            android:layout_height="480dp"
-            android:background="@color/TOMATO"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
+        android:id="@+id/GVOne"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:background="@color/TOMATO"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
-            <mine.drags.VTwo
-                android:id="@+id/VTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="46dp"
-                android:layout_marginTop="81dp"
-                app:srcCompat="@drawable/a"
-                tools:layout_editor_absoluteX="33dp"
-                tools:layout_editor_absoluteY="59dp" />
+        <mine.drags.VTwo
+            android:id="@+id/VTWO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="67dp"
+            app:srcCompat="@drawable/a"
+            tools:layout_editor_absoluteX="33dp"
+            tools:layout_editor_absoluteY="59dp" />
 
-            <mine.drags.VOne
-                android:id="@+id/VOne"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="141dp"
-                android:layout_marginEnd="161dp"
-                app:srcCompat="@drawable/b" />
+        <mine.drags.VOne
+            android:id="@+id/VOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="236dp"
+            android:layout_marginEnd="50dp"
+            app:srcCompat="@drawable/b" />
 
     </mine.drags.GVOne>
 

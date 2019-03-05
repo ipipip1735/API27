@@ -1,6 +1,7 @@
 package mine.drags;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.DragEvent;
