@@ -31,14 +31,14 @@
         android:id="@+id/GVOne"
         android:layout_width="match_parent"
         android:layout_height="480dp"
-        android:background="@color/TOMATO"
+        android:background="@color/LIGHTSTEELBLUE"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="16dp">
 
         <mine.drags.VTwo
             android:id="@+id/VTWO"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="84dp"
+            android:layout_height="74dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="38dp"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="236dp"
+            android:layout_marginTop="172dp"
             android:layout_marginEnd="50dp"
             app:srcCompat="@drawable/b" />
 

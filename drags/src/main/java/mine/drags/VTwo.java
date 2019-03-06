@@ -28,7 +28,7 @@ public class VTwo extends android.support.v7.widget.AppCompatImageView {
                 break;
             case DragEvent.ACTION_DRAG_ENTERED:
                 System.out.println(getClass().getSimpleName() + "'action is ACTION_DRAG_ENTERED");
-                setImageResource(R.drawable.ic_launcher_background);
+                setImageResource(R.color.ORCHID);
                 break;
             case DragEvent.ACTION_DRAG_LOCATION:
                 System.out.println(getClass().getSimpleName() + "'action is ACTION_DRAG_LOCATION");
