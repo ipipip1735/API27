@@ -12,6 +12,7 @@ import android.animation.TimeInterpolator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Path;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,8 @@ import android.widget.ViewAnimator;
 
 import java.util.Objects;
 import java.util.Set;
+
+import static android.graphics.Path.Direction.CCW;
 
 /**
  * Created by Administrator on 2016/7/14.
@@ -113,12 +116,12 @@ public class AnimationActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 //        valueAnimator();
-//        objectAnimator();
+        objectAnimator();
 //        animatorSet();
 //        tween();
 //        frame();
 //        viewAnimator();
-        property();
+//        property();
 //        keyFrameAnimator();
 //        TypeEvalutors();
 //        LayoutTransition();
@@ -170,26 +173,9 @@ public class AnimationActivity extends AppCompatActivity {
 
 
         //方式一：属性为公有
-//        Object o = new Object() {
-//            public int sk = 10;
-//        };
-//        Property property = Property.of(o.getClass(), int.class, "sk");
-//
-//        System.out.println("getName is " + property.getName());
-//        System.out.println("getType is " + property.getType());
-//        System.out.println("isReadOnly is " + property.isReadOnly());
-//
-//        System.out.println("get is " + property.get(o));
-//        property.set(o, 888);
-//        System.out.println("get is " + property.get(o));
-
-
-        //方式二：属性为私有
         Object o = new Object() {
-//            public int sk = 10;
-            private int sk = 10;
+            public int sk = 10;
         };
-
         Property property = Property.of(o.getClass(), int.class, "sk");
 
         System.out.println("getName is " + property.getName());
@@ -201,6 +187,28 @@ public class AnimationActivity extends AppCompatActivity {
         System.out.println("get is " + property.get(o));
 
 
+        //方式二：属性为私有
+//        Object o = new Object() {
+//            private int sk = 10;
+//
+//            public int getSk() {
+//                return sk;
+//            }
+//
+//            public void setSk(int sk) {
+//                this.sk = sk;
+//            }
+//        };
+//
+//        Property property = Property.of(o.getClass(), int.class, "sk");
+//
+//        System.out.println("getName is " + property.getName());
+//        System.out.println("getType is " + property.getType());
+//        System.out.println("isReadOnly is " + property.isReadOnly());
+//
+//        System.out.println("get is " + property.get(o));
+//        property.set(o, 888);
+//        System.out.println("get is " + property.get(o));
 
     }
 
@@ -209,7 +217,7 @@ public class AnimationActivity extends AppCompatActivity {
         System.out.println("***** property ******");
 
 //        ValueAnimator va = ValueAnimator.ofInt(20); //初值为0，终值为20
-        ValueAnimator va = ValueAnimator.ofInt(200,67); //初值为200，终值为67
+        ValueAnimator va = ValueAnimator.ofInt(200, 67); //初值为200，终值为67
 //        ValueAnimator va = ValueAnimator.ofInt(10,11,25,8); //初值为10，终值为8，中值11,25
         va.setDuration(1000);
 
@@ -226,7 +234,6 @@ public class AnimationActivity extends AppCompatActivity {
         });
 
 
-
         //计算中间值
 //        va.setEvaluator(new IntEvaluator()); //int求值器
         va.setEvaluator(new TypeEvaluator() {
@@ -236,7 +243,7 @@ public class AnimationActivity extends AppCompatActivity {
                 System.out.println("fraction is " + fraction);
                 System.out.println("startValue is " + startValue);
                 System.out.println("endValue is " + endValue);
-                return (int)startValue + fraction * ((int)endValue - (int)startValue);
+                return (int) startValue + fraction * ((int) endValue - (int) startValue);
             }
         });
 
@@ -260,31 +267,51 @@ public class AnimationActivity extends AppCompatActivity {
     private void objectAnimator() {
         System.out.println("***animate****");
 
+
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
+
+        //例一：最简使用
+//        ObjectAnimator animator1 = ObjectAnimator.ofFloat(imageView, "x", 250f);
+//        animator1.setDuration(3000).start();
+//        ObjectAnimator animator2 = ObjectAnimator.ofFloat(imageView, "y", 250f);
+//        animator2.setDuration(3000).start();//并行动画
+
+
+        //例二：使用属性值持有器
 //        PropertyValuesHolder top = PropertyValuesHolder.ofInt("top", 250);
-//        PropertyValuesHolder s = PropertyValuesHolder.ofInt("scrollY", 350);
+//        PropertyValuesHolder scrollY = PropertyValuesHolder.ofInt("scrollY", 350);
+//        PropertyValuesHolder scalex = PropertyValuesHolder.ofFloat("scaleX", 1f, 1.6f, 2f);
+//        PropertyValuesHolder scaley = PropertyValuesHolder.ofFloat("scaleY", 0f, 0.6f, 1f, 1.3f);
+//
+//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, top); //单值动画
+////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex); //单值动画
+////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scrollY); //单值动画
+////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex, scaley); //并行动画
+//        o.setDuration(2000).start();
+//
+//
+//        //绑定监听器，可以在start()后绑定
+//        o.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("  >>> update <<<");
+//                System.out.println(animation.getAnimatedFraction());
+//                System.out.println(animation.getAnimatedValue());
+//                System.out.println(animation.getDuration());
+//            }
+//        });
 
-        PropertyValuesHolder scalex = PropertyValuesHolder.ofFloat("scaleX", 1f,1.6f,2f);
-        PropertyValuesHolder scaley = PropertyValuesHolder.ofFloat("scaleY", 0f,0.6f,1f,1.3f);
 
 
 
-        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex).setDuration(2000);
-//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scaley).setDuration(2000);
-//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex, scaley).setDuration(2000);
-        o.start();
+        //例三：路径动画
+        Path path = new Path();
+        path.addRect(0, 0, 50, 50, CCW); //创建矩形路径
+        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "x", "y", path);
+        animator.setDuration(2000l).start(); //沿矩形路径动画
 
-        o.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                System.out.println("  >>> update <<<");
-                System.out.println(animation.getAnimatedFraction());
-                System.out.println(animation.getAnimatedValue());
-            }
-        });
-//        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "x", 250f);
-//        animator.setDuration(3000).start();
+
 
 
     }
