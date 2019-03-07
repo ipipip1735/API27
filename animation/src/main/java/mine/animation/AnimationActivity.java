@@ -3,12 +3,14 @@ package mine.animation;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.animation.FloatEvaluator;
 import android.animation.IntEvaluator;
 import android.animation.Keyframe;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
+import android.animation.TypeConverter;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
@@ -306,10 +308,91 @@ public class AnimationActivity extends AppCompatActivity {
 
 
         //例三：路径动画
-        Path path = new Path();
-        path.addRect(0, 0, 50, 50, CCW); //创建矩形路径
-        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "x", "y", path);
-        animator.setDuration(2000l).start(); //沿矩形路径动画
+//        Path path = new Path();
+//        path.addRect(100, 100, 500, 500, CCW); //创建矩形路径
+//        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "x", "y", path);
+//        animator.setDuration(2000l).start(); //沿矩形路径动画
+//
+//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("  >>> update <<<");
+//                float i = (float) animation.getAnimatedValue();
+//                System.out.println("getAnimatedValue is " + i);
+//
+//            }
+//        });
+
+
+        //数组动画一
+//        Object o = new Object() {
+//            float[] x;
+//
+//            public void setX(float[] x) {
+//                this.x = x;
+//            }
+//        };
+//        float[][] values = {{100f, 200f}, {300f, 400f}};
+//        ObjectAnimator animator = ObjectAnimator.ofMultiFloat(o, "x", values);
+//        animator.setDuration(1000l).start();
+//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("  >>> update <<<");
+//                for (float f : (float[]) animation.getAnimatedValue()) {
+//                    System.out.print(f + ",");
+//                }
+//                System.out.println("");
+//
+//            }
+//        });
+
+        //数组动画二
+        Object o = new Object() {
+            float[] x;
+            public void setX(float[] x) {
+                this.x = x;
+            }
+        };
+        int[][] values = {{100, 200}, {300, 400}};
+
+        TypeConverter<int[], float[]> typeConverter = new TypeConverter<int[], float[]>(int[].class, float[].class) {
+            @Override
+            public float[] convert(int[] value) {
+                float[] floats = new float[value.length];
+                for (int i = 0; i < value.length; i++) {
+                    floats[i] = (float) value[i];
+                }
+                return floats;
+            }
+        };
+
+        TypeEvaluator<int[]> typeEvalutor = new TypeEvaluator<int[]>() {
+            @Override
+            public int[] evaluate(float fraction, int[] startValue, int[] endValue) {
+                int[] result = new int[startValue.length];
+                for (int i = 0; i < startValue.length; i++) {
+                    int start = startValue[i];
+                    result[i] = (int) (start + fraction * (endValue[i] - startValue[i]));
+                }
+                return result;
+            }
+        };
+
+        ObjectAnimator animator = ObjectAnimator.ofMultiFloat(o, "x",
+                typeConverter, typeEvalutor, values);
+        animator.setDuration(1000l).start();
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                System.out.println("  >>> update <<<");
+                for (float f : (float[]) animation.getAnimatedValue()) {
+                    System.out.print(f + ",");
+                }
+                System.out.println("");
+
+            }
+        });
 
 
 
