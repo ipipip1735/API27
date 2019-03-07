@@ -3,6 +3,7 @@ package mine.animation;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.animation.IntEvaluator;
 import android.animation.Keyframe;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
@@ -15,6 +16,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Property;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -28,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ViewAnimator;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -36,105 +39,73 @@ import java.util.Set;
 public class AnimationActivity extends AppCompatActivity {
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        System.out.println("*******  Example  on  Create  Menu!  *********");
-//        getMenuInflater().inflate(R.menu.menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        System.out.println("*******  Example  on  Prepare  Menu!!!  *********");
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-
-    @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        System.out.println("**********  Example  onCreate  ***********");
-
-        if (bundle == null) {
-            System.out.println("Example bundle is empty");
-        } else {
-            System.out.println("bundle's total is " + bundle.size());
-            Set<String> keySet = bundle.keySet();
-            for (String i : keySet) {
-                System.out.println(i);
-            }
-        }
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         setContentView(R.layout.activity_animation);
-
-
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        System.out.println("****  Example  onNewIntent  *****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onNewIntent  *********");
         super.onNewIntent(intent);
     }
 
 
     @Override
     protected void onStart() {
-        System.out.println("****Example**onStart*****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         super.onStart();
-
     }
-
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        System.out.println("****  Example  onRestoreInstanceState  *****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-
     @Override
     protected void onRestart() {
-        System.out.println("****Example**onRestart*****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
         super.onRestart();
     }
 
     @Override
     protected void onResume() {
-        System.out.println("****Example**onResume*****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        System.out.println("****Example**onPause*****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
         super.onPause();
     }
 
-
     @Override
     public void onBackPressed() {
-        System.out.println("********Example***onBackPressed**********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
         super.onBackPressed();
     }
 
 
     @Override
     protected void onStop() {
-        System.out.println("****Example**onStop*****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
         super.onStop();
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        System.out.println("****  Example   onSaveInstanceState  *****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
-        System.out.println("****Example**onDestroy*****");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
         super.onDestroy();
     }
 
@@ -146,8 +117,8 @@ public class AnimationActivity extends AppCompatActivity {
 //        animatorSet();
 //        tween();
 //        frame();
-        viewAnimator();
-//        property();
+//        viewAnimator();
+        property();
 //        keyFrameAnimator();
 //        TypeEvalutors();
 //        LayoutTransition();
@@ -166,9 +137,9 @@ public class AnimationActivity extends AppCompatActivity {
     private void tween() {
 //        imageView.setImageResource(R.drawable.cd);
 //        ImageView image = (ImageView) findViewById(R.id.image);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        Animation hyperspaceJump = AnimationUtils.loadAnimation(this, R.anim.tween);
-        imageView.startAnimation(hyperspaceJump);
+//        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+//        Animation hyperspaceJump = AnimationUtils.loadAnimation(this, R.anim.tween);
+//        imageView.startAnimation(hyperspaceJump);
     }
 
 
@@ -193,10 +164,43 @@ public class AnimationActivity extends AppCompatActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
-
 //        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.property);
 //        set.setTarget(imageView);
 //        set.start();
+
+
+        //方式一：属性为公有
+//        Object o = new Object() {
+//            public int sk = 10;
+//        };
+//        Property property = Property.of(o.getClass(), int.class, "sk");
+//
+//        System.out.println("getName is " + property.getName());
+//        System.out.println("getType is " + property.getType());
+//        System.out.println("isReadOnly is " + property.isReadOnly());
+//
+//        System.out.println("get is " + property.get(o));
+//        property.set(o, 888);
+//        System.out.println("get is " + property.get(o));
+
+
+        //方式二：属性为私有
+        Object o = new Object() {
+//            public int sk = 10;
+            private int sk = 10;
+        };
+
+        Property property = Property.of(o.getClass(), int.class, "sk");
+
+        System.out.println("getName is " + property.getName());
+        System.out.println("getType is " + property.getType());
+        System.out.println("isReadOnly is " + property.isReadOnly());
+
+        System.out.println("get is " + property.get(o));
+        property.set(o, 888);
+        System.out.println("get is " + property.get(o));
+
+
 
     }
 
@@ -204,60 +208,50 @@ public class AnimationActivity extends AppCompatActivity {
     private void valueAnimator() {
         System.out.println("***** property ******");
 
-//        ValueAnimator va = ValueAnimator.ofInt(0,67);
-        ValueAnimator va = ValueAnimator.ofInt(10, 67, 25);
-        va.setDuration(3000);
-        va.setInterpolator(new TimeInterpolator() {
+//        ValueAnimator va = ValueAnimator.ofInt(20); //初值为0，终值为20
+        ValueAnimator va = ValueAnimator.ofInt(200,67); //初值为200，终值为67
+//        ValueAnimator va = ValueAnimator.ofInt(10,11,25,8); //初值为10，终值为8，中值11,25
+        va.setDuration(1000);
+
+        //时间因子监听器
+//        va.setInterpolator(new AccelerateInterpolator()); //加速时间因子
+        va.setInterpolator(new TimeInterpolator() { //自定义时间因子
             @Override
             public float getInterpolation(float input) {
+                System.out.println("  >>> interpolation <<<");
+
                 System.out.println("input is " + input);
                 return input;
             }
         });
 
-//        va.setEvaluator(new TypeEvaluator() {
-//            @Override
-//            public Object evaluate(float fraction, Object startValue, Object endValue) {
-//                System.out.println("  >>> evaluate <<<");
-//                System.out.println(fraction);
-//                System.out.println(startValue);
-//                System.out.println(endValue);
-//                return fraction*100;
-//            }
-//        });
 
+
+        //计算中间值
+//        va.setEvaluator(new IntEvaluator()); //int求值器
+        va.setEvaluator(new TypeEvaluator() {
+            @Override
+            public Object evaluate(float fraction, Object startValue, Object endValue) { //自定义求值器
+                System.out.println("  >>> evaluate <<<");
+                System.out.println("fraction is " + fraction);
+                System.out.println("startValue is " + startValue);
+                System.out.println("endValue is " + endValue);
+                return (int)startValue + fraction * ((int)endValue - (int)startValue);
+            }
+        });
+
+
+        //更新监听器
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 System.out.println("  >>> update <<<");
                 int i = (int) animation.getAnimatedValue();
-                System.out.println(i);
+                System.out.println("getAnimatedValue is " + i);
 
             }
         });
 
-        va.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                System.out.println("******onAnimationStart*****");
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                System.out.println("******onAnimationEnd*****");
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                System.out.println("******onAnimationCancel*****");
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-                System.out.println("******onAnimationRepeat*****");
-            }
-        });
         va.start();
 
 
@@ -309,6 +303,31 @@ public class AnimationActivity extends AppCompatActivity {
         animator2.setDuration(2000);
         animator3.setDuration(2000);
         animator4.setDuration(2000);
+
+        //控制监听器
+        animator2.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                System.out.println("******onAnimationStart*****");
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                System.out.println("******onAnimationEnd*****");
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                System.out.println("******onAnimationCancel*****");
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+                System.out.println("******onAnimationRepeat*****");
+            }
+        });
+
 
         AnimatorSet bouncer = new AnimatorSet();
 
@@ -419,23 +438,23 @@ public class AnimationActivity extends AppCompatActivity {
 
 
 //        PropertyValuesHolder pvhLeft = PropertyValuesHolder.ofInt("left", 0, 1);
-        PropertyValuesHolder pvhLeft =
-                PropertyValuesHolder.ofInt("left", 0,0);
-        PropertyValuesHolder pvhTop =
-                PropertyValuesHolder.ofInt("top", 0, 0);
-        PropertyValuesHolder pvhRight =
-                PropertyValuesHolder.ofInt("right", 0, 0);
-        PropertyValuesHolder pvhBottom =
-                PropertyValuesHolder.ofInt("bottom", 0, 0);
-        PropertyValuesHolder pvhScaleX =
-                PropertyValuesHolder.ofFloat("scaleX", 1f,0f,1f);
-        PropertyValuesHolder pvhScaleY =
-                PropertyValuesHolder.ofFloat("scaleY", 1f, 1f);
+//        PropertyValuesHolder pvhLeft =
+//                PropertyValuesHolder.ofInt("left", 0,0);
+//        PropertyValuesHolder pvhTop =
+//                PropertyValuesHolder.ofInt("top", 0, 0);
+//        PropertyValuesHolder pvhRight =
+//                PropertyValuesHolder.ofInt("right", 0, 0);
+//        PropertyValuesHolder pvhBottom =
+//                PropertyValuesHolder.ofInt("bottom", 0, 0);
+//        PropertyValuesHolder pvhScaleX =
+//                PropertyValuesHolder.ofFloat("scaleX", 1f,0f,1f);
+//        PropertyValuesHolder pvhScaleY =
+//                PropertyValuesHolder.ofFloat("scaleY", 1f, 1f);
 
 
-        ObjectAnimator x = ObjectAnimator.ofFloat(null, "x", 155f);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
-                this, pvhLeft, pvhTop, pvhRight, pvhBottom, pvhScaleX);
+//        ObjectAnimator x = ObjectAnimator.ofFloat(null, "x", 155f);
+//        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+//                this, pvhLeft, pvhTop, pvhRight, pvhBottom, pvhScaleX);
 //                this, pvhLeft, pvhTop, pvhRight, pvhBottom, pvhScaleX, pvhScaleY);
 
 
@@ -462,32 +481,32 @@ public class AnimationActivity extends AppCompatActivity {
 //            }
 //        });
 
-        objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                System.out.println("change appearing");
-                System.out.println(animation.getAnimatedFraction());
-                System.out.println(animation.getAnimatedValue("top"));
-                System.out.println(animation.getAnimatedValue("left"));
-            }
-        });
-
-
-        Animator defaultA = layoutTransition.getAnimator(LayoutTransition.APPEARING);
-        Animator defaultCA = layoutTransition.getAnimator(LayoutTransition.CHANGE_APPEARING);
-
-        layoutTransition.setAnimator(LayoutTransition.APPEARING, x);
-        layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING, objectAnimator);
-        layoutTransition.setDuration(5000l);
-
-
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout3);
-        linearLayout.setLayoutTransition(layoutTransition);
-
-        Button b1 = new Button(this);
-
-        b1.setText("dddd" + Math.random());
-        linearLayout.addView(b1, 0);
+//        objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("change appearing");
+//                System.out.println(animation.getAnimatedFraction());
+//                System.out.println(animation.getAnimatedValue("top"));
+//                System.out.println(animation.getAnimatedValue("left"));
+//            }
+//        });
+//
+//
+//        Animator defaultA = layoutTransition.getAnimator(LayoutTransition.APPEARING);
+//        Animator defaultCA = layoutTransition.getAnimator(LayoutTransition.CHANGE_APPEARING);
+//
+//        layoutTransition.setAnimator(LayoutTransition.APPEARING, x);
+//        layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING, objectAnimator);
+//        layoutTransition.setDuration(5000l);
+//
+//
+//        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout3);
+//        linearLayout.setLayoutTransition(layoutTransition);
+//
+//        Button b1 = new Button(this);
+//
+//        b1.setText("dddd" + Math.random());
+//        linearLayout.addView(b1, 0);
 //        b1.setVisibility(View.GONE);
     }
 
