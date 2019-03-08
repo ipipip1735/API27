@@ -118,13 +118,13 @@ public class AnimationActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 //        valueAnimator();
-        objectAnimator();
+//        objectAnimator();
 //        animatorSet();
 //        tween();
 //        frame();
 //        viewAnimator();
 //        property();
-//        keyFrameAnimator();
+        keyFrameAnimator();
 //        TypeEvalutors();
 //        LayoutTransition();
     }
@@ -286,14 +286,13 @@ public class AnimationActivity extends AppCompatActivity {
 //        PropertyValuesHolder scalex = PropertyValuesHolder.ofFloat("scaleX", 1f, 1.6f, 2f);
 //        PropertyValuesHolder scaley = PropertyValuesHolder.ofFloat("scaleY", 0f, 0.6f, 1f, 1.3f);
 //
-//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, top); //单值动画
+////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, top); //单值动画
 ////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex); //单值动画
 ////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scrollY); //单值动画
-////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex, scaley); //并行动画
+//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex, scaley); //并行动画
 //        o.setDuration(2000).start();
 //
-//
-//        //绑定监听器，可以在start()后绑定
+////        //绑定监听器，可以在start()后绑定
 //        o.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 //            @Override
 //            public void onAnimationUpdate(ValueAnimator animation) {
@@ -303,7 +302,6 @@ public class AnimationActivity extends AppCompatActivity {
 //                System.out.println(animation.getDuration());
 //            }
 //        });
-
 
 
 
@@ -324,7 +322,7 @@ public class AnimationActivity extends AppCompatActivity {
 //        });
 
 
-        //数组动画一
+        //例四：数组动画一
 //        Object o = new Object() {
 //            float[] x;
 //
@@ -347,55 +345,52 @@ public class AnimationActivity extends AppCompatActivity {
 //            }
 //        });
 
-        //数组动画二
-        Object o = new Object() {
-            float[] x;
-            public void setX(float[] x) {
-                this.x = x;
-            }
-        };
-        int[][] values = {{100, 200}, {300, 400}};
-
-        TypeConverter<int[], float[]> typeConverter = new TypeConverter<int[], float[]>(int[].class, float[].class) {
-            @Override
-            public float[] convert(int[] value) {
-                float[] floats = new float[value.length];
-                for (int i = 0; i < value.length; i++) {
-                    floats[i] = (float) value[i];
-                }
-                return floats;
-            }
-        };
-
-        TypeEvaluator<int[]> typeEvalutor = new TypeEvaluator<int[]>() {
-            @Override
-            public int[] evaluate(float fraction, int[] startValue, int[] endValue) {
-                int[] result = new int[startValue.length];
-                for (int i = 0; i < startValue.length; i++) {
-                    int start = startValue[i];
-                    result[i] = (int) (start + fraction * (endValue[i] - startValue[i]));
-                }
-                return result;
-            }
-        };
-
-        ObjectAnimator animator = ObjectAnimator.ofMultiFloat(o, "x",
-                typeConverter, typeEvalutor, values);
-        animator.setDuration(1000l).start();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                System.out.println("  >>> update <<<");
-                for (float f : (float[]) animation.getAnimatedValue()) {
-                    System.out.print(f + ",");
-                }
-                System.out.println("");
-
-            }
-        });
-
-
-
+        //例四：数组动画二（使用转换器）
+//        Object o = new Object() {
+//            float[] x;
+//            public void setX(float[] x) {
+//                this.x = x;
+//            }
+//        };
+//        int[][] values = {{100, 200}, {300, 400}};
+//
+//        TypeConverter<int[], float[]> typeConverter = new TypeConverter<int[], float[]>(int[].class, float[].class) {
+//            @Override
+//            public float[] convert(int[] value) {
+//                float[] floats = new float[value.length];
+//                for (int i = 0; i < value.length; i++) {
+//                    floats[i] = (float) value[i];
+//                }
+//                return floats;
+//            }
+//        };
+//
+//        TypeEvaluator<int[]> typeEvalutor = new TypeEvaluator<int[]>() {
+//            @Override
+//            public int[] evaluate(float fraction, int[] startValue, int[] endValue) {
+//                int[] result = new int[startValue.length];
+//                for (int i = 0; i < startValue.length; i++) {
+//                    int start = startValue[i];
+//                    result[i] = (int) (start + fraction * (endValue[i] - startValue[i]));
+//                }
+//                return result;
+//            }
+//        };
+//
+//        ObjectAnimator animator = ObjectAnimator.ofMultiFloat(o, "x",
+//                typeConverter, typeEvalutor, values);
+//        animator.setDuration(1000l).start();
+//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("  >>> update <<<");
+//                for (float f : (float[]) animation.getAnimatedValue()) {
+//                    System.out.print(f + ",");
+//                }
+//                System.out.println("");
+//
+//            }
+//        });
 
     }
 
@@ -440,17 +435,19 @@ public class AnimationActivity extends AppCompatActivity {
 
 
         AnimatorSet bouncer = new AnimatorSet();
-
         bouncer.play(animator2).before(animator3);
         bouncer.play(animator3).after(animator1);
-
         bouncer.start();
 
-//        ValueAnimator fadeAnim = ObjectAnimator.ofFloat(newBall, "alpha", 1f, 0f);
-//        fadeAnim.setDuration(250);
+
+
+        //动画集嵌套播放
+//        ValueAnimator fadeAnim = ObjectAnimator.ofFloat(imageView, "alpha", 0.1f, 1f);
+//        fadeAnim.setDuration(2500);
 //        AnimatorSet animatorSet = new AnimatorSet();
-//        animatorSet.play(bouncer).before(fadeAnim);
+//        animatorSet.play(bouncer).before(fadeAnim); //嵌套播放
 //        animatorSet.start();
+
     }
 
 
@@ -471,48 +468,55 @@ public class AnimationActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
 
-        Keyframe keyframe0 = Keyframe.ofFloat(0f);
-        Keyframe keyframe1 = Keyframe.ofFloat(0.1f, 600f);
-        Keyframe keyframe2 = Keyframe.ofFloat(1f, 100f);
-
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofKeyframe("x", keyframe0, keyframe1, keyframe2);
-
-
-        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(imageView, pvhX);
-
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                System.out.println("  >>> update <<<");
-                System.out.println(animation.getAnimatedFraction());
-                System.out.println(animation.getAnimatedValue());
-            }
-        });
-//        anim.setEvaluator(new TypeEvaluator() {
+        //版本一：基本使用
+//        //定义关键帧
+//        Keyframe keyframe0 = Keyframe.ofFloat(0f);
+//        Keyframe keyframe1 = Keyframe.ofFloat(0.1f, 600f);
+//        Keyframe keyframe2 = Keyframe.ofFloat(1f, 100f);
+//
+//        //组合关键帧
+//        PropertyValuesHolder pvhX = PropertyValuesHolder.ofKeyframe("x",
+//                keyframe0, keyframe1, keyframe2);
+//
+//        //创建动画
+//        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(imageView, pvhX);
+//
+//        //绑定更新监听器
+//        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 //            @Override
-//            public Object evaluate(float fraction, Object startValue, Object endValue) {
-//                System.out.println("  >>> evaluate <<<");
-//                System.out.println(fraction);
-//                System.out.println(startValue);
-//                System.out.println(endValue);
-//                return fraction*100;
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("  >>> update <<<");
+//                System.out.println(animation.getAnimatedFraction());
+//                System.out.println(animation.getAnimatedValue());
 //            }
 //        });
-        anim.setDuration(5000);
-        anim.start();
-
-
-//        AccelerateInterpolator aInterpolator = new AccelerateInterpolator();
-//        DecelerateInterpolator dInterpolator = new DecelerateInterpolator();
-//        Keyframe keyframe0 = Keyframe.ofFloat(0f, 10f);
-//        keyframe0.setInterpolator(aInterpolator);
-//        Keyframe keyframe1 = Keyframe.ofFloat(0.5f, 450f);
-//        keyframe1.setInterpolator(dInterpolator);
-//        Keyframe keyframe4 = Keyframe.ofFloat(1f, 50f);
 //
-//        PropertyValuesHolder x = PropertyValuesHolder.ofKeyframe("x", keyframe0, keyframe1, keyframe4);
-//        PropertyValuesHolder y = PropertyValuesHolder.ofKeyframe("y", keyframe0, keyframe1, keyframe4);
-//        ObjectAnimator.ofPropertyValuesHolder(imageView, x, y).setDuration(5000).start();
+//        //设置求值器
+////        anim.setEvaluator(new TypeEvaluator() {
+////            @Override
+////            public Object evaluate(float fraction, Object startValue, Object endValue) {
+////                System.out.println("  >>> evaluate <<<");
+////                System.out.println(fraction);
+////                System.out.println(startValue);
+////                System.out.println(endValue);
+////                return fraction*100;
+////            }
+////        });
+//        anim.setDuration(5000).start();
+
+
+        //版本二：使用时间因子修改器
+        AccelerateInterpolator aInterpolator = new AccelerateInterpolator();
+        DecelerateInterpolator dInterpolator = new DecelerateInterpolator();
+        Keyframe keyframe0 = Keyframe.ofFloat(0f, 10f);
+        keyframe0.setInterpolator(aInterpolator);
+        Keyframe keyframe1 = Keyframe.ofFloat(0.5f, 450f);
+        keyframe1.setInterpolator(dInterpolator);
+        Keyframe keyframe4 = Keyframe.ofFloat(1f, 50f);
+
+        PropertyValuesHolder x = PropertyValuesHolder.ofKeyframe("x", keyframe0, keyframe1, keyframe4);
+        PropertyValuesHolder y = PropertyValuesHolder.ofKeyframe("y", keyframe0, keyframe1, keyframe4);
+        ObjectAnimator.ofPropertyValuesHolder(imageView, x, y).setDuration(5000).start();
 
 
     }
