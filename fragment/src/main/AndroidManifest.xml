@@ -21,22 +21,24 @@
         <!--</activity>-->
 
 
-        <activity android:name=".LeftRightActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-
-        <!--<activity android:name=".FragmentTransactionActivity">-->
+        <!--左右Frgment数据传递-->
+        <!--<activity android:name=".LeftRightActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <!--<action android:name="android.intent.action.VIEW" />-->
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
+
+
+        <!--事务管理-->
+        <activity android:name=".FragmentTransactionActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
     </application>

@@ -8,6 +8,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
+
 /**
  * Created by Administrator on 2019/2/17.
  */
@@ -16,6 +22,7 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FragmentManager.OnBackStackChangedListener listener;
+    List<Integer> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,8 @@ public class FragmentTransactionActivity extends AppCompatActivity {
         };
         fragmentManager.addOnBackStackChangedListener(listener);
 
+        list = new ArrayList<>();
+
     }
 
 
@@ -46,7 +55,7 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
-        fragment = fragmentManager.getFragment(savedInstanceState, "basic");
+//        fragment = fragmentManager.getFragment(savedInstanceState, "basic");
     }
 
     @Override
@@ -85,7 +94,7 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
-        fragmentManager.putFragment(outState, "basic", fragment);
+//        fragmentManager.putFragment(outState, "basic", fragment);
     }
 
     @Override
@@ -101,31 +110,62 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.button.add~~");
 
+        //配置参数
+        int id = new Random().nextInt(99);
+        list.add(id); //保存ID
+        String text = "text-" + id;
+        Bundle bundle = new Bundle();
+        bundle.putString("text", text);
+
+        //创建Fragment
+        TextFragment textFragment = new TextFragment();
+        textFragment.setArguments(bundle);//传递参数
+
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragment = new BasicFragment();
-        fragmentTransaction.add(R.id.ll, fragment, "frag1")
-                .addToBackStack("one");
+        fragmentTransaction.add(R.id.ll, textFragment, "Tag-" + id)
+                .addToBackStack("addText" + id);
         fragmentTransaction.commit();
 
     }
 
 
-
     public void remove(View view) {
         System.out.println("~~button.remove~~");
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(fragmentManager.findFragmentByTag("frag1"))
-                .addToBackStack("two");
-        fragmentTransaction.commit();
+        //配置参数
+        String text = "text" + new Random().nextInt(99);
+        Bundle bundle = new Bundle();
+        bundle.putString("text", text);
+
+        //创建Fragment
+        TextFragment textFragment = new TextFragment();
+        textFragment.setArguments(bundle);//传递参数
+
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(fragmentManager.findFragmentByTag("frag1"))
+                .addToBackStack("removeText")
+                .commit();
 
     }
 
     public void replace(View view) {
         System.out.println("~~button.replace~~");
 
+        //配置参数
+        String text = "text" + new Random().nextInt(99);
+        Bundle bundle = new Bundle();
+        bundle.putString("text", text);
+
+        //创建Fragment
+        TextFragment textFragment = new TextFragment();
+        textFragment.setArguments(bundle);//传递参数
+
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.ll, new RightFragment(), "NewFrag")
+        fragmentTransaction.replace(R.id.ll, textFragment, "NewFrag")
                 .addToBackStack("three");
         fragmentTransaction.commit();
 
@@ -134,8 +174,14 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     public void show(View view) {
         System.out.println("~~button.show~~");
 
-        int count  = fragmentManager.getBackStackEntryCount();
+        int count = fragmentManager.getBackStackEntryCount();//获取总数
         System.out.println("count is " + count);
+
+        for (int i = 0; i < count; i++) { //打印
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
+            System.out.println("getId is " + backStackEntry.getId());
+            System.out.println("getName is " + backStackEntry.getName());
+        }
     }
 
     public void hide(View view) {
@@ -154,7 +200,9 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     public void pop(View view) {
         System.out.println("~~button.pop~~");
 
-        fragmentManager.popBackStack();
+        String tag = "addText" + list.get(2);
+        System.out.println("tag is " + tag);
+        fragmentManager.popBackStack(tag, POP_BACK_STACK_INCLUSIVE);
 
     }
 }
