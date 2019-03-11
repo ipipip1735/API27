@@ -26,7 +26,7 @@ include   ':apptemp',
 //        ':contentProvide',
 //        ':adapter',
 //        ':loader',
-        ':tween',
+        ':view',
 //        ':broadcast',
 //        ':services',
 //        ':notification'

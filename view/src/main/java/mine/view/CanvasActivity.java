@@ -3,6 +3,7 @@ package mine.view;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +35,14 @@ public class CanvasActivity extends AppCompatActivity {
                 paint.setStyle(Paint.Style.STROKE);
 
                 Path path = new Path();
-                path.addRect(100, 100, 500, 300, CCW);//矩形路径
-                path.addArc(100, 100, 500, 300, 0f, 90f);
+//                path.addRect(150, 150, 500, 300, CCW);//矩形路径
+//                path.addArc(100, 100, 500, 300, 0f, -90f);//绘制弧
+
+                path.arcTo(new RectF(100, 300, 500, 600), 0f, 90, false);
+                path.arcTo(new RectF(800, 800, 900, 900), 0f, 90, false);
+
+                path.lineTo(900f, 980f);
+
                 canvas.drawPath(path, paint);
 
 

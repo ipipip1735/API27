@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
-        xmlns:mine="http://schemas.android.com/apk/res/mine.view"
+
+    <LinearLayout xmlns:mine="http://schemas.android.com/apk/res-auto"
         android:id="@+id/viewContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,22 +16,24 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"/>
+            android:text="TextView" />
 
 
         <mine.view.CustomViewGroup
-        android:id="@+id/CustomGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/SkyBlue">
-
-        <mine.view.CustomView
-            android:id="@+id/Custom"
+            android:id="@+id/CustomGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:padding="50px"
-            mine:labelYY="tttttt"/>
+            android:background="@color/SkyBlue"
+            mine:labelYY="ttt"
+            mine:align="left">
+
+            <mine.view.CustomView
+                android:id="@+id/Custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:padding="50px"
+                mine:direction="left"/>
 
         </mine.view.CustomViewGroup>
 
@@ -69,21 +71,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="addView"
-            android:text="add_view"/>
+            android:text="add_view" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="stopService"
-            android:text="stop-Service"/>
+            android:text="stop-Service" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="restartService"
-            android:text="restart-service"/>
+            android:text="restart-service" />
     </LinearLayout>
 
 
@@ -97,20 +99,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="bindService"
-            android:text="bind-Service"/>
+            android:text="bind-Service" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="unbindService"
-            android:text="unbind-Service"/>
+            android:text="unbind-Service" />
 
         <Button
             android:id="@+id/button6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="showInfo"
-            android:text="show Info"/>
+            android:text="show Info" />
     </LinearLayout>
 </LinearLayout>
