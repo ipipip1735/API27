@@ -36,7 +36,7 @@
         </mine.view.CustomViewGroup>
 
 
-        <!--<mine.view.PieChart-->
+        <!--<mine.tween.PieChart-->
         <!--android:id="@+id/Pie"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->

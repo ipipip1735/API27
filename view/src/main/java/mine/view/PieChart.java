@@ -350,7 +350,7 @@ public class PieChart extends ViewGroup {
 
     /**
      * Set the currently selected item. Calling this function will set the current selection
-     * and rotate the pie to bring it into view.
+     * and rotate the pie to bring it into tween.
      *
      * @param currentItem The zero-based index of the item to select.
      */
@@ -359,7 +359,7 @@ public class PieChart extends ViewGroup {
     }
 
     /**
-     * Set the current item by index. Optionally, scroll the current item into view. This version
+     * Set the current item by index. Optionally, scroll the current item into tween. This version
      * is for internal use--the scrollIntoView option is always true for external callers.
      *
      * @param currentItem    The index of the current item.
@@ -383,14 +383,14 @@ public class PieChart extends ViewGroup {
      * Register a callback to be invoked when the currently selected item changes.
      *
      * @param listener Can be null.
-     *                 The current item changed listener to attach to this view.
+     *                 The current item changed listener to attach to this tween.
      */
     public void setOnCurrentItemChangedListener(OnCurrentItemChangedListener listener) {
         mCurrentItemChangedListener = listener;
     }
 
     /**
-     * Add a new data item to this view. Adding an item adds a slice to the pie whose
+     * Add a new data item to this tween. Adding an item adds a slice to the pie whose
      * size is proportional to the item's value. As new items are added, the size of each
      * existing slice is recalculated so that the proportions remain correct.
      *
@@ -445,7 +445,7 @@ public class PieChart extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         // Do nothing. Do not call the superclass method--that would start a layout pass
-        // on this view's children. PieChart lays out its children in onSizeChanged().
+        // on this tween's children. PieChart lays out its children in onSizeChanged().
     }
 
 
@@ -462,7 +462,7 @@ public class PieChart extends ViewGroup {
             canvas.drawText(mData.get(mCurrentItem).mLabel, mTextX, mTextY, mTextPaint);
         }
 
-        // If the API level is less than 11, we can't rely on the view animation system to
+        // If the API level is less than 11, we can't rely on the tween animation system to
         // do the scrolling animation. Need to tick it here and call postInvalidate() until the scrolling is done.
         if (Build.VERSION.SDK_INT < 11) {
             tickScrollAnimation();
@@ -563,7 +563,7 @@ public class PieChart extends ViewGroup {
                 mPieBounds.right - 10,
                 mPieBounds.bottom + 20);
 
-        // Lay out the child view that actually draws the pie.
+        // Lay out the child tween that actually draws the pie.
         mPieView.layout((int) mPieBounds.left,
                 (int) mPieBounds.top,
                 (int) mPieBounds.right,
@@ -660,7 +660,7 @@ public class PieChart extends ViewGroup {
         mShadowPaint.setColor(0xff101010);
         mShadowPaint.setMaskFilter(new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL));
 
-        // Add a child view to draw the pie. Putting this in a child view
+        // Add a child tween to draw the pie. Putting this in a child tween
         // makes it possible to draw it on a separate hardware layer that rotates
         // independently
         mPieView = new PieView(getContext());
@@ -668,7 +668,7 @@ public class PieChart extends ViewGroup {
         mPieView.rotateTo(mPieRotation);
 
         // The pointer doesn't need hardware acceleration, but in order to show up
-        // in front of the pie it also needs to be on a separate view.
+        // in front of the pie it also needs to be on a separate tween.
         mPointerView = new PointerView(getContext());
         addView(mPointerView);
 

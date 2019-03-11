@@ -151,7 +151,7 @@ public class CursorAdapterActivity extends AppCompatActivity {
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
                 System.out.println("..CursorAdapter.bindView..");
-                System.out.println("view is " + view);
+                System.out.println("tween is " + view);
                 System.out.println("context is " + context);
                 System.out.println("cursor is " + cursor);
 

@@ -98,7 +98,7 @@ public class BaseRenderer implements GLSurfaceView.Renderer {
         //get uniform ID
         modelID = GLES31.glGetUniformLocation(triangleShader.getProgramID(), "model");
         System.out.println("modelID is " + modelID);
-        viewID = GLES31.glGetUniformLocation(triangleShader.getProgramID(), "view");
+        viewID = GLES31.glGetUniformLocation(triangleShader.getProgramID(), "tween");
         System.out.println("viewID is " + viewID);
         projectID = GLES31.glGetUniformLocation(triangleShader.getProgramID(), "project");
         System.out.println("projectID is " + projectID);

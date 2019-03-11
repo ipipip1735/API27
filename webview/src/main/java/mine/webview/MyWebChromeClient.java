@@ -27,7 +27,7 @@ public class MyWebChromeClient extends WebChromeClient {
         super.onProgressChanged(view, newProgress);
 //        System.out.println("******* MyWebChromeClient.onProgressChanged *******");
 //        ToolClass.showThread();
-//        System.out.println(view);
+//        System.out.println(tween);
 //        System.out.println(newProgress);
 
     }

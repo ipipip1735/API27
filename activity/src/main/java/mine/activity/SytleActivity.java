@@ -110,7 +110,7 @@ public class SytleActivity extends AppCompatActivity {
             @Override
             public void getOutline(View view, Outline outline) {
                 System.out.println("..getOutline..");
-                System.out.println("view is " + view);
+                System.out.println("tween is " + view);
                 System.out.println("outline is " + outline);
             }
         });

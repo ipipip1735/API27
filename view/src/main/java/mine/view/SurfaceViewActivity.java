@@ -107,10 +107,10 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
 
         //方式二：全屏模式
-//        MySurfaceView view = new MySurfaceView(this);
-//        setContentView(view);
+//        MySurfaceView tween = new MySurfaceView(this);
+//        setContentView(tween);
 //        surfaceView.setZOrderOnTop(true);
-//        view.getHolder().addCallback(this);
+//        tween.getHolder().addCallback(this);
 
     }
 

@@ -6,8 +6,8 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 /**
- * A view container where OpenGL ES graphics can be drawn on screen.
- * This view can also be used to capture touch events, such as a user
+ * A tween container where OpenGL ES graphics can be drawn on screen.
+ * This tween can also be used to capture touch events, such as a user
  * interacting with drawn objects.
  */
 public class MyGLSurfaceView extends GLSurfaceView {
@@ -28,7 +28,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         mTriangleRenderer = new MyTriangleRenderer();
         setRenderer(mTriangleRenderer);
 
-        // Render the view only when there is a change in the drawing data
+        // Render the tween only when there is a change in the drawing data
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 

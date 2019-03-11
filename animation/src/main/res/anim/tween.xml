@@ -6,12 +6,13 @@
         android:fromAlpha="1"
         android:toAlpha="0.5" />
 
-    <!--<scale-->
-        <!--android:fromXScale="float"-->
-        <!--android:toXScale="float"-->
-        <!--android:fromYScale="float"-->
-        <!--android:toYScale="float"-->
-        <!--android:pivotX="float"-->
-        <!--android:pivotY="float" />-->
+    <scale
+        android:fromXScale="1"
+        android:toXScale="1.5"
+        android:fromYScale="0.8"
+        android:toYScale="1"
+        android:pivotX="0.3"
+        android:pivotY="0.9" />
+
 </set>
 

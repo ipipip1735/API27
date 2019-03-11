@@ -535,10 +535,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("=queryQuickContact=");
 
 
-//        TextView view = new TextView(this);
+//        TextView tween = new TextView(this);
 //        Uri lookupUri = ContactsContract.Contacts.getLookupUri(getContentResolver(),
 //                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "4"));
-//        ContactsContract.QuickContact.showQuickContact(this, view, lookupUri,
+//        ContactsContract.QuickContact.showQuickContact(this, tween, lookupUri,
 //                ContactsContract.QuickContact.MODE_LARGE, null);
 
 

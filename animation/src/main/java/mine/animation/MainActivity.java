@@ -1,7 +1,6 @@
 package mine.animation;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.Keyframe;
 import android.animation.LayoutTransition;
@@ -11,7 +10,6 @@ import android.animation.TimeInterpolator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 //import android.support.animation.DynamicAnimation;
 //import android.support.animation.SpringAnimation;
 import android.support.animation.DynamicAnimation;
@@ -26,10 +24,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -124,7 +118,7 @@ ImageView imageView;
                 System.out.println("*-*-*  startTransition  *-*-*");
                 System.out.println("transition  is " + transition);
                 System.out.println("container  is " + container);
-                System.out.println("view  is " + view);
+                System.out.println("tween  is " + view);
                 System.out.println("transitionType  is " + transitionType);
             }
 
@@ -133,7 +127,7 @@ ImageView imageView;
                 System.out.println("*-*-*  endTransition  *-*-*");
                 System.out.println("transition  is " + transition);
                 System.out.println("container  is " + container);
-                System.out.println("view  is " + view);
+                System.out.println("tween  is " + view);
                 System.out.println("transitionType  is " + transitionType);
             }
         });
@@ -310,7 +304,7 @@ ImageView imageView;
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.view);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.tween);
         imageView.startAnimation(animation);
 
 //        ImageView imageView = (ImageView) findViewById(R.id.imageView);
