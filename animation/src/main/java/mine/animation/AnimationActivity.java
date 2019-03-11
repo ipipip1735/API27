@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Property;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -145,9 +146,49 @@ public class AnimationActivity extends AppCompatActivity {
 
 //        tween();
 //        frame();
-        viewAnimator(); //视图属性动画
+//        viewAnimator(); //视图属性动画
 
 //        vectorAnimated();//矢量动画
+
+        Circular();
+
+    }
+
+    private void Circular() {
+
+        //显示
+//        View myView = findViewById(R.id.imageView1);
+//        int cx = myView.getWidth() / 2;
+//        int cy = myView.getHeight() / 2;
+//
+//        float finalRadius = (float) Math.hypot(cx, cy);
+//
+//        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0f, finalRadius);
+//        myView.setVisibility(View.VISIBLE);
+//        anim.start();
+
+
+        //隐藏
+        final View myView = findViewById(R.id.imageView1);
+
+        int cx = myView.getWidth() / 2;
+        int cy = myView.getHeight() / 2;
+
+        float initialRadius = (float) Math.hypot(cx, cy);
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0f);
+
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                myView.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        anim.start();
+
+
 
     }
 

@@ -412,5 +412,4 @@ ImageView imageView;
 //        animatorSet.play(bouncer).before(fadeAnim);
 //        animatorSet.start();
     }
-
 }

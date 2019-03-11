@@ -12,6 +12,7 @@ import android.animation.TypeConverter;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Property;
@@ -21,6 +22,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+
+import static android.graphics.Path.Direction.CCW;
 
 /**
  * Created by Administrator on 2016/7/14.
@@ -101,6 +104,7 @@ public class AnimatorActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("********start******");
+
 //        valueAnimator(); //值动画
 //        propertyAnimator(); //属性动画
 
@@ -108,6 +112,33 @@ public class AnimatorActivity extends AppCompatActivity {
 //        objectAnimator(); //对象动画
 //        animatorSet(); //对象动画集
 //        keyFrameAnimator(); //属性关键帧
+
+        pathObjectAnimator();//路径动画
+
+    }
+
+    private void pathObjectAnimator() {
+
+        ImageView imageView = findViewById(R.id.imageView);
+
+        Path path = new Path();
+        path.addRect(100, 100, 500, 500, CCW); //创建矩形路径
+        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "x", "y", path);
+        animator.setDuration(2000l).start(); //沿矩形路径动画
+
+        //增加更新监听器
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                System.out.println("  >>> update <<<");
+                float i = (float) animation.getAnimatedValue();
+                System.out.println("getAnimatedValue is " + i);
+
+            }
+        });
+
+
+
 
     }
 
@@ -283,24 +314,10 @@ public class AnimatorActivity extends AppCompatActivity {
         });
 
 
-        //例四：路径动画
-//        Path path = new Path();
-//        path.addRect(100, 100, 500, 500, CCW); //创建矩形路径
-//        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "x", "y", path);
-//        animator.setDuration(2000l).start(); //沿矩形路径动画
-//
-//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                System.out.println("  >>> update <<<");
-//                float i = (float) animation.getAnimatedValue();
-//                System.out.println("getAnimatedValue is " + i);
-//
-//            }
-//        });
 
 
-        //例五：属性为数组
+
+        //例四：属性为数组
 //        Object o = new Object() {
 //            float[] x;
 //
@@ -324,7 +341,7 @@ public class AnimatorActivity extends AppCompatActivity {
 //        });
 
 
-        //例六：属性为数组（使用转换器）
+        //例五：属性为数组（使用转换器）
 //        Object o = new Object() {
 //            float[] x;
 //            public void setX(float[] x) {
