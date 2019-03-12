@@ -150,47 +150,54 @@ public class AnimationActivity extends AppCompatActivity {
 
 //        vectorAnimated();//矢量动画
 
-        Circular();
+        ripple(); //涟漪动画
 
     }
 
-    private void Circular() {
 
-        //显示
-//        View myView = findViewById(R.id.imageView1);
-//        int cx = myView.getWidth() / 2;
-//        int cy = myView.getHeight() / 2;
-//
-//        float finalRadius = (float) Math.hypot(cx, cy);
-//
-//        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0f, finalRadius);
-//        myView.setVisibility(View.VISIBLE);
-//        anim.start();
-
-
-        //隐藏
+    private void ripple() {
         final View myView = findViewById(R.id.imageView1);
 
-        int cx = myView.getWidth() / 2;
-        int cy = myView.getHeight() / 2;
+        if (myView.getVisibility() != View.VISIBLE) {
 
-        float initialRadius = (float) Math.hypot(cx, cy);
+            //显示
+            myView.setVisibility(View.VISIBLE);//设为可见
 
-        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0f);
+            //计算坐标
+            int cx = myView.getWidth() / 2;
+            int cy = myView.getHeight() / 2;
 
-        anim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                myView.setVisibility(View.INVISIBLE);
-            }
-        });
+            float finalRadius = (float) Math.hypot(cx, cy);//计算半径
 
-        anim.start();
+            //创建动画
+            Animator animator = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0f, finalRadius);
+            animator.setDuration(3000l).start();
 
+        } else {
+
+            //隐藏
+            int cx = myView.getWidth() / 2;
+            int cy = myView.getHeight() / 2;
+
+            float initialRadius = (float) Math.hypot(cx, cy); //计算半径
+
+            Animator animator = ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0f);
+            animator.setDuration(3000l).start();
+
+            //绑定监听器
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    myView.setVisibility(View.INVISIBLE);//设为不可见
+                }
+            });
+
+        }
 
 
     }
+
+
 
     private void vectorAnimated() {
 

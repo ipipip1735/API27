@@ -39,7 +39,6 @@ public class CanvasActivity extends AppCompatActivity {
 //                path.addArc(100, 100, 500, 300, 0f, -90f);//绘制弧
 
                 path.arcTo(new RectF(100, 300, 500, 600), 0f, 90, false);
-                path.arcTo(new RectF(800, 800, 900, 900), 0f, 90, false);
 
                 path.lineTo(900f, 980f);
 

@@ -13,6 +13,7 @@ import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Property;
@@ -21,6 +22,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.PathInterpolator;
 import android.widget.ImageView;
 
 import static android.graphics.Path.Direction.CCW;
@@ -113,7 +115,41 @@ public class AnimatorActivity extends AppCompatActivity {
 //        animatorSet(); //对象动画集
 //        keyFrameAnimator(); //属性关键帧
 
-        pathObjectAnimator();//路径动画
+//        pathObjectAnimator();//路径动画
+
+        pathInterpolatorAnimator();
+
+    }
+
+    private void pathInterpolatorAnimator() {
+
+
+        ImageView imageView = findViewById(R.id.imageView);
+
+        Path path = new Path();
+
+        //路径一：直线
+//        path.lineTo(1f, 1f);//创建路径，路径必须从(0,0)~(1,1)
+
+
+        //路径二：2个线段
+        path.lineTo(0.25f, 0.25f);//线段一，从(0,0)~(0.25,0.25)
+        path.moveTo(0.25f, 0.5f);
+        path.lineTo(1f, 1f);//线段二，从(0.25,0.5)~(1,1)
+
+
+
+        PathInterpolator pathInterpolator = new PathInterpolator(path); //创建路径插值器
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "translationY", 800f);
+        objectAnimator.setInterpolator(pathInterpolator);//设置插值器
+        objectAnimator.setDuration(3000l).start();
+
+
+
+
+
+
 
     }
 
@@ -136,10 +172,6 @@ public class AnimatorActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
     }
 
     public void stop(View view) {
