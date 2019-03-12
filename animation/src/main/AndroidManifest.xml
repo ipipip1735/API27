@@ -32,13 +32,13 @@
 
 
         <!--属性动画（包括值动画 / 对象动画 / 对象动画集）-->
-        <activity android:name=".AnimatorActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <!--<activity android:name=".AnimatorActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<action android:name="android.intent.action.VIEW"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
 
         <!--视图动画（包括视图属性动画 / 帧动画 / 补间动画）-->
