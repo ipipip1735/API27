@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import java.util.Objects;
 import java.util.Set;
@@ -36,8 +37,16 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  Example  onCreate  ***********");
 
-        setContentView(R.layout.activity_spring_animation);
+//        setContentView(R.layout.activity_spring_animation);
+        setContentView(R.layout.activity_fling_animation);
 
+        ViewGroup viewGroup = findViewById(R.id.rl);
+
+        for (int i = 0; i < 100; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("tttt" + i);
+            viewGroup.addView(textView);
+        }
 
     }
 
@@ -47,10 +56,22 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
 
 //        fling();//惯性动画
 //        velocityTracker(); //触碰点速度跟踪
+        flingWithListView();//惯性动画
 
 
 //        spring();
-        chainedSpringAnimation();
+//        chainedSpringAnimation();
+
+
+    }
+
+    private void flingWithListView() {
+
+        ViewGroup viewGroup = findViewById(R.id.rl);
+        viewGroup.setScrollY(viewGroup.getScrollY() + 80);
+        System.out.println(viewGroup.getChildCount());
+        viewGroup.requestLayout();
+        viewGroup.invalidate();
 
 
     }
@@ -83,36 +104,50 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
 //        });
 
 
-
         //方式二：Fling动画配合速度跟踪器
-        ImageView imageView = findViewById(R.id.imageView1);
+        final ImageView imageView = findViewById(R.id.imageView1);
+        ViewGroup viewGroup = findViewById(R.id.linearLayout3);
+
 
         //绑定触碰事件
-        imageView.setOnTouchListener(new View.OnTouchListener() {
+        viewGroup.setOnTouchListener(new View.OnTouchListener() {
+            float offset = 0;
+
             @Override
             public boolean onTouch(final View v, MotionEvent event) {
                 System.out.println("event is " + event.actionToString(event.getAction()));
 
                 switch (event.getAction()) {
                     case ACTION_DOWN:
+                        //判断触碰点是否在子View，由于绑定的是父View的触碰事件，必须保证触碰点在子View范围内
+                        if ((event.getX() < (imageView.getX())) || (event.getX() > (imageView.getX() + imageView.getWidth())))
+                            return false;
+                        if ((event.getY() < (imageView.getY())) || (event.getY() > (imageView.getY() + imageView.getWidth())))
+                            return false;
+
+                        offset = event.getX() - imageView.getX();//计算偏移量
                         velocityTracker = VelocityTracker.obtain();//实例化速度跟踪器
                         break;
+
                     case ACTION_MOVE:
                         System.out.println(velocityTracker);
                         velocityTracker.addMovement(event);//增加事件
                         velocityTracker.computeCurrentVelocity(1000);//计算速度
+
+                        imageView.setTranslationX(Math.max(Math.min(event.getX() - offset, 900), 0));
                         break;
+
                     case ACTION_UP:
                         float result = velocityTracker.getXVelocity(0);
                         velocityTracker.recycle();//回收速度跟踪器
                         System.out.println("getXVelocity[0] is " + result);
 
-                        new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
-                        .setStartVelocity(result)//初速度
-                        .setFriction(1f)
-                        .setMinValue(0)
-                        .setMaxValue(900)
-                        .start();
+                        new FlingAnimation(imageView, DynamicAnimation.TRANSLATION_X)
+                                .setStartVelocity(result)//初速度
+                                .setFriction(1f)
+                                .setMinValue(0)
+                                .setMaxValue(900)
+                                .start();
                 }
                 return true;
             }
@@ -142,8 +177,6 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
 //                System.out.println("velocity is " + velocity);
 //            }
 //        }).start();
-
-
 
 
 //       //方式二：自定义弹力

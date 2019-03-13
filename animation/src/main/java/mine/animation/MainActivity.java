@@ -35,7 +35,7 @@ ImageView imageView;
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onCreate  **********");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_fling_animation);
         relativeLayout = findViewById(R.id.rl);
         imageView = findViewById(R.id.imageView);
 
