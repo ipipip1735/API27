@@ -2,29 +2,30 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ANTIQUEWHITE"
+    android:background="@color/INDIGO"
     tools:context="mine.animation.LayoutTransitionActivity">
 
 
     <TextView
-        android:id="@+id/oneTV1"
+        android:id="@+id/threeTV1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="128dp"
-        android:text="oneTV1"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="threeTV1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/oneTV2"
+        android:id="@+id/threeTV2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
-        android:text="oneTV2"
-        app:layout_constraintTop_toBottomOf="@+id/oneTV1"
-        tools:layout_editor_absoluteX="218dp" />
+        android:layout_marginStart="220dp"
+        android:text="threeTV2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/twoTV1"
+        app:layout_constraintStart_toEndOf="@+id/twoTV1" />
 
 </android.support.constraint.ConstraintLayout>
