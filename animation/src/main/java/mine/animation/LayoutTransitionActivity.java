@@ -27,23 +27,49 @@ public class LayoutTransitionActivity extends AppCompatActivity {
 
         ViewGroup sceneRoot = (ViewGroup) findViewById(R.id.scene_root);
         oneScene = Scene.getSceneForLayout(sceneRoot, R.layout.one_scene, this);
-        anotherScene = Scene.getSceneForLayout(sceneRoot, R.layout.another_scene, this);
+
+
+        View view = getLayoutInflater().inflate(R.layout.another_scene, null);
+        anotherScene = new Scene(sceneRoot, view);
+
+
 
 
         anotherScene.setExitAction(new Runnable() {
             @Override
             public void run() {
-                System.out.println("anotherScene run!");
+                System.out.println("anotherScene Exit");
                 System.out.println(Thread.currentThread());
             }
         });
+
+        anotherScene.setEnterAction(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("anotherScene Enter");
+                System.out.println(Thread.currentThread());
+            }
+        });
+
+
+
         oneScene.setExitAction(new Runnable() {
             @Override
             public void run() {
-                System.out.println("oneScene run!");
+                System.out.println("oneScene Exit");
                 System.out.println(Thread.currentThread());
             }
         });
+        oneScene.setEnterAction(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("oneScene Enter");
+                System.out.println(Thread.currentThread());
+            }
+        });
+
+
+        System.out.println("rootView is " + oneScene.getSceneRoot());
 
     }
 
@@ -114,16 +140,28 @@ public class LayoutTransitionActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("********stop******");
 
-        Transition fadeTransition = new Fade();
-        TransitionManager.go(oneScene, fadeTransition);
+//        Transition fadeTransition = new Fade();
+//        TransitionManager.go(oneScene, fadeTransition);
+//        oneScene.enter();
+        oneScene.exit();
 
     }
 
     public void swap(View view) {
         System.out.println("********swap******");
 
+        //方式一：使用快捷方法go()
+//        Transition fadeTransition = new Fade();
+//        TransitionManager.go(anotherScene, fadeTransition);
+
+
+        //方法二：
         Transition fadeTransition = new Fade();
-        TransitionManager.go(anotherScene, fadeTransition);
+        TransitionManager transitionManager =  new TransitionManager();
+        transitionManager.setTransition(oneScene, fadeTransition);
+        transitionManager.setTransition(anotherScene, fadeTransition);
+        transitionManager.transitionTo(anotherScene);
+
 
     }
 
