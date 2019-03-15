@@ -5,7 +5,7 @@
     android:id="@+id/cl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/INDIGO"
+    android:background="@color/LIGHTCYAN"
     tools:context="mine.animation.LayoutTransitionActivity">
 
 
