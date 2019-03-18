@@ -22,9 +22,6 @@ public class BaseTransition extends Transition {
         System.out.println("endValues is " + endValues);
 
 
-
-
-
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
 //        valueAnimator.addListener(new AnimatorListenerAdapter() {
 //            @Override
@@ -38,34 +35,30 @@ public class BaseTransition extends Transition {
 //                    System.out.println("end is " + endValues.view);
 //            }
 //        });
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-
-
-                if (startValues != null) {
-                    System.out.println("start is " + startValues.view);
-                    if(startValues.view.getId() == R.id.cl1)
-                        startValues.view.setAlpha((Float) animation.getAnimatedValue());
-
-                }
-
-                if (endValues != null) {
-                    System.out.println("end is " + endValues.view);
-                    if(startValues.view.getId() == R.id.cl1)
-                        endValues.view.setAlpha((Float) animation.getAnimatedValue());
-                }
-
-                if (startValues != null && endValues != null) {
-                    System.out.println("start is " + startValues.view);
-                    System.out.println("end is " + endValues.view);
-                    if(startValues.view.getId() == R.id.cl1)
-                        startValues.view.setAlpha((Float) animation.getAnimatedValue());
-                }
-
-            }
-        });
+//        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//
+//
+//                if (startValues != null) {
+//                    System.out.println("start is " + startValues.view);
+//                    startValues.view.setAlpha((Float) animation.getAnimatedValue());
+//
+//                }
+//
+//                if (endValues != null) {
+//                    System.out.println("end is " + endValues.view);
+//                    endValues.view.setAlpha((Float) animation.getAnimatedValue());
+//                }
+//
+//                if (startValues != null && endValues != null) {
+//                    System.out.println("start is " + startValues.view);
+//                    System.out.println("end is " + endValues.view);
+//                    startValues.view.setAlpha((Float) animation.getAnimatedValue());
+//                }
+//
+//            }
+//        });
         return valueAnimator;
 
 
@@ -81,7 +74,7 @@ public class BaseTransition extends Transition {
 
     @Override
     public void captureEndValues(TransitionValues transitionValues) {
-        System.out.println("~~captureStartValues~~");
+        System.out.println("~~captureEndValues~~");
         System.out.println(transitionValues);
         transitionValues.values.put(X, 250f);
     }

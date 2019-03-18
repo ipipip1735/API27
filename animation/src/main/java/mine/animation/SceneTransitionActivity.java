@@ -37,6 +37,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
     Scene twoScene;
     Scene threeScene;
     TransitionManager transitionManager;
+    ViewTreeObserver observer;
+    ViewTreeObserver.OnPreDrawListener onPreDrawListener;
 
 
     @Override
@@ -68,6 +70,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
@@ -81,8 +84,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
     protected void onStart() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         super.onStart();
-        View view1 = findViewById(R.id.cl1);
-        view1.setX(200);
     }
 
     @Override
@@ -140,24 +141,28 @@ public class SceneTransitionActivity extends AppCompatActivity {
         System.out.println("********recovery******");
 
 //        Transition fadeTransition = new Fade();
-//        TransitionManager.go(oneScene, fadeTransition);
+//        TransitionManager.go(oneScene);
 //        transitionManager.transitionTo(threeScene);
 //        transitionManager.transitionTo(oneScene);
 
 
 //        ViewGroup root = findViewById(R.id.scene_root);
 //        View view1 = findViewById(R.id.cl1);
+//        view1.setX(view1.getX() + 10f);
+
 //        root.getOverlay().add(view1);
 
 //        root.removeView(view1);
 
-        View cl = findViewById(R.id.cl1);
-        cl.requestLayout();
+//        View cl = findViewById(R.id.cl1);
+//        cl.requestLayout();
 //        TextView textView = cl.findViewById(R.id.oneTV1);
 //        textView.
 
+//        observer.addOnPreDrawListener(onPreDrawListener);
+//        cl.setX(cl.getX() + 10f);
 
-
+//        view1.requestLayout();
 
     }
 
@@ -167,47 +172,22 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionWithJAVA(); //使用JAVA
 
 //        buildIn();
-//        customTransition();
+        customTransition();
 
 
-
-        test();
-
-
+//        test();
 
 
     }
 
     private void test() {
-        //        ViewGroup viewGroup = findViewById(R.id.scene_root);
-//        viewGroup.removeAllViews();
 
-        View view = findViewById(R.id.cl1);
-
-//        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-//            @Override
-//            public void onViewAttachedToWindow(View v) {
-//                System.out.println("~~onViewAttachedToWindow~~");
-//            }
-//
-//            @Override
-//            public void onViewDetachedFromWindow(View v) {
-//                System.out.println("~~onViewDetachedFromWindow~~");
-//
-//            }
-//        });
-
-
-
-        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        final View root = findViewById(R.id.scene_root);
+        root.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public boolean onPreDraw() {
-                System.out.println("~~onPreDraw~~");
-
-                TextView textView = findViewById(R.id.oneTV1);
-                textView.animate().x(100f).setDuration(3000L);
-
-                return true;
+            public void onGlobalLayout() {
+                System.out.println("~~onGlobalLayout~~");
             }
         });
 
@@ -216,74 +196,43 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
 
+        onPreDrawListener = new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                System.out.println("~~onPreDraw~~");
+                observer.removeOnPreDrawListener(this);
+                ViewGroup cl = findViewById(R.id.cl1);
+                float height = cl.getMeasuredHeight();
+//
+//
+//
+//
+//                ViewGroup cl = findViewById(R.id.cl1);
+//                System.out.println(cl.getMeasuredHeight());
+//
+////                ViewGroup.LayoutParams layoutParams = cl.getLayoutParams();
+////                layoutParams.height = 500;
+////                cl.resolveLayoutParams();
+//
+////                cl.animate().x(508).setDuration(3000L);
+////                System.out.println("---------");
+//
+////                cl.setScrollX(100);
+//
+//
+////                return true;
+                return false;
+            }
+        };
 
 
-
-//        int[] location = new int[2];
-//        view.getLocationOnScreen(location);
-//        System.out.println("X is " + location[0]);
-//        System.out.println("Y is " + location[1]);
 //
-//        view1.getLocationInWindow(loc);
-//        System.out.println("0 is " + loc[0]);
-//        System.out.println("1 is " + loc[1]);
-//
-//
-//
-//        view1.offsetLeftAndRight(5);
-//        view1.offsetTopAndBottom(5);
-
-//
-//        final ViewGroup root = findViewById(R.id.scene_root);
-//        System.out.println("children are " + root.getChildCount());
-//
-//
-//        View cl = root.findViewById(R.id.cl1);
-////        Button button = findViewById(R.id.button18);
-////        button.setX(button.getX() + 150);
-//
-//        ViewGroupOverlay overlay = root.getOverlay();
-//        System.out.println("children are " + root.getChildCount());
-//        overlay.add(root.findViewById(R.id.cl1));
-//        System.out.println("children are " + root.getChildCount());
-//
-//
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 10; i++) {
-//
-//                    root.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            root.setY(root.getY() + 15);
-//                        }
-//                    });
-//                    try {
-//                        Thread.sleep(1000L);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }).start();
 
 
-//        root.removeAllViews();
+//        observer = root.getViewTreeObserver();
+//        observer.addOnPreDrawListener(onPreDrawListener);
 
-//        System.out.println(cl);
-//        cl.setY(cl.getX() + 15);
-//
-//        TextView textView = new TextView(this);
-//        textView.setText("sldf");
-//        root.addView(textView);
-//
-//
-//        System.out.println("count is " + root.getChildCount());
-//        for (int i = 0; i < root.getChildCount(); i++) {
-//            System.out.println(root.getChildAt(i));
-//
-//        }
+
     }
 
 
@@ -354,8 +303,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        });
 
 
-
-
         TransitionManager transitionManager = new TransitionManager();
 
 
@@ -370,7 +317,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
 //        TransitionManager.go(twoScene, new FadeTransition().setDuration(5000L));
-       TransitionManager.go(twoScene, new BaseTransition().setDuration(5000L));
+        TransitionManager.go(twoScene, new BaseTransition().setDuration(2000L));
 //       TransitionManager.go(twoScene, new VisibilityTransition().setDuration(5000L));
 
 
