@@ -2,10 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="mine.animation.LayoutTransitionActivity">
+    android:id="@+id/cl2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="mine.animation.SceneTransitionActivity">
     <!--android:background="@color/VIOLET"-->
 
 
@@ -14,18 +14,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:text="twoTV1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/twoTV2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="220dp"
-        android:text="twoTV2"
-        app:layout_constraintBaseline_toBaselineOf="@+id/twoTV1"
-        app:layout_constraintStart_toEndOf="@+id/twoTV1" />
+    <!--<TextView-->
+    <!--android:id="@+id/twoTV2"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="220dp"-->
+    <!--android:text="twoTV2"-->
+    <!--app:layout_constraintBaseline_toBaselineOf="@+id/twoTV1"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/twoTV1" />-->
 
 </android.support.constraint.ConstraintLayout>

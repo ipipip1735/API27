@@ -2,29 +2,28 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="mine.animation.LayoutTransitionActivity">
-    <!--android:background="@color/ANTIQUEWHITE"-->
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/ANTIQUEWHITE"
+    android:id="@+id/cl1"
+    tools:context="mine.animation.SceneTransitionActivity">
 
 
     <TextView
         android:id="@+id/oneTV1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="128dp"
         android:text="oneTV1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
-    <TextView
-        android:id="@+id/oneTV2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
-        android:text="oneTV2"
-        app:layout_constraintTop_toBottomOf="@+id/oneTV1"
-        tools:layout_editor_absoluteX="218dp" />
+    <!--<TextView-->
+    <!--android:id="@+id/oneTV2"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="152dp"-->
+    <!--android:text="oneTV2"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/oneTV1"-->
+    <!--tools:layout_editor_absoluteX="218dp" />-->
 
 </android.support.constraint.ConstraintLayout>
