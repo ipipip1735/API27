@@ -5,78 +5,75 @@ import android.animation.ValueAnimator;
 import android.transition.Transition;
 import android.transition.TransitionValues;
 import android.transition.Visibility;
+import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Administrator on 2019/3/16.
  */
 public class VisibilityTransition extends Visibility {
+
+    private static final String X = "mine.animation:VisibilityTransition:X";
+    private static final String Y = "mine.animation:VisibilityTransition:Y";
+
+    private static final String[] sTransitionProperties = {X, Y};
+
+
+    @Override
+    public String[] getTransitionProperties() {
+        int i = 0;
+        String[] strings = new String[sTransitionProperties.length + super.getTransitionProperties().length];
+        for (String s : super.getTransitionProperties()) {
+            strings[i++] = s;
+        }
+        for (String s : sTransitionProperties) {
+            strings[i++] = s;
+        }
+        return strings;
+    }
+
+
     @Override
     public void captureStartValues(TransitionValues transitionValues) {
         System.out.println("~~captureStartValues~~");
+
+        System.out.println(transitionValues);
         super.captureStartValues(transitionValues);
+
+        transitionValues.values.put(X, transitionValues.view.getX());
     }
 
     @Override
     public void captureEndValues(TransitionValues transitionValues) {
         System.out.println("~~captureEndValues~~");
-//        System.out.println(transitionValues);
-//        transitionValues.values.put(X, 250f);
 
         super.captureEndValues(transitionValues);
+        System.out.println(transitionValues);
+
+        transitionValues.values.put(X, transitionValues.view.getX());
+
     }
 
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, final TransitionValues startValues, final TransitionValues endValues) {
-        System.out.println("~~createAnimator~~");
+    public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+        System.out.println("~~onAppear~~");
 
+        System.out.println("startValues is " + startValues);
+        System.out.println("endValues is " + endValues);
 
+        return super.onAppear(sceneRoot, view, startValues, endValues);
+    }
 
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
-//        valueAnimator.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//                System.out.println("~~onAnimationStart~~");
-//                super.onAnimationStart(animation);
-//                if(startValues != null)
-//                    System.out.println("start is " + startValues.view);
-//
-//                if(endValues != null)
-//                    System.out.println("end is " + endValues.view);
-//            }
-//        });
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+    @Override
+    public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+        System.out.println("~~onDisappear~~");
 
+        System.out.println("startValues is " + startValues);
+        System.out.println("endValues is " + endValues);
 
-
-                if (startValues != null) {
-                    System.out.println("start is " + startValues.view);
-                    startValues.view.setAlpha((Float) animation.getAnimatedValue());
-
-                }
-
-                if (endValues != null) {
-                    System.out.println("end is " + endValues.view);
-                    endValues.view.setAlpha((Float) animation.getAnimatedValue());
-                }
-
-                if (startValues != null && endValues != null) {
-                    System.out.println("start is " + startValues.view);
-                    System.out.println("end is " + endValues.view);
-                    startValues.view.setAlpha((Float) animation.getAnimatedValue());
-                }
-
-            }
-        });
-//        return valueAnimator;
-
-
-        Animator animator = super.createAnimator(sceneRoot, startValues, endValues);
-        System.out.println(animator);
-        return animator;
-
-
+        return super.onDisappear(sceneRoot, view, startValues, endValues);
     }
 }

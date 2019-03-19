@@ -51,11 +51,13 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
         ViewGroup sceneRoot = (ViewGroup) findViewById(R.id.scene_root);
         oneScene = Scene.getSceneForLayout(sceneRoot, R.layout.one_scene, this);
-        twoScene = Scene.getSceneForLayout(sceneRoot, R.layout.two_scene, this);
+        twoScene = Scene.getSceneForLayout(sceneRoot,
+                R.layout.two_scene,
+                this);
         threeScene = Scene.getSceneForLayout(sceneRoot, R.layout.three_scene, this);
 
 
-        twoScene.setExitAction(new Runnable() {
+        twoScene.setEnterAction(new Runnable() {
             @Override
             public void run() {
                 System.out.println("anotherScene run!");
@@ -102,6 +104,9 @@ public class SceneTransitionActivity extends AppCompatActivity {
     protected void onResume() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
         super.onResume();
+
+
+
     }
 
     @Override
@@ -141,7 +146,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
         System.out.println("********recovery******");
 
 //        Transition fadeTransition = new Fade();
-//        TransitionManager.go(oneScene);
+        TransitionManager.go(oneScene);
 //        transitionManager.transitionTo(threeScene);
 //        transitionManager.transitionTo(oneScene);
 
@@ -182,27 +187,39 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     private void test() {
 
-        final View root = findViewById(R.id.scene_root);
-        root.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                System.out.println("~~onGlobalLayout~~");
-            }
-        });
+
+        final ViewGroup root = findViewById(R.id.scene_root);
+        root.removeAllViews();
+        root.getViewTreeObserver()
+                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        System.out.println("~~onPreDraw~~");
+//                        root.getViewTreeObserver().removeOnPreDrawListener(this);
+                        return false;
+                    }
+                });
 
 
 
 
-
-
-        onPreDrawListener = new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                System.out.println("~~onPreDraw~~");
-                observer.removeOnPreDrawListener(this);
-                ViewGroup cl = findViewById(R.id.cl1);
-                float height = cl.getMeasuredHeight();
+//        final View root = findViewById(R.id.scene_root);
+//        root.getViewTreeObserver().addOnGlobalLayoutListener(
+//                new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @Override
+//                    public void onGlobalLayout() {
+//                        System.out.println("~~onGlobalLayout~~");
+//                    }
+//                });
+//
+//
+//        onPreDrawListener = new ViewTreeObserver.OnPreDrawListener() {
+//            @Override
+//            public boolean onPreDraw() {
+//                System.out.println("~~onPreDraw~~");
+//                observer.removeOnPreDrawListener(this);
+//                ViewGroup cl = findViewById(R.id.cl1);
+//                float height = cl.getMeasuredHeight();
 //
 //
 //
@@ -221,9 +238,9 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //
 //
 ////                return true;
-                return false;
-            }
-        };
+//                return false;
+//            }
+//        };
 
 
 //
@@ -317,8 +334,27 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
 //        TransitionManager.go(twoScene, new FadeTransition().setDuration(5000L));
-        TransitionManager.go(twoScene, new BaseTransition().setDuration(2000L));
-//       TransitionManager.go(twoScene, new VisibilityTransition().setDuration(5000L));
+//        TransitionManager.go(twoScene, new BaseTransition().setDuration(2000L));
+       TransitionManager.go(twoScene, new VisibilityTransition().setDuration(5000L));
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(3000L);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                System.out.println("go!");
+//                TransitionManager.go(twoScene, new BaseTransition().setDuration(2000L));
+//            }
+//        }).start();
+
+        VisibilityTransition visibilityTransition = new VisibilityTransition();
+        for (String s : visibilityTransition.getTransitionProperties()) {
+            System.out.println(s);
+        }
+
 
 
     }
