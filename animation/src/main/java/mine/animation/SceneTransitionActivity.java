@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
+import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Scene;
 import android.transition.Slide;
@@ -17,6 +18,7 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionListenerAdapter;
 import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.transition.TransitionValues;
 import android.transition.Visibility;
 import android.view.View;
@@ -28,6 +30,9 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
+import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
+import static android.transition.TransitionSet.ORDERING_TOGETHER;
+
 /**
  * Created by Administrator on 2019/3/13.
  */
@@ -36,6 +41,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
     Scene oneScene;
     Scene twoScene;
     Scene threeScene;
+    Scene fourScene;
     TransitionManager transitionManager;
     ViewTreeObserver observer;
     ViewTreeObserver.OnPreDrawListener onPreDrawListener;
@@ -51,10 +57,9 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
         ViewGroup sceneRoot = (ViewGroup) findViewById(R.id.scene_root);
         oneScene = Scene.getSceneForLayout(sceneRoot, R.layout.one_scene, this);
-        twoScene = Scene.getSceneForLayout(sceneRoot,
-                R.layout.two_scene,
-                this);
+        twoScene = Scene.getSceneForLayout(sceneRoot, R.layout.two_scene, this);
         threeScene = Scene.getSceneForLayout(sceneRoot, R.layout.three_scene, this);
+        fourScene = Scene.getSceneForLayout(sceneRoot, R.layout.four_scene, this);
 
 
         twoScene.setEnterAction(new Runnable() {
@@ -106,7 +111,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
         super.onResume();
 
 
-
     }
 
     @Override
@@ -145,29 +149,9 @@ public class SceneTransitionActivity extends AppCompatActivity {
     public void recovery(View view) {
         System.out.println("********recovery******");
 
-//        Transition fadeTransition = new Fade();
-        TransitionManager.go(oneScene);
-//        transitionManager.transitionTo(threeScene);
-//        transitionManager.transitionTo(oneScene);
+//        TransitionManager.go(oneScene);
+        TransitionManager.go(threeScene);
 
-
-//        ViewGroup root = findViewById(R.id.scene_root);
-//        View view1 = findViewById(R.id.cl1);
-//        view1.setX(view1.getX() + 10f);
-
-//        root.getOverlay().add(view1);
-
-//        root.removeView(view1);
-
-//        View cl = findViewById(R.id.cl1);
-//        cl.requestLayout();
-//        TextView textView = cl.findViewById(R.id.oneTV1);
-//        textView.
-
-//        observer.addOnPreDrawListener(onPreDrawListener);
-//        cl.setX(cl.getX() + 10f);
-
-//        view1.requestLayout();
 
     }
 
@@ -176,186 +160,101 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionWithXML(); //使用XML
 //        transitionWithJAVA(); //使用JAVA
 
-//        buildIn();
-        customTransition();
 
+//        visibility(); //使用Fade/Explode/Slide
 
-//        test();
+//        changeBounds(); //使用边界变换
 
+//        transitionSet();
 
-    }
+        delay(); //使用延迟动画
 
-    private void test() {
-
-
-        final ViewGroup root = findViewById(R.id.scene_root);
-        root.removeAllViews();
-        root.getViewTreeObserver()
-                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        System.out.println("~~onPreDraw~~");
-//                        root.getViewTreeObserver().removeOnPreDrawListener(this);
-                        return false;
-                    }
-                });
-
-
-
-
-//        final View root = findViewById(R.id.scene_root);
-//        root.getViewTreeObserver().addOnGlobalLayoutListener(
-//                new ViewTreeObserver.OnGlobalLayoutListener() {
-//                    @Override
-//                    public void onGlobalLayout() {
-//                        System.out.println("~~onGlobalLayout~~");
-//                    }
-//                });
-//
-//
-//        onPreDrawListener = new ViewTreeObserver.OnPreDrawListener() {
-//            @Override
-//            public boolean onPreDraw() {
-//                System.out.println("~~onPreDraw~~");
-//                observer.removeOnPreDrawListener(this);
-//                ViewGroup cl = findViewById(R.id.cl1);
-//                float height = cl.getMeasuredHeight();
-//
-//
-//
-//
-//                ViewGroup cl = findViewById(R.id.cl1);
-//                System.out.println(cl.getMeasuredHeight());
-//
-////                ViewGroup.LayoutParams layoutParams = cl.getLayoutParams();
-////                layoutParams.height = 500;
-////                cl.resolveLayoutParams();
-//
-////                cl.animate().x(508).setDuration(3000L);
-////                System.out.println("---------");
-//
-////                cl.setScrollX(100);
-//
-//
-////                return true;
-//                return false;
-//            }
-//        };
-
-
-//
-
-
-//        observer = root.getViewTreeObserver();
-//        observer.addOnPreDrawListener(onPreDrawListener);
+//        customTransition(); //自定义变化
 
 
     }
 
+    private void transitionSet() {
 
-    private void buildIn() {
+        TransitionSet transtionSet = (TransitionSet) TransitionInflater.from(this)
+                .inflateTransition(R.transition.tansition_set);
 
-        Transition slide = new Slide();
-        Transition changeBounds = new ChangeBounds();
+        transtionSet.setDuration(5000L).setOrdering(ORDERING_SEQUENTIAL);
 
-//        Transition fade = new Fade() {
-//            @Override
-//            public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
-//
-//                if (startValues != null) {
-//                    System.out.println(startValues.view);
-//                }
-//                if (endValues != null) {
-//                    System.out.println(endValues.view);
-//                }
-//                if (startValues == null || endValues == null)
-//                    System.out.println("--------null--------");
-//                Animator animator = super.createAnimator(sceneRoot, startValues, endValues);
-//
-//                if(animator != null)
-//                animator.addListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationStart(Animator animation) {
-//                        View view = findViewById(R.id.oneTV1);
-//                        System.out.println("view is " + view);
-//                    }
-//                });
-//                return animator;
-//            }
-//        };
+        TransitionManager.go(fourScene, transtionSet.setDuration(5000L));
 
-        Transition fade = new Fade() {
+    }
+
+    private void changeBounds() {
+
+        final TransitionManager transitionManager = new TransitionManager();
+        transitionManager.setTransition(threeScene,
+                new Fade().setDuration(5000L)
+                        .addListener(new TransitionListenerAdapter() {
+                            @Override
+                            public void onTransitionEnd(Transition transition) {
+                                System.out.println("~~onTransitionEnd~~");
+                                transitionManager.setTransition(fourScene, new ChangeBounds().setDuration(5000L));
+                                transitionManager.transitionTo(fourScene);
+                            }
+                        }));
+        transitionManager.transitionTo(threeScene);
+
+    }
+
+    private void delay() {
+
+        ViewGroup root = findViewById(R.id.scene_root);
+        TransitionManager.beginDelayedTransition(root, new Fade().setDuration(5000L));
+
+
+//        for (int i = 0; i < 1; i++) {
+//            TextView textView = new TextView(this);
+//            textView.setText("aaaaaaaaaaaaaa" + i);
+//            root.getChildAt(i).setX(i * 100  + 50);
+//            root.getChildAt(i).setY(i * 100  + 50);
+//            root.addView(textView);
+//        }
+
+
+    }
+
+    private void visibility() {
+
+        Transition transition = new Fade() {
+//        Transition transition = new Slide(){
+//        Transition transition = new Explode() {
             @Override
             public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("onAppear view is " + view);
+                System.out.println("~~onAppear~~");
+
+                System.out.println("startValues is " + startValues);
+                System.out.println("endValues is " + endValues);
+
                 return super.onAppear(sceneRoot, view, startValues, endValues);
             }
 
             @Override
             public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("onDisappear view is " + view);
+                System.out.println("~~onDisappear~~");
+                System.out.println("startValues is " + startValues);
+                System.out.println("endValues is " + endValues);
                 return super.onDisappear(sceneRoot, view, startValues, endValues);
             }
         };
 
 
         transitionManager = new TransitionManager();
-
-        transitionManager.setTransition(twoScene, fade.setDuration(3000L));//任意源场景
+        transitionManager.setTransition(twoScene, transition.setDuration(3000L));//任意源场景
         transitionManager.transitionTo(twoScene);
+
 
     }
 
 
     private void customTransition() {
 
-
-//        Fade fade = new Fade();
-//        fade.addListener(new TransitionListenerAdapter() {
-//            @Override
-//            public void onTransitionStart(Transition transition) {
-//                System.out.println("~~onTransitionStart~~");
-//
-//            }
-//        });
-
-
-        TransitionManager transitionManager = new TransitionManager();
-
-
-//        transitionManager.setTransition(oneScene, transition);
-//        transitionManager.setTransition(twoScene, transition);
-//        transitionManager.setTransition(oneScene, twoScene, transition);
-
-
-//        transitionManager.transitionTo(twoScene);
-//        TransitionManager.go(twoScene, transition);
-//        TransitionManager.go(twoScene, transition);
-
-
-//        TransitionManager.go(twoScene, new FadeTransition().setDuration(5000L));
-//        TransitionManager.go(twoScene, new BaseTransition().setDuration(2000L));
-       TransitionManager.go(twoScene, new VisibilityTransition().setDuration(5000L));
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(3000L);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                System.out.println("go!");
-//                TransitionManager.go(twoScene, new BaseTransition().setDuration(2000L));
-//            }
-//        }).start();
-
-        VisibilityTransition visibilityTransition = new VisibilityTransition();
-        for (String s : visibilityTransition.getTransitionProperties()) {
-            System.out.println(s);
-        }
-
-
+        TransitionManager.go(twoScene, new VisibilityTransition().setDuration(5000L));
 
     }
 

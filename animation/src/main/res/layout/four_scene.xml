@@ -11,12 +11,12 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="302dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="80dp"
-        android:background="@color/INDIGO"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="80dp"
+        android:layout_height="304dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="60dp"
+        android:background="@color/INDIANRED"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/animation" />
 

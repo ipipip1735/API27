@@ -1,6 +1,9 @@
 package mine.animation;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.transition.Transition;
 import android.transition.TransitionValues;
@@ -18,20 +21,14 @@ public class VisibilityTransition extends Visibility {
 
     private static final String X = "mine.animation:VisibilityTransition:X";
     private static final String Y = "mine.animation:VisibilityTransition:Y";
+    private static final String ALPHA = "mine.animation:VisibilityTransition:ALPHA";
 
-    private static final String[] sTransitionProperties = {X, Y};
+    private static final String[] sTransitionProperties = {X, Y, ALPHA};
 
 
     @Override
     public String[] getTransitionProperties() {
-        int i = 0;
-        String[] strings = new String[sTransitionProperties.length + super.getTransitionProperties().length];
-        for (String s : super.getTransitionProperties()) {
-            strings[i++] = s;
-        }
-        for (String s : sTransitionProperties) {
-            strings[i++] = s;
-        }
+        String[] strings = {X, Y, ALPHA};
         return strings;
     }
 
@@ -41,19 +38,72 @@ public class VisibilityTransition extends Visibility {
         System.out.println("~~captureStartValues~~");
 
         System.out.println(transitionValues);
-        super.captureStartValues(transitionValues);
+        super.captureStartValues(transitionValues); //获取父类的动画值
 
+        //出场动画值
         transitionValues.values.put(X, transitionValues.view.getX());
+        transitionValues.values.put(ALPHA, 1f);
+
     }
 
     @Override
     public void captureEndValues(TransitionValues transitionValues) {
         System.out.println("~~captureEndValues~~");
+        super.captureEndValues(transitionValues); //获取父类的动画值
 
-        super.captureEndValues(transitionValues);
-        System.out.println(transitionValues);
-
+        //进场动画值
         transitionValues.values.put(X, transitionValues.view.getX());
+        transitionValues.values.put(ALPHA, 1f);
+
+        System.out.println(transitionValues);
+    }
+
+    @Override
+    public Animator onDisappear(ViewGroup sceneRoot, View view, final TransitionValues startValues, TransitionValues endValues) {
+        System.out.println("~~onDisappear~~");
+
+        System.out.println("startValues is " + startValues);
+        System.out.println("endValues is " + endValues);
+
+        float startX = (Float) startValues.values.get(X);
+        float startAlpha = (Float) startValues.values.get(ALPHA);
+
+        //方式一：使用对象动画
+//        PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", startX, startX + 100f);
+//        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", startAlpha, 0);
+//
+//
+//        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, x, alpha);
+//        return objectAnimator;
+
+
+
+        //方式二：使用属性动画
+        //创建2个动画
+        ValueAnimator x = ValueAnimator.ofFloat(startX, startX-100f);
+        x.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                System.out.println("~~onAnimationUpdate~~");
+                startValues.view.setX((Float) animation.getAnimatedValue());
+            }
+        });
+        ValueAnimator alphal = ValueAnimator.ofFloat(startX, startX-100f);
+        alphal.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                System.out.println("~~onAnimationUpdate~~");
+                startValues.view.setAlpha((Float) animation.getAnimatedValue());
+            }
+        });
+
+        AnimatorSet animatorSet = new AnimatorSet();//创建动画集
+        animatorSet.playTogether(x, alphal);
+        return animatorSet;
+
+//        return super.onDisappear(sceneRoot, view, startValues, endValues);
+
+
 
     }
 
@@ -64,16 +114,16 @@ public class VisibilityTransition extends Visibility {
         System.out.println("startValues is " + startValues);
         System.out.println("endValues is " + endValues);
 
-        return super.onAppear(sceneRoot, view, startValues, endValues);
-    }
+        float endX = (float) endValues.values.get(X);
+        float endAlpha = (float) endValues.values.get(ALPHA);
 
-    @Override
-    public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-        System.out.println("~~onDisappear~~");
+        PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", endX - 100f, endX);
+        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0, endAlpha);
 
-        System.out.println("startValues is " + startValues);
-        System.out.println("endValues is " + endValues);
 
-        return super.onDisappear(sceneRoot, view, startValues, endValues);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, x, alpha);
+        return objectAnimator;
+
+//        return super.onAppear(sceneRoot, view, startValues, endValues);
     }
 }
