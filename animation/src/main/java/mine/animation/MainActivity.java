@@ -28,8 +28,8 @@ import android.widget.LinearLayout;
 public class MainActivity extends AppCompatActivity {
 
     LinearLayout relativeLayout;
-Button button0;
-ImageView imageView;
+    Button button0;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +74,9 @@ ImageView imageView;
                 PropertyValuesHolder.ofFloat("X", 0, 150f, 0);
 
         ObjectAnimator changing = ObjectAnimator.ofPropertyValuesHolder(
-                0, pvhTop,pvhBottom, x);
+                0, pvhTop, pvhBottom, x);
         ObjectAnimator changeAppearing = ObjectAnimator.ofPropertyValuesHolder(
-                0, pvhTop,pvhBottom);
+                0, pvhTop, pvhBottom);
         ObjectAnimator appearing = ObjectAnimator.ofPropertyValuesHolder(
                 0, x);
 
@@ -202,7 +202,6 @@ ImageView imageView;
         Button b = new Button(this);
         b.setText("*" + Math.random() + "*");
         relativeLayout.addView(b, 3);
-
 
 
     }

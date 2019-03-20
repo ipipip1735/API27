@@ -149,8 +149,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
     public void recovery(View view) {
         System.out.println("********recovery******");
 
-//        TransitionManager.go(oneScene);
-        TransitionManager.go(threeScene);
+        TransitionManager.go(oneScene);
+//        TransitionManager.go(threeScene);
 
 
     }
@@ -204,17 +204,71 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     private void delay() {
 
-        ViewGroup root = findViewById(R.id.scene_root);
-        TransitionManager.beginDelayedTransition(root, new Fade().setDuration(5000L));
+
+        final ViewGroup root = findViewById(R.id.scene_root);
+        for (int i = 0; i < 5; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("aaaaaaaaaaaaaa" + i);
+            root.addView(textView);
+        }
+
+        Fade transition = new Fade() {
+
+            @Override
+            public void captureStartValues(TransitionValues transitionValues) {
+                System.out.println("~~captureStartValues~~");
+
+                System.out.println(transitionValues);
+                super.captureStartValues(transitionValues);
 
 
-//        for (int i = 0; i < 1; i++) {
-//            TextView textView = new TextView(this);
-//            textView.setText("aaaaaaaaaaaaaa" + i);
-//            root.getChildAt(i).setX(i * 100  + 50);
-//            root.getChildAt(i).setY(i * 100  + 50);
-//            root.addView(textView);
-//        }
+            }
+
+            @Override
+            public void captureEndValues(TransitionValues transitionValues) {
+                System.out.println("~~captureEndValues~~");
+                System.out.println(transitionValues);
+
+                super.captureEndValues(transitionValues);
+            }
+
+            @Override
+            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~onAppear~~");
+
+                System.out.println("startValues is " + startValues);
+                System.out.println("endValues is " + endValues);
+
+                return super.onAppear(sceneRoot, view, startValues, endValues);
+            }
+
+            @Override
+            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~onDisappear~~");
+
+                System.out.println("startValues is " + startValues);
+                System.out.println("endValues is " + endValues);
+
+                return super.onDisappear(sceneRoot, view, startValues, endValues);
+            }
+        };
+
+
+
+
+
+
+        transition.setDuration(5000L).excludeChildren(root.getChildAt(2), true);
+        TransitionManager.beginDelayedTransition(root, transition);
+
+        //        transition.addTarget(root.getChildAt(2));
+
+
+        for (int i = 1; i <= 5; i++) {
+            View view = root.getChildAt(i);
+            view.setX(i * 100 + 50);
+            view.setY(i * 100 + 50);
+        }
 
 
     }
@@ -222,7 +276,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
     private void visibility() {
 
         Transition transition = new Fade() {
-//        Transition transition = new Slide(){
+            //        Transition transition = new Slide(){
 //        Transition transition = new Explode() {
             @Override
             public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
@@ -237,8 +291,10 @@ public class SceneTransitionActivity extends AppCompatActivity {
             @Override
             public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
                 System.out.println("~~onDisappear~~");
+
                 System.out.println("startValues is " + startValues);
                 System.out.println("endValues is " + endValues);
+
                 return super.onDisappear(sceneRoot, view, startValues, endValues);
             }
         };
