@@ -10,14 +10,10 @@
 
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="302dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="80dp"
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/INDIGO"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/animation" />
+        app:srcCompat="@drawable/animation"/>
 
 </android.support.constraint.ConstraintLayout>

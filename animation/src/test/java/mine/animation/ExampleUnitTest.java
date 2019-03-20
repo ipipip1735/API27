@@ -14,6 +14,6 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         float[] floats = new float[2];
 
-        System.out.println(floats.getClass());
+//        System.out.println(floats.getClass());
     }
 }

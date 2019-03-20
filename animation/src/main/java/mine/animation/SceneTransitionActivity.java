@@ -26,8 +26,11 @@ import android.view.ViewGroup;
 import android.view.ViewGroupOverlay;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
@@ -161,13 +164,13 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionWithJAVA(); //使用JAVA
 
 
-//        visibility(); //使用Fade/Explode/Slide
+        visibility(); //使用Fade/Explode/Slide
 
 //        changeBounds(); //使用边界变换
 
-//        transitionSet();
+//        transitionSet(); //使用变换集
 
-        delay(); //使用延迟动画
+//        delay(); //使用延迟动画
 
 //        customTransition(); //自定义变化
 
@@ -176,16 +179,109 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     private void transitionSet() {
 
+        //方式一：使用XML
         TransitionSet transtionSet = (TransitionSet) TransitionInflater.from(this)
                 .inflateTransition(R.transition.tansition_set);
 
-        transtionSet.setDuration(5000L).setOrdering(ORDERING_SEQUENTIAL);
+        transtionSet.setDuration(5000L).setOrdering(ORDERING_SEQUENTIAL);//设置播放顺序和时长
 
         TransitionManager.go(fourScene, transtionSet.setDuration(5000L));
+
+
+
+
+
+
+
+        //方式二：使用JAVA
+        Transition transition = new Transition() {
+            String X = "mine.animation:Transition:X";
+            String Y = "mine.animation:Transition:Y";
+
+            @Override
+            public void captureStartValues(TransitionValues transitionValues) {
+                transitionValues.values.put(X, transitionValues.view.getX());
+                transitionValues.values.put(Y, transitionValues.view.getY());
+                System.out.println("captureStartValues " + transitionValues);
+            }
+
+            @Override
+            public void captureEndValues(TransitionValues transitionValues) {
+                transitionValues.values.put(X, transitionValues.view.getX());
+                transitionValues.values.put(Y, transitionValues.view.getY());
+                System.out.println("captureEndValues " + transitionValues);
+            }
+
+            @Override
+            public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~createAnimator~~");
+                System.out.println(startValues.view); //只有ImageView将被动画，因为其他组件动画值为改变
+
+                //X动画值
+                float start = (float) startValues.values.get(X);
+                float end = (float) endValues.values.get(Y);
+                PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", start, end);
+
+                //Y动画值
+                start = (float) startValues.values.get(X);
+                end = (float) endValues.values.get(Y);
+                PropertyValuesHolder y = PropertyValuesHolder.ofFloat("y", start, end);
+
+                //绑定更新监听器
+                ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(startValues.view, x, y);
+                objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        System.out.println("~~onAnimationUpdate~~");
+                        System.out.println("value is " + animation.getAnimatedValue());
+                    }
+                });
+
+                //绑定监听器
+                objectAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        System.out.println("~~onAnimationStart~~");
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        System.out.println("~~onAnimationEnd~~");
+                    }
+                });
+
+                return objectAnimator;
+            }
+        };
+
+
+        //使用转换集
+        TransitionSet set = new TransitionSet()
+                .addTransition(transition)  //增加2个转换
+                .addTransition(new ChangeBounds())
+                .setOrdering(ORDERING_SEQUENTIAL) //播放顺序
+                .setDuration(5000L); //播放时长
+
+        //使用无场景变换
+        TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.scene_root), set);
+
+
+        ImageView imageView = findViewById(R.id.imageView3);
+        imageView.setX(imageView.getX() + 500f);
+        imageView.setY(imageView.getY() + 350f);
+
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        layoutParams.height += 450f;
+        layoutParams.width += 150f;
+        imageView.setLayoutParams(layoutParams);
+
+
 
     }
 
     private void changeBounds() {
+
 
         final TransitionManager transitionManager = new TransitionManager();
         transitionManager.setTransition(threeScene,
@@ -200,76 +296,50 @@ public class SceneTransitionActivity extends AppCompatActivity {
                         }));
         transitionManager.transitionTo(threeScene);
 
+
     }
 
     private void delay() {
 
+        //方式一：使用白名单
+        ViewGroup root = findViewById(R.id.scene_root);
+        Transition transition = new Explode().setDuration(2000L);//创建转换对象
 
-        final ViewGroup root = findViewById(R.id.scene_root);
+        TransitionManager.beginDelayedTransition(root, transition);//使用无场景转换
+
         for (int i = 0; i < 5; i++) {
             TextView textView = new TextView(this);
             textView.setText("aaaaaaaaaaaaaa" + i);
-            root.addView(textView);
+//            textView.setX(i * 100 + 50);
+//            textView.setY(i * 100 + 50);
+            root.addView(textView); //增加到根View
         }
-
-        Fade transition = new Fade() {
-
-            @Override
-            public void captureStartValues(TransitionValues transitionValues) {
-                System.out.println("~~captureStartValues~~");
-
-                System.out.println(transitionValues);
-                super.captureStartValues(transitionValues);
-
-
-            }
-
-            @Override
-            public void captureEndValues(TransitionValues transitionValues) {
-                System.out.println("~~captureEndValues~~");
-                System.out.println(transitionValues);
-
-                super.captureEndValues(transitionValues);
-            }
-
-            @Override
-            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~onAppear~~");
-
-                System.out.println("startValues is " + startValues);
-                System.out.println("endValues is " + endValues);
-
-                return super.onAppear(sceneRoot, view, startValues, endValues);
-            }
-
-            @Override
-            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~onDisappear~~");
-
-                System.out.println("startValues is " + startValues);
-                System.out.println("endValues is " + endValues);
-
-                return super.onDisappear(sceneRoot, view, startValues, endValues);
-            }
-        };
+//        transition.addTarget(root.getChildAt(2)); //加入白名单
 
 
 
 
 
-
-        transition.setDuration(5000L).excludeChildren(root.getChildAt(2), true);
-        TransitionManager.beginDelayedTransition(root, transition);
-
-        //        transition.addTarget(root.getChildAt(2));
-
-
-        for (int i = 1; i <= 5; i++) {
-            View view = root.getChildAt(i);
-            view.setX(i * 100 + 50);
-            view.setY(i * 100 + 50);
-        }
-
+        //方式二：使用黑名单
+//        ViewGroup root = findViewById(R.id.scene_root);
+//
+//        List<View> list = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            TextView textView = new TextView(this);
+//            textView.setText("aaaaaaaaaaaaaa" + i);
+//            textView.setX(i * 100 + 50);
+//            textView.setY(i * 100 + 50);
+//            list.add(textView); //加入到容器
+//        }
+//
+//
+//        TransitionManager.beginDelayedTransition(root, //使用无场景转换
+//                new Fade().setDuration(5000L)//设置动画
+//                        .excludeTarget(list.get(2), true));//增加到黑名单
+//
+//        for (View v : list) {
+//            root.addView(v);
+//        }
 
     }
 

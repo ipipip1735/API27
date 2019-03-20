@@ -83,7 +83,16 @@
         <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".SceneTransitionActivity">
+        <!--<activity android:name=".SceneTransitionActivity">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN"/>-->
+        <!--<action android:name="android.intent.action.VIEW"/>-->
+        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+
+
+        <activity android:name=".WindowTransitionActivity">
         <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <action android:name="android.intent.action.VIEW"/>
