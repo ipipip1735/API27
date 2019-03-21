@@ -1,36 +1,14 @@
 package mine.animation;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.ChangeBounds;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Scene;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.transition.TransitionListenerAdapter;
-import android.transition.TransitionManager;
-import android.transition.TransitionSet;
-import android.transition.TransitionValues;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
 
 /**
  * Created by Administrator on 2019/3/20.
  */
-public class WindowTransitionActivity extends AppCompatActivity {
+public class WindowTwoTransitionActivity extends AppCompatActivity {
 
 
 
@@ -38,7 +16,7 @@ public class WindowTransitionActivity extends AppCompatActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.scene_main);
+        setContentView(R.layout.activity_window_two);
 
 
     }
@@ -116,8 +94,8 @@ public class WindowTransitionActivity extends AppCompatActivity {
 
     }
 
-    public void swap(View view) {
-        System.out.println("********swap******");
+    public void start(View view) {
+        System.out.println("********start******");
 
     }
 
