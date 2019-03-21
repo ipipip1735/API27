@@ -7,7 +7,7 @@ import android.transition.TransitionValues;
 import android.view.ViewGroup;
 
 /**
- * Created by Administrator on 2019/3/16.
+ * Created by Administrator on 2019/3/21.
  */
 public class BaseTransition extends Transition {
     final String X = "Transition:X";
