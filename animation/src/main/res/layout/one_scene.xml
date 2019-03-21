@@ -13,17 +13,18 @@
         android:id="@+id/oneTV1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="oneTV1"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp" />
 
-    <!--<TextView-->
-    <!--android:id="@+id/oneTV2"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="152dp"-->
-    <!--android:text="oneTV2"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/oneTV1"-->
-    <!--tools:layout_editor_absoluteX="218dp" />-->
+    <TextView
+        android:id="@+id/oneTV2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:text="oneTV2"
+        app:layout_constraintTop_toBottomOf="@+id/oneTV1"
+        tools:layout_editor_absoluteX="50dp" />
 
 </android.support.constraint.ConstraintLayout>

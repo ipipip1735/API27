@@ -18,7 +18,7 @@ public class BaseTransitionPropagation extends TransitionPropagation {
         System.out.println("transition is " + transition);
         System.out.println("startValues is " + startValues);
         System.out.println("endValues is " + endValues);
-        return 0;
+        return 9500;
     }
 
     @Override

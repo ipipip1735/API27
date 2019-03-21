@@ -7,6 +7,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
@@ -33,8 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static android.transition.Fade.IN;
+import static android.transition.Fade.OUT;
 import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
 import static android.transition.TransitionSet.ORDERING_TOGETHER;
+import static android.view.Gravity.LEFT;
 
 /**
  * Created by Administrator on 2019/3/13.
@@ -154,8 +158,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
     public void recovery(View view) {
         System.out.println("********recovery******");
 
-        TransitionManager.go(oneScene);
-//        TransitionManager.go(threeScene);
+//        TransitionManager.go(oneScene);
+        TransitionManager.go(threeScene);
 
 
     }
@@ -165,10 +169,10 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionWithXML(); //使用XML
 //        transitionWithJAVA(); //使用JAVA
 
-        propagation(); //使用JAVA
+//        propagation();
 
 
-//        visibility(); //使用Fade/Explode/Slide
+        visibility(); //使用Fade/Explode/Slide
 
 //        changeBounds(); //使用边界变换
 
@@ -182,13 +186,47 @@ public class SceneTransitionActivity extends AppCompatActivity {
     }
 
     private void propagation() {
-        Transition transition = new Explode();
-        transition.setDuration(3000L)
-                .setStartDelay(1000L)
-                .setPropagation(new BaseTransitionPropagation());
+        final Transition transition = new Explode() {
+            @Override
+            public void captureEndValues(TransitionValues transitionValues) {
+                System.out.println("~~captureEndValues~~");
+                System.out.println(transitionValues);
+                super.captureEndValues(transitionValues);
+            }
 
-        TransitionManager.go(fiveScene, transition);
+            @Override
+            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~onAppear~~");
+                System.out.println(view);
+                return super.onAppear(sceneRoot, view, startValues, endValues);
+            }
+
+            @Override
+            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~onDisappear~~");
+                System.out.println(view);
+                return super.onDisappear(sceneRoot, view, startValues, endValues);
+            }
+        };
+        transition.setDuration(3000L);
+//                .setStartDelay(1000L);
+//                .setPropagation(new BaseTransitionPropagation());
+
+
+        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
+        TransitionManager.go(oneScene, transition);
+        oneScene.setEnterAction(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("~~enter~~");
+                findViewById(R.id.cl1).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
+            }
+        });
+
+//        TransitionManager.beginDelayedTransition(fiveScene.getSceneRoot(), transition);
+
     }
+
 
     private void transitionSet() {
 
@@ -199,11 +237,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transtionSet.setDuration(5000L).setOrdering(ORDERING_SEQUENTIAL);//设置播放顺序和时长
 //
 //        TransitionManager.go(fourScene, transtionSet.setDuration(5000L));
-
-
-
-
-
 
 
         //方式二：使用JAVA
@@ -227,7 +260,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
         layoutParams.height += 450f;
         layoutParams.width += 150f;
         imageView.setLayoutParams(layoutParams);
-
 
 
     }
@@ -269,9 +301,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transition.addTarget(root.getChildAt(2)); //加入白名单
 
 
-
-
-
         //方式二：使用黑名单
 //        ViewGroup root = findViewById(R.id.scene_root);
 //
@@ -297,9 +326,75 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     private void visibility() {
 
-        Transition transition = new Fade() {
-            //        Transition transition = new Slide(){
-//        Transition transition = new Explode() {
+        //使用Fade变换
+//        Transition fade = new Fade(OUT) {
+//            @Override
+//            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+//                System.out.println("~~onAppear~~");
+//
+//                System.out.println("startValues is " + startValues);
+//                System.out.println("endValues is " + endValues);
+//
+//                return super.onAppear(sceneRoot, view, startValues, endValues);
+//            }
+//
+//            @Override
+//            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+//                System.out.println("~~onDisappear~~");
+//
+//                System.out.println("startValues is " + startValues);
+//                System.out.println("endValues is " + endValues);
+//
+//                return super.onDisappear(sceneRoot, view, startValues, endValues);
+//            }
+//        };
+//
+//        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
+//        transitionManager = new TransitionManager();
+//        transitionManager.setTransition(twoScene, fade.setDuration(3000L));//任意源场景
+//        transitionManager.transitionTo(twoScene);
+
+
+
+
+
+        //使用Slide变换
+//        Transition transition = new Slide(LEFT){
+//            @Override
+//            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+//                System.out.println("~~onAppear~~");
+//
+//                System.out.println("startValues is " + startValues);
+//                System.out.println("endValues is " + endValues);
+//
+//                return super.onAppear(sceneRoot, view, startValues, endValues);
+//            }
+//
+//            @Override
+//            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+//                System.out.println("~~onDisappear~~");
+//
+//                System.out.println("startValues is " + startValues);
+//                System.out.println("endValues is " + endValues);
+//
+//                return super.onDisappear(sceneRoot, view, startValues, endValues);
+//            }
+//        };
+//
+//        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
+//        transitionManager = new TransitionManager();
+//        transitionManager.setTransition(twoScene, transition.setDuration(3000L));//任意源场景
+//        transitionManager.transitionTo(twoScene);
+
+
+
+
+
+
+
+
+        //使用Explode变换
+        Transition explode = new Explode() {
             @Override
             public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
                 System.out.println("~~onAppear~~");
@@ -321,9 +416,22 @@ public class SceneTransitionActivity extends AppCompatActivity {
             }
         };
 
+        final View view = findViewById(R.id.imageView9);
+        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+            @Override
+            public Rect onGetEpicenter(Transition transition) {
+                System.out.println("~~onGetEpicenter~~");
 
+                Rect rect = new Rect();
+                view.getGlobalVisibleRect(rect);
+                return rect;
+            }
+        });
+
+
+        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
         transitionManager = new TransitionManager();
-        transitionManager.setTransition(twoScene, transition.setDuration(3000L));//任意源场景
+        transitionManager.setTransition(twoScene, explode.setDuration(3000L));//任意源场景
         transitionManager.transitionTo(twoScene);
 
 
@@ -331,9 +439,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
     private void customTransition() {
-
         TransitionManager.go(twoScene, new VisibilityTransition().setDuration(5000L));
-
     }
 
 

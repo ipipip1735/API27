@@ -61,7 +61,7 @@ public class VisibilityTransition extends Visibility {
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, View view, final TransitionValues startValues, TransitionValues endValues) {
         System.out.println("~~onDisappear~~");
-
+        System.out.println(view);
         System.out.println("startValues is " + startValues);
         System.out.println("endValues is " + endValues);
 
@@ -69,37 +69,37 @@ public class VisibilityTransition extends Visibility {
         float startAlpha = (Float) startValues.values.get(ALPHA);
 
         //方式一：使用对象动画
-//        PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", startX, startX + 100f);
-//        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", startAlpha, 0);
-//
-//
-//        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, x, alpha);
-//        return objectAnimator;
+        PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", startX, startX + 100f);
+        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", startAlpha, 0);
+
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, x, alpha);
+        return objectAnimator;
 
 
 
         //方式二：使用属性动画
         //创建2个动画
-        ValueAnimator x = ValueAnimator.ofFloat(startX, startX-100f);
-        x.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                System.out.println("~~onAnimationUpdate~~");
-                startValues.view.setX((Float) animation.getAnimatedValue());
-            }
-        });
-        ValueAnimator alphal = ValueAnimator.ofFloat(startX, startX-100f);
-        alphal.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                System.out.println("~~onAnimationUpdate~~");
-                startValues.view.setAlpha((Float) animation.getAnimatedValue());
-            }
-        });
-
-        AnimatorSet animatorSet = new AnimatorSet();//创建动画集
-        animatorSet.playTogether(x, alphal);
-        return animatorSet;
+//        ValueAnimator x = ValueAnimator.ofFloat(startX, startX-100f);
+//        x.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("~~onAnimationUpdate~~");
+//                startValues.view.setX((Float) animation.getAnimatedValue());
+//            }
+//        });
+//        ValueAnimator alphal = ValueAnimator.ofFloat(startX, startX-100f);
+//        alphal.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("~~onAnimationUpdate~~");
+//                startValues.view.setAlpha((Float) animation.getAnimatedValue());
+//            }
+//        });
+//
+//        AnimatorSet animatorSet = new AnimatorSet();//创建动画集
+//        animatorSet.playTogether(x, alphal);
+//        return animatorSet;
 
 //        return super.onDisappear(sceneRoot, view, startValues, endValues);
 

@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
+import static android.view.Gravity.RIGHT;
 
 /**
  * Created by Administrator on 2019/3/20.
@@ -39,7 +40,7 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_window_one);
 
 
@@ -120,13 +121,21 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 
-        getWindow().setExitTransition(new Explode().setDuration(5000L));
+        Window window = getWindow();
+        window.setExitTransition(new Slide(RIGHT).setDuration(5000L));
+        window.setEnterTransition(new Slide(RIGHT).setDuration(5000L));
+        window.setAllowReturnTransitionOverlap(false);
+        window.setAllowEnterTransitionOverlap(false);
 
 
-        ImageView imageView = findViewById(R.id.ivOne);
         Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "ooo");
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
         startActivity(intent, options.toBundle());
+
+
+
+//        Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
+//        startActivity(intent);
 
     }
 
