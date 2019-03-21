@@ -172,7 +172,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        propagation();
 
 
-        visibility(); //使用Fade/Explode/Slide
+//        visibility(); //使用Fade/Explode/Slide
 
 //        changeBounds(); //使用边界变换
 
@@ -180,7 +180,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 //        delay(); //使用延迟动画
 
-//        customTransition(); //自定义变化
+        customTransition(); //自定义变化
 
 
     }
@@ -439,7 +439,17 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
     private void customTransition() {
-        TransitionManager.go(twoScene, new VisibilityTransition().setDuration(5000L));
+
+        Transition transition = new VisibilityTransition().setDuration(5000L);
+        twoScene.setEnterAction(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("enter!!");
+                findViewById(R.id.cl2).setVisibility(View.INVISIBLE);
+            }
+        });
+        TransitionManager.go(twoScene, transition);
+
     }
 
 
