@@ -45,6 +45,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
     Scene twoScene;
     Scene threeScene;
     Scene fourScene;
+    Scene fiveScene;
     TransitionManager transitionManager;
     ViewTreeObserver observer;
     ViewTreeObserver.OnPreDrawListener onPreDrawListener;
@@ -63,6 +64,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
         twoScene = Scene.getSceneForLayout(sceneRoot, R.layout.two_scene, this);
         threeScene = Scene.getSceneForLayout(sceneRoot, R.layout.three_scene, this);
         fourScene = Scene.getSceneForLayout(sceneRoot, R.layout.four_scene, this);
+        fiveScene = Scene.getSceneForLayout(sceneRoot, R.layout.five_scene, this);
 
 
         twoScene.setEnterAction(new Runnable() {
@@ -163,8 +165,10 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionWithXML(); //使用XML
 //        transitionWithJAVA(); //使用JAVA
 
+        propagation(); //使用JAVA
 
-        visibility(); //使用Fade/Explode/Slide
+
+//        visibility(); //使用Fade/Explode/Slide
 
 //        changeBounds(); //使用边界变换
 
@@ -177,15 +181,24 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     }
 
+    private void propagation() {
+        Transition transition = new Explode();
+        transition.setDuration(3000L)
+                .setStartDelay(1000L)
+                .setPropagation(new BaseTransitionPropagation());
+
+        TransitionManager.go(fiveScene, transition);
+    }
+
     private void transitionSet() {
 
         //方式一：使用XML
-        TransitionSet transtionSet = (TransitionSet) TransitionInflater.from(this)
-                .inflateTransition(R.transition.tansition_set);
-
-        transtionSet.setDuration(5000L).setOrdering(ORDERING_SEQUENTIAL);//设置播放顺序和时长
-
-        TransitionManager.go(fourScene, transtionSet.setDuration(5000L));
+//        TransitionSet transtionSet = (TransitionSet) TransitionInflater.from(this)
+//                .inflateTransition(R.transition.tansition_set);
+//
+//        transtionSet.setDuration(5000L).setOrdering(ORDERING_SEQUENTIAL);//设置播放顺序和时长
+//
+//        TransitionManager.go(fourScene, transtionSet.setDuration(5000L));
 
 
 
@@ -194,73 +207,12 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
         //方式二：使用JAVA
-        Transition transition = new Transition() {
-            String X = "mine.animation:Transition:X";
-            String Y = "mine.animation:Transition:Y";
-
-            @Override
-            public void captureStartValues(TransitionValues transitionValues) {
-                transitionValues.values.put(X, transitionValues.view.getX());
-                transitionValues.values.put(Y, transitionValues.view.getY());
-                System.out.println("captureStartValues " + transitionValues);
-            }
-
-            @Override
-            public void captureEndValues(TransitionValues transitionValues) {
-                transitionValues.values.put(X, transitionValues.view.getX());
-                transitionValues.values.put(Y, transitionValues.view.getY());
-                System.out.println("captureEndValues " + transitionValues);
-            }
-
-            @Override
-            public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~createAnimator~~");
-                System.out.println(startValues.view); //只有ImageView将被动画，因为其他组件动画值为改变
-
-                //X动画值
-                float start = (float) startValues.values.get(X);
-                float end = (float) endValues.values.get(Y);
-                PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", start, end);
-
-                //Y动画值
-                start = (float) startValues.values.get(X);
-                end = (float) endValues.values.get(Y);
-                PropertyValuesHolder y = PropertyValuesHolder.ofFloat("y", start, end);
-
-                //绑定更新监听器
-                ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(startValues.view, x, y);
-                objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        System.out.println("~~onAnimationUpdate~~");
-                        System.out.println("value is " + animation.getAnimatedValue());
-                    }
-                });
-
-                //绑定监听器
-                objectAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        System.out.println("~~onAnimationStart~~");
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        System.out.println("~~onAnimationEnd~~");
-                    }
-                });
-
-                return objectAnimator;
-            }
-        };
-
 
         //使用转换集
         TransitionSet set = new TransitionSet()
-                .addTransition(transition)  //增加2个转换
-                .addTransition(new ChangeBounds())
-                .setOrdering(ORDERING_SEQUENTIAL) //播放顺序
+                .addTransition(new MoveTransition())  //增加2个转换
+                .addTransition(new ChangeBounds().setStartDelay(2000L)) //延迟播放2秒
+                .setOrdering(ORDERING_TOGETHER) //播放顺序
                 .setDuration(5000L); //播放时长
 
         //使用无场景变换
@@ -386,17 +338,18 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
     private void transitionWithJAVA() {
-        Transition fade = new Fade();
-        Transition slide = new Slide();
+        Transition fade = new Fade().setDuration(2000L);
+        Transition slide = new Slide().setDuration(2000L);
+        Transition explode = new Explode().setDuration(2000L);
 
 
         transitionManager = new TransitionManager();
 
-        transitionManager.setTransition(twoScene, fade.setDuration(6000l));//任意源场景
-        transitionManager.setTransition(twoScene, threeScene, slide.setDuration(10000));//精确匹配源场景
+        transitionManager.setTransition(twoScene, fade);//任意源场景
+        transitionManager.setTransition(twoScene, slide);//精确匹配源场景
 
         transitionManager.transitionTo(twoScene);
-        transitionManager.transitionTo(threeScene);
+//        transitionManager.transitionTo(threeScene);
 
 
     }
