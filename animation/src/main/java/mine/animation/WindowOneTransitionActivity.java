@@ -28,7 +28,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
+import static android.view.Gravity.LEFT;
 import static android.view.Gravity.RIGHT;
+import static android.view.Gravity.TOP;
 
 /**
  * Created by Administrator on 2019/3/20.
@@ -40,10 +42,30 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+//        window.requestFeature(Window.FEATURE_NO_TITLE);
+
+        Window window = getWindow();
+//        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+
+        window.setEnterTransition(new Slide(TOP).setDuration(5000L)); //退出动画
+        window.setExitTransition(new Slide(LEFT).setDuration(5000L)); //退出动画
+//        window.setReenterTransition(new Fade().setDuration(5000L)); //返回动画
+
+
+
+//        window.setAllowEnterTransitionOverlap(false);
+        window.setAllowReturnTransitionOverlap(false);
+
+        System.out.println(getClass().getSimpleName() + " is " + window);
+        System.out.println("getEnterTransition is "  + window.getEnterTransition());
+        System.out.println("getExitTransition is "  + window.getExitTransition());
+        System.out.println("getReturnTransition is "  + window.getReturnTransition());
+        System.out.println("getReenterTransition is "  + window.getReenterTransition());
+
+
         setContentView(R.layout.activity_window_one);
-
-
     }
 
     @Override
@@ -121,21 +143,10 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 
-        Window window = getWindow();
-        window.setExitTransition(new Slide(RIGHT).setDuration(5000L));
-        window.setEnterTransition(new Slide(RIGHT).setDuration(5000L));
-        window.setAllowReturnTransitionOverlap(false);
-        window.setAllowEnterTransitionOverlap(false);
-
-
         Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
         startActivity(intent, options.toBundle());
 
-
-
-//        Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
-//        startActivity(intent);
 
     }
 

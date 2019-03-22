@@ -71,6 +71,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
         fiveScene = Scene.getSceneForLayout(sceneRoot, R.layout.five_scene, this);
 
 
+        //绑定钩子函数
         twoScene.setEnterAction(new Runnable() {
             @Override
             public void run() {
@@ -440,12 +441,16 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     private void customTransition() {
 
+        //设置出场场景为不可见，这样能迫使动画应用到每个子View，否则动画仅用于场景对应ViewGroup
         Transition transition = new VisibilityTransition().setDuration(5000L);
+
         twoScene.setEnterAction(new Runnable() {
             @Override
-            public void run() {
+            public void run() { //绑定进场钩子函数
                 System.out.println("enter!!");
-                findViewById(R.id.cl2).setVisibility(View.INVISIBLE);
+
+                //为了说明啥时候可以修改进场场景，设置进场场景为不可见，即屏蔽进场的View
+//                findViewById(R.id.cl2).setVisibility(View.INVISIBLE);
             }
         });
         TransitionManager.go(twoScene, transition);
