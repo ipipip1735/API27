@@ -2,6 +2,8 @@ package mine.animation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -19,11 +21,14 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionListenerAdapter;
 import android.transition.TransitionManager;
+import android.transition.TransitionPropagation;
 import android.transition.TransitionSet;
 import android.transition.TransitionValues;
+import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -165,16 +170,13 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        visibility(); //使用Fade/Explode/Slide
 
 
-
 //        changeBounds(); //使用边界变换
 //        changeClipBounds(); //使用剪切区域边界变换
 //        changeTransform(); //使用变形变换
 //        changeScroll(); //使滚动变换
 
 
-
 //        transitionSet(); //使用变换集
-
 
 
 //        delay(); //使用延迟动画
@@ -187,53 +189,71 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     private void propagation() {
 
-        long duration = 2000L;
-        final Transition transition = new Explode() {
+        long duration = 2500L;
+        Transition transition = new Transition() {
+            String X = "x";
+
+            @Override
+            public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~createAnimator~~");
+
+                if (startValues.view instanceof ViewGroup) return null;
+
+                PropertyValuesHolder xPVH = PropertyValuesHolder.ofFloat(X, (float) startValues.values.get(X), (float) endValues.values.get(X));
+                ObjectAnimator animation = ObjectAnimator.ofPropertyValuesHolder((Object) startValues.view, xPVH);
+                return animation;
+            }
+
+            @Override
+            public void captureStartValues(TransitionValues transitionValues) {
+                System.out.println("~~captureStartValues~~");
+                transitionValues.values.put(X, transitionValues.view.getX());
+            }
+
             @Override
             public void captureEndValues(TransitionValues transitionValues) {
                 System.out.println("~~captureEndValues~~");
+                transitionValues.values.put(X, transitionValues.view.getX() + 250f);
+            }
+        }.setDuration(duration);
+
+
+        TransitionPropagation transitionPropagation = new TransitionPropagation(){
+            String X = "propagation:x";
+            long temp = 0;
+
+            @Override
+            public long getStartDelay(ViewGroup sceneRoot, Transition transition, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~getStartDelay~~");
+                System.out.println("startValues is " + startValues);
+                System.out.println("endValues is " + endValues);
+                temp += 1000L;
+                return temp;
+            }
+
+            @Override
+            public void captureValues(TransitionValues transitionValues) {
+                System.out.println("~~captureValues~~");
                 System.out.println(transitionValues);
-                super.captureEndValues(transitionValues);
             }
 
             @Override
-            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~onAppear~~");
-                System.out.println(view);
-                return super.onAppear(sceneRoot, view, startValues, endValues);
-            }
+            public String[] getPropagationProperties() {
+                System.out.println("~~getPropagationProperties~~");
 
-            @Override
-            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~onDisappear~~");
-                System.out.println(view);
-                return super.onDisappear(sceneRoot, view, startValues, endValues);
+                return new String[0];
             }
         };
-
-        SidePropagation sidePropagation = new SidePropagation();
-        sidePropagation.setPropagationSpeed(50.0f);
-
-        transition.setDuration(duration)
-                .addListener(new TransitionListenerAdapter() {
-                    @Override
-                    public void onTransitionStart(Transition transition) {
-                        System.out.println("~~ChangeBounds.onTransitionStart~~");
-                    }
-
-                    @Override
-                    public void onTransitionEnd(Transition transition) {
-                        System.out.println("~~ChangeBounds.onTransitionEnd~~");
-                    }
-                })
-        .setPropagation(sidePropagation);
+        transition.setPropagation(transitionPropagation);
 
 
-        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
-        TransitionManager.go(threeScene, transition);
 
+        TransitionManager.beginDelayedTransition(oneScene.getSceneRoot(), transition);
 
-//        TransitionManager.beginDelayedTransition(fiveScene.getSceneRoot(), transition);
+//        ViewGroup viewGroup = findViewById(R.id.cl1);
+//        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+//            viewGroup.getChildAt(i).setX(viewGroup.getChildAt(i).getX() + 350f);
+//        }
 
     }
 
@@ -347,7 +367,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
                             System.out.println(animation);
                         }
                     });
-                }else {
+                } else {
                     System.out.println("animator is  null");
                 }
                 return animator;
@@ -369,7 +389,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
         //方式一：场景切换
 //        TransitionManager.go(fourScene, new ChangeBounds().setDuration(3000L));
-
 
 
         //方式二：无场景切换
