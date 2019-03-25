@@ -2,18 +2,18 @@ package mine.animation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.TimeInterpolator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
+import android.transition.ChangeClipBounds;
+import android.transition.ChangeScroll;
+import android.transition.ChangeTransform;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Scene;
+import android.transition.SidePropagation;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -21,24 +21,13 @@ import android.transition.TransitionListenerAdapter;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.transition.TransitionValues;
-import android.transition.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroupOverlay;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import static android.transition.Fade.IN;
-import static android.transition.Fade.OUT;
-import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
 import static android.transition.TransitionSet.ORDERING_TOGETHER;
-import static android.view.Gravity.LEFT;
 
 /**
  * Created by Administrator on 2019/3/13.
@@ -170,23 +159,35 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionWithXML(); //使用XML
 //        transitionWithJAVA(); //使用JAVA
 
-//        propagation();
+        propagation();
 
 
 //        visibility(); //使用Fade/Explode/Slide
 
+
+
 //        changeBounds(); //使用边界变换
+//        changeClipBounds(); //使用剪切区域边界变换
+//        changeTransform(); //使用变形变换
+//        changeScroll(); //使滚动变换
+
+
 
 //        transitionSet(); //使用变换集
 
+
+
 //        delay(); //使用延迟动画
 
-        customTransition(); //自定义变化
 
+//        customTransition(); //自定义变化
 
     }
 
+
     private void propagation() {
+
+        long duration = 2000L;
         final Transition transition = new Explode() {
             @Override
             public void captureEndValues(TransitionValues transitionValues) {
@@ -209,20 +210,28 @@ public class SceneTransitionActivity extends AppCompatActivity {
                 return super.onDisappear(sceneRoot, view, startValues, endValues);
             }
         };
-        transition.setDuration(3000L);
-//                .setStartDelay(1000L);
-//                .setPropagation(new BaseTransitionPropagation());
+
+        SidePropagation sidePropagation = new SidePropagation();
+        sidePropagation.setPropagationSpeed(50.0f);
+
+        transition.setDuration(duration)
+                .addListener(new TransitionListenerAdapter() {
+                    @Override
+                    public void onTransitionStart(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionStart~~");
+                    }
+
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionEnd~~");
+                    }
+                })
+        .setPropagation(sidePropagation);
 
 
         findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
-        TransitionManager.go(oneScene, transition);
-        oneScene.setEnterAction(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("~~enter~~");
-                findViewById(R.id.cl1).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画
-            }
-        });
+        TransitionManager.go(threeScene, transition);
+
 
 //        TransitionManager.beginDelayedTransition(fiveScene.getSceneRoot(), transition);
 
@@ -265,22 +274,113 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     }
 
+    private void changeScroll() {
+
+        long duration = 3000L;
+        TransitionManager.beginDelayedTransition(threeScene.getSceneRoot(), new ChangeScroll().setDuration(2000L));
+        ViewGroup viewGroup = findViewById(R.id.cl3);
+        viewGroup.setScrollY(viewGroup.getScrollY() + 150);
+
+
+    }
+
+
+    private void changeTransform() {
+
+        long duration = 3000L;
+        TransitionManager.beginDelayedTransition(threeScene.getSceneRoot(), new ChangeTransform().setDuration(2000L));
+        ImageView imageView = findViewById(R.id.imageView3);
+        imageView.setScaleX(imageView.getScaleX() + 0.5f);
+        imageView.setScaleY(imageView.getScaleY() - 0.5f);
+
+    }
+
+    private void changeClipBounds() {
+
+        long duration = 3000L;
+        ImageView imageView = findViewById(R.id.imageView3);
+        imageView.setClipBounds(new Rect(0, 0, 100, 150));
+
+        TransitionManager.beginDelayedTransition(threeScene.getSceneRoot(), new ChangeClipBounds().setDuration(2000L));
+        imageView.setClipBounds(new Rect(100, 100, 200, 250));
+
+    }
+
     private void changeBounds() {
 
+        long duration = 3000L;
 
-        final TransitionManager transitionManager = new TransitionManager();
-        transitionManager.setTransition(threeScene,
-                new Fade().setDuration(5000L)
-                        .addListener(new TransitionListenerAdapter() {
-                            @Override
-                            public void onTransitionEnd(Transition transition) {
-                                System.out.println("~~onTransitionEnd~~");
-                                transitionManager.setTransition(fourScene, new ChangeBounds().setDuration(5000L));
-                                transitionManager.transitionTo(fourScene);
-                            }
-                        }));
-        transitionManager.transitionTo(threeScene);
+        //边界转换
+        Transition transition = new ChangeBounds() {
+            @Override
+            public void captureStartValues(TransitionValues transitionValues) {
+                System.out.println("~~captureStartValues~~");
+                super.captureStartValues(transitionValues);
+                System.out.println(transitionValues);
+            }
 
+            @Override
+            public void captureEndValues(TransitionValues transitionValues) {
+                System.out.println("~~captureEndValues~~");
+                super.captureStartValues(transitionValues);
+                System.out.println(transitionValues);
+            }
+
+            @Override
+            public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~createAnimator~~");
+                System.out.println(startValues);
+                System.out.println(endValues);
+                Animator animator = super.createAnimator(sceneRoot, startValues, endValues);
+                if (animator != null) {
+
+                    animator.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            System.out.println("..onAnimationEnd..");
+                            System.out.println(animation);
+                        }
+
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            System.out.println("..onAnimationStart..");
+                            System.out.println(animation);
+                        }
+                    });
+                }else {
+                    System.out.println("animator is  null");
+                }
+                return animator;
+            }
+        };
+
+        transition.setDuration(duration)
+                .addListener(new TransitionListenerAdapter() {
+                    @Override
+                    public void onTransitionStart(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionStart~~");
+                    }
+
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionEnd~~");
+                    }
+                });
+
+        //方式一：场景切换
+//        TransitionManager.go(fourScene, new ChangeBounds().setDuration(3000L));
+
+
+
+        //方式二：无场景切换
+        TransitionManager.beginDelayedTransition(threeScene.getSceneRoot(), new ChangeBounds().setDuration(3000L));
+
+        ImageView imageView = findViewById(R.id.imageView3);
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        System.out.println("width is " + layoutParams.width);
+        System.out.println("height is " + layoutParams.height);
+        System.out.println("getMeasuredWidth is " + imageView.getMeasuredWidth());
+        System.out.println("getMeasuredWidth is " + imageView.getMeasuredWidth());
 
     }
 
@@ -356,9 +456,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionManager.transitionTo(twoScene);
 
 
-
-
-
         //使用Slide变换
 //        Transition transition = new Slide(LEFT){
 //            @Override
@@ -386,12 +483,6 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionManager = new TransitionManager();
 //        transitionManager.setTransition(twoScene, transition.setDuration(3000L));//任意源场景
 //        transitionManager.transitionTo(twoScene);
-
-
-
-
-
-
 
 
         //使用Explode变换

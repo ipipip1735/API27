@@ -53,7 +53,7 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 //        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
 
 
-        //创建转换对象
+        //创建转换对象(4个，任选其一)
         Transition fade = new Fade().setDuration(duration);
         fade.addListener(new TransitionListenerAdapter() {
             @Override
