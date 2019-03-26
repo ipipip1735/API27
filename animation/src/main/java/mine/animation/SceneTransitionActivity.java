@@ -12,6 +12,7 @@ import android.transition.ChangeBounds;
 import android.transition.ChangeClipBounds;
 import android.transition.ChangeScroll;
 import android.transition.ChangeTransform;
+import android.transition.CircularPropagation;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Scene;
@@ -21,14 +22,12 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionListenerAdapter;
 import android.transition.TransitionManager;
-import android.transition.TransitionPropagation;
 import android.transition.TransitionSet;
 import android.transition.TransitionValues;
-import android.util.Property;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -164,7 +163,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        transitionWithXML(); //使用XML
 //        transitionWithJAVA(); //使用JAVA
 
-        propagation();
+//        propagationSlide();
+        propagationExplode();
 
 
 //        visibility(); //使用Fade/Explode/Slide
@@ -186,8 +186,77 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
     }
 
+    private void propagationExplode() {
 
-    private void propagation() {
+        CircularPropagation transitionPropagation = new CircularPropagation();
+        transitionPropagation.setPropagationSpeed(0.5f);
+        Explode explode = new Explode();
+        explode.setDuration(3000L);
+        explode.setPropagation(transitionPropagation);
+
+        final View view = findViewById(R.id.imageView9);
+        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+            @Override
+            public Rect onGetEpicenter(Transition transition) {
+                System.out.println("~~onGetEpicenter~~");
+
+                Rect rect = new Rect();
+                view.getGlobalVisibleRect(rect);
+                ((ImageView)view).setImageResource(R.drawable.a);
+                return rect;
+            }
+        });
+
+
+        findViewById(R.id.cl).setVisibility(View.INVISIBLE);
+        TransitionManager.go(threeScene, explode);
+
+
+    }
+
+
+    private void propagationSlide() {
+
+
+        //方式一：使用内置对象
+        SidePropagation transitionPropagation = new SidePropagation();
+        transitionPropagation.setSide(Gravity.BOTTOM);//设置边界类型
+        transitionPropagation.setPropagationSpeed(0.5f);//设置传播速度
+
+
+
+
+        //方法二：自定义传播对象
+//        TransitionPropagation transitionPropagation = new TransitionPropagation(){
+//            String X = "propagationSlide:x";
+//            long temp = 0;
+//
+//            @Override
+//            public long getStartDelay(ViewGroup sceneRoot, Transition transition, TransitionValues startValues, TransitionValues endValues) {
+//                System.out.println("~~getStartDelay~~");
+//                System.out.println("startValues is " + startValues);
+//                System.out.println("endValues is " + endValues);
+//                temp += 1000L;
+//                return temp;
+//            }
+//
+//            @Override
+//            public void captureValues(TransitionValues transitionValues) {
+//                System.out.println("~~captureValues~~");
+//                System.out.println(transitionValues);
+//            }
+//
+//            @Override
+//            public String[] getPropagationProperties() {
+//                System.out.println("~~getPropagationProperties~~");
+//
+//                return new String[0];
+//            }
+//        };
+
+
+
+
 
         long duration = 2500L;
         Transition transition = new Transition() {
@@ -217,43 +286,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
             }
         }.setDuration(duration);
 
-
-        TransitionPropagation transitionPropagation = new TransitionPropagation(){
-            String X = "propagation:x";
-            long temp = 0;
-
-            @Override
-            public long getStartDelay(ViewGroup sceneRoot, Transition transition, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~getStartDelay~~");
-                System.out.println("startValues is " + startValues);
-                System.out.println("endValues is " + endValues);
-                temp += 1000L;
-                return temp;
-            }
-
-            @Override
-            public void captureValues(TransitionValues transitionValues) {
-                System.out.println("~~captureValues~~");
-                System.out.println(transitionValues);
-            }
-
-            @Override
-            public String[] getPropagationProperties() {
-                System.out.println("~~getPropagationProperties~~");
-
-                return new String[0];
-            }
-        };
         transition.setPropagation(transitionPropagation);
-
-
-
         TransitionManager.beginDelayedTransition(oneScene.getSceneRoot(), transition);
-
-//        ViewGroup viewGroup = findViewById(R.id.cl1);
-//        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-//            viewGroup.getChildAt(i).setX(viewGroup.getChildAt(i).getX() + 350f);
-//        }
 
     }
 
