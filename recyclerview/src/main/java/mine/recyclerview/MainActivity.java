@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import java.lang.reflect.Method;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -25,9 +26,13 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
 
-        mDataset = new String[]{"aaa", "bbb", "ccc"};
+        int n = 99;
+        mDataset = new String[n];
+        for (int i = 0; i < n; i++) {
+            mDataset[i] = "Dataset's item " + new Random().nextInt(100);
+        }
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        recyclerView = findViewById(R.id.rv);
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+
 
     }
 
