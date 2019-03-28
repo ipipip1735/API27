@@ -17,16 +17,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="start"
-            android:text="start" />
+            android:onClick="add"
+            android:text="add" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="stop"
-            android:text="stop" />
+            android:onClick="del"
+            android:text="del" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="position"
+            android:text="position" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="del"
+            android:text="del" />
     </LinearLayout>
 
     <android.support.constraint.Barrier

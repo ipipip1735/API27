@@ -2,19 +2,21 @@ package mine.recyclerview;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
  * Created by Administrator on 2019/3/26.
  */
-public class RVAdapter extends RecyclerView.Adapter {
-    private String[] mDataset;
+public class RVAdapter<T> extends RecyclerView.Adapter {
+    private List<T> dataset;
 
-    public RVAdapter(String[] mDataset) {
-        this.mDataset = mDataset;
+    public RVAdapter(List<T> dataset) {
+        this.dataset = dataset;
     }
 
     @NonNull
@@ -32,19 +34,21 @@ public class RVAdapter extends RecyclerView.Adapter {
         return vh;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         System.out.println("~~onBindViewHolder~~");
         System.out.println("holder is " + holder);
         System.out.println("position is " + position);
 
-        ((MyViewHolder)holder).textView.setText(mDataset[position]);
+        ((MyViewHolder)holder).textView.setText(dataset.get(position).toString());
     }
 
     @Override
     public int getItemCount() {
         System.out.println("~~getItemCount~~");
-        return mDataset.length;
+        System.out.println("getItemCount is " + dataset.size());
+        return dataset.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

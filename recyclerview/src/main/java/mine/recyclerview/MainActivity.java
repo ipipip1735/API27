@@ -5,9 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
-import java.lang.reflect.Method;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -15,32 +16,30 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    View target;
 
-    private String[] mDataset;
+    List<String> dataset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
+            super.onCreate(savedInstanceState);
+            System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
 
-        int n = 99;
-        mDataset = new String[n];
-        for (int i = 0; i < n; i++) {
-            mDataset[i] = "Dataset's item " + new Random().nextInt(100);
+        dataset = new ArrayList<>(8);
+        for (int i = 0; i < 5; i++) {
+            dataset.add("item" + i);
         }
+        adapter = new RVAdapter<>(dataset);
 
         recyclerView = findViewById(R.id.rv);
-
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
-        mAdapter = new RVAdapter(mDataset);
-        recyclerView.setAdapter(mAdapter);
-
+        layoutManager = new LinearLayoutManager(this);
     }
 
     @Override
@@ -100,20 +99,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
+    public void add(View view) {
+        System.out.println("~~button.add~~");
 
-
-    }
-
-
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
+        dataset.add("aaa");
+        recyclerView.getAdapter().notifyItemInserted(0);
 
     }
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+
+    public void del(View view) {
+        System.out.println("~~button.del~~");
+
+        recyclerView.removeView(target);
+//        recyclerView.removeViewAt(textView);
+
+    }
+
+    public void position(View view) {
+        System.out.println("~~button.position~~");
+
+        recyclerView.getChildAdapterPosition(target);
+//        recyclerView.getChildLayoutPosition(target);
+
 
     }
 
@@ -124,12 +132,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
-
-    }
-
-
-    public void del(View view) {
-        System.out.println("~~button.del~~");
 
     }
 
