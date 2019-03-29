@@ -36,9 +36,6 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
                 System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
                 System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
                 System.out.println("getChildItemId is " + recyclerView.getChildItemId(v));
-
-
-
             }
         });
 
@@ -53,7 +50,7 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
         System.out.println("holder is " + holder);
         System.out.println("position is " + position);
 
-        String s = dataset.get(position).toString();
+        String s = dataset.get(position+3).toString();
         System.out.println(s);
         ((MyViewHolder)holder).textView.setText(s);
     }
@@ -62,7 +59,7 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     public int getItemCount() {
         System.out.println("~~getItemCount~~");
         System.out.println("getItemCount is " + dataset.size());
-        return dataset.size();
+        return dataset.size()-3;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

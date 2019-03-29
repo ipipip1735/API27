@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
 
         dataset = new ArrayList<>(8);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             dataset.add("item" + i);
         }
         adapter = new RVAdapter<>(dataset);
@@ -112,22 +112,30 @@ public class MainActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.add~~");
 
-        int postion = 1;
-        dataset.add(postion, "item_" + dataset.size());
-        System.out.println(dataset);
+        //插入元素
+//        int postion = 0;
+//        dataset.add(postion, "item_" + dataset.size());//插入到数据集
+//        adapter.notifyItemInserted(postion);//更新RecyclerView
+//
+//
+//        System.out.println(dataset);//打印数据集
 
-        adapter.notifyItemInserted(adapter.getItemCount());
 
-        for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            RecyclerView.ViewHolder vh = recyclerView.findContainingViewHolder(recyclerView.getChildAt(i));
-            System.out.println(vh);
+        int i = 5;
+//        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            RecyclerView.ViewHolder vh;
+//            vh = recyclerView.findContainingViewHolder(recyclerView.getChildAt(i));
+//            System.out.println(vh);
 
-            vh = recyclerView.findViewHolderForLayoutPosition(i);
-            System.out.println("LayoutPosition is "  + vh);
+//            vh = recyclerView.findViewHolderForItemId(i);
+//            System.out.println("LayoutPosition is " + vh);
+
+//            vh = recyclerView.findViewHolderForLayoutPosition(i);
+//            System.out.println("LayoutPosition is " + vh);
 
             vh = recyclerView.findViewHolderForAdapterPosition(i);
-            System.out.println("AdapterPosition is "  + vh);
-        }
+            System.out.println("AdapterPosition is " + vh);
+//        }
 
 //        layoutManager.attachView();
 
@@ -166,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        ViewInfo(); //获取测量值
+
+
+//        recyclerView.getAdapterPositionFor();
 
 
     }
