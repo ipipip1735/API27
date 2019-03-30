@@ -2,6 +2,7 @@ package mine.recyclerview;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        addListen();
+        addAnimator();
 
     }
 
@@ -113,17 +115,16 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.add~~");
 
         //插入元素
-//        int postion = 0;
-//        dataset.add(postion, "item_" + dataset.size());//插入到数据集
-//        adapter.notifyItemInserted(postion);//更新RecyclerView
-//
-//
+        int postion = 0;
+        dataset.add(postion, "item_" + dataset.size());//插入到数据集
+        adapter.notifyItemInserted(postion);//更新RecyclerView
+
+
+
 //        System.out.println(dataset);//打印数据集
 
-
-        int i = 5;
-//        for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            RecyclerView.ViewHolder vh;
+//        for (int i = 0; i < recyclerView.getChildCount(); i++) { //打印ViewHolder
+//            RecyclerView.ViewHolder vh;
 //            vh = recyclerView.findContainingViewHolder(recyclerView.getChildAt(i));
 //            System.out.println(vh);
 
@@ -133,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
 //            vh = recyclerView.findViewHolderForLayoutPosition(i);
 //            System.out.println("LayoutPosition is " + vh);
 
-            vh = recyclerView.findViewHolderForAdapterPosition(i);
-            System.out.println("AdapterPosition is " + vh);
+//            vh = recyclerView.findViewHolderForAdapterPosition(i);
+//            System.out.println("AdapterPosition is " + vh);
 //        }
 
 //        layoutManager.attachView();
@@ -145,13 +146,19 @@ public class MainActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+        //删除元素
+        int postion = 0;
+        dataset.remove(postion);
+        adapter.notifyItemRemoved(postion);
+
+
 //        recyclerView.removeView(target);
 //        recyclerView.removeViewAt(textView);
 
 
-        layoutManager.removeViewAt(1);
-        layoutManager.removeAllViews();
-        layoutManager.requestLayout();
+//        layoutManager.removeViewAt(1);
+//        layoutManager.removeAllViews();
+//        layoutManager.requestLayout();
 
 
     }
@@ -176,7 +183,10 @@ public class MainActivity extends AppCompatActivity {
 //        ViewInfo(); //获取测量值
 
 
-//        recyclerView.getAdapterPositionFor();
+        //获取Postion
+        View v = recyclerView.getChildAt(0);
+        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
+        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
 
 
     }
@@ -215,11 +225,19 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.modify~~");
 
 //        modifyLayout(); //修改RecyclerView布局，迫使LayoutManager增加子View
-        move();
+//        move();
+
+
     }
 
 
-    /*---------------modify------------------*/
+    /*---------------add------------------*/
+
+    private void addAnimator() {
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+    }
+
     private void addListen() {
 
 
