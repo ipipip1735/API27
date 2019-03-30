@@ -9,10 +9,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.PopupMenu;
 
 public class CustomViewActivity extends AppCompatActivity {
     CustomView customView1, customView2;
+    FrameLayout frameLayout;
     float degrees = 0f, x = 0, y = 0;
 
     @Override
@@ -23,6 +25,7 @@ public class CustomViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_custom_view);
         customView1 = findViewById(R.id.imageView1);
         customView2 = findViewById(R.id.imageView2);
+        frameLayout = findViewById(R.id.fl);
 
     }
 
@@ -70,6 +73,24 @@ public class CustomViewActivity extends AppCompatActivity {
         System.out.println("*******  ContextMenuActivity  onContextItemSelected  *********");
         return super.onContextItemSelected(item);
 //        return true;
+    }
+
+
+    public void del(View view) {
+
+        int l = 250;
+        int t = 50;
+        int r = l + 250;
+        int b = t +230;
+
+
+//        frameLayout.layout(l, t, r, b);
+        customView1.layout(l, t, r, b);
+
+
+
+//        customView1.setDegree(degrees);
+//        customView2.setDegree(degrees);
     }
 
 

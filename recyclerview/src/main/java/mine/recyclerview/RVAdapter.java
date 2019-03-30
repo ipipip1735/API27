@@ -57,8 +57,8 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        System.out.println("~~getItemCount~~");
-        System.out.println("getItemCount is " + dataset.size());
+//        System.out.println("~~getItemCount~~");
+//        System.out.println("getItemCount is " + dataset.size());
         return dataset.size();
     }
 

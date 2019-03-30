@@ -1,21 +1,17 @@
 package mine.recyclerview;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -38,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
 
         dataset = new ArrayList<>(8);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             dataset.add("item" + i);
         }
         adapter = new RVAdapter<>(dataset);
@@ -49,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-//        addListen();
-        addAnimator();
+//        bindListen(); //绑定各种监听器
+        bindAnimator(); //绑定动画
 
     }
 
@@ -114,31 +110,27 @@ public class MainActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.add~~");
 
-        //插入元素
-        int postion = 0;
-        dataset.add(postion, "item_" + dataset.size());//插入到数据集
-        adapter.notifyItemInserted(postion);//更新RecyclerView
+        //单个更新
+//        int postion = 0;
+//        dataset.add(postion, "insert-" + dataset.size());//插入到数据集
+//        adapter.notifyItemInserted(postion);//更新RecyclerView
 
 
-
-//        System.out.println(dataset);//打印数据集
-
-//        for (int i = 0; i < recyclerView.getChildCount(); i++) { //打印ViewHolder
-//            RecyclerView.ViewHolder vh;
-//            vh = recyclerView.findContainingViewHolder(recyclerView.getChildAt(i));
-//            System.out.println(vh);
-
-//            vh = recyclerView.findViewHolderForItemId(i);
-//            System.out.println("LayoutPosition is " + vh);
-
-//            vh = recyclerView.findViewHolderForLayoutPosition(i);
-//            System.out.println("LayoutPosition is " + vh);
-
-//            vh = recyclerView.findViewHolderForAdapterPosition(i);
-//            System.out.println("AdapterPosition is " + vh);
+        //局部更新
+//        int start = 1, end = 3;
+//        for (int i = start; i < end; i++) {
+//            dataset.add(start, "insert-" + start);//插入到数据集
 //        }
+//        adapter.notifyItemRangeInserted(start, end - start); //更新适配器，刷新UI
 
-//        layoutManager.attachView();
+
+        //全部更新
+//        Random random = new Random();
+//        for (int i = 0; i < 3; i++) {
+//            int r = random.nextInt(10); //创建随机数
+//            dataset.add(r, "insert-" + r);//随机插入到数据集
+//        }
+//        adapter.notifyDataSetChanged(); //更新适配器，刷新UI
 
     }
 
@@ -146,19 +138,28 @@ public class MainActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
-        //删除元素
-        int postion = 0;
-        dataset.remove(postion);
-        adapter.notifyItemRemoved(postion);
+        //单个更新
+        int postion = 1;
+        dataset.remove(postion); //删除数据集
+        adapter.notifyItemRemoved(postion); //更新适配器，刷新UI
 
 
-//        recyclerView.removeView(target);
-//        recyclerView.removeViewAt(textView);
+        //局部更新
+//        int start = 0, end = 2;
+//        for (int i = start; i < end; i++) {
+//            dataset.remove(i);//删除数据集
+//        }
+//        adapter.notifyItemRangeRemoved(start, end - start); //更新适配器，刷新UI
 
 
-//        layoutManager.removeViewAt(1);
-//        layoutManager.removeAllViews();
-//        layoutManager.requestLayout();
+        //全部更新
+//        Random random = new Random();
+//        for (int i = 0; i < 3; i++) {
+//            int r = random.nextInt(10); //创建随机数
+//            dataset.remove(r);//随机删除数据集
+//        }
+//        adapter.notifyDataSetChanged(); //更新适配器，刷新UI
+
 
 
     }
@@ -166,12 +167,40 @@ public class MainActivity extends AppCompatActivity {
     public void info(View view) {
         System.out.println("~~button.info~~");
 
-//        ViewGroup viewGroup = recyclerView;
-//        System.out.println("recyclerView.getChildCount is " + viewGroup.getChildCount());
+        //RecyclerView信息
+//        System.out.println("recyclerView.getChildCount is " + recyclerView.getChildCount());
+
+
+        //获取 Postion
+//        View v = recyclerView.getChildAt(0);
+//        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
+//        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
+
+
+
+
+        //打印 ViewHolder
+//        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+//            RecyclerView.ViewHolder vh;
+//            vh = recyclerView.findContainingViewHolder(recyclerView.getChildAt(i));
+//            System.out.println(vh);
+
+//            vh = recyclerView.findViewHolderForItemId(i);
+//            System.out.println("LayoutPosition is " + vh); //获取Postion
+
+//            vh = recyclerView.findViewHolderForLayoutPosition(i);
+//            System.out.println("LayoutPosition is " + vh); //获取Postion
+
+//            vh = recyclerView.findViewHolderForAdapterPosition(i);
+//            System.out.println("AdapterPosition is " + vh); //获取Postion
+
+//        }
 
 
         //适配器信息
 //        System.out.println("adapter.getItemCount is " + adapter.getItemCount());
+//        System.out.println(dataset);//打印数据集
+
 
         //布局信息
 //        System.out.println("layoutManager.getChildCount is " + layoutManager.getChildCount());
@@ -179,23 +208,7 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("layoutManager.getHeight is " + layoutManager.getHeight());
 //        System.out.println("layoutManager.getWidth is " + layoutManager.getWidth());
 
-
-//        ViewInfo(); //获取测量值
-
-
-        //获取Postion
-        View v = recyclerView.getChildAt(0);
-        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
-        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
-
-
-    }
-
-    public void find(View view) {
-        System.out.println("~~button.find~~");
-
-        //遍历可见子View，也就是遍历RecyclerView
-//        for (int i = 0; i < layoutManager.getChildCount(); i++) {
+//        for (int i = 0; i < layoutManager.getChildCount(); i++) { //遍历可见子View，也就是遍历RecyclerView
 //            TextView textView = (TextView) layoutManager.getChildAt(i);
 //            System.out.println(textView.getText());
 //
@@ -204,15 +217,10 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-        //遍历所有子View
-//        for (int i = 0; i < recyclerView.getChildLayoutPosition(); i++) {
-//
-//        }
-
-//        View v = recyclerView.getLayoutManager().findViewByPosition(1);
-//        System.out.println(v);
 
 
+
+//        ViewInfo(); //获取测量值
     }
 
     public void query(View view) {
@@ -221,24 +229,107 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void modify(View view) {
-        System.out.println("~~button.modify~~");
+    public void update(View view) {
+        System.out.println("~~button.update~~");
 
-//        modifyLayout(); //修改RecyclerView布局，迫使LayoutManager增加子View
-//        move();
+        //单个更新
+        int postion = 0;
+        dataset.set(postion, "xxxx"); //修改数据
+        adapter.notifyItemChanged(postion); //更新适配器，刷新UI
 
+        //局部更新
+//        int start = 0, end = 2;
+//        for (int i = start; i < end; i++) {
+//            dataset.set(i, "xxxx-" + i); //修改数据
+//        }
+//        adapter.notifyItemRangeChanged(start, end - start); //更新适配器，刷新UI
+
+        //全部更新
+//        int start = 0, end = 2;
+//        for (int i = start; i < end; i++) {
+//            dataset.set(i, "xxxx-" + i); //修改数据
+//        }
+//        adapter.notifyDataSetChanged(); //更新适配器，刷新UI
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*---------------add------------------*/
 
-    private void addAnimator() {
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    private void bindAnimator() {
+
+        RecyclerView.ItemAnimator animator = new RecyclerView.ItemAnimator() {
+            @Override
+            public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
+                System.out.println("-->animateDisappearance<--");
+                System.out.println("viewHolder is " + viewHolder);
+                System.out.println("preLayoutInfo is " + preLayoutInfo);
+                System.out.println("postLayoutInfo is " + postLayoutInfo);
+
+
+                return false;
+            }
+
+            @Override
+            public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
+                System.out.println("-->animateAppearance<--");
+                return false;
+            }
+
+            @Override
+            public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
+                System.out.println("-->animatePersistence<--");
+                return false;
+            }
+
+            @Override
+            public boolean animateChange(@NonNull RecyclerView.ViewHolder oldHolder, @NonNull RecyclerView.ViewHolder newHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
+                System.out.println("-->animateChange<--");
+                return false;
+            }
+
+            @Override
+            public void runPendingAnimations() {
+                System.out.println("-->runPendingAnimations<--");
+            }
+
+            @Override
+            public void endAnimation(RecyclerView.ViewHolder item) {
+                System.out.println("-->runPendingAnimations<--");
+            }
+
+            @Override
+            public void endAnimations() {
+                System.out.println("-->runPendingAnimations<--");
+            }
+
+            @Override
+            public boolean isRunning() {
+                System.out.println("-->runPendingAnimations<--");
+                return false;
+            }
+        };
+
+        recyclerView.setItemAnimator(animator);
+
+
+
 
     }
 
-    private void addListen() {
+    private void bindListen() {
 
 
         //拦截器

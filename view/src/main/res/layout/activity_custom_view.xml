@@ -6,38 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".CustomViewActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/fl"
+        android:background="@color/LightGrey"
+        android:layout_width="224dp"
+        android:layout_height="277dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="custom view"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <mine.view.CustomView
-        android:id="@+id/imageView2"
-        android:layout_width="170dp"
-        android:layout_height="201dp"
-        app:srcCompat="@android:color/holo_orange_light"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="225dp" />
 
-    <mine.view.CustomView
-        android:id="@+id/imageView1"
-        android:layout_width="130dp"
-        android:layout_height="160dp"
-        app:srcCompat="@android:color/holo_blue_dark"
-        tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="45dp" />
+        <mine.view.CustomView
+            android:id="@+id/imageView2"
+            android:layout_width="170dp"
+            android:layout_height="201dp"
+            android:paddingLeft="50dp"
+            app:srcCompat="@android:color/holo_orange_light"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="225dp" />
+
+        <mine.view.CustomView
+            android:id="@+id/imageView1"
+            android:layout_width="130dp"
+            android:layout_height="160dp"
+            app:srcCompat="@android:color/holo_blue_dark"
+            tools:layout_editor_absoluteX="153dp"
+            tools:layout_editor_absoluteY="45dp" />
+    </FrameLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="242dp" />
+        app:layout_constraintGuide_end="278dp" />
 
     <Button
         android:id="@+id/button"
