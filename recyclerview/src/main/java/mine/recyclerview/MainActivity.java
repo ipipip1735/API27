@@ -9,7 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,9 +141,14 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.del~~");
 
         //单个更新
-        int postion = 1;
+        int postion = 5;
+
+        target = recyclerView.getChildAt(postion);
+        System.out.println("target is " + ((TextView)target).getText());
+
         dataset.remove(postion); //删除数据集
         adapter.notifyItemRemoved(postion); //更新适配器，刷新UI
+
 
 
         //局部更新
@@ -177,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
 
 
+        System.out.println(recyclerView.getChildViewHolder(target));
+        System.out.println(recyclerView.getChildLayoutPosition(target));
+        System.out.println(recyclerView.getChildAdapterPosition(target));
 
 
         //打印 ViewHolder
@@ -283,7 +293,8 @@ public class MainActivity extends AppCompatActivity {
                 target = viewHolder.itemView;
                 target.animate().x(150f).start();
 
-                return false;
+
+                return true;
             }
 
             @Override
