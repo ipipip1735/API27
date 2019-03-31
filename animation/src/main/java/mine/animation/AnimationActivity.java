@@ -150,7 +150,29 @@ public class AnimationActivity extends AppCompatActivity {
 
 //        vectorAnimated();//矢量动画
 
-        ripple(); //涟漪动画
+//        ripple(); //涟漪动画
+
+        postAnimotor();
+
+    }
+
+    private void postAnimotor() {
+
+        final ImageView imageView = (ImageView) findViewById(R.id.imageView);
+
+        imageView.postOnAnimation(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("run!!");
+                System.out.println(Thread.currentThread());
+                imageView.animate()
+                        .x(50f)
+                        .y(100f)
+                        .alpha(0.5f)
+                        .setDuration(3000)
+                        .start();
+            }
+        });
 
     }
 
@@ -198,7 +220,6 @@ public class AnimationActivity extends AppCompatActivity {
     }
 
 
-
     private void vectorAnimated() {
 
         ImageView imageView = findViewById(R.id.imageView1);
@@ -235,8 +256,6 @@ public class AnimationActivity extends AppCompatActivity {
                     }
                 })
                 .start();
-
-
 
 
     }
