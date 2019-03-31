@@ -110,6 +110,10 @@ public class ListViewActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        ViewGroup viewGroup = findViewById(R.id.lv);
+        View v = viewGroup.getChildAt(0);
+        v.animate()
+
 
     }
 

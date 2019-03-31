@@ -36,6 +36,7 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
                 System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
                 System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
                 System.out.println("getChildItemId is " + recyclerView.getChildItemId(v));
+                System.out.println(recyclerView.getChildViewHolder(v));
             }
         });
 

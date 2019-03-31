@@ -271,6 +271,8 @@ public class MainActivity extends AppCompatActivity {
     private void bindAnimator() {
 
         RecyclerView.ItemAnimator animator = new RecyclerView.ItemAnimator() {
+            View target;
+
             @Override
             public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
                 System.out.println("-->animateDisappearance<--");
@@ -278,6 +280,8 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("preLayoutInfo is " + preLayoutInfo);
                 System.out.println("postLayoutInfo is " + postLayoutInfo);
 
+                target = viewHolder.itemView;
+                target.animate().x(150f).start();
 
                 return false;
             }
@@ -285,13 +289,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
                 System.out.println("-->animateAppearance<--");
+//                System.out.println("viewHolder is " + viewHolder);
+//                System.out.println("preLayoutInfo is " + preLayoutInfo);
+//                System.out.println("postLayoutInfo is " + postLayoutInfo);
                 return false;
             }
 
             @Override
             public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
                 System.out.println("-->animatePersistence<--");
-                return false;
+//                System.out.println("viewHolder is " + viewHolder);
+//                System.out.println("preLayoutInfo is " + preLayoutInfo);
+//                System.out.println("postLayoutInfo is " + postLayoutInfo);
+                return true;
             }
 
             @Override
@@ -303,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void runPendingAnimations() {
                 System.out.println("-->runPendingAnimations<--");
+
             }
 
             @Override
@@ -312,12 +323,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void endAnimations() {
-                System.out.println("-->runPendingAnimations<--");
+                System.out.println("-->endAnimations<--");
             }
 
             @Override
             public boolean isRunning() {
-                System.out.println("-->runPendingAnimations<--");
+                System.out.println("-->isRunning<--");
                 return false;
             }
         };
