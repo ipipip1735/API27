@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -112,7 +113,16 @@ public class ListViewActivity extends AppCompatActivity {
 
         ViewGroup viewGroup = findViewById(R.id.lv);
         View v = viewGroup.getChildAt(0);
-        v.animate()
+        v.animate().x(150f);
+//
+//        ViewPropertyAnimator viewPropertyAnimator = v.animate();
+//        System.out.println(viewPropertyAnimator);
+//
+//        ViewPropertyAnimator viewPropertyAnimator1 = v.animate();
+//        System.out.println(viewPropertyAnimator1);
+
+
+
 
 
     }
@@ -136,11 +146,11 @@ public class ListViewActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.add~~");
 
-        TextView textView = new TextView(this);
-        textView.setText("aaaaa");
+//        TextView textView = new TextView(this);
+//        textView.setText("aaaaa");
 //        System.out.println(recyclerView);
 
-        listView.addHeaderView(textView);
+//        listView.addHeaderView(textView);
     }
 
 

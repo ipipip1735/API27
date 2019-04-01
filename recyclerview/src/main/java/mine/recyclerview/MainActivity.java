@@ -1,5 +1,7 @@
 package mine.recyclerview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,11 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -144,11 +149,10 @@ public class MainActivity extends AppCompatActivity {
         int postion = 5;
 
         target = recyclerView.getChildAt(postion);
-        System.out.println("target is " + ((TextView)target).getText());
+        System.out.println("target is " + ((TextView) target).getText());
 
         dataset.remove(postion); //删除数据集
         adapter.notifyItemRemoved(postion); //更新适配器，刷新UI
-
 
 
         //局部更新
@@ -166,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
 //            dataset.remove(r);//随机删除数据集
 //        }
 //        adapter.notifyDataSetChanged(); //更新适配器，刷新UI
-
 
 
     }
@@ -227,25 +230,40 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-
-
-
 //        ViewInfo(); //获取测量值
     }
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
     }
 
 
-    public void update(View view) {
+    public void update(final View view) {
         System.out.println("~~button.update~~");
 
+
+
+//        final View v = recyclerView.getChildAt(0);
+//        final ViewPropertyAnimator animation = v.animate();
+//        animation.setDuration(5000L).alpha(0).setListener(
+//                new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationStart(Animator animator) {
+//                    }
+//
+//                    @Override
+//                    public void onAnimationEnd(Animator animator) {
+//                        animation.setListener(null);
+//                        v.setAlpha(1);
+//                    }
+//                }).start();
+
+
+
         //单个更新
-        int postion = 0;
-        dataset.set(postion, "xxxx"); //修改数据
-        adapter.notifyItemChanged(postion); //更新适配器，刷新UI
+//        int postion = 0;
+//        dataset.set(postion, "xxxx"); //修改数据
+//        adapter.notifyItemChanged(postion); //更新适配器，刷新UI
 
         //局部更新
 //        int start = 0, end = 2;
@@ -282,19 +300,56 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.ItemAnimator animator = new RecyclerView.ItemAnimator() {
             View target;
+            Map<RecyclerView.ViewHolder, int[]> map = new HashMap<>();
 
             @Override
             public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
                 System.out.println("-->animateDisappearance<--");
                 System.out.println("viewHolder is " + viewHolder);
-                System.out.println("preLayoutInfo is " + preLayoutInfo);
-                System.out.println("postLayoutInfo is " + postLayoutInfo);
 
-                target = viewHolder.itemView;
-                target.animate().x(150f).start();
+                //获取信息
+//                if (preLayoutInfo != null) {
+//                    System.out.println("preLayoutInfo.left is " + preLayoutInfo.left);
+//                    System.out.println("preLayoutInfo.top is " + preLayoutInfo.top);
+//                    System.out.println("preLayoutInfo.right is " + preLayoutInfo.right);
+//                    System.out.println("preLayoutInfo.bottom is " + preLayoutInfo.bottom);
+//                }else{
+//                    System.out.println("preLayoutInfo is " + preLayoutInfo);
+//                }
+//                if (postLayoutInfo != null) {
+//                    System.out.println("postLayoutInfo.left is " + postLayoutInfo.left);
+//                    System.out.println("postLayoutInfo.top is " + postLayoutInfo.top);
+//                    System.out.println("postLayoutInfo.right is " + postLayoutInfo.right);
+//                    System.out.println("postLayoutInfo.bottom is " + postLayoutInfo.bottom);
+//                }else{
+//                    System.out.println("postLayoutInfo is " + postLayoutInfo);
+//                }
 
 
-                return true;
+
+                int[] ints = new int[2];
+                ints[0] = preLayoutInfo.left;
+                ints[1] = preLayoutInfo.left + 150;
+
+
+
+
+
+
+
+
+//                System.out.println("viewHolder.isRemoved() is " + viewHolder.isRemoved());
+
+//                target = viewHolder.itemView;
+//                System.out.println("target.getLeft() is " + target.getLeft());
+//                System.out.println("target.getTop() is " + target.getTop());
+//                System.out.println("target.getRight() is " + target.getRight());
+//                System.out.println("target.getBottom() is " + target.getBottom());
+
+
+
+
+                return false;
             }
 
             @Override
@@ -312,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println("viewHolder is " + viewHolder);
 //                System.out.println("preLayoutInfo is " + preLayoutInfo);
 //                System.out.println("postLayoutInfo is " + postLayoutInfo);
-                return true;
+                return false;
             }
 
             @Override
@@ -324,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void runPendingAnimations() {
                 System.out.println("-->runPendingAnimations<--");
-
+                target.animate().start();//播放动画
             }
 
             @Override
@@ -345,8 +400,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
         recyclerView.setItemAnimator(animator);
-
-
 
 
     }
