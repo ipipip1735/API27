@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
 
         dataset = new ArrayList<>(8);
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 6; i++) {
             dataset.add("item" + i);
         }
         adapter = new RVAdapter<>(dataset);
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.del~~");
 
         //单个更新
-        int postion = 5;
+        int postion = 2;
 
         target = recyclerView.getChildAt(postion);
         System.out.println("target is " + ((TextView) target).getText());
@@ -242,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.update~~");
 
 
-
 //        final View v = recyclerView.getChildAt(0);
 //        final ViewPropertyAnimator animation = v.animate();
 //        animation.setDuration(5000L).alpha(0).setListener(
@@ -257,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
 //                        v.setAlpha(1);
 //                    }
 //                }).start();
-
 
 
         //单个更新
@@ -300,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.ItemAnimator animator = new RecyclerView.ItemAnimator() {
             View target;
-            Map<RecyclerView.ViewHolder, int[]> map = new HashMap<>();
 
             @Override
             public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
@@ -308,54 +305,37 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("viewHolder is " + viewHolder);
 
                 //获取信息
-//                if (preLayoutInfo != null) {
-//                    System.out.println("preLayoutInfo.left is " + preLayoutInfo.left);
-//                    System.out.println("preLayoutInfo.top is " + preLayoutInfo.top);
-//                    System.out.println("preLayoutInfo.right is " + preLayoutInfo.right);
-//                    System.out.println("preLayoutInfo.bottom is " + preLayoutInfo.bottom);
-//                }else{
-//                    System.out.println("preLayoutInfo is " + preLayoutInfo);
-//                }
-//                if (postLayoutInfo != null) {
-//                    System.out.println("postLayoutInfo.left is " + postLayoutInfo.left);
-//                    System.out.println("postLayoutInfo.top is " + postLayoutInfo.top);
-//                    System.out.println("postLayoutInfo.right is " + postLayoutInfo.right);
-//                    System.out.println("postLayoutInfo.bottom is " + postLayoutInfo.bottom);
-//                }else{
-//                    System.out.println("postLayoutInfo is " + postLayoutInfo);
-//                }
+                if (preLayoutInfo != null) {
+                    System.out.println("preLayoutInfo.left is " + preLayoutInfo.left);
+                    System.out.println("preLayoutInfo.top is " + preLayoutInfo.top);
+                    System.out.println("preLayoutInfo.right is " + preLayoutInfo.right);
+                    System.out.println("preLayoutInfo.bottom is " + preLayoutInfo.bottom);
+                } else {
+                    System.out.println("preLayoutInfo is " + preLayoutInfo);
+                }
+                if (postLayoutInfo != null) {
+                    System.out.println("postLayoutInfo.left is " + postLayoutInfo.left);
+                    System.out.println("postLayoutInfo.top is " + postLayoutInfo.top);
+                    System.out.println("postLayoutInfo.right is " + postLayoutInfo.right);
+                    System.out.println("postLayoutInfo.bottom is " + postLayoutInfo.bottom);
+                } else {
+                    System.out.println("postLayoutInfo is " + postLayoutInfo);
+                }
+
+                target = viewHolder.itemView;
+                System.out.println("target.getLeft() is " + target.getLeft());
+                System.out.println("target.getTop() is " + target.getTop());
+                System.out.println("target.getRight() is " + target.getRight());
+                System.out.println("target.getBottom() is " + target.getBottom());
 
 
-
-                int[] ints = new int[2];
-                ints[0] = preLayoutInfo.left;
-                ints[1] = preLayoutInfo.left + 150;
-
-
-
-
-
-
-
-
-//                System.out.println("viewHolder.isRemoved() is " + viewHolder.isRemoved());
-
-//                target = viewHolder.itemView;
-//                System.out.println("target.getLeft() is " + target.getLeft());
-//                System.out.println("target.getTop() is " + target.getTop());
-//                System.out.println("target.getRight() is " + target.getRight());
-//                System.out.println("target.getBottom() is " + target.getBottom());
-
-
-
-
-                return false;
+                return true;
             }
 
             @Override
             public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
                 System.out.println("-->animateAppearance<--");
-//                System.out.println("viewHolder is " + viewHolder);
+                System.out.println("viewHolder is " + viewHolder);
 //                System.out.println("preLayoutInfo is " + preLayoutInfo);
 //                System.out.println("postLayoutInfo is " + postLayoutInfo);
                 return false;
@@ -364,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
                 System.out.println("-->animatePersistence<--");
-//                System.out.println("viewHolder is " + viewHolder);
+                System.out.println("viewHolder is " + viewHolder);
 //                System.out.println("preLayoutInfo is " + preLayoutInfo);
 //                System.out.println("postLayoutInfo is " + postLayoutInfo);
                 return false;
@@ -379,12 +359,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void runPendingAnimations() {
                 System.out.println("-->runPendingAnimations<--");
-                target.animate().start();//播放动画
+                ViewPropertyAnimator animator = target.animate();
+                animator.setDuration(2000L).x(150f).start();//播放动画
             }
 
             @Override
             public void endAnimation(RecyclerView.ViewHolder item) {
-                System.out.println("-->runPendingAnimations<--");
+                System.out.println("-->endAnimation<--");
             }
 
             @Override
