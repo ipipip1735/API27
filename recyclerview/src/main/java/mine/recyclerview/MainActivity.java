@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
 
         dataset = new ArrayList<>(8);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 8; i++) {
             dataset.add("item" + i);
         }
         adapter = new RVAdapter<>(dataset);
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         int postion = 2;
 
         target = recyclerView.getChildAt(postion);
-        System.out.println("target is " + ((TextView) target).getText());
+        System.out.println("del'target is " + ((TextView) target).getText());
 
         dataset.remove(postion); //删除数据集
         adapter.notifyItemRemoved(postion); //更新适配器，刷新UI
@@ -296,89 +296,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindAnimator() {
 
-        RecyclerView.ItemAnimator animator = new RecyclerView.ItemAnimator() {
-            View target;
+//        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
+        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
-            @Override
-            public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
-                System.out.println("-->animateDisappearance<--");
-                System.out.println("viewHolder is " + viewHolder);
-
-                //获取信息
-                if (preLayoutInfo != null) {
-                    System.out.println("preLayoutInfo.left is " + preLayoutInfo.left);
-                    System.out.println("preLayoutInfo.top is " + preLayoutInfo.top);
-                    System.out.println("preLayoutInfo.right is " + preLayoutInfo.right);
-                    System.out.println("preLayoutInfo.bottom is " + preLayoutInfo.bottom);
-                } else {
-                    System.out.println("preLayoutInfo is " + preLayoutInfo);
-                }
-                if (postLayoutInfo != null) {
-                    System.out.println("postLayoutInfo.left is " + postLayoutInfo.left);
-                    System.out.println("postLayoutInfo.top is " + postLayoutInfo.top);
-                    System.out.println("postLayoutInfo.right is " + postLayoutInfo.right);
-                    System.out.println("postLayoutInfo.bottom is " + postLayoutInfo.bottom);
-                } else {
-                    System.out.println("postLayoutInfo is " + postLayoutInfo);
-                }
-
-                target = viewHolder.itemView;
-                System.out.println("target.getLeft() is " + target.getLeft());
-                System.out.println("target.getTop() is " + target.getTop());
-                System.out.println("target.getRight() is " + target.getRight());
-                System.out.println("target.getBottom() is " + target.getBottom());
-
-
-                return true;
-            }
-
-            @Override
-            public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-                System.out.println("-->animateAppearance<--");
-                System.out.println("viewHolder is " + viewHolder);
-//                System.out.println("preLayoutInfo is " + preLayoutInfo);
-//                System.out.println("postLayoutInfo is " + postLayoutInfo);
-                return false;
-            }
-
-            @Override
-            public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-                System.out.println("-->animatePersistence<--");
-                System.out.println("viewHolder is " + viewHolder);
-//                System.out.println("preLayoutInfo is " + preLayoutInfo);
-//                System.out.println("postLayoutInfo is " + postLayoutInfo);
-                return false;
-            }
-
-            @Override
-            public boolean animateChange(@NonNull RecyclerView.ViewHolder oldHolder, @NonNull RecyclerView.ViewHolder newHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-                System.out.println("-->animateChange<--");
-                return false;
-            }
-
-            @Override
-            public void runPendingAnimations() {
-                System.out.println("-->runPendingAnimations<--");
-                ViewPropertyAnimator animator = target.animate();
-                animator.setDuration(2000L).x(150f).start();//播放动画
-            }
-
-            @Override
-            public void endAnimation(RecyclerView.ViewHolder item) {
-                System.out.println("-->endAnimation<--");
-            }
-
-            @Override
-            public void endAnimations() {
-                System.out.println("-->endAnimations<--");
-            }
-
-            @Override
-            public boolean isRunning() {
-                System.out.println("-->isRunning<--");
-                return false;
-            }
-        };
 
         recyclerView.setItemAnimator(animator);
 
