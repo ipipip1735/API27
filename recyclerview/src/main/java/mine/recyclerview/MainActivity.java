@@ -2,11 +2,16 @@ package mine.recyclerview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,6 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import static android.support.v7.widget.DividerItemDecoration.HORIZONTAL;
+import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -53,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        bindListen(); //绑定各种监听器
-        bindAnimator(); //绑定动画
+//        bindAnimator(); //绑定动画
+        bindDecoration(); //绑定装饰器
 
     }
 
@@ -276,7 +286,6 @@ public class MainActivity extends AppCompatActivity {
 //            dataset.set(i, "xxxx-" + i); //修改数据
 //        }
 //        adapter.notifyDataSetChanged(); //更新适配器，刷新UI
-
     }
 
 
@@ -292,7 +301,63 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    /*---------------add------------------*/
+    /*---------------bind------------------*/
+
+
+    private void bindDecoration() {
+
+        //方式一：使用系统默认
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, VERTICAL));
+
+
+
+        //方式二：自定义
+        RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
+
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                System.out.println("~~onDraw~~");
+
+                Random random = new Random();
+                Paint paint = new Paint();
+
+                int width = parent.getWidth();
+
+                for (int i = 1; i < parent.getChildCount(); i++) {
+                    int left = parent.getChildAt(i).getLeft();
+                    int top = parent.getChildAt(i).getTop();
+                    paint.setColor(Color.rgb(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
+                    c.drawLine(left, top, width, top, paint);
+                }
+
+            }
+
+            @Override
+            public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                System.out.println("~~onDrawOver~~");
+
+            }
+
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                System.out.println("~~getItemOffsets~~");
+//                super.getItemOffsets(outRect, view, parent, state);
+
+                int paddingLeft, paddingTop, paddingRight, paddingBottom;
+                paddingLeft = 0;
+                paddingTop = 5;
+                paddingRight = 0;
+                paddingBottom = 0;
+                outRect.set(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            }
+        };
+        recyclerView.addItemDecoration(itemDecoration);
+
+
+
+
+    }
+
 
     private void bindAnimator() {
 
