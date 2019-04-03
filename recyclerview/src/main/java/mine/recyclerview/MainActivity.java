@@ -127,6 +127,13 @@ public class MainActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.add~~");
 
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            TextView textView = (TextView) recyclerView.getChildAt(i);
+            System.out.print(textView.getText() + "|");
+        }
+        System.out.println("-");
+
+
         //单个更新
 //        int postion = 0;
 //        dataset.add(postion, "insert-" + dataset.size());//插入到数据集
@@ -156,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.del~~");
 
         //单个更新
-        int postion = 2;
+        int postion = 3;
 
         target = recyclerView.getChildAt(postion);
         System.out.println("del'target is " + ((TextView) target).getText());
@@ -197,10 +204,15 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
 
 
-        System.out.println(recyclerView.getChildViewHolder(target));
-        System.out.println(recyclerView.getChildLayoutPosition(target));
-        System.out.println(recyclerView.getChildAdapterPosition(target));
-
+        System.out.println(((TextView) target).getText() + "|" + recyclerView.getChildViewHolder(target));
+        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(target));
+        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(target));
+        System.out.println("---------");
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            TextView textView = (TextView) recyclerView.getChildAt(i);
+            System.out.print(textView.getText() + "|");
+        }
+        System.out.println("");
 
         //打印 ViewHolder
 //        for (int i = 0; i < recyclerView.getChildCount(); i++) {
@@ -310,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(this, VERTICAL));
 
 
-
         //方式二：自定义
         RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
 
@@ -328,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
                     int left = parent.getChildAt(i).getLeft();
                     int top = parent.getChildAt(i).getTop();
 //                    paint.setColor(Color.BLUE);
-                    paint.setColor(Color.rgb(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
+                    paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
                     c.drawLine(left, top, width, top, paint);
                 }
 
@@ -365,8 +376,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindAnimator() {
 
-//        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
-        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
+        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
+//        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
 
         recyclerView.setItemAnimator(animator);

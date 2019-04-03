@@ -1,9 +1,12 @@
 package mine.recyclerview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -15,9 +18,9 @@ import java.util.Map;
  */
 public class ItemAnimator extends RecyclerView.ItemAnimator {
 
-    Map<View, int[]> animateDisappearance = new HashMap<>();
-    Map<View, int[]> animateAppearance = new HashMap<>();
-    Map<View, int[]> animatePersistence = new HashMap<>();
+   private Map<RecyclerView.ViewHolder, int[]> animateDisappearance = new HashMap<>();
+   private Map<RecyclerView.ViewHolder, int[]> animateAppearance = new HashMap<>();
+   private Map<RecyclerView.ViewHolder, int[]> animatePersistence = new HashMap<>();
 
     @Override
     public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
@@ -48,10 +51,9 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
         //通过布局值计算动画值，这里为了简化直接取布局值
         int[] values = new int[2];
-        values[0] = 0;
-        values[1] = 1;
-        animateDisappearance.put(viewHolder.itemView, values);
-        viewHolder.itemView.setVisibility(View.INVISIBLE);
+        values[0] = 1;
+        values[1] = (int) viewHolder.itemView.getX();
+        animateDisappearance.put(viewHolder, values);
 
         return true;
     }
@@ -60,7 +62,6 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
     public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
         System.out.println("-->animateAppearance<--");
         System.out.println(((TextView) viewHolder.itemView).getText() + "|viewHolder is " + viewHolder);
-
 
         //获取信息
         if (preLayoutInfo != null) {
@@ -88,7 +89,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         int[] values = new int[2];
         values[0] = preLayoutInfo.top;
         values[1] = postLayoutInfo.top;
-        animateAppearance.put(viewHolder.itemView, values);
+        animateAppearance.put(viewHolder, values);
 
 
         return true;
@@ -125,7 +126,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         int[] values = new int[2];
         values[0] = preLayoutInfo.top;
         values[1] = postLayoutInfo.top;
-        animatePersistence.put(viewHolder.itemView, values);
+        animatePersistence.put(viewHolder, values);
 
         return true;
     }
@@ -161,30 +162,68 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
         long duration = 3000L;
 
+        //创建出屏动画
+        for (final RecyclerView.ViewHolder holder : animateDisappearance.keySet()) {
+            final int alpha = animateDisappearance.get(holder)[0];
+            final int x = animateDisappearance.get(holder)[1];
 
-        for (View v : animateDisappearance.keySet()) {
-            v.animate().setDuration(duration)
-                    .x(v.getX() + 150f)
-                    .alpha(animateDisappearance.get(v)[0])
+            holder.itemView.animate().setDuration(duration)
+                    .alpha(alpha * 0.1f)
+                    .x(x+150)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            holder.itemView.setAlpha(alpha);
+                            holder.itemView.setX(x);
+                            dispatchAnimationFinished(holder);
+                        }
+                    })
                     .start();
-            System.out.println("animateDisappearance|" + ((TextView) v).getText());
+            System.out.println("animateDisappearance|" + ((TextView) holder.itemView).getText());
         }
+        animateDisappearance.clear();
 
-        for (View v : animateAppearance.keySet()) {
-            v.animate().setDuration(duration)
-                    .x(v.getX() + 15f)
-                    .y(animateAppearance.get(v)[1])
+
+
+
+        //创建入屏动画
+        for (final RecyclerView.ViewHolder holder : animateAppearance.keySet()) {
+            holder.itemView.setY(animateAppearance.get(holder)[0]);
+            holder.itemView.animate().setDuration(duration)
+                    .y(animateAppearance.get(holder)[1])
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            dispatchAnimationFinished(holder);
+                        }
+                    })
                     .start();
-        }
 
-        for (View v : animatePersistence.keySet()) {
-            v.setY(animatePersistence.get(v)[0]);
-            v.animate().setDuration(duration)
-                    .y(animatePersistence.get(v)[1])
+            System.out.println("animateAppearance|" + ((TextView) holder.itemView).getText());
+        }
+        animateAppearance.clear();
+
+
+
+        //创建屏中动画
+        for (final RecyclerView.ViewHolder holder : animatePersistence.keySet()) {
+            holder.itemView.setY(animatePersistence.get(holder)[0]);
+            holder.itemView.animate().setDuration(duration)
+                    .y(animatePersistence.get(holder)[1])
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            dispatchAnimationFinished(holder);
+                        }
+                    })
                     .start();
-
-            System.out.println("animatePersistence|" + ((TextView) v).getText());
+            System.out.println("animatePersistence|" + ((TextView) holder.itemView).getText());
         }
+        animatePersistence.clear();
+
+
+
+
 
     }
 

@@ -1,8 +1,11 @@
 package mine.recyclerview;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -13,8 +16,8 @@ import java.util.Map;
  */
 public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnimator {
 
-    Map<View, int[]> animateRemove = new HashMap<>();
-    Map<View, int[]> animateMove = new HashMap<>();
+    Map<RecyclerView.ViewHolder, int[]> animateRemove = new HashMap<>();
+    Map<RecyclerView.ViewHolder, int[]> animateMove = new HashMap<>();
 
     @Override
     public boolean animateRemove(RecyclerView.ViewHolder holder) {
@@ -23,7 +26,7 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
 
         int[] values = new int[1];
         values[0] = 0;
-        animateRemove.put(holder.itemView, values);
+        animateRemove.put(holder, values);
         return true;
     }
 
@@ -43,7 +46,7 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         int[] values = new int[2];
         values[0] = fromY;
         values[1] = toY;
-        animateMove.put(holder.itemView, values);
+        animateMove.put(holder, values);
 
         return true;
     }
@@ -61,22 +64,45 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
     public void runPendingAnimations() {
         System.out.println("-->runPendingAnimations<--");
 
-        long duration = 3000L;
+        long duration = 2500L;
 
-        for (View v : animateRemove.keySet()) {
-            v.animate().setDuration(duration)
-                    .x(v.getX() + 150f)
-                    .alpha(animateRemove.get(v)[0])
+        System.out.println("animateRemove'count is " + animateRemove.keySet().size());
+        for (final RecyclerView.ViewHolder holder : animateRemove.keySet()) {
+
+            holder.itemView.animate().setDuration(duration)
+                    .x(holder.itemView.getX() + 150f)
+                    .alpha(animateRemove.get(holder)[0] + 0.3f)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            System.out.println("~~onAnimateRemoveEnd~~");
+                            holder.itemView.setX(0);
+                            holder.itemView.setAlpha(1);
+                            dispatchRemoveFinished(holder);
+                        }
+                    })
                     .start();
-            System.out.println("animateRemove|" + ((TextView) v).getText());
+            System.out.println("animateRemove|" + ((TextView) holder.itemView).getText());
         }
-        for (View v : animateMove.keySet()) {
-            v.setY(animateMove.get(v)[0]);
-            v.animate().setDuration(duration)
-                    .y(animateMove.get(v)[1])
+        animateRemove.clear();
+
+
+        System.out.println("animateMove'count is " + animateMove.keySet().size());
+        for (final RecyclerView.ViewHolder holder : animateMove.keySet()) {
+            holder.itemView.setY(animateMove.get(holder)[0]);
+            holder.itemView.animate().setDuration(duration)
+                    .y(animateMove.get(holder)[1])
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            System.out.println("~~onAnimateMoveEnd~~");
+                            dispatchMoveFinished(holder);
+                        }
+                    })
                     .start();
-            System.out.println("animateMove|" + ((TextView) v).getText());
+            System.out.println("animateMove|" + ((TextView) holder.itemView).getText());
         }
+        animateMove.clear();
 
     }
 
