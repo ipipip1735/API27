@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        bindListen(); //绑定各种监听器
-//        bindAnimator(); //绑定动画
-        bindDecoration(); //绑定装饰器
+        bindAnimator(); //绑定动画
+//        bindDecoration(); //绑定装饰器
 
     }
 
@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
     private void bindDecoration() {
 
         //方式一：使用系统默认
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(this, VERTICAL));
 
 
 
@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 System.out.println("~~onDraw~~");
 
+
                 Random random = new Random();
                 Paint paint = new Paint();
 
@@ -326,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 1; i < parent.getChildCount(); i++) {
                     int left = parent.getChildAt(i).getLeft();
                     int top = parent.getChildAt(i).getTop();
+//                    paint.setColor(Color.BLUE);
                     paint.setColor(Color.rgb(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
                     c.drawLine(left, top, width, top, paint);
                 }
@@ -336,6 +338,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 System.out.println("~~onDrawOver~~");
 
+                System.out.println(state);
+                System.out.println("getItemCount is " + state.getItemCount());
+                System.out.println("getRemainingScrollHorizontal is " + state.getRemainingScrollHorizontal());
+                System.out.println("getRemainingScrollVertical is " + state.getRemainingScrollVertical());
+                System.out.println("getTargetScrollPosition is " + state.getTargetScrollPosition());
+
             }
 
             @Override
@@ -345,17 +353,13 @@ public class MainActivity extends AppCompatActivity {
 
                 int paddingLeft, paddingTop, paddingRight, paddingBottom;
                 paddingLeft = 0;
-                paddingTop = 5;
+                paddingTop = 15;
                 paddingRight = 0;
                 paddingBottom = 0;
                 outRect.set(paddingLeft, paddingTop, paddingRight, paddingBottom);
             }
         };
         recyclerView.addItemDecoration(itemDecoration);
-
-
-
-
     }
 
 
