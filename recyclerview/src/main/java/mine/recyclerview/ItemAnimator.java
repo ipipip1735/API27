@@ -5,11 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -18,13 +18,16 @@ import java.util.Map;
  */
 public class ItemAnimator extends RecyclerView.ItemAnimator {
 
-   private Map<RecyclerView.ViewHolder, int[]> animateDisappearance = new HashMap<>();
-   private Map<RecyclerView.ViewHolder, int[]> animateAppearance = new HashMap<>();
-   private Map<RecyclerView.ViewHolder, int[]> animatePersistence = new HashMap<>();
+    private Map<RecyclerView.ViewHolder, int[]> pendingDisappearance = new HashMap<>();
+    private Map<RecyclerView.ViewHolder, int[]> pendingAppearance = new HashMap<>();
+    private Map<RecyclerView.ViewHolder, int[]> pendingPersistence = new HashMap<>();
+    private List<RecyclerView.ViewHolder> animateDisappearance = new ArrayList<>();
+    private List<RecyclerView.ViewHolder> animateAppearance = new ArrayList<>();
+    private List<RecyclerView.ViewHolder> animatePersistence = new ArrayList<>();
 
     @Override
     public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
-        System.out.println("-->animateDisappearance<--");
+        System.out.println("-->pendingDisappearance<--");
         System.out.println(((TextView) viewHolder.itemView).getText() + "|viewHolder is " + viewHolder);
 
         //获取信息
@@ -53,14 +56,14 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         int[] values = new int[2];
         values[0] = 1;
         values[1] = (int) viewHolder.itemView.getX();
-        animateDisappearance.put(viewHolder, values);
+        pendingDisappearance.put(viewHolder, values);
 
         return true;
     }
 
     @Override
     public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-        System.out.println("-->animateAppearance<--");
+        System.out.println("-->pendingAppearance<--");
         System.out.println(((TextView) viewHolder.itemView).getText() + "|viewHolder is " + viewHolder);
 
         //获取信息
@@ -89,7 +92,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         int[] values = new int[2];
         values[0] = preLayoutInfo.top;
         values[1] = postLayoutInfo.top;
-        animateAppearance.put(viewHolder, values);
+        pendingAppearance.put(viewHolder, values);
 
 
         return true;
@@ -97,7 +100,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
     @Override
     public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-        System.out.println("-->animatePersistence<--");
+        System.out.println("-->pendingPersistence<--");
         System.out.println(((TextView) viewHolder.itemView).getText() + "|viewHolder is " + viewHolder);
 
         //获取信息
@@ -126,7 +129,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         int[] values = new int[2];
         values[0] = preLayoutInfo.top;
         values[1] = postLayoutInfo.top;
-        animatePersistence.put(viewHolder, values);
+        pendingPersistence.put(viewHolder, values);
 
         return true;
     }
@@ -163,67 +166,67 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         long duration = 3000L;
 
         //创建出屏动画
-        for (final RecyclerView.ViewHolder holder : animateDisappearance.keySet()) {
-            final int alpha = animateDisappearance.get(holder)[0];
-            final int x = animateDisappearance.get(holder)[1];
+        for (final RecyclerView.ViewHolder holder : pendingDisappearance.keySet()) {
+            final int alpha = pendingDisappearance.get(holder)[0];
+            final int x = pendingDisappearance.get(holder)[1];
 
+            animateDisappearance.add(holder);
             holder.itemView.animate().setDuration(duration)
                     .alpha(alpha * 0.1f)
-                    .x(x+150)
+                    .x(x + 150)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             holder.itemView.setAlpha(alpha);
                             holder.itemView.setX(x);
                             dispatchAnimationFinished(holder);
+                            animateDisappearance.remove(holder);
                         }
                     })
                     .start();
-            System.out.println("animateDisappearance|" + ((TextView) holder.itemView).getText());
+            System.out.println("pendingDisappearance|" + ((TextView) holder.itemView).getText());
         }
-        animateDisappearance.clear();
-
-
+        pendingDisappearance.clear();
 
 
         //创建入屏动画
-        for (final RecyclerView.ViewHolder holder : animateAppearance.keySet()) {
-            holder.itemView.setY(animateAppearance.get(holder)[0]);
+        for (final RecyclerView.ViewHolder holder : pendingAppearance.keySet()) {
+            holder.itemView.setY(pendingAppearance.get(holder)[0]);
+
+            animateAppearance.add(holder);
             holder.itemView.animate().setDuration(duration)
-                    .y(animateAppearance.get(holder)[1])
+                    .y(pendingAppearance.get(holder)[1])
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             dispatchAnimationFinished(holder);
+                            animateAppearance.remove(holder);
                         }
                     })
                     .start();
 
-            System.out.println("animateAppearance|" + ((TextView) holder.itemView).getText());
+            System.out.println("pendingAppearance|" + ((TextView) holder.itemView).getText());
         }
-        animateAppearance.clear();
-
+        pendingAppearance.clear();
 
 
         //创建屏中动画
-        for (final RecyclerView.ViewHolder holder : animatePersistence.keySet()) {
-            holder.itemView.setY(animatePersistence.get(holder)[0]);
+        for (final RecyclerView.ViewHolder holder : pendingPersistence.keySet()) {
+            holder.itemView.setY(pendingPersistence.get(holder)[0]);
+            animatePersistence.add(holder);
             holder.itemView.animate().setDuration(duration)
-                    .y(animatePersistence.get(holder)[1])
+                    .y(pendingPersistence.get(holder)[1])
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             dispatchAnimationFinished(holder);
+                            animatePersistence.remove(holder);
                         }
                     })
                     .start();
-            System.out.println("animatePersistence|" + ((TextView) holder.itemView).getText());
+            System.out.println("pendingPersistence|" + ((TextView) holder.itemView).getText());
         }
-        animatePersistence.clear();
-
-
-
-
+        pendingPersistence.clear();
 
     }
 
@@ -241,7 +244,13 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
     @Override
     public boolean isRunning() {
         System.out.println("-->isRunning<--");
-        return false;
+        if(!pendingDisappearance.isEmpty()
+        ||!pendingAppearance.isEmpty()
+        ||!pendingPersistence.isEmpty()
+        ||!animateDisappearance.isEmpty()
+        ||!animateAppearance.isEmpty()
+        ||!animatePersistence.isEmpty()) return false;
+        return true;
     }
 
 }

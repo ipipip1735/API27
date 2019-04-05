@@ -123,6 +123,9 @@ public class AnimationActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("********stop******");
 
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.animate().cancel();
+
     }
 
     public void show(View view) {
@@ -146,19 +149,19 @@ public class AnimationActivity extends AppCompatActivity {
 
 //        tween();
 //        frame();
-//        viewAnimator(); //视图属性动画
+        viewAnimator(); //视图属性动画
 
 //        vectorAnimated();//矢量动画
 
 //        ripple(); //涟漪动画
 
-        postAnimotor();
+//        postAnimotor();
 
     }
 
     private void postAnimotor() {
 
-        final ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        final ImageView imageView = findViewById(R.id.imageView);
 
         imageView.postOnAnimation(new Runnable() {
             @Override
@@ -232,27 +235,27 @@ public class AnimationActivity extends AppCompatActivity {
     private void viewAnimator() {
 
         //简单使用
-//        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+//        ImageView imageView = findViewById(R.id.imageView);
 //        imageView.animate()
 //                .x(50f)
 //                .y(100f)
 //                .alpha(0.5f)
 //                .setDuration(3000)
-//                .start();
+//                .start(); //此方法是可选的
 
 
         //绑定监听器
-        final ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        ImageView imageView = findViewById(R.id.imageView);
         imageView.animate()
                 .x(imageView.getX() - 50)
                 .y(imageView.getX() - 40)
-                .alpha(0)
+//                .alpha(0)
                 .setDuration(3000)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        imageView.setVisibility(View.GONE);
+//                        imageView.setVisibility(View.GONE);
                     }
                 })
                 .start();

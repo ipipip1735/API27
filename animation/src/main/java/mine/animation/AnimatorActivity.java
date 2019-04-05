@@ -107,7 +107,7 @@ public class AnimatorActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 
-//        valueAnimator(); //值动画
+        valueAnimator(); //值动画
 //        propertyAnimator(); //属性动画
 
 
@@ -117,7 +117,7 @@ public class AnimatorActivity extends AppCompatActivity {
 
 //        pathObjectAnimator();//路径动画
 
-        pathInterpolatorAnimator();
+//        pathInterpolatorAnimator();
 
     }
 
@@ -272,6 +272,22 @@ public class AnimatorActivity extends AppCompatActivity {
                 int i = (int) animation.getAnimatedValue();
                 System.out.println("getAnimatedValue is " + i);
 
+            }
+        });
+
+        //绑定监听器
+        va.addListener(new AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                System.out.println("~~onAnimationStart~~");
+                System.out.println(((ValueAnimator)animation).getAnimatedValue());
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                System.out.println("~~onAnimationEnd~~");
+                System.out.println(((ValueAnimator)animation).getAnimatedValue());
             }
         });
 

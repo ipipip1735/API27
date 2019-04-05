@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.del~~");
 
         //单个更新
-        int postion = 3;
+        int postion = 1;
 
         target = recyclerView.getChildAt(postion);
         System.out.println("del'target is " + ((TextView) target).getText());
@@ -379,9 +379,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
 //        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
-
         recyclerView.setItemAnimator(animator);
-
 
     }
 
