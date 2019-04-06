@@ -247,14 +247,14 @@ public class AnimationActivity extends AppCompatActivity {
         //绑定监听器
         ImageView imageView = findViewById(R.id.imageView);
         imageView.animate()
-                .x(imageView.getX() - 50)
-                .y(imageView.getX() - 40)
+                .x(imageView.getX() - 150)
+                .y(imageView.getX() - 140)
 //                .alpha(0)
                 .setDuration(3000)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
+                        System.out.println("~~onAnimationEnd~~");
 //                        imageView.setVisibility(View.GONE);
                     }
                 })

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,8 @@ import java.util.Map;
  */
 public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnimator {
 
-    Map<RecyclerView.ViewHolder, int[]> animateRemove = new HashMap<>();
+    Map<RecyclerView.ViewHolder, float[]> animateRemove = new HashMap<>();
+    Map<RecyclerView.ViewHolder, float[]> animateAdd = new HashMap<>();
     Map<RecyclerView.ViewHolder, int[]> animateMove = new HashMap<>();
 
     @Override
@@ -24,8 +26,10 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         System.out.println("-->animateRemove<--");
         System.out.println(((TextView) holder.itemView).getText() + "|holder is " + holder);
 
-        int[] values = new int[1];
-        values[0] = 0;
+        View v = holder.itemView;
+        float[] values = new float[2];
+        values[0] = v.getTranslationX();
+        values[1] = v.getAlpha();
         animateRemove.put(holder, values);
         return true;
     }
@@ -35,6 +39,15 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         System.out.println("-->animateAdd<--");
         System.out.println(((TextView) holder.itemView).getText() + "|holder is " + holder);
 
+        View v = holder.itemView;
+        float[] values = new float[2];
+        values[0] = v.getTranslationX();
+        values[1] = v.getAlpha();
+        animateAdd.put(holder, values);
+
+        v.setAlpha(0);
+        v.setTranslationX(-v.getWidth());
+
         return true;
     }
 
@@ -43,11 +56,11 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         System.out.println("-->animateMove<--");
         System.out.println(((TextView) holder.itemView).getText() + "|holder is " + holder);
 
-        int[] values = new int[2];
-        values[0] = fromY;
-        values[1] = toY;
+        int[] values = new int[1];
+        values[0] = toY;
         animateMove.put(holder, values);
 
+        holder.itemView.setY(fromY);
         return true;
     }
 
@@ -66,36 +79,16 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
 
         long duration = 2500L;
 
-        System.out.println("animateRemove'count is " + animateRemove.keySet().size());
-        for (final RecyclerView.ViewHolder holder : animateRemove.keySet()) {
-
-            holder.itemView.animate().setDuration(duration)
-                    .x(holder.itemView.getX() + 150f)
-                    .alpha(animateRemove.get(holder)[0] + 0.3f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            System.out.println("~~onAnimateRemoveEnd~~");
-                            holder.itemView.setX(0);
-                            holder.itemView.setAlpha(1);
-                            dispatchRemoveFinished(holder);
-                        }
-                    })
-                    .start();
-            System.out.println("animateRemove|" + ((TextView) holder.itemView).getText());
-        }
-        animateRemove.clear();
-
-
         System.out.println("animateMove'count is " + animateMove.keySet().size());
         for (final RecyclerView.ViewHolder holder : animateMove.keySet()) {
-            holder.itemView.setY(animateMove.get(holder)[0]);
+
             holder.itemView.animate().setDuration(duration)
-                    .y(animateMove.get(holder)[1])
+                    .y(animateMove.get(holder)[0])
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             System.out.println("~~onAnimateMoveEnd~~");
+                            holder.itemView.animate().setListener(null);
                             dispatchMoveFinished(holder);
                         }
                     })
@@ -104,6 +97,48 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         }
         animateMove.clear();
 
+
+        System.out.println("animateRemove'count is " + animateRemove.keySet().size());
+        for (final RecyclerView.ViewHolder holder : animateRemove.keySet()) {
+
+            final float x = animateRemove.get(holder)[0];
+            final float alpha = animateRemove.get(holder)[1];
+
+            holder.itemView.animate().setDuration(duration)
+                    .translationX(animateRemove.get(holder)[0] + 150f)
+                    .alpha(animateRemove.get(holder)[1] * 0f)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            System.out.println("~~onAnimateRemoveEnd~~");
+                            System.out.println(holder);
+                            holder.itemView.animate().setListener(null);
+                            holder.itemView.setTranslationX(x);
+                            holder.itemView.setAlpha(alpha);
+                            dispatchRemoveFinished(holder);
+                        }
+                    });
+            System.out.println("animateRemove|" + ((TextView) holder.itemView).getText());
+        }
+        animateRemove.clear();
+
+
+        System.out.println("animateAdd'count is " + animateAdd.keySet().size());
+        for (final RecyclerView.ViewHolder holder : animateAdd.keySet()) {
+            holder.itemView.animate().setDuration(duration)
+                    .translationX(animateAdd.get(holder)[0])
+                    .alpha(animateAdd.get(holder)[1])
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            System.out.println("~~onAnimateRemoveEnd~~");
+                            holder.itemView.animate().setListener(null);
+                            dispatchAddFinished(holder);
+                        }
+                    });
+            System.out.println("animateAdd|" + ((TextView) holder.itemView).getText());
+        }
+        animateAdd.clear();
     }
 
     @Override

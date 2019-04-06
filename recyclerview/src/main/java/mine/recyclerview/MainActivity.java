@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
+
 //        bindListen(); //绑定各种监听器
         bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
@@ -127,17 +128,11 @@ public class MainActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.add~~");
 
-        for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            TextView textView = (TextView) recyclerView.getChildAt(i);
-            System.out.print(textView.getText() + "|");
-        }
-        System.out.println("-");
-
 
         //单个更新
-//        int postion = 0;
-//        dataset.add(postion, "insert-" + dataset.size());//插入到数据集
-//        adapter.notifyItemInserted(postion);//更新RecyclerView
+        int postion = 1;
+        dataset.add(postion, "insert-" + dataset.size());//插入到数据集
+        adapter.notifyItemInserted(postion);//更新RecyclerView
 
 
         //局部更新
@@ -170,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
         dataset.remove(postion); //删除数据集
         adapter.notifyItemRemoved(postion); //更新适配器，刷新UI
+
 
 
         //局部更新
@@ -376,9 +372,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindAnimator() {
 
-        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
-//        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
+//        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
+        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
+
+//        animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() { //所有Item动画完成时调用
+//            @Override
+//            public void onAnimationsFinished() {
+//                System.out.println("~~onAnimationsssssssFinished~~");
+//            }
+//        });
         recyclerView.setItemAnimator(animator);
 
     }

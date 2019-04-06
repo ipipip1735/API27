@@ -23,7 +23,7 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
-//        System.out.println("~~onCreateViewHolder~~");
+        System.out.println("~~onCreateViewHolder~~");
 //        System.out.println("parent is " + parent);
 //        System.out.println("viewType is " + viewType);
 

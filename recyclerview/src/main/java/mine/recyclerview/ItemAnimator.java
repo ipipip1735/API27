@@ -25,6 +25,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
     private List<RecyclerView.ViewHolder> animateAppearance = new ArrayList<>();
     private List<RecyclerView.ViewHolder> animatePersistence = new ArrayList<>();
 
+
     @Override
     public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
         System.out.println("-->pendingDisappearance<--");
@@ -181,6 +182,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
                             holder.itemView.setX(x);
                             dispatchAnimationFinished(holder);
                             animateDisappearance.remove(holder);
+                            if(isRunning()) dispatchAnimationsFinished();
                         }
                     })
                     .start();
@@ -201,6 +203,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
                         public void onAnimationEnd(Animator animation) {
                             dispatchAnimationFinished(holder);
                             animateAppearance.remove(holder);
+                            if(isRunning()) dispatchAnimationsFinished();
                         }
                     })
                     .start();
@@ -221,6 +224,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
                         public void onAnimationEnd(Animator animation) {
                             dispatchAnimationFinished(holder);
                             animatePersistence.remove(holder);
+                            if(isRunning()) dispatchAnimationsFinished();
                         }
                     })
                     .start();
