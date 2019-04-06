@@ -372,8 +372,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindAnimator() {
 
-//        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
-        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
+        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
+//        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
 
 //        animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() { //所有Item动画完成时调用
