@@ -25,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    View target;
+    List<TextView> list = new ArrayList<>();
 
+    View target;
     int postion = -1;
 
     List<String> dataset;
@@ -42,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        dataset = new ArrayList<>(8);
-        for (int i = 0; i < 8; i++) {
+        dataset = new ArrayList<>(12);
+        for (int i = 0; i < 18; i++) {
             dataset.add("item" + i);
         }
-        adapter = new RVAdapter<>(dataset);
+        adapter = new RVAdapter<>(dataset, this.list);
 
         recyclerView = findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
 //        bindDragDrop();//绑定侧滑
+
 
 
 
@@ -258,6 +260,14 @@ public class MainActivity extends AppCompatActivity {
 //            RecyclerView.ViewHolder holder = pool.getRecycledView(0);
 //            System.out.println("holder is " + holder);
 //        }
+
+//        if(this.target != null) System.out.println(((TextView)this.target).getText() + recyclerView.findContainingViewHolder(this.target).toString());
+
+        if(!this.list.isEmpty()){
+            TextView textView = this.list.get(this.list.size()-1);
+            RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(textView);
+            System.out.println(textView.getText() + "|" + holder);
+        }
 
 
 

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -15,9 +14,11 @@ import java.util.List;
  */
 public class RVAdapter<T> extends RecyclerView.Adapter {
     private List<T> dataset;
+    private List<TextView> target;
 
-    public RVAdapter(List<T> dataset) {
+    public RVAdapter(List<T> dataset, List<TextView> v) {
         this.dataset = dataset;
+        this.target = v;
     }
 
     @NonNull
@@ -31,13 +32,17 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("..onClick v..");
+                System.out.println("..onClick target..");
                 RecyclerView recyclerView = (RecyclerView) parent;
                 System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
                 System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
                 System.out.println("getChildItemId is " + recyclerView.getChildItemId(v));
                 System.out.println(((TextView) v).getText() + "|" + recyclerView.getChildViewHolder(v));
-
+                if (RVAdapter.this.target != null) {
+                    RVAdapter.this.target.add((TextView) v);
+                } else {
+                    System.out.println("target is null");
+                }
             }
         });
 
@@ -49,12 +54,13 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         System.out.println("~~onBindViewHolder~~");
-        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
-
+        System.out.println(holder.itemView + "|" + holder);
 
         String s = dataset.get(position).toString();
         System.out.println(s);
         ((MyViewHolder) holder).textView.setText(s);
+
+        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
     }
 
     @Override
