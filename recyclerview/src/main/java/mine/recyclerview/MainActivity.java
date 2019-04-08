@@ -1,33 +1,21 @@
 package mine.recyclerview;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-
-import static android.support.v7.widget.DividerItemDecoration.HORIZONTAL;
-import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -36,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private LinearLayoutManager layoutManager;
+    private RecyclerView.LayoutManager layoutManager;
     View target;
+
+    int postion = -1;
 
     List<String> dataset;
 
@@ -48,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         layoutManager = new LinearLayoutManager(this);
+//        layoutManager = new LayoutManaager();
+
+
 
         dataset = new ArrayList<>(8);
         for (int i = 0; i < 8; i++) {
@@ -60,11 +53,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
+        recyclerView.setItemViewCacheSize(25);
+//        recyclerView.setCa
 
 //        bindListen(); //绑定各种监听器
-        bindAnimator(); //绑定动画
+//        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
+//        bindDragDrop();//绑定侧滑
+
+
+
 
     }
 
@@ -159,13 +157,10 @@ public class MainActivity extends AppCompatActivity {
 
         //单个更新
         int postion = 1;
-
         target = recyclerView.getChildAt(postion);
         System.out.println("del'target is " + ((TextView) target).getText());
-
         dataset.remove(postion); //删除数据集
         adapter.notifyItemRemoved(postion); //更新适配器，刷新UI
-
 
 
         //局部更新
@@ -253,6 +248,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+//        System.out.println("getRecycledViewPool is " + recyclerView.getRecycledViewPool());
+        RecyclerView.RecycledViewPool pool = recyclerView.getRecycledViewPool();
+        System.out.println("getRecycledViewCount is " + pool.getRecycledViewCount(0));
+
+
+//        for (int i = 0; i < pool.getRecycledViewCount(0); i++) {
+//            RecyclerView.ViewHolder holder = pool.getRecycledView(0);
+//            System.out.println("holder is " + holder);
+//        }
+
+
+
+
+//        recyclerView.setRecycledViewPool(RecyclerView.RecycledViewPool pool);
+//        recyclerView.setRecyclerListener(RecyclerView.RecyclerListener listener);
+//        recyclerView.setViewCacheExtension(RecyclerView.ViewCacheExtension extension);
+//        recyclerView.setItemViewCacheSize(int size);
+
     }
 
 
@@ -277,9 +291,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //单个更新
-//        int postion = 0;
-//        dataset.set(postion, "xxxx"); //修改数据
-//        adapter.notifyItemChanged(postion); //更新适配器，刷新UI
+        int postion = 0;
+        dataset.set(postion, "xxxx"); //修改数据
+        adapter.notifyItemChanged(postion); //更新适配器，刷新UI
 
         //局部更新
 //        int start = 0, end = 2;
@@ -372,8 +386,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindAnimator() {
 
-        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
-//        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
+//        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
+        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
 
 //        animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() { //所有Item动画完成时调用
@@ -448,6 +462,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
+    private void bindDragDrop() {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                System.out.println("~~getMovementFlags~~");
+
+                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags, swipeFlags);
+
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                System.out.println("~~onMove~~");
+
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                System.out.println("~~onSwiped~~");
+
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
     /*---------------modify------------------*/
     private void move() {
 
@@ -486,6 +531,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     /*---------------------------------*/
+
+
     /*---------------------------------*/
     /*---------------------------------*/
 }

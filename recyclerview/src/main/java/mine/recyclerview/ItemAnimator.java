@@ -56,7 +56,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         //通过布局值计算动画值，这里为了简化直接取布局值
         float[] values = new float[2];
         values[0] = viewHolder.itemView.getAlpha();
-        values[1] = viewHolder.itemView.getX();
+        values[1] = viewHolder.itemView.getTranslationX();
         pendingDisappearance.put(viewHolder, values);
 
         return true;

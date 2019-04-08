@@ -24,8 +24,8 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         System.out.println("~~onCreateViewHolder~~");
-//        System.out.println("parent is " + parent);
-//        System.out.println("viewType is " + viewType);
+        System.out.print("viewType is " + viewType);
+        System.out.println("|parent is " + parent);
 
         TextView v = new TextView(parent.getContext());
         v.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +37,7 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
                 System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
                 System.out.println("getChildItemId is " + recyclerView.getChildItemId(v));
                 System.out.println(((TextView) v).getText() + "|" + recyclerView.getChildViewHolder(v));
+
             }
         });
 
@@ -48,8 +49,8 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         System.out.println("~~onBindViewHolder~~");
-        System.out.println("holder is " + holder);
-        System.out.println("position is " + position);
+        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+
 
         String s = dataset.get(position).toString();
         System.out.println(s);
@@ -72,4 +73,59 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
             textView = v;
         }
     }
+
+
+    @Override
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+        System.out.println("~~onViewRecycled~~");
+        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
+        System.out.println("~~onFailedToRecycleView~~");
+        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+
+        return super.onFailedToRecycleView(holder);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+        System.out.println("~~onViewAttachedToWindow~~");
+        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        System.out.println("~~onViewDetachedFromWindow~~");
+        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        System.out.println("~~onAttachedToRecyclerView~~");
+        iterate(recyclerView);
+
+    }
+
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        System.out.println("~~onDetachedFromRecyclerView~~");
+        iterate(recyclerView);
+    }
+
+
+    /*-------------------------------------*/
+    private void iterate(@NonNull RecyclerView recyclerView) {
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            TextView textView = (TextView) recyclerView.getChildAt(i);
+            System.out.print(textView.getText()+"|");
+        }
+        System.out.println("");
+    }
+
+
+
 }
