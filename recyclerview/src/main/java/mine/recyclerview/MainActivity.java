@@ -26,10 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     List<TextView> list = new ArrayList<>();
-
     View target;
-    int postion = -1;
-
     List<String> dataset;
 
     @Override
@@ -39,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         layoutManager = new LinearLayoutManager(this);
-//        layoutManager = new LayoutManaager();
+//        layoutManager = new LayoutManaager();//使用自定义布局管理器
 
 
 
@@ -50,22 +47,18 @@ public class MainActivity extends AppCompatActivity {
         adapter = new RVAdapter<>(dataset, this.list);
 
         recyclerView = findViewById(R.id.rv);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);//使用固定尺寸
+        recyclerView.setLayoutManager(layoutManager);//绑定布局管理器
+        recyclerView.setAdapter(adapter);//绑定适配器
 
-        recyclerView.setItemViewCacheSize(25);
-//        recyclerView.setCa
+        recyclerView.setItemViewCacheSize(3);//设置离屏缓存尺寸，默认尺寸为2
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 6);//设置缓存池尺寸，默认尺寸为5
+
 
 //        bindListen(); //绑定各种监听器
 //        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
 //        bindDragDrop();//绑定侧滑
-
-
-
-
-
     }
 
     @Override
@@ -191,21 +184,20 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("recyclerView.getChildCount is " + recyclerView.getChildCount());
 
 
-        //获取 Postion
+        //查询Postion
 //        View v = recyclerView.getChildAt(0);
 //        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
 //        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
 
 
-        System.out.println(((TextView) target).getText() + "|" + recyclerView.getChildViewHolder(target));
-        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(target));
-        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(target));
-        System.out.println("---------");
-        for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            TextView textView = (TextView) recyclerView.getChildAt(i);
-            System.out.print(textView.getText() + "|");
+
+        //查找子View对应的ViewHolder
+        if(!this.list.isEmpty()){
+            TextView textView = this.list.get(this.list.size()-1);
+            RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(textView);
+            System.out.println(textView.getText() + "|" + holder);
         }
-        System.out.println("");
+
 
         //打印 ViewHolder
 //        for (int i = 0; i < recyclerView.getChildCount(); i++) {
@@ -251,31 +243,28 @@ public class MainActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-//        System.out.println("getRecycledViewPool is " + recyclerView.getRecycledViewPool());
+        //查询缓存池缓存个数
         RecyclerView.RecycledViewPool pool = recyclerView.getRecycledViewPool();
         System.out.println("getRecycledViewCount is " + pool.getRecycledViewCount(0));
 
 
-//        for (int i = 0; i < pool.getRecycledViewCount(0); i++) {
-//            RecyclerView.ViewHolder holder = pool.getRecycledView(0);
-//            System.out.println("holder is " + holder);
-//        }
-
-//        if(this.target != null) System.out.println(((TextView)this.target).getText() + recyclerView.findContainingViewHolder(this.target).toString());
-
-        if(!this.list.isEmpty()){
-            TextView textView = this.list.get(this.list.size()-1);
-            RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(textView);
-            System.out.println(textView.getText() + "|" + holder);
+        //取出所有缓存，即清空缓存池
+        for (int i = 0; i < pool.getRecycledViewCount(0); i++) {
+            RecyclerView.ViewHolder holder = pool.getRecycledView(0);
+            System.out.println("holder is " + holder);
         }
 
 
-
-
-//        recyclerView.setRecycledViewPool(RecyclerView.RecycledViewPool pool);
-//        recyclerView.setRecyclerListener(RecyclerView.RecyclerListener listener);
-//        recyclerView.setViewCacheExtension(RecyclerView.ViewCacheExtension extension);
-//        recyclerView.setItemViewCacheSize(int size);
+        //查询子View的ViewHolder以及它的Position
+        System.out.println(((TextView) target).getText() + "|" + recyclerView.getChildViewHolder(target));
+        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(target));
+        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(target));
+        System.out.println("---------");
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            TextView textView = (TextView) recyclerView.getChildAt(i);
+            System.out.print(textView.getText() + "|");
+        }
+        System.out.println("");
 
     }
 
@@ -283,27 +272,10 @@ public class MainActivity extends AppCompatActivity {
     public void update(final View view) {
         System.out.println("~~button.update~~");
 
-
-//        final View v = recyclerView.getChildAt(0);
-//        final ViewPropertyAnimator animation = v.animate();
-//        animation.setDuration(5000L).alpha(0).setListener(
-//                new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationStart(Animator animator) {
-//                    }
-//
-//                    @Override
-//                    public void onAnimationEnd(Animator animator) {
-//                        animation.setListener(null);
-//                        v.setAlpha(1);
-//                    }
-//                }).start();
-
-
         //单个更新
-        int postion = 0;
-        dataset.set(postion, "xxxx"); //修改数据
-        adapter.notifyItemChanged(postion); //更新适配器，刷新UI
+//        int postion = 0;
+//        dataset.set(postion, "xxxx"); //修改数据
+//        adapter.notifyItemChanged(postion); //更新适配器，刷新UI
 
         //局部更新
 //        int start = 0, end = 2;
@@ -318,17 +290,10 @@ public class MainActivity extends AppCompatActivity {
 //            dataset.set(i, "xxxx-" + i); //修改数据
 //        }
 //        adapter.notifyDataSetChanged(); //更新适配器，刷新UI
+
+
+        move();//滚动
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -349,13 +314,10 @@ public class MainActivity extends AppCompatActivity {
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 System.out.println("~~onDraw~~");
 
-
                 Random random = new Random();
                 Paint paint = new Paint();
-
                 int width = parent.getWidth();
-
-                for (int i = 1; i < parent.getChildCount(); i++) {
+                for (int i = 1; i < parent.getChildCount(); i++) { //遍历绘制
                     int left = parent.getChildAt(i).getLeft();
                     int top = parent.getChildAt(i).getTop();
 //                    paint.setColor(Color.BLUE);
@@ -505,30 +467,22 @@ public class MainActivity extends AppCompatActivity {
 
     /*---------------modify------------------*/
     private void move() {
-
-//        layoutManager.moveView(0,6);
+        System.out.println("..move..");
 
         //滚动
 //        layoutManager.scrollToPosition(0);
 //        recyclerView.smoothScrollToPosition(0);
 //        layoutManager.scrollToPositionWithOffset(0, 2);
 
-        //平滑滚动，带动画效果
+
+        //平滑滚动，即带动画效果
 //        recyclerView.scrollBy(0, 500);
 //        recyclerView.scrollToPosition(25);
 //        recyclerView.smoothScrollBy(0, 500);
 
 //        recyclerView.offsetChildrenHorizontal(150);
-        recyclerView.offsetChildrenVertical(150);
+//        recyclerView.offsetChildrenVertical(150);
 
-
-    }
-
-    private void modifyLayout() {
-
-        ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
-        layoutParams.height += 150f;
-        recyclerView.setLayoutParams(layoutParams);
 
     }
 
