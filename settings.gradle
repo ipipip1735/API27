@@ -1,4 +1,4 @@
-include   ':apptemp',
+include   ':apptemp', ':cardview',
         ':recyclerview',
 //        ':search',
 //        ':media',
