@@ -1,4 +1,4 @@
-include   ':apptemp', ':cardview',
+include   ':apptemp', ':cardview', ':swiperefreshlayout',
         ':recyclerview',
 //        ':search',
 //        ':media',
