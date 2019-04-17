@@ -35,9 +35,14 @@ public class BasicReceiver extends BroadcastReceiver {
 //        System.out.println(intent.getExtras().get("mReceiver"));
 
 
+
 //        setResultCode(5);
         System.out.println("getResultCode is " + getResultCode());
 
+
+        if (getResultCode() > 5) {
+            abortBroadcast();
+        }
 
 
 //        Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {

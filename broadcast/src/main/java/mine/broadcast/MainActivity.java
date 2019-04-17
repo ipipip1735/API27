@@ -51,20 +51,21 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, BasicReceiver.class);
 
         //隐式Intent
-        Intent intent = new Intent("receivertrial");
+        Intent intent = new Intent("r2");
         intent.setPackage(getPackageName());
-
 //        sendBroadcast(intent, "a.b"); //增加权限限制
 //        intent.putExtra("mReceiver", "One");//携带数据
 
-        sendBroadcast(intent);
+        sendBroadcast(intent); //发送广播
+
+        System.out.println(Thread.currentThread());
 
     }
 
     public void sendOBC(View view) {
         System.out.println("*******sendOBC*******");
 
-        Intent intent = new Intent("receivertrial");
+        Intent intent = new Intent("BCBC");
         intent.setPackage(getPackageName());
 //        intent.putExtra("mReceiver", "One");
         sendOrderedBroadcast(intent, null);

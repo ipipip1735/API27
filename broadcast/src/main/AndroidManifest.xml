@@ -15,35 +15,35 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!--<activity android:name=".ExampleActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name=".ExampleActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
 
-        <receiver android:name=".BasicReceiver">
+        <receiver android:name=".BasicReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="receivertrial" />
-                <action android:name="receivertrial1" />
+                <action android:name="BCBC" />
+                <action android:name="r1" />
             </intent-filter>
         </receiver>
 
-
-        <receiver
-        android:name=".MyReceiver"
-        android:exported="true">
-        <!--android:enabled="true"-->
-        <intent-filter android:priority="2">
-        <action android:name="receivertrial"/>
-        <action android:name="tts"/>
-        </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name=".MyReceiver"-->
+            <!--android:exported="true">-->
+            <!--&lt;!&ndash;android:enabled="true"&ndash;&gt;-->
+            <!--<intent-filter android:priority="2">-->
+                <!--<action android:name="BCBC" />-->
+                <!--<action android:name="r2" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
     </application>
 
