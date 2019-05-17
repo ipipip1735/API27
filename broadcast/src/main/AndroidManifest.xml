@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mine.broadcast">
 
+    <!--<uses-permission android:name="a.b" />-->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +19,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".BroadcastReceiverTrial" >
+        <!--<activity android:name=".ExampleActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <receiver android:name=".BasicReceiver">
             <intent-filter>
                 <action android:name="receivertrial" />
                 <action android:name="receivertrial1" />
@@ -25,14 +35,15 @@
         </receiver>
 
 
-        <!--<receiver-->
-        <!--android:name=".BroadcastReceiverTrial"-->
+        <receiver
+        android:name=".MyReceiver"
+        android:exported="true">
         <!--android:enabled="true"-->
-        <!--android:exported="true">-->
-        <!--<intent-filter android:priority="2">-->
-        <!--<action android:name="tts"/>-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <intent-filter android:priority="2">
+        <action android:name="receivertrial"/>
+        <action android:name="tts"/>
+        </intent-filter>
+        </receiver>
 
     </application>
 

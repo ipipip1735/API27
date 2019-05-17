@@ -9,14 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-//    BroadcastReceiverTrial broadcastReceiverTrial;
+//    BasicReceiver broadcastReceiverTrial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        setContentView(R.layout.activity_oldmain);
-//        broadcastReceiverTrial = new BroadcastReceiverTrial();
+//        broadcastReceiverTrial = new BasicReceiver();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //显式Intent
-//        Intent intent = new Intent(this, BroadcastReceiverTrial.class);
+//        Intent intent = new Intent(this, BasicReceiver.class);
 
         //隐式Intent
         Intent intent = new Intent("receivertrial");
@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*******sendOBC*******");
 
         Intent intent = new Intent("receivertrial");
-        intent.putExtra("mReceiver", "One");
-        sendOrderedBroadcast(intent, "xxy");
+        intent.setPackage(getPackageName());
+//        intent.putExtra("mReceiver", "One");
+        sendOrderedBroadcast(intent, null);
+//        sendOrderedBroadcast(intent, "xxy");
     }
 
     public void showInfo(View view) {

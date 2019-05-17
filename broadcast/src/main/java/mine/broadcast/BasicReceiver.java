@@ -8,14 +8,15 @@ import android.content.Intent;
  * Created by Administrator on 2018/7/23.
  */
 
-public class BroadcastReceiverTrial extends BroadcastReceiver {
+public class BasicReceiver extends BroadcastReceiver {
 
 
-    public BroadcastReceiverTrial() {
+    public BasicReceiver() {
         super();
-        System.out.println("-=-=-=-=-=-=-=-=  broadcast receiver  =-=-=-=-=-=-=-=-");
+        System.out.println("-=-=-=-=-=-=-=-=  BasicReceiver'Constructor  =-=-=-=-=-=-=-=-");
 
-
+        System.out.println(this);
+        ToolClass.showThread();
     }
 
 //    @Override
@@ -30,12 +31,12 @@ public class BroadcastReceiverTrial extends BroadcastReceiver {
         System.out.println("-=-=-=-=-=-=-=-=  onReceive  =-=-=-=-=-=-=-=-");
         System.out.println("action is " + intent.getAction());
 
-
-//        getAbortBroadcast();
+        System.out.println("getAbortBroadcast is " + getAbortBroadcast());
 //        System.out.println(intent.getExtras().get("mReceiver"));
 
+
 //        setResultCode(5);
-//        System.out.println(getResultCode());
+        System.out.println("getResultCode is " + getResultCode());
 
 
 

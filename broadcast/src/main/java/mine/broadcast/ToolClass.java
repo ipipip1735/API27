@@ -11,6 +11,7 @@ public class ToolClass {
 
     static public void showThread() {
         long id =Thread.currentThread().getId();
+        System.out.println(Thread.currentThread());
         System.out.println("**********************thread'id is "+id+"!**********************");
     }
 

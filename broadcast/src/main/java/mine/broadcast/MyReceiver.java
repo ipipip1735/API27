@@ -17,7 +17,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     public MyReceiver() {
         super();
-        System.out.println("-=-=-=-=-=-=-=-=  broadcast receiver  =-=-=-=-=-=-=-=-");
+        System.out.println("-=-=-=-=-=-=-=-=  MyReceiver'Constructor  =-=-=-=-=-=-=-=-");
         ToolClass.showThread();
 
     }
@@ -33,12 +33,18 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         System.out.println("-=-=-=-=-=-=-=-=  onReceive  =-=-=-=-=-=-=-=-");
         ToolClass.showThread();
-//        getAbortBroadcast();
-        System.out.println(intent.getExtras().get("mReceiver"));
 
-        setResultCode(5);
+        System.out.println("getAbortBroadcast is " + getAbortBroadcast());
+//        abortBroadcast();//终止广播
+        System.out.println("getAbortBroadcast is " + getAbortBroadcast());
 
-        System.out.println(getResultCode());
+
+
+//        System.out.println(intent.getExtras().get("mReceiver"));
+
+        System.out.println("getResultCode is " + getResultCode());
+        setResultCode(5);//设置结果码
+        System.out.println("getResultCode is " + getResultCode());
 
 
 
