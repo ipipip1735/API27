@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //连续启动服务，根据ID终止服务
-//        Intent intent = new Intent(this, BaseService.class);
-//        startService(intent);
-//        startService(intent);
+        Intent intent = new Intent(this, BaseService.class);
+        startService(intent);
+        startService(intent);
 
 
     }
@@ -133,17 +133,24 @@ public class MainActivity extends AppCompatActivity {
                     //发送信息给服务端
                     BaseBinder baseBinder = (BaseBinder) iBinder; //强制转换
                     Handler serviceHandler = baseBinder.getServiceHandler();
-                    Message message = Message.obtain(null, 2);
+                    Message message = Message.obtain(null, 1);
 
-//                    message.replyTo = new Messenger(iBinder); //方式一
-                    message.replyTo = new Messenger(new Handler(new Handler.Callback() { //方式二
-                        @Override
-                        public boolean handleMessage(Message msg) {
-                            System.out.println("Clinet|" + msg.what);
-                             return true;
-                        }
-                    }));
-//
+
+
+                    //方式一
+                    message.replyTo = new Messenger(baseBinder.getServiceHandler());
+
+                    //方式二
+//                    message.replyTo = new Messenger(new Handler(new Handler.Callback() {
+//                        @Override
+//                        public boolean handleMessage(Message msg) {
+//                            System.out.println("Clinet|" + msg.what);
+//                             return true;
+//                        }
+//                    }));
+
+
+
                     serviceHandler.handleMessage(message);
                 }
 
@@ -160,7 +167,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void unbind(View view) {
         System.out.println("~~unbind~~");
-        if (Objects.nonNull(serviceConnection)) unbindService(serviceConnection);
+        if (Objects.nonNull(serviceConnection)) {
+            unbindService(serviceConnection);
+            System.out.println("serviceConnection is " + serviceConnection);
+        }
 
     }
 

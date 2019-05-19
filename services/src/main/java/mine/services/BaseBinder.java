@@ -27,7 +27,6 @@ public class BaseBinder extends Binder{
         System.out.println(Thread.currentThread());
         System.out.println("get'serviceHandler is " + serviceHandler);
 
-
         return serviceHandler;
     }
 

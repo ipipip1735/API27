@@ -66,6 +66,11 @@ public class BaseService extends Service {
                     }
                 }
 
+
+
+                /**************************/
+                //终止服务
+//                System.out.println("service|" + msg.what);
 //                stopSelf(msg.what); //是否手动终止服务取决于业务逻辑
             }
         };
@@ -83,12 +88,9 @@ public class BaseService extends Service {
         System.out.println("---- " + getClass().getSimpleName() + ".onStartCommand ----");
 
         System.out.println("start id  is " + startId);
-
         Message message = Message.obtain();
         message.what = startId;
         serviceHandler.sendMessage(message);
-
-
 
         return START_STICKY;
     }
@@ -97,11 +99,11 @@ public class BaseService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         System.out.println("---- " + getClass().getSimpleName() + ".onUnbind ----");
-//        return super.onUnbind(intent);
+        return super.onUnbind(intent);
 
 //        stopSelf();
 
-        return true;
+//        return true;
     }
 
 

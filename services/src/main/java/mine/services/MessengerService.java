@@ -22,6 +22,11 @@ public class MessengerService extends Service {
     public MessengerService() {
         System.out.println("+++ " + getClass().getSimpleName() + " +++");
         System.out.println(Thread.currentThread());
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -41,6 +46,7 @@ public class MessengerService extends Service {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+
                 stopSelf(msg.what);
             }
         };

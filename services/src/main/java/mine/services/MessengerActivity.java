@@ -138,7 +138,6 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
         Intent intent = new Intent(this, MessengerService.class);
         isBunding = bindService(intent, this, BIND_AUTO_CREATE);
 
-
     }
 
     public void unbind(View view) {
