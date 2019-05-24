@@ -147,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
 //        property();
 //        keyFrameAnimator();
 //        TypeEvalutors();
-//        LayoutTransition();
-        SpringAnimation();
+        LayoutTransition();
+//        SpringAnimation();
     }
 
     private void SpringAnimation() {
