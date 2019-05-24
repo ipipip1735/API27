@@ -37,16 +37,24 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  Example  onCreate  ***********");
 
-//        setContentView(R.layout.activity_spring_animation);
-        setContentView(R.layout.activity_fling_animation);
+        setContentView(R.layout.activity_spring_animation);
 
-        ViewGroup viewGroup = findViewById(R.id.rl);
 
-        for (int i = 0; i < 100; i++) {
-            TextView textView = new TextView(this);
-            textView.setText("tttt" + i);
-            viewGroup.addView(textView);
-        }
+
+
+//        setContentView(R.layout.activity_fling_animation);
+//        ViewGroup viewGroup = findViewById(R.id.rl);
+//        for (int i = 0; i < 100; i++) {
+//            TextView textView = new TextView(this);
+//            textView.setText("tttt" + i);
+//            viewGroup.addView(textView);
+//        }
+
+    }
+
+    public void stop(View view) {
+        System.out.println("********stop******");
+        flingWithListView();//惯性动画
 
     }
 
@@ -54,10 +62,8 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 
-//        fling();//惯性动画
+        fling();//惯性动画
 //        velocityTracker(); //触碰点速度跟踪
-        flingWithListView();//惯性动画
-
 
 //        spring();
 //        chainedSpringAnimation();
@@ -155,11 +161,7 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
 
     }
 
-    public void stop(View view) {
-        System.out.println("********stop******");
 
-
-    }
 
 
     private void spring() {
@@ -216,7 +218,7 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
         });
 
         springAnimation.start();
-//        springAnimation.animateToFinalPosition(300);//修改构造函数中指定的最终位置
+        springAnimation.animateToFinalPosition(300);//修改构造函数中指定的最终位置
 
     }
 
@@ -235,7 +237,7 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
                 ImageView imageView2 = findViewById(R.id.imageView2);
                 SpringAnimation springAnimationX = new SpringAnimation(imageView2, DynamicAnimation.TRANSLATION_X, 0);
                 SpringAnimation springAnimationY = new SpringAnimation(imageView2, DynamicAnimation.TRANSLATION_Y, 0);
-                springAnimationX.animateToFinalPosition(event.getX());
+                springAnimationX.animateToFinalPosition(event.getX());//设置image2的最终位置
                 springAnimationY.animateToFinalPosition(event.getY());
 
                 return true;
@@ -249,50 +251,12 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
     private void fling() {
 
         //方式一：最简使用
-//        final ImageView imageView = findViewById(R.id.imageView1);
-//        FlingAnimation flingAnim = new FlingAnimation(imageView, DynamicAnimation.TRANSLATION_X);
-//        flingAnim.setStartVelocity(2000);//初速度
-//        flingAnim.setFriction(1f);//设置衰减因子，可选，默认值为1
-//        flingAnim.setMinValue(0);//属性最小值
-//        flingAnim.setMaxValue(4000);//属性最大值
-//
-//        //更新监听器
-//        flingAnim.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-//                System.out.println("~~onAnimationUpdate~~");
-//                System.out.println("animation is " + animation);
-//                System.out.println("value is " + value);
-//                System.out.println("velocity is " + velocity);
-//                System.out.println("getTranslationX is " + imageView.getTranslationX());
-//            }
-//        });
-//
-//        //结束监听器
-//        flingAnim.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
-//            @Override
-//            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-//                System.out.println("~~onAnimationEnd~~");
-//                System.out.println("animation is " + animation);
-//                System.out.println("canceled is " + canceled);
-//                System.out.println("value is " + value);
-//                System.out.println("velocity is " + velocity);
-//            }
-//        });
-//
-//        flingAnim.start(); //开始动画
-
-
-        //方法二：自定义对象
         final ImageView imageView = findViewById(R.id.imageView1);
-
-        FloatValueHolder floatValueHolder = new FloatValueHolder(1000f);
-        FlingAnimation flingAnim = new FlingAnimation(floatValueHolder);
+        FlingAnimation flingAnim = new FlingAnimation(imageView, DynamicAnimation.TRANSLATION_X);
         flingAnim.setStartVelocity(2000);//初速度
         flingAnim.setFriction(1f);//设置衰减因子，可选，默认值为1
         flingAnim.setMinValue(0);//属性最小值
         flingAnim.setMaxValue(4000);//属性最大值
-
 
         //更新监听器
         flingAnim.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
@@ -302,11 +266,11 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
                 System.out.println("animation is " + animation);
                 System.out.println("value is " + value);
                 System.out.println("velocity is " + velocity);
-
-                imageView.setTranslationX(value);
+                System.out.println("getTranslationX is " + imageView.getTranslationX());
             }
         });
 
+        //结束监听器
         flingAnim.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
             @Override
             public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
@@ -319,6 +283,44 @@ public class PhysicsAnimationActivity extends AppCompatActivity {
         });
 
         flingAnim.start(); //开始动画
+
+
+        //方法二：自定义对象
+//        final ImageView imageView = findViewById(R.id.imageView1);
+//
+//        FloatValueHolder floatValueHolder = new FloatValueHolder(1000f);
+//        FlingAnimation flingAnim = new FlingAnimation(floatValueHolder);
+//        flingAnim.setStartVelocity(2000);//初速度
+//        flingAnim.setFriction(1f);//设置衰减因子，可选，默认值为1
+//        flingAnim.setMinValue(0);//属性最小值
+//        flingAnim.setMaxValue(4000);//属性最大值
+//
+//
+//        //更新监听器
+//        flingAnim.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+//                System.out.println("~~onAnimationUpdate~~");
+//                System.out.println("animation is " + animation);
+//                System.out.println("value is " + value);
+//                System.out.println("velocity is " + velocity);
+//
+//                imageView.setTranslationX(value);
+//            }
+//        });
+//
+//        flingAnim.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+//            @Override
+//            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+//                System.out.println("~~onAnimationEnd~~");
+//                System.out.println("animation is " + animation);
+//                System.out.println("canceled is " + canceled);
+//                System.out.println("value is " + value);
+//                System.out.println("velocity is " + velocity);
+//            }
+//        });
+//
+//        flingAnim.start(); //开始动画
 
     }
 

@@ -118,8 +118,8 @@ public class CronetActivity extends AppCompatActivity {
     public void get(View view) {
         System.out.println("~~button.get~~");
 
-//        cronetGet();
-        cronetWithHttpURLConnection();
+        cronetGet();
+//        cronetWithHttpURLConnection();
     }
 
     private void cronetWithHttpURLConnection() {
@@ -167,8 +167,8 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        String url = "http://192.168.0.127/get.php";
-//        String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
+//        String url = "http://192.168.0.127/get.php";
+        String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new GetUrlRequestCallback(), executorService);
 
@@ -182,11 +182,11 @@ public class CronetActivity extends AppCompatActivity {
     public void post(View view) {
         System.out.println("~~button.post~~");
 
-//        cronetPost();
+        cronetPost();
 //        cronetMultipleDate();//自定义提供器复合POST
 
 //        cronetWithURLConnection();
-        cronetMultipleDateWithURLConnection();
+//        cronetMultipleDateWithURLConnection();
 
 //        rawUpload();  //JDK原生方法
     }
@@ -603,7 +603,7 @@ class GetUrlRequestCallback extends UrlRequest.Callback {
     public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
         System.out.println("...button.onRedirectReceived...");
 
-        request.followRedirect();
+        request.followRedirect();//重新开始
     }
 
     @Override
@@ -614,7 +614,7 @@ class GetUrlRequestCallback extends UrlRequest.Callback {
         Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
         System.out.println(mResponseHeaders);
 
-//        request.cancel();
+//        request.cancel(); //取消
 
 
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(100);
@@ -624,11 +624,11 @@ class GetUrlRequestCallback extends UrlRequest.Callback {
         System.out.println("capacity is " + byteBuffer.capacity());
         System.out.println("hashCode() is " + byteBuffer.hashCode());
         request.read(byteBuffer);
-        try {
-            Thread.sleep(2000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(2000l);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         System.out.println("position is " + byteBuffer.position());
         System.out.println("limit is " + byteBuffer.limit());
         System.out.println("capacity is " + byteBuffer.capacity());
@@ -638,7 +638,9 @@ class GetUrlRequestCallback extends UrlRequest.Callback {
     @Override
     public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
         System.out.println("...button.onReadCompleted...");
-        request.cancel();
+//        request.cancel(); //取消
+
+
         System.out.println("info is " + info);
 
         System.out.println("complete|position is " + byteBuffer.position());
@@ -661,7 +663,7 @@ class GetUrlRequestCallback extends UrlRequest.Callback {
         System.out.println("complete|limit is " + byteBuffer.limit());
         System.out.println("complete|capacity is " + byteBuffer.capacity());
         System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
-        request.read(byteBuffer);
+        request.read(byteBuffer); //继续读取，等于递归调用，直到读取完毕
         System.out.println("complete|position is " + byteBuffer.position());
         System.out.println("complete|limit is " + byteBuffer.limit());
         System.out.println("complete|capacity is " + byteBuffer.capacity());
