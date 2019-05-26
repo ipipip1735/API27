@@ -45,8 +45,7 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_window_one);
 
-
-        long duration = 2000L;
+        long duration = 5000L;
 
         Window window = getWindow();
 //        window.requestFeature(Window.FEATURE_NO_TITLE);
@@ -113,17 +112,17 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 
 
         //设置转换对象
-        window.setExitTransition(slide); //退出变换
-        window.setReenterTransition(slide); //重进入变换
+//        window.setExitTransition(slide); //退出变换
+//        window.setReenterTransition(slide); //重进入变换
 //        window.setAllowReturnTransitionOverlap(false); //返回播放模式，false为顺序播放，默认值true为同时播放
-        window.setTransitionBackgroundFadeDuration(duration);
+//        window.setTransitionBackgroundFadeDuration(duration);
 
 
         //设置共享组件转换对象（一般不会使用SharedElementExitTransition/SharedElementReenterTransition）
-//        window.setSharedElementExitTransition(fade);  //共享组件退出变换
+        window.setSharedElementExitTransition(changesBounds); //共享组件退出变换
 //        window.setSharedElementReenterTransition(changesBounds); //共享组件重进入变换
+//        window.setSharedElementReturnTransition(fade);
 //        window.setSharedElementsUseOverlay(false); //共享转换禁用遮罩层
-
 
     }
 
@@ -228,28 +227,13 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
         startActivity(intent, options.toBundle());
 
 
-        /**
-         * 如果使用了SharedElementExitTransition动画，需要在启动Activity后修改组件属性
-         */
-//        imageView.setX(imageView.getX() - 150f);
-//        imageView.setY(imageView.getY() - 450f);
 
-//        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
-//        layoutParams.width += 150f;
-//        layoutParams.height += 150f;
-//        imageView.setLayoutParams(layoutParams);
-//
+        //如果SharedElementExitTransition使用ChangeBounds就需要调整View的布局参数，否则不会有任何动画
+        imageView.setTop(450);
+        imageView.setLeft(150);
 
 
-        //如果SharedElementExitTransition使用ChangeBounds就需要父View重新布局
-//        View parent = (View) imageView.getParent();
-//        int widthSpec = View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY);
-//        int heightSpec = View.MeasureSpec.makeMeasureSpec(parent.getHeight(), View.MeasureSpec.EXACTLY);
-//        parent.measure(widthSpec, heightSpec);
-//        parent.layout(parent.getLeft(), parent.getTop(), parent.getRight(), parent.getBottom());
-
-
-        //如果SharedElementExitTransition使用Fade就需要修改父View的可见性
+        //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
 //        View parent = (View) imageView.getParent();
 //        parent.setVisibility(View.INVISIBLE);
 
