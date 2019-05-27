@@ -96,10 +96,10 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
 
 
         //设置转换对象
-        window.setEnterTransition(slide); //进入变换
-        window.setReturnTransition(explode); //返回变换
+//        window.setEnterTransition(slide); //进入变换
+//        window.setReturnTransition(explode); //返回变换
 //        window.setAllowEnterTransitionOverlap(false); //返回播放模式，false为顺序播放，默认值true为同时播放
-        window.setTransitionBackgroundFadeDuration(duration);
+//        window.setTransitionBackgroundFadeDuration(duration);
 
 
         //设置共享组件转换对象

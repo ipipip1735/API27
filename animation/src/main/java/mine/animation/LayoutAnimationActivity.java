@@ -237,9 +237,9 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 
     public void add(View view) {
         System.out.println("********add******");
-//        appearing();
+        appearing();
 //        changeAppearing();
-        layoutTransition();
+//        layoutTransition();
 
     }
 

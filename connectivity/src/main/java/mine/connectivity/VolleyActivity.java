@@ -121,8 +121,8 @@ public class VolleyActivity extends AppCompatActivity {
 
 //        volleyBasic();
 //        volleyPostText();
-        volleyPostFile(); //失败了，Volley不支持multipart/form-data
-//        volleyForJSON();
+//        volleyPostFile(); //失败了，Volley不支持multipart/form-data
+        volleyForJSON();
 //        volleyWithCustomQuest();
 //        volleyWithCookie();
 
