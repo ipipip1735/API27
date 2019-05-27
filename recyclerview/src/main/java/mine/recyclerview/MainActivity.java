@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 //        bindListen(); //绑定各种监听器
 //        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
-//        bindDragDrop();//绑定侧滑
+        bindDragDrop();//绑定侧滑
     }
 
     @Override
@@ -452,14 +452,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 System.out.println("~~onMove~~");
-
+                System.out.println("viewHolder.itemView is " + viewHolder.itemView);
+                System.out.println("target.itemView is " + target.itemView); //将viewHolder移动到target上
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 System.out.println("~~onSwiped~~");
+                System.out.println("viewHolder is " + viewHolder);
+                System.out.println("direction is " + direction);
 
+                adapter.notifyItemRemoved(viewHolder.getAdapterPosition()); //右滑，删除元素
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
