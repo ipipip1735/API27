@@ -22,4 +22,17 @@ public class CarLiveData extends MutableLiveData<Car> {
 //    public void setValue(Car car) {
 //        super.setValue(car);
 //    }
+
+    @Override
+    protected void onActive() {
+        System.out.println("~~ onActive ~~");
+
+    }
+
+    @Override
+    protected void onInactive() {
+        super.onInactive();
+        System.out.println("~~ onInactive ~~");
+    }
+
 }

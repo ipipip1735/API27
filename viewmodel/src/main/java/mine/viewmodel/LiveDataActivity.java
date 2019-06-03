@@ -31,12 +31,14 @@ public class LiveDataActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_client);
 
-        carLiveData = CarLiveData.get();
-        carLiveData.observe(this, car -> {
-            System.out.print("observer car|");
-            System.out.println(car);
-        });
-
+        if (carLiveData == null) {
+            System.out.println("--carLiveData initial--");
+            carLiveData = CarLiveData.get();
+            carLiveData.observe(this, car -> {
+                System.out.print("observer car|");
+                System.out.println(car);
+            });
+        }
 
 
         //方法一
@@ -45,6 +47,13 @@ public class LiveDataActivity extends AppCompatActivity {
             System.out.println(car);
             return new User("bob", "lee");
         });
+        userLiveData.observe(this, user -> {
+            System.out.print("observer user|");
+            System.out.println(user);
+        });
+
+
+
 
         //方法二
 //        userLiveData = Transformations.switchMap(carLiveData, car->{
@@ -54,11 +63,10 @@ public class LiveDataActivity extends AppCompatActivity {
 //            LiveData<User> userLiveData = temp;
 //            return userLiveData;
 //        });
-
-        userLiveData.observe(this, user -> {
-            System.out.print("observer user|");
-            System.out.println(user);
-        });
+//        userLiveData.observe(this, user -> {
+//            System.out.print("observer user|");
+//            System.out.println(user);
+//        });
 
     }
 
@@ -124,12 +132,13 @@ public class LiveDataActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
         carLiveData.postValue(new Car("VOLVO"));
-        System.out.println(userLiveData);
+//        System.out.println(userLiveData);
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+        System.out.println("carLiveData is " + carLiveData.getValue());
     }
 
     public void bind(View view) {

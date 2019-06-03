@@ -17,7 +17,7 @@ public class Employee {
     private String cname;
 
     public Employee() {
-        employee_name = "employee_name" + new Random().nextInt(100);;
+        employee_name = "employee_name" + new Random().nextInt(100);
         cname = "cname" + new Random().nextInt(100);;
     }
 

@@ -40,4 +40,9 @@ public class BaseViewModel extends ViewModel {
         users.postValue("User" + new Random().nextInt(100));
     }
 
+    @Override
+    protected void onCleared() {
+        System.out.println("~~onCleared~~");
+        super.onCleared();
+    }
 }

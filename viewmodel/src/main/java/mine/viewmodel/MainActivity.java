@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     BaseViewModel baseViewModel;
+    StringViewModel stringViewModel;
 
 
     @Override
@@ -26,17 +27,22 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_client);
 
+        //方式一：最简使用
+//        stringViewModel = ViewModelProviders.of(this).get(StringViewModel.class);
+//        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
+
+
+
+        //方式二：最简LiveData
         textView = new TextView(this);
         textView.setText("go go go");
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(textView);
 
-
         baseViewModel = ViewModelProviders.of(this).get(BaseViewModel.class);
         baseViewModel.getUsers().observe(this, data -> {
             System.out.println("~~update ViewModel~~");
-            //update UI
-            textView.setText(data);
+            textView.setText(data);//更新UI
         });
 
 
@@ -109,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+        stringViewModel = ViewModelProviders.of(this).get(StringViewModel.class);
+        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
     }
 
     public void bind(View view) {
