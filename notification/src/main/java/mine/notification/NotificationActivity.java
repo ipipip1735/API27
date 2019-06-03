@@ -107,13 +107,13 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
 
-//        BasicNotify(notificationManager); //创建通知
+        BasicNotify(notificationManager); //创建通知
 //        ComponentNotify(notificationManager); //组件通知(点击通知启动组件)
 //        StackNotify(notificationManager); //回退栈通知
 
 //        groupNotify(notificationManager); //通知分组
 //        actionNotify(notificationManager); //附加任通知
-        progressNotify(notificationManager); //进度条通知
+//        progressNotify(notificationManager); //进度条通知
 
 //        StyleNotify(notificationManager); //样式通知
 //        mediaStyleNotify(notificationManager); //媒体样式通知
@@ -292,9 +292,9 @@ public class NotificationActivity extends AppCompatActivity {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this, "c1")
                         .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentInfo("OOOOO")
                         .setContentTitle("ttt")
                         .setContentText("Hello World!")
+//                        .setContentInfo("OOOOO")//本方法API24+已经废弃，请使用setSubText()代替
                         .setSubText("stststst");
         notificationManager.notify(mId, mBuilder.build());
 
