@@ -118,8 +118,8 @@ public class NotificationActivity extends AppCompatActivity {
 //        progressNotify(notificationManager); //进度条通知
 
 //        StyleNotify(notificationManager); //样式通知
-        mediaStyleNotify(notificationManager); //媒体样式通知
-//        customNotify(notificationManager); //自定义样式通知
+//        mediaStyleNotify(notificationManager); //媒体样式通知
+        customNotify(notificationManager); //自定义样式通知
 //        foldNotify(notificationManager); //可折叠通知
 
 
@@ -333,8 +333,8 @@ public class NotificationActivity extends AppCompatActivity {
 //
 //        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small); //折叠时样式
 //        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large); //展开后样式
-////        notificationLayoutExpanded.setBitmap(R.id.imageView, "setImageBitmap", ff); //运行时，动态修改子元素
-
+//        notificationLayoutExpanded.setBitmap(R.id.imageView, "setImageBitmap", ff); //运行时，动态修改子元素
+//
 //        Notification customNotification = new NotificationCompat.Builder(this, "c1")
 //                .setSmallIcon(R.drawable.ic_launcher_foreground)
 //                .setLargeIcon(gg)
@@ -358,7 +358,7 @@ public class NotificationActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContent(notificationLayout)
                 .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationLayoutExpanded)
+//                .setCustomBigContentView(notificationLayoutExpanded)
                 .build();
         notificationManager.notify(mId, customNotification);
 
