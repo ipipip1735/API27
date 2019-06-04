@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Icon;
 import android.media.session.MediaSession;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -107,7 +109,7 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
 
-        BasicNotify(notificationManager); //创建通知
+//        BasicNotify(notificationManager); //创建通知
 //        ComponentNotify(notificationManager); //组件通知(点击通知启动组件)
 //        StackNotify(notificationManager); //回退栈通知
 
@@ -116,7 +118,7 @@ public class NotificationActivity extends AppCompatActivity {
 //        progressNotify(notificationManager); //进度条通知
 
 //        StyleNotify(notificationManager); //样式通知
-//        mediaStyleNotify(notificationManager); //媒体样式通知
+        mediaStyleNotify(notificationManager); //媒体样式通知
 //        customNotify(notificationManager); //自定义样式通知
 //        foldNotify(notificationManager); //可折叠通知
 
@@ -185,12 +187,12 @@ public class NotificationActivity extends AppCompatActivity {
 
 
         //短信样式
-//        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle()
-//                .addLine("XXX")
-//                .addLine("YYY")
-//                .addLine("ZZZ")
-//                .setBigContentTitle(title)
-//                .setSummaryText(subText);
+        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle()
+                .addLine("XXX")
+                .addLine("YYY")
+                .addLine("ZZZ")
+                .setBigContentTitle(title)
+                .setSummaryText(subText);
 
 
         //消息样式
@@ -201,15 +203,13 @@ public class NotificationActivity extends AppCompatActivity {
 //                .addMessage("one one one", System.currentTimeMillis(), "sam")
 //                .addMessage("虎虎虎", System.currentTimeMillis(), "王")
 //                .setConversationTitle("conversation");
-//
+
 //        System.out.println("getUserDisplayName is " + style.getUserDisplayName());
 //        System.out.println("getConversationTitle is " + style.getConversationTitle());
 //        System.out.println("getMessages is " + style.getMessages());
 
 
         //媒体样式
-
-
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this, "c1")
                         .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -217,7 +217,7 @@ public class NotificationActivity extends AppCompatActivity {
                         .setSubText("subText") //优先级比NotificationCompat.BigPictureStyle.setSummaryText()高
                         .setContentTitle("title")
                         .setContentText("context")
-//                .setStyle(style)
+                .setStyle(style)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         notificationManager.notify(mId, mBuilder.build());
@@ -276,10 +276,10 @@ public class NotificationActivity extends AppCompatActivity {
                 .setAutoCancel(true);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(OneActivity.class);
+        stackBuilder.addParentStack(OneActivity.class);//加OneActivity的父Activity，即NotificationActivity
         stackBuilder.addNextIntent(new Intent(this, OneActivity.class)); //增加第一个Activity
         stackBuilder.addNextIntent(new Intent(this, MainActivity.class)); //增加第二个Activity
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
 
 
@@ -470,10 +470,34 @@ public class NotificationActivity extends AppCompatActivity {
                 .setAutoCancel(true)
 //                .setContentTitle("cccccccc")
 //                .setContentText("tttttttttt")
-                .setProgress(100, 10, false)
+                .setProgress(100, 30, false)
+//                .setProgress(0, 0, true)
                 .setContentIntent(pendingIntent);
-
         notificationManager.notify(mId, mBuilder.build());
+        System.out.println("mid is " + mId);
+
+
+
+
+        //定时更新进度条UI
+//        new Thread(new Runnable() {
+//            int propress = 20;
+//
+//            @Override
+//            public void run() {
+//                while (propress < 100) {
+//
+//                    try {
+//                        Thread.sleep(1000L);
+//                        notificationManager.notify(mId,
+//                                mBuilder.setProgress(100, propress += 10, false).build());
+//
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }).start();
     }
 
 
@@ -481,7 +505,20 @@ public class NotificationActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 
 
-//        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //方式一：打印Notification对象
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        for (StatusBarNotification statusBarNotification : mNotificationManager.getActiveNotifications()) {
+            System.out.println("getId is " + statusBarNotification.getId());
+            System.out.println("getKey is " + statusBarNotification.getKey());
+            System.out.println("getGroupKey is " + statusBarNotification.getGroupKey());
+            System.out.println("getTag is " + statusBarNotification.getTag());
+            System.out.println("getNotification is " + statusBarNotification.getNotification());
+        }
+
+
+
+
 //        mNotificationManager.cancel(1);
 
 //        incr += 20;

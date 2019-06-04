@@ -80,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-//        startActivity(new Intent(this, SingletonActivity.class));
+        startActivity(new Intent(this, SingletonActivity.class));
 
-        Intent intent = new Intent("receivertrial");
-        intent.setPackage("mine.broadcast");
 
-        sendBroadcast(intent);
+//        Intent intent = new Intent("receivertrial");
+//        intent.setPackage("mine.broadcast");
+
+//        sendBroadcast(intent);
 //        sendBroadcast(intent, "a.b"); //增加权限限制
 //        intent.putExtra("mReceiver", "One");//携带数据
 
