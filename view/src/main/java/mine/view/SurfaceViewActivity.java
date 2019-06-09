@@ -51,7 +51,7 @@ public class SurfaceViewActivity extends AppCompatActivity {
 //        surfaceHolder.setFixedSize(5000, 5000); //使用固定Buffer尺寸
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
-            public void surfaceCreated(SurfaceHolder holder) {
+            public void surfaceCreated(final SurfaceHolder holder) {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceCreated  ~~~~~~~");
 
 
@@ -59,12 +59,12 @@ public class SurfaceViewActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         while (!thread.isInterrupted()) {
-                            Canvas canvas = surfaceHolder.lockCanvas();
+                            Canvas canvas = holder.lockCanvas();
                             Paint p = new Paint();
                             p.setColor(getResources().getColor(R.color.AliceBlue, null));
                             canvas.drawARGB(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextInt(255));
                             canvas.drawCircle(100f, 100f, 100f, p);
-                            surfaceHolder.unlockCanvasAndPost(canvas);
+                            holder.unlockCanvasAndPost(canvas);
                             try {
                                 System.out.println("--");
                                 Thread.sleep(1000L);
@@ -75,14 +75,15 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
                     }
                 });
+                thread.start();//启动线程，每秒绘制一帧
 
 
-//                Canvas canvas = surfaceHolder.lockCanvas();
+//                Canvas canvas = holder.lockCanvas();
 //                Paint p = new Paint();
 //                p.setColor(getResources().getColor(R.color.AliceBlue, null));
 //                canvas.drawARGB(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextInt(255));
 //                canvas.drawCircle(100f, 100f, 100f, p);
-//                surfaceHolder.unlockCanvasAndPost(canvas);
+//                holder.unlockCanvasAndPost(canvas);
 
 
             }
@@ -102,6 +103,7 @@ public class SurfaceViewActivity extends AppCompatActivity {
             public void surfaceDestroyed(SurfaceHolder holder) {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
 
+                thread.interrupt();
             }
         });
 
@@ -125,7 +127,13 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
 //        gatherTransparent();//获取透明区域，并绘制
 
+        transform();
+    }
 
+    private void transform() {
+//        surfaceView.setVisibility(View.INVISIBLE);//隐藏SurfaceView将触发surfaceDestroyed()
+//        surfaceView.setScaleX(surfaceView.getScaleX() - 0.1f);
+        surfaceView.setRotation(surfaceView.getRotation() - 10f);
     }
 
     private void gatherTransparent() {
@@ -193,7 +201,6 @@ public class SurfaceViewActivity extends AppCompatActivity {
 //        System.out.println(region2);
 
 
-
         Paint p = new Paint();
         p.setColor(getResources().getColor(R.color.maroon, null));
 
@@ -230,8 +237,6 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
         canvas.drawRect(0, 0, 170, 170, p);
         surfaceHolder.unlockCanvasAndPost(canvas);
-
-
 
 
         //测试混合模式
