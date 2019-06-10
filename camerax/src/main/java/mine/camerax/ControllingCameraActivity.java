@@ -1,12 +1,15 @@
 package mine.camerax;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.hardware.Camera;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -25,7 +28,9 @@ import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 public class ControllingCameraActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
-    int orientation;
+    int orientation = 0;
+    OrientationEventListener orientationEventListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +38,10 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_horizontal);
 
+
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             System.out.println("Camera is supported");
-            camera = Camera.open();
-//            paremeters(); //打印摄像头功能
-
+            camera = Camera.open();//获取摄像头
 
         } else {
             System.out.println("Camera isn't supported");
@@ -45,11 +49,18 @@ public class ControllingCameraActivity extends AppCompatActivity {
         }
 
 
+        //监听器方向改变
+        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                System.out.println("~~onOrientationChanged~~");
+                System.out.println("orientation is " + orientation);
+
+            }
+        };
+
+
         surfaceView = new SurfaceView(this);
-
-        ViewGroup viewGroup = findViewById(R.id.fl);
-        viewGroup.addView(surfaceView);
-
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -57,6 +68,11 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceCreated  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
+                try {
+                    camera.setPreviewDisplay(surfaceView.getHolder());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -78,6 +94,8 @@ public class ControllingCameraActivity extends AppCompatActivity {
             }
         });
 
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(surfaceView);
 
     }
 
@@ -103,12 +121,14 @@ public class ControllingCameraActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+        orientationEventListener.enable();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
+        orientationEventListener.disable();
     }
 
     @Override
@@ -141,25 +161,15 @@ public class ControllingCameraActivity extends AppCompatActivity {
     public void preview(View view) {
         System.out.println("~~button.preview~~");
 
-
-        try {
-
-
-            camera.setPreviewDisplay(surfaceView.getHolder());
-
-            camera.startPreview();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        camera.startPreview();
 
     }
 
 
-    public void save(View view) {
-        System.out.println("~~button.save~~");
+    public void stop(View view) {
+        System.out.println("~~button.stop~~");
 
+        camera.stopPreview();
 
     }
 
@@ -173,8 +183,11 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
 
         Camera.Parameters parameters = camera.getParameters();
-        parameters.setRotation(orientation+=90);
+        System.out.println("orientation is " + (orientation += 90));
+        parameters.setRotation(orientation % 360);
         camera.setParameters(parameters);
+
+
     }
 
     public void video(View view) {
@@ -182,8 +195,41 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
     }
 
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
+    public void modify(View view) {
+        System.out.println("~~button.modify~~");
+
+        //方式一
+//        System.out.println("orientation is " + (orientation += 90));
+
+
+        int degrees = 0;
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                System.out.println("rotation is Surface.ROTATION_0");
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                System.out.println("rotation is Surface.ROTATION_90");
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                System.out.println("rotation is Surface.ROTATION_180");
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                System.out.println("rotation is Surface.ROTATION_270");
+                break;
+        }
+
+
+        camera.setDisplayOrientation((degrees+90)%360);
+
+
+
+
+
 
     }
 
@@ -211,7 +257,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         //Camera
 //        paremeters();//参数
 //        face();//面
-        info();//信息
 //        size();//尺寸
 //        area();//区域
 
@@ -226,12 +271,12 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
     }
 
-    private void info() {
+    public void info(View view) {
 
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
 
-        StringBuilder stringBuilder = new StringBuilder(128);
         for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            StringBuilder stringBuilder = new StringBuilder(128);
             camera.getCameraInfo(i, cameraInfo);
             switch (cameraInfo.facing) {
                 case CAMERA_FACING_FRONT: //前置摄像头
@@ -248,7 +293,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
             stringBuilder.append("orientation=" + cameraInfo.orientation + ", " +
                     "canDisableShutterSound=" + cameraInfo.canDisableShutterSound);
             System.out.println(stringBuilder);
-            stringBuilder.delete(0, stringBuilder.capacity());
         }
     }
 
