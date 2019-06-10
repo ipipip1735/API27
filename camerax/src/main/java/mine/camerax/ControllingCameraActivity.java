@@ -19,15 +19,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.util.List;
 
+import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
+import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
+
 public class ControllingCameraActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
+    int orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_horizontal);
 
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             System.out.println("Camera is supported");
@@ -46,12 +50,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(surfaceView);
 
-//        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-//        System.out.println("h is " + params.height);
-//        System.out.println("w is " + params.width);
-//        params.height = params.height /2 ;
-//        surfaceView.setLayoutParams(params);
-
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -69,13 +67,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("frmt is " + frmt);
                 System.out.println("h is " + h);
                 System.out.println("w is " + w);
-
-//                ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-//                params.height = 700;
-//                surfaceView.setLayoutParams(params);
-
-
-
 
             }
 
@@ -147,18 +138,8 @@ public class ControllingCameraActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
-
-
-
-        preview();
-
-
-    }
-
-    private void preview() {
-
+    public void preview(View view) {
+        System.out.println("~~button.preview~~");
 
 
         try {
@@ -175,24 +156,125 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
     }
 
+
+    public void save(View view) {
+        System.out.println("~~button.save~~");
+
+
+    }
+
+    public void config(View view) {
+        System.out.println("~~button.config~~");
+
+//        camera.setDisplayOrientation(90);
+
+//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+//        camera.getCameraInfo(0, cameraInfo);
+
+
+        Camera.Parameters parameters = camera.getParameters();
+        parameters.setRotation(orientation+=90);
+        camera.setParameters(parameters);
+    }
+
+    public void video(View view) {
+        System.out.println("~~button.video~~");
+
+    }
+
+    public void reloading(View view) {
+        System.out.println("~~button.reloading~~");
+
+    }
+
+
+    public void del(View view) {
+        System.out.println("~~button.del~~");
+//        Camera.Parameters parameters = camera.getParameters();
+//        parameters.setPreviewSize(700, 700);
+//        camera.setParameters(parameters);
+
+
+    }
+
+
+    public void query(View view) {
+        System.out.println("~~button.query~~");
+
+
+        //SurfaceView
+        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
+        System.out.println("SurfaceView height is " + params.height);
+        System.out.println("SurfaceView width is " + params.width);
+
+
+        //Camera
+//        paremeters();//参数
+//        face();//面
+        info();//信息
+//        size();//尺寸
+//        area();//区域
+
+
+    }
+
+    private void area() {
+
+    }
+
+    private void size() {
+
+    }
+
+    private void info() {
+
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+
+        StringBuilder stringBuilder = new StringBuilder(128);
+        for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+            camera.getCameraInfo(i, cameraInfo);
+            switch (cameraInfo.facing) {
+                case CAMERA_FACING_FRONT: //前置摄像头
+                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_BACK, ");
+                    break;
+                case CAMERA_FACING_BACK: //后置摄像头，即主摄像头
+                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_FRONT, ");
+                    break;
+                default:
+                    System.out.println("unknown!!");
+                    return;
+            }
+
+            stringBuilder.append("orientation=" + cameraInfo.orientation + ", " +
+                    "canDisableShutterSound=" + cameraInfo.canDisableShutterSound);
+            System.out.println(stringBuilder);
+            stringBuilder.delete(0, stringBuilder.capacity());
+        }
+    }
+
+    private void face() {
+
+    }
+
+
     private void paremeters() {
 
         System.out.println("camera is " + camera);
         Camera.Parameters parameters = camera.getParameters();
 //            System.out.println("get is " + parameters.get(String key));
+//            System.out.println("getInt is " + parameters.getInt(String key));
         System.out.println("getAntibanding is " + parameters.getAntibanding());
         System.out.println("getAutoExposureLock is " + parameters.getAutoExposureLock());
         System.out.println("getAutoWhiteBalanceLock is " + parameters.getAutoWhiteBalanceLock());
         System.out.println("getColorEffect is " + parameters.getColorEffect());
         System.out.println("getExposureCompensation is " + parameters.getExposureCompensation());
         System.out.println("getExposureCompensationStep is " + parameters.getExposureCompensationStep());
-        System.out.println("getFlashMode is " + parameters.getFlashMode());
+        System.out.println("getFlashMode is " + parameters.getFlashMode());//闪光模式
         System.out.println("getFocalLength is " + parameters.getFocalLength());
         System.out.println("getFocusAreas is " + parameters.getFocusAreas());
 //            System.out.println("getFocusDistances is " + parameters.getFocusDistances(float[] output));
         System.out.println("getFocusMode is " + parameters.getFocusMode());
         System.out.println("getHorizontalViewAngle is " + parameters.getHorizontalViewAngle());
-//            System.out.println("getInt is " + parameters.getInt(String key));
         System.out.println("getJpegQuality is " + parameters.getJpegQuality());
         System.out.println("getJpegThumbnailQuality is " + parameters.getJpegThumbnailQuality());
         System.out.println("getJpegThumbnailSize is " + parameters.getJpegThumbnailSize());
@@ -221,7 +303,12 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("getSupportedPreviewFormats is " + parameters.getSupportedPreviewFormats());
         System.out.println("getSupportedPreviewFpsRange is " + parameters.getSupportedPreviewFpsRange());
         System.out.println("getSupportedPreviewFrameRates is " + parameters.getSupportedPreviewFrameRates());
-        System.out.println("getSupportedPreviewSizes is " + parameters.getSupportedPreviewSizes());
+
+
+        for (Camera.Size size : camera.getParameters().getSupportedPreviewSizes()) {
+            System.out.println("getSupportedPreviewSizes is width=" + size.width + ", height=" + size.height);
+        }
+
         System.out.println("getSupportedSceneModes is " + parameters.getSupportedSceneModes());
         System.out.println("getSupportedVideoSizes is " + parameters.getSupportedVideoSizes());
         System.out.println("getSupportedWhiteBalance is " + parameters.getSupportedWhiteBalance());
@@ -230,61 +317,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("getWhiteBalance is " + parameters.getWhiteBalance());
         System.out.println("getZoom is " + parameters.getZoom());
         System.out.println("getZoomRatios is " + parameters.getZoomRatios());
-    }
-
-
-    public void save(View view) {
-        System.out.println("~~button.save~~");
-
-
-    }
-
-    public void gallery(View view) {
-        System.out.println("~~button.gallery~~");
-
-
-    }
-
-    public void video(View view) {
-        System.out.println("~~button.video~~");
-
-    }
-
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
-
-    }
-
-
-    public void del(View view) {
-        System.out.println("~~button.del~~");
-//        Camera.Parameters parameters = camera.getParameters();
-//        parameters.setPreviewSize(700, 700);
-//        camera.setParameters(parameters);
-
-
-        List<Camera.Size> localSizes = camera.getParameters().getSupportedPreviewSizes();
-
-        for (Camera.Size size : localSizes) {
-            System.out.println(size.width);
-            System.out.println(size.height);
-        }
-
-
-    }
-
-
-    public void query(View view) {
-        System.out.println("~~button.query~~");
-
-
-        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-        System.out.println(params.height);
-        System.out.println(params.width);
-
-
-
-
 
     }
 }
