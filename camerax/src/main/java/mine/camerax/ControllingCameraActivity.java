@@ -182,9 +182,16 @@ public class ControllingCameraActivity extends AppCompatActivity {
 //        camera.getCameraInfo(0, cameraInfo);
 
 
+        //设置拍摄角度
+//        Camera.Parameters parameters = camera.getParameters();
+//        System.out.println("orientation is " + (orientation += 90));
+//        parameters.setRotation(orientation % 360);
+//        camera.setParameters(parameters);
+
+
+        //设置预览尺寸
         Camera.Parameters parameters = camera.getParameters();
-        System.out.println("orientation is " + (orientation += 90));
-        parameters.setRotation(orientation % 360);
+        parameters.setPreviewSize(320, 240);
         camera.setParameters(parameters);
 
 
@@ -199,9 +206,36 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("~~button.modify~~");
 
         //方式一
-//        System.out.println("orientation is " + (orientation += 90));
+        camera.setDisplayOrientation(90);
 
 
+
+
+
+
+    }
+
+
+    public void take(View view) {
+        System.out.println("~~button.take~~");
+
+
+
+
+    }
+
+
+    public void query(View view) {
+        System.out.println("~~button.query~~");
+
+
+        //获取SurfaceView尺寸
+        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
+        System.out.println("SurfaceView height is " + params.height);
+        System.out.println("SurfaceView width is " + params.width);
+
+
+        //获取屏幕角度
         int degrees = 0;
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         switch (rotation) {
@@ -224,38 +258,9 @@ public class ControllingCameraActivity extends AppCompatActivity {
         }
 
 
-        camera.setDisplayOrientation((degrees+90)%360);
-
-
-
-
-
-
-    }
-
-
-    public void del(View view) {
-        System.out.println("~~button.del~~");
-//        Camera.Parameters parameters = camera.getParameters();
-//        parameters.setPreviewSize(700, 700);
-//        camera.setParameters(parameters);
-
-
-    }
-
-
-    public void query(View view) {
-        System.out.println("~~button.query~~");
-
-
-        //SurfaceView
-        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-        System.out.println("SurfaceView height is " + params.height);
-        System.out.println("SurfaceView width is " + params.width);
-
 
         //Camera
-//        paremeters();//参数
+        paremeters();//参数
 //        face();//面
 //        size();//尺寸
 //        area();//区域
@@ -335,7 +340,12 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("getPreviewFormat is " + parameters.getPreviewFormat());
 //            System.out.println("getPreviewFpsRange is " + parameters.getPreviewFpsRange(int[] range));
         System.out.println("getPreviewFrameRate is " + parameters.getPreviewFrameRate());
-        System.out.println("getPreviewSize is " + parameters.getPreviewSize());
+        System.out.println("getPreviewSize is height=" + parameters.getPreviewSize().height + ", width=" + parameters.getPreviewSize().width);
+        for (Camera.Size size : camera.getParameters().getSupportedPreviewSizes()) {
+            System.out.println("getSupportedPreviewSizes is width=" + size.width + ", height=" + size.height);
+        }
+
+
         System.out.println("getSceneMode is " + parameters.getSceneMode());
         System.out.println("getSupportedAntibanding is " + parameters.getSupportedAntibanding());
         System.out.println("getSupportedColorEffects is " + parameters.getSupportedColorEffects());
@@ -349,9 +359,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("getSupportedPreviewFrameRates is " + parameters.getSupportedPreviewFrameRates());
 
 
-        for (Camera.Size size : camera.getParameters().getSupportedPreviewSizes()) {
-            System.out.println("getSupportedPreviewSizes is width=" + size.width + ", height=" + size.height);
-        }
 
         System.out.println("getSupportedSceneModes is " + parameters.getSupportedSceneModes());
         System.out.println("getSupportedVideoSizes is " + parameters.getSupportedVideoSizes());
