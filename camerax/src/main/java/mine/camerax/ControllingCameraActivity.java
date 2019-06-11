@@ -19,8 +19,17 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
@@ -39,6 +48,7 @@ public class ControllingCameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_horizontal);
 
 
+        //判断是否设备有摄像头
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             System.out.println("Camera is supported");
             camera = Camera.open();//获取摄像头
@@ -68,11 +78,7 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceCreated  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                try {
-                    camera.setPreviewDisplay(surfaceView.getHolder());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                //此访问无效果，因为每次都会先调用本方法，再调用surfaceChanged()，这里是设置将被它覆盖
             }
 
             @Override
@@ -83,6 +89,14 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("frmt is " + frmt);
                 System.out.println("h is " + h);
                 System.out.println("w is " + w);
+
+                try {
+                    camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的）
+                    camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
+                    camera.startPreview();//开始预览
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -122,6 +136,13 @@ public class ControllingCameraActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
         orientationEventListener.enable();
+
+
+
+        if (camera == null) {
+            camera = Camera.open();
+            System.out.println("re-open|" + camera);
+        }
     }
 
     @Override
@@ -129,6 +150,15 @@ public class ControllingCameraActivity extends AppCompatActivity {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
         orientationEventListener.disable();
+
+
+        if (camera != null) {
+            camera.stopPreview(); //停止预览
+            camera.release(); //释放资源
+            camera = null;
+            System.out.println("camera is " + camera);
+        }
+
     }
 
     @Override
@@ -191,7 +221,18 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
         //设置预览尺寸
         Camera.Parameters parameters = camera.getParameters();
-        parameters.setPreviewSize(320, 240);
+//        parameters.setPreviewSize(320, 240);
+
+
+        //拍照设置
+        parameters.setRotation(90);//配置拍摄图片的角度
+        parameters.setPictureSize(352, 288);//配置拍摄图片的尺寸
+
+
+
+
+
+
         camera.setParameters(parameters);
 
 
@@ -209,16 +250,55 @@ public class ControllingCameraActivity extends AppCompatActivity {
         camera.setDisplayOrientation(90);
 
 
-
-
-
-
     }
 
 
     public void take(View view) {
         System.out.println("~~button.take~~");
 
+        camera.takePicture(new Camera.ShutterCallback() {
+            @Override
+            public void onShutter() {
+                System.out.println("~~onShutter~~");
+            }
+        }, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                System.out.println("~~raw~~");
+//                System.out.println("data'size is " + data.length);
+                System.out.println("camera is " + camera);
+
+            }
+        }, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                System.out.println("~~postview~~");
+//                System.out.println("data'size is " + data.length);
+                System.out.println("camera is " + camera);
+
+            }
+        }, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                System.out.println("~~jpeg~~");
+                System.out.println("data'size is " + data.length);
+                System.out.println("camera is " + camera);
+
+                try {
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                    File pic = File.createTempFile(timeStamp,".jpg", getCacheDir());
+                    FileOutputStream fileOutputStream = new FileOutputStream(pic);
+                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+                    bufferedOutputStream.write(data);
+                    bufferedOutputStream.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
 
 
 
@@ -258,7 +338,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         }
 
 
-
         //Camera
         paremeters();//参数
 //        face();//面
@@ -272,7 +351,10 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
     }
 
-    private void size() {
+    private void size(String prix, List<Camera.Size> sizes) {
+        for (Camera.Size size : sizes) {
+            System.out.println(prix + " width=" + size.width + ", height=" + size.height);
+        }
 
     }
 
@@ -310,64 +392,133 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
         System.out.println("camera is " + camera);
         Camera.Parameters parameters = camera.getParameters();
+
+        //通过键值对获取
+//        System.out.println("-------Key-Value--------");
 //            System.out.println("get is " + parameters.get(String key));
 //            System.out.println("getInt is " + parameters.getInt(String key));
+
+
+        System.out.println("-------Antibanding--------");
         System.out.println("getAntibanding is " + parameters.getAntibanding());
+        System.out.println("getSupportedAntibanding is " + parameters.getSupportedAntibanding());
+
+
+        //曝光
+        System.out.println("-------Exposure--------");
         System.out.println("getAutoExposureLock is " + parameters.getAutoExposureLock());
-        System.out.println("getAutoWhiteBalanceLock is " + parameters.getAutoWhiteBalanceLock());
-        System.out.println("getColorEffect is " + parameters.getColorEffect());
         System.out.println("getExposureCompensation is " + parameters.getExposureCompensation());
         System.out.println("getExposureCompensationStep is " + parameters.getExposureCompensationStep());
-        System.out.println("getFlashMode is " + parameters.getFlashMode());//闪光模式
+        System.out.println("getMaxExposureCompensation is " + parameters.getMaxExposureCompensation());
+        System.out.println("getMinExposureCompensation is " + parameters.getMinExposureCompensation());
+
+        //白平衡
+        System.out.println("-------WhiteBalance--------");
+        System.out.println("getAutoWhiteBalanceLock is " + parameters.getAutoWhiteBalanceLock());
+        System.out.println("getWhiteBalance is " + parameters.getWhiteBalance());
+        System.out.println("getSupportedWhiteBalance is " + parameters.getSupportedWhiteBalance());
+
+
+        //色彩
+        System.out.println("-------ColorEffect--------");
+        System.out.println("getColorEffect is " + parameters.getColorEffect());
+        System.out.println("getSupportedColorEffects is " + parameters.getSupportedColorEffects());
+
+
+        //闪光灯
+        System.out.println("-------Flash--------");
+        System.out.println("getFlashMode is " + parameters.getFlashMode());
+        System.out.println("getSupportedFlashModes is " + parameters.getSupportedFlashModes());
+
+
+
+        //对焦
+        System.out.println("-------Focus--------");
         System.out.println("getFocalLength is " + parameters.getFocalLength());
         System.out.println("getFocusAreas is " + parameters.getFocusAreas());
-//            System.out.println("getFocusDistances is " + parameters.getFocusDistances(float[] output));
+
+        float[] output = new float[3];
+        parameters.getFocusDistances(output);
+        System.out.println("FOCUS_DISTANCE_NEAR_INDEX is " + output[0]);
+        System.out.println("FOCUS_DISTANCE_OPTIMAL_INDEX is " + output[1]);
+        System.out.println("FOCUS_DISTANCE_FAR_INDEX is " + output[2]);
+
         System.out.println("getFocusMode is " + parameters.getFocusMode());
+        System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumFocusAreas());
+        System.out.println("getSupportedFocusModes is " + parameters.getSupportedFocusModes());
+
+
+        //焦距
+        System.out.println("-------Zoom--------");
+        System.out.println("getMaxZoom is " + parameters.getMaxZoom());
+        System.out.println("getZoom is " + parameters.getZoom());
+        System.out.println("getZoomRatios is " + parameters.getZoomRatios());
+
+
+        //防抖
+        System.out.println("-------Angle--------");
         System.out.println("getHorizontalViewAngle is " + parameters.getHorizontalViewAngle());
-        System.out.println("getJpegQuality is " + parameters.getJpegQuality());
+        System.out.println("getVerticalViewAngle is " + parameters.getVerticalViewAngle());
+
+
+        //脸部识别
+        System.out.println("-------Faces--------");
+        System.out.println("getMaxNumDetectedFaces is " + parameters.getMaxNumDetectedFaces());
+
+
+
+
+        //缩略图
+        System.out.println("-------Thumbnail--------");
         System.out.println("getJpegThumbnailQuality is " + parameters.getJpegThumbnailQuality());
         System.out.println("getJpegThumbnailSize is " + parameters.getJpegThumbnailSize());
-        System.out.println("getMaxExposureCompensation is " + parameters.getMaxExposureCompensation());
-        System.out.println("getMaxNumDetectedFaces is " + parameters.getMaxNumDetectedFaces());
-        System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumFocusAreas());
-        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
-        System.out.println("getMaxZoom is " + parameters.getMaxZoom());
-        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
-        System.out.println("getMinExposureCompensation is " + parameters.getMinExposureCompensation());
+        size("getSupportedJpegThumbnailSizes is", parameters.getSupportedJpegThumbnailSizes());
+
+
+
+        //拍摄图片
+        System.out.println("-------Format--------");
+        System.out.println("getJpegQuality is " + parameters.getJpegQuality());
         System.out.println("getPictureFormat is " + parameters.getPictureFormat());
+        System.out.println("getSupportedPictureFormats is " + parameters.getSupportedPictureFormats());
         System.out.println("getPictureSize is " + parameters.getPictureSize());
+        size("getSupportedPictureSizes is", parameters.getSupportedPictureSizes());
+
+        //录制
+        System.out.println("-------Video--------");
         System.out.println("getPreferredPreviewSizeForVideo is " + parameters.getPreferredPreviewSizeForVideo());
+        System.out.println("getSupportedVideoSizes is " + parameters.getSupportedVideoSizes());
+        System.out.println("getVideoStabilization is " + parameters.getVideoStabilization());
+
+
+        //预览
+        System.out.println("-------Preview--------");
         System.out.println("getPreviewFormat is " + parameters.getPreviewFormat());
-//            System.out.println("getPreviewFpsRange is " + parameters.getPreviewFpsRange(int[] range));
+        System.out.println("getSupportedPreviewFormats is " + parameters.getSupportedPreviewFormats());
         System.out.println("getPreviewFrameRate is " + parameters.getPreviewFrameRate());
         System.out.println("getPreviewSize is height=" + parameters.getPreviewSize().height + ", width=" + parameters.getPreviewSize().width);
-        for (Camera.Size size : camera.getParameters().getSupportedPreviewSizes()) {
-            System.out.println("getSupportedPreviewSizes is width=" + size.width + ", height=" + size.height);
-        }
+        size("getSupportedPreviewSizes is", parameters.getSupportedPreviewSizes());
 
+        int[] range = new int[2];
+        parameters.getPreviewFpsRange(range);
+        System.out.println("range'max is " + range[0]);
+        System.out.println("range'min is " + range[1]);
 
-        System.out.println("getSceneMode is " + parameters.getSceneMode());
-        System.out.println("getSupportedAntibanding is " + parameters.getSupportedAntibanding());
-        System.out.println("getSupportedColorEffects is " + parameters.getSupportedColorEffects());
-        System.out.println("getSupportedFlashModes is " + parameters.getSupportedFlashModes());
-        System.out.println("getSupportedFocusModes is " + parameters.getSupportedFocusModes());
-        System.out.println("getSupportedJpegThumbnailSizes is " + parameters.getSupportedJpegThumbnailSizes());
-        System.out.println("getSupportedPictureFormats is " + parameters.getSupportedPictureFormats());
-        System.out.println("getSupportedPictureSizes is " + parameters.getSupportedPictureSizes());
-        System.out.println("getSupportedPreviewFormats is " + parameters.getSupportedPreviewFormats());
         System.out.println("getSupportedPreviewFpsRange is " + parameters.getSupportedPreviewFpsRange());
         System.out.println("getSupportedPreviewFrameRates is " + parameters.getSupportedPreviewFrameRates());
 
 
 
+        //区域
+        System.out.println("-------Areas--------");
+        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
+        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
+
+
+        //场景模式
+        System.out.println("-------Scene--------");
+        System.out.println("getSceneMode is " + parameters.getSceneMode());
         System.out.println("getSupportedSceneModes is " + parameters.getSupportedSceneModes());
-        System.out.println("getSupportedVideoSizes is " + parameters.getSupportedVideoSizes());
-        System.out.println("getSupportedWhiteBalance is " + parameters.getSupportedWhiteBalance());
-        System.out.println("getVerticalViewAngle is " + parameters.getVerticalViewAngle());
-        System.out.println("getVideoStabilization is " + parameters.getVideoStabilization());
-        System.out.println("getWhiteBalance is " + parameters.getWhiteBalance());
-        System.out.println("getZoom is " + parameters.getZoom());
-        System.out.println("getZoomRatios is " + parameters.getZoomRatios());
 
     }
 }
