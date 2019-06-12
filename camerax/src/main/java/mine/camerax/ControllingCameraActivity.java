@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
+import android.graphics.ImageFormat;
 import android.graphics.Paint;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,6 +30,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -37,6 +41,8 @@ import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 public class ControllingCameraActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
+    TextureView textureView;
+    SurfaceTexture surfaceTexture;
     int orientation = 0;
     OrientationEventListener orientationEventListener;
 
@@ -70,6 +76,23 @@ public class ControllingCameraActivity extends AppCompatActivity {
         };
 
 
+        textureView = new TextureView(this);
+        try {
+            surfaceTexture = new SurfaceTexture(10);
+            camera.setPreviewTexture(surfaceTexture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(textureView);
+
+
+
+//        surfaceView();
+
+    }
+
+    private void surfaceView() {
         surfaceView = new SurfaceView(this);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
@@ -92,8 +115,11 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("w is " + w);
 
                 try {
+                    //配置预览
                     camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的）
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
+
+
 //                    camera.autoFocus(new Camera.AutoFocusCallback() {
 //                        @Override
 //                        public void onAutoFocus(boolean success, Camera camera) {
@@ -102,14 +128,43 @@ public class ControllingCameraActivity extends AppCompatActivity {
 //                            System.out.println("camera is " + camera);
 //                        }
 //                    });
-                    camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
+
+//                    camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
+//                        @Override
+//                        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
+//                            System.out.println("faces is " + faces);
+//                            System.out.println("camera is " + camera);
+//                        }
+//                    });
+
+                    camera.setPreviewCallback(new Camera.PreviewCallback() {
                         @Override
-                        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
-                            System.out.println("faces is " + faces);
+                        public void onPreviewFrame(byte[] data, Camera camera) {
+                            System.out.println("~~onPreviewFrame~~");
+                            System.out.println("data is " + data.length);
                             System.out.println("camera is " + camera);
+
+
                         }
                     });
-                    camera.startPreview();//开始预览
+
+
+
+//                    camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
+//                        @Override
+//                        public void onPreviewFrame(byte[] data, Camera camera) {
+//                            System.out.println("~~setOneShotPreviewCallback~~");
+//                            System.out.println("data is " + data.length);
+//                            System.out.println("camera is " + camera);
+//                        }
+//                    });
+
+//                    camera.startPreview();//开始预览
+
+
+
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -126,7 +181,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(surfaceView);
-
     }
 
     @Override
@@ -208,7 +262,7 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("~~button.preview~~");
 
         camera.startPreview();
-
+        textureView.setSurfaceTexture(surfaceTexture);
     }
 
 
@@ -235,14 +289,15 @@ public class ControllingCameraActivity extends AppCompatActivity {
 //        camera.setParameters(parameters);
 
 
-        //设置预览尺寸
+        //预览设置
         Camera.Parameters parameters = camera.getParameters();
-//        parameters.setPreviewSize(320, 240);
+        parameters.setPreviewSize(320, 240);
+
 
 
         //拍照设置
-        parameters.setRotation(90);//配置拍摄图片的角度
-        parameters.setPictureSize(352, 288);//配置拍摄图片的尺寸
+//        parameters.setRotation(90);//配置拍摄图片的角度
+//        parameters.setPictureSize(352, 288);//配置拍摄图片的尺寸
 
 
 
@@ -509,7 +564,7 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
         //预览
         System.out.println("-------Preview--------");
-        System.out.println("getPreviewFormat is " + parameters.getPreviewFormat());
+        System.out.println("getPreviewFormat is " + parameters.getPreviewFormat() + "|getBitsPerPixel is " + ImageFormat.getBitsPerPixel(parameters.getPreviewFormat()));
         System.out.println("getSupportedPreviewFormats is " + parameters.getSupportedPreviewFormats());
         System.out.println("getPreviewFrameRate is " + parameters.getPreviewFrameRate());
         System.out.println("getPreviewSize is height=" + parameters.getPreviewSize().height + ", width=" + parameters.getPreviewSize().width);
