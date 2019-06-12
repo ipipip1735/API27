@@ -78,7 +78,8 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceCreated  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                //此访问无效果，因为每次都会先调用本方法，再调用surfaceChanged()，这里是设置将被它覆盖
+                /*此访问无效果，因为每次都会先调用本方法，再调用surfaceChanged()，这里是设置将被它覆盖*/
+                //... your code
             }
 
             @Override
@@ -93,6 +94,21 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 try {
                     camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的）
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
+//                    camera.autoFocus(new Camera.AutoFocusCallback() {
+//                        @Override
+//                        public void onAutoFocus(boolean success, Camera camera) {
+//                            System.out.println("~~onAutoFocus~~");
+//                            System.out.println("success is " + success);
+//                            System.out.println("camera is " + camera);
+//                        }
+//                    });
+                    camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
+                        @Override
+                        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
+                            System.out.println("faces is " + faces);
+                            System.out.println("camera is " + camera);
+                        }
+                    });
                     camera.startPreview();//开始预览
                 } catch (IOException e) {
                     e.printStackTrace();
