@@ -1,36 +1,30 @@
 package mine.camerax;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ImageFormat;
-import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.OrientationEventListener;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -38,13 +32,12 @@ import java.util.Random;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 
-public class ControllingCameraActivity extends AppCompatActivity {
+/**
+ * 本对象专门用于测试图片格式转换，其他代码全部去掉了
+ */
+public class FormatConvertActivity extends AppCompatActivity {
     Camera camera;
-    SurfaceView surfaceView;
     TextureView textureView;
-    SurfaceTexture surfaceTexture;
-    int orientation = 0;
-    OrientationEventListener orientationEventListener;
 
 
     @Override
@@ -54,36 +47,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_horizontal);
 
 
-        //判断是否设备有摄像头
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            System.out.println("Camera is supported");
-            camera = Camera.open();//获取摄像头
-
-        } else {
-            System.out.println("Camera isn't supported");
-            return;
-        }
-
-
-        //监听器方向改变
-        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                System.out.println("~~onOrientationChanged~~");
-                System.out.println("orientation is " + orientation);
-
-            }
-        };
-
-
-        textureView(); //使用TextureView
-
-
-//        surfaceView(); //使用SurfaceView
-
-    }
-
-    private void textureView() {
         textureView = new TextureView(this);
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
@@ -91,6 +54,10 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureAvailable~~");
                 System.out.println("surface is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
+
+
+                System.out.println("getTimestamp is " + surface.getTimestamp());
+
 
                 try {
                     camera.setPreviewTexture(surface);
@@ -111,8 +78,10 @@ public class ControllingCameraActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureDestroyed~~");
                 System.out.println("surface is " + surface);
 
-                camera.stopPreview();
-                camera.release();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                }
                 return true;//表示SurfaceTexture已无渲染任务，可以安全销毁SurfaceTexture
 //                return false; //表示渲染任务还有结束，占不能销毁，等到SurfaceTexture.release()再销毁
             }
@@ -121,102 +90,18 @@ public class ControllingCameraActivity extends AppCompatActivity {
             public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 //                System.out.println("~~onSurfaceTextureUpdated~~");
 //                System.out.println("surface is " + surface);
+//                Bitmap bitmap = textureView.getBitmap();
+//                System.out.println("getRowBytes is " + bitmap.getRowBytes());
+//                System.out.println("getHeight is " + bitmap.getHeight());
+//                System.out.println("getWidth is " + bitmap.getWidth());
+
             }
         });
+
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(textureView);
 
-    }
 
-    private void surfaceView() {
-        surfaceView = new SurfaceView(this);
-        SurfaceHolder surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(final SurfaceHolder holder) {
-                System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceCreated  ~~~~~~~");
-                System.out.println("holder is " + holder);
-
-                /*此访问无效果，因为每次都会先调用本方法，再调用surfaceChanged()，这里是设置将被它覆盖*/
-                //... your code
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int frmt, int w, int h) {
-                System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceChanged  ~~~~~~~");
-
-                System.out.println("holder is " + holder);
-                System.out.println("frmt is " + frmt);
-                System.out.println("h is " + h);
-                System.out.println("w is " + w);
-
-                try {
-                    //配置预览
-                    camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的）
-                    camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
-
-
-//                    camera.autoFocus(new Camera.AutoFocusCallback() {
-//                        @Override
-//                        public void onAutoFocus(boolean success, Camera camera) {
-//                            System.out.println("~~onAutoFocus~~");
-//                            System.out.println("success is " + success);
-//                            System.out.println("camera is " + camera);
-//                        }
-//                    });
-
-//                    camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
-//                        @Override
-//                        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
-//                            System.out.println("faces is " + faces);
-//                            System.out.println("camera is " + camera);
-//                        }
-//                    });
-
-                    camera.setPreviewCallback(new Camera.PreviewCallback() {
-                        @Override
-                        public void onPreviewFrame(byte[] data, Camera camera) {
-                            System.out.println("~~onPreviewFrame~~");
-                            System.out.println("data is " + data.length);
-                            System.out.println("camera is " + camera);
-
-
-                        }
-                    });
-
-
-
-//                    camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
-//                        @Override
-//                        public void onPreviewFrame(byte[] data, Camera camera) {
-//                            System.out.println("~~setOneShotPreviewCallback~~");
-//                            System.out.println("data is " + data.length);
-//                            System.out.println("camera is " + camera);
-//                        }
-//                    });
-
-//                    camera.startPreview();//开始预览
-
-
-
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
-                System.out.println("holder is " + holder);
-
-            }
-        });
-
-        ViewGroup viewGroup = findViewById(R.id.fl);
-        viewGroup.addView(surfaceView);
     }
 
     @Override
@@ -241,8 +126,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
-        orientationEventListener.enable();
-
 
 
         if (camera == null) {
@@ -255,7 +138,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-        orientationEventListener.disable();
 
 
         if (camera != null) {
@@ -329,14 +211,9 @@ public class ControllingCameraActivity extends AppCompatActivity {
         parameters.setPreviewSize(320, 240);
 
 
-
         //拍照设置
 //        parameters.setRotation(90);//配置拍摄图片的角度
 //        parameters.setPictureSize(352, 288);//配置拍摄图片的尺寸
-
-
-
-
 
 
         camera.setParameters(parameters);
@@ -362,60 +239,19 @@ public class ControllingCameraActivity extends AppCompatActivity {
     public void take(View view) {
         System.out.println("~~button.take~~");
 
-        camera.takePicture(new Camera.ShutterCallback() {
+        camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
             @Override
-            public void onShutter() {
-                System.out.println("~~onShutter~~");
-            }
-        }, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                System.out.println("~~raw~~");
-//                System.out.println("data'size is " + data.length);
-                System.out.println("camera is " + camera);
-
-            }
-        }, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                System.out.println("~~postview~~");
-//                System.out.println("data'size is " + data.length);
-                System.out.println("camera is " + camera);
-
-            }
-        }, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                System.out.println("~~jpeg~~");
-                System.out.println("data'size is " + data.length);
-                System.out.println("camera is " + camera);
-
-                try {
-                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                    File pic = File.createTempFile(timeStamp,".jpg", getCacheDir());
-                    FileOutputStream fileOutputStream = new FileOutputStream(pic);
-                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-                    bufferedOutputStream.write(data);
-                    bufferedOutputStream.close();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
+            public void onPreviewFrame(byte[] data, Camera camera) {
+                System.out.println("~~onPreviewFrame~~");
+                System.out.println(data.length);
             }
         });
-
-
 
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
-
-
 
 
         //获取SurfaceView尺寸
@@ -540,7 +376,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("getSupportedFlashModes is " + parameters.getSupportedFlashModes());
 
 
-
         //对焦
         System.out.println("-------Focus--------");
         System.out.println("getFocalLength is " + parameters.getFocalLength());
@@ -575,14 +410,11 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("getMaxNumDetectedFaces is " + parameters.getMaxNumDetectedFaces());
 
 
-
-
         //缩略图
         System.out.println("-------Thumbnail--------");
         System.out.println("getJpegThumbnailQuality is " + parameters.getJpegThumbnailQuality());
         System.out.println("getJpegThumbnailSize is " + parameters.getJpegThumbnailSize());
         size("getSupportedJpegThumbnailSizes is", parameters.getSupportedJpegThumbnailSizes());
-
 
 
         //拍摄图片
@@ -615,7 +447,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
         System.out.println("getSupportedPreviewFpsRange is " + parameters.getSupportedPreviewFpsRange());
         System.out.println("getSupportedPreviewFrameRates is " + parameters.getSupportedPreviewFrameRates());
-
 
 
         //区域
