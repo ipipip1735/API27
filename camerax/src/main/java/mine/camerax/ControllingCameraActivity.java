@@ -77,12 +77,45 @@ public class ControllingCameraActivity extends AppCompatActivity {
 
 
         textureView = new TextureView(this);
-        try {
-            surfaceTexture = new SurfaceTexture(10);
-            camera.setPreviewTexture(surfaceTexture);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+            @Override
+            public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+                System.out.println("~~onSurfaceTextureAvailable~~");
+                System.out.println("surface is " + surface);
+                System.out.println("width is " + width + ", height is " + height);
+
+                try {
+                    camera.setPreviewTexture(surface);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+                System.out.println("~~onSurfaceTextureSizeChanged~~");
+                System.out.println("surface is " + surface);
+                System.out.println("width is " + width + ", height is " + height);
+            }
+
+            @Override
+            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+                System.out.println("~~onSurfaceTextureDestroyed~~");
+                System.out.println("surface is " + surface);
+
+                camera.stopPreview();
+                camera.release();
+                return true;
+
+//                return false;
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+//                System.out.println("~~onSurfaceTextureUpdated~~");
+//                System.out.println("surface is " + surface);
+            }
+        });
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(textureView);
 
@@ -262,7 +295,6 @@ public class ControllingCameraActivity extends AppCompatActivity {
         System.out.println("~~button.preview~~");
 
         camera.startPreview();
-        textureView.setSurfaceTexture(surfaceTexture);
     }
 
 
