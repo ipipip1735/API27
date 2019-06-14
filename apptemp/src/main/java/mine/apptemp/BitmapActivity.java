@@ -12,17 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -100,6 +105,70 @@ public class BitmapActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+
+//        file();//使用文件创建位图
+//        byteArray();//使用字节数组创建位图
+//        stream();//使用流创建位图
+//        resource();//使用资源ID创建位图
+
+    }
+
+    private void resource() {
+        ImageView image = new ImageView(this);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.w1);
+        image.setImageBitmap(bitmap);
+
+
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(image);
+    }
+
+
+    private void stream() {
+        try {
+            File file = new File(getCacheDir(), "w1.jpg");
+            FileInputStream fileInputStream = new FileInputStream(file);
+
+            ImageView image = new ImageView(this);
+            Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+            image.setImageBitmap(bitmap);
+
+
+            ViewGroup viewGroup = findViewById(R.id.fl);
+            viewGroup.addView(image);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void byteArray() {
+        try {
+            File file = new File(getCacheDir(), "w1.jpg");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+            byte[] bytes = new byte[bufferedInputStream.available()];
+            bufferedInputStream.read(bytes);
+
+            ImageView image = new ImageView(this);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            image.setImageBitmap(bitmap);
+
+
+            ViewGroup viewGroup = findViewById(R.id.fl);
+            viewGroup.addView(image);
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void file() {
         ImageView image = new ImageView(this);
         File file = new File(getCacheDir(), "w1.jpg");
         Bitmap bMap = BitmapFactory.decodeFile(file.toString());
@@ -108,18 +177,63 @@ public class BitmapActivity extends AppCompatActivity {
 
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(image);
-
-
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
+        float widownWidth = 1.0f;
+
+        ImageView image = new ImageView(this);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+
+        BitmapFactory.decodeResource(getResources(), R.drawable.w1, options);
+        float width = options.outWidth;
+        float height = options.outHeight;
+        System.out.println("width=" + width + ", height=" + height);
+
+        options.inSampleSize = 4;
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.w1, options);
+        width = options.outWidth;
+        height = options.outHeight;
+        System.out.println("width=" + width + ", height=" + height);
+
+
+//        image.setImageBitmap(bitmap);
+
+//        ViewGroup viewGroup = findViewById(R.id.fl);
+//        viewGroup.addView(image);
+
     }
+
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
+
+        try {
+
+            File file = new File(getCacheDir(), "ssdf.jpg");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.w1, options);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bufferedOutputStream);
+
+
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -138,12 +252,15 @@ public class BitmapActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
 
+
     }
+
 
 }
