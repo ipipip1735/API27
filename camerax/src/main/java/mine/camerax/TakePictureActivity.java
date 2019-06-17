@@ -5,8 +5,10 @@ import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -15,7 +17,12 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
@@ -25,8 +32,6 @@ public class TakePictureActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
     TextureView textureView;
-    SurfaceTexture surfaceTexture;
-    int orientation = 0;
     OrientationEventListener orientationEventListener;
 
 
@@ -62,20 +67,18 @@ public class TakePictureActivity extends AppCompatActivity {
             camera = Camera.open();//再获取实例
         }
 
-
         //监听器方向改变
-//        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
-//            @Override
-//            public void onOrientationChanged(int orientation) {
-//                System.out.println("~~onOrientationChanged~~");
-//                System.out.println("orientation is " + orientation);
-//
-//            }
-//        };
+        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                System.out.println("~~onOrientationChanged~~");
+                System.out.println("orientation is " + orientation);
 
+            }
+        };
 
-//        textureView(); //使用TextureView
-        surfaceView(); //使用SurfaceView
+        textureView(); //使用TextureView
+//        surfaceView(); //使用SurfaceView
 
     }
 
@@ -117,8 +120,11 @@ public class TakePictureActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureDestroyed~~");
                 System.out.println("surface is " + surface);
 
-                camera.stopPreview();
-                camera.release();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
                 return true; //表示SurfaceTexture已无渲染任务，可以安全销毁SurfaceTexture
 //                return false; //表示渲染任务还有结束，占不能销毁，等到SurfaceTexture.release()再销毁
             }
@@ -159,15 +165,6 @@ public class TakePictureActivity extends AppCompatActivity {
                         }
                     });
 
-                    //监听器人脸识别
-//                    camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
-//                        @Override
-//                        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
-//                            System.out.println("faces is " + faces);
-//                            System.out.println("camera is " + camera);
-//                        }
-//                    });
-
                     //每帧画面显示后，将获取预览画面的像素数据交给监听器
 //                    camera.setPreviewCallback(new Camera.PreviewCallback() {
 //                        @Override
@@ -180,15 +177,6 @@ public class TakePictureActivity extends AppCompatActivity {
 //                        }
 //                    });
 
-
-//                    camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
-//                        @Override
-//                        public void onPreviewFrame(byte[] data, Camera camera) {
-//                            System.out.println("~~setOneShotPreviewCallback~~");
-//                            System.out.println("data is " + data.length);
-//                            System.out.println("camera is " + camera);
-//                        }
-//                    });
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -212,8 +200,11 @@ public class TakePictureActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                camera.stopPreview();
-
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
             }
         });
 
@@ -243,7 +234,7 @@ public class TakePictureActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
-//        orientationEventListener.enable();
+        orientationEventListener.enable();
 
         if (camera == null) {
             camera = Camera.open();
@@ -258,7 +249,7 @@ public class TakePictureActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-//        orientationEventListener.disable();
+        orientationEventListener.disable();
 
 
         if (camera != null) {
@@ -314,36 +305,29 @@ public class TakePictureActivity extends AppCompatActivity {
     public void config(View view) {
         System.out.println("~~button.config~~");
 
-//        camera.setDisplayOrientation(90);
+        camera.stopPreview();
 
-//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-//        camera.getCameraInfo(0, cameraInfo);
-
-
-        //设置拍摄角度
-//        Camera.Parameters parameters = camera.getParameters();
-//        System.out.println("orientation is " + (orientation += 90));
-//        parameters.setRotation(orientation % 360);
-//        camera.setParameters(parameters);
-
-
-        //预览设置
+        //设置预览尺寸
+        int widht = 320, height = 240;
         Camera.Parameters parameters = camera.getParameters();
-        parameters.setPreviewSize(320, 240);
-
-
-        //拍照设置
-//        parameters.setRotation(90);//配置拍摄图片的角度
-//        parameters.setPictureSize(352, 288);//配置拍摄图片的尺寸
-
-
+        parameters.setPreviewSize(widht, height);
         camera.setParameters(parameters);
+        System.out.println("PreView|height=" + camera.getParameters().getPreviewSize().height +
+                ", width=" + camera.getParameters().getPreviewSize().width);
 
+        ViewGroup.LayoutParams params = textureView.getLayoutParams();
+        params.width = widht;
+        params.height = height;
+        textureView.setLayoutParams(params);
+        System.out.println("textureView|height=" + params.height + ", width=" + params.width);
+
+
+        camera.startPreview();
 
     }
 
-    public void video(View view) {
-        System.out.println("~~button.video~~");
+    public void change(View view) {
+        System.out.println("~~button.change~~");
 
         camera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
@@ -373,11 +357,11 @@ public class TakePictureActivity extends AppCompatActivity {
         Camera.Parameters parameters = camera.getParameters();
         parameters.setRotation(90);
         parameters.setJpegQuality(100);
-        parameters.setPictureSize(1920, 1080);
-//        parameters.setPictureFormat(ImageFormat.JPEG);
+//        parameters.setPictureSize(1920, 1080);//模拟器上不支持这样的尺寸，但小米C4支持
+//        parameters.setPictureFormat(ImageFormat.JPEG);//JPG是默认值，可以省略
         camera.setParameters(parameters);
 
-        //拍照
+        //直接拍照
 //        camera.takePicture(new Camera.ShutterCallback() {
 //            @Override
 //            public void onShutter() {
@@ -425,88 +409,37 @@ public class TakePictureActivity extends AppCompatActivity {
 //        });
 
 
-        //自动对焦
-//        camera.autoFocus(new Camera.AutoFocusCallback() {
-//            @Override
-//            public void onAutoFocus(boolean success, Camera camera) {
-//                System.out.println("~~onAutoFocus~~");
-//                System.out.println("success is " + success);
-//                System.out.println("camera is " + camera);
-//
-//                if (!success) return;
-//
-//                camera.takePicture(null, null, new Camera.PictureCallback() {
-//                    @Override
-//                    public void onPictureTaken(byte[] data, Camera camera) {
-//                        try {
-//                            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                            File pic = File.createTempFile(timeStamp, ".jpg", getCacheDir());
-//                            FileOutputStream fileOutputStream = new FileOutputStream(pic);
-//                            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-//                            bufferedOutputStream.write(data);
-//                            bufferedOutputStream.close();
-//
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        } finally {
-//                            camera.startPreview();
-//                        }
-//                    }
-//                });
-//
-//            }
-//        });
+        //自动对焦后再拍照
+        camera.autoFocus(new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success, Camera camera) {
+                System.out.println("~~onAutoFocus~~");
+                System.out.println("success is " + success);
+                System.out.println("camera is " + camera);
 
+                if (!success) return;
 
+                camera.takePicture(null, null, new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        try {
+                            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                            File pic = File.createTempFile(timeStamp, ".jpg", getCacheDir());
+                            FileOutputStream fileOutputStream = new FileOutputStream(pic);
+                            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+                            bufferedOutputStream.write(data);
+                            bufferedOutputStream.close();
 
-//        camera.setAutoFocusMoveCallback(new Camera.AutoFocusMoveCallback() {
-//            @Override
-//            public void onAutoFocusMoving(boolean start, Camera camera) {
-//                System.out.println("~~onAutoFocusMoving~~");
-//                System.out.println("start is " + start);
-//
-//            }
-//        });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            camera.startPreview();
+                        }
+                    }
+                });
 
-        //处理预览画面
-//        camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
-//            @Override
-//            public void onPreviewFrame(byte[] data, Camera camera) {
-//                System.out.println("~~onPreviewFrame~~");
-//                System.out.println("data is " + data.length);
-//                System.out.println("camera is " + camera);
-//
-//
-//                int width = camera.getParameters().getPreviewSize().width;
-//                int height = camera.getParameters().getPreviewSize().height;
-//                System.out.println("PreviewWidth=" + width + ", PreviewHeight=" + height);
-//
-//                YuvImage yuv = new YuvImage(data, camera.getParameters().getPreviewFormat(), width, height, null);
-//                ByteArrayOutputStream out = new ByteArrayOutputStream();
-//                yuv.compressToJpeg(new Rect(0, 0, width, height), 100, out);
-////                yuv.compressToJpeg(new Rect(0, 0, 320, 240), 100, out);
-//
-//
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inJustDecodeBounds = true;
-//                BitmapFactory.decodeByteArray(out.toByteArray(), 0, out.toByteArray().length, options);
-//                System.out.println("width=" + options.outWidth + ", height=" + options.outHeight);
-//
-//
-//                File file = new File(getCacheDir(), "sscc.jpg");
-//                try {
-//                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-//                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-//                    bufferedOutputStream.write(out.toByteArray());
-//                    bufferedOutputStream.close();
-//
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+            }
+        });
 
 
     }
@@ -516,45 +449,9 @@ public class TakePictureActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
 
-        //获取SurfaceView尺寸
-//        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-//        System.out.println("SurfaceView height is " + params.height);
-//        System.out.println("SurfaceView width is " + params.width);
-
-
-        //获取屏幕角度
-//        int degrees = 0;
-//        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-//        switch (rotation) {
-//            case Surface.ROTATION_0:
-//                degrees = 0;
-//                System.out.println("rotation is Surface.ROTATION_0");
-//                break;
-//            case Surface.ROTATION_90:
-//                degrees = 90;
-//                System.out.println("rotation is Surface.ROTATION_90");
-//                break;
-//            case Surface.ROTATION_180:
-//                degrees = 180;
-//                System.out.println("rotation is Surface.ROTATION_180");
-//                break;
-//            case Surface.ROTATION_270:
-//                degrees = 270;
-//                System.out.println("rotation is Surface.ROTATION_270");
-//                break;
-//        }
-
-
         //Camera
         paremeters();//参数
 
-//        size();//尺寸
-//        area();//区域
-
-
-    }
-
-    private void area() {
 
     }
 
@@ -588,10 +485,38 @@ public class TakePictureActivity extends AppCompatActivity {
                     "canDisableShutterSound=" + cameraInfo.canDisableShutterSound);
             System.out.println(stringBuilder);
         }
+
+
+        //获取SurfaceView尺寸
+        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
+        System.out.println("SurfaceView height is " + params.height);
+        System.out.println("SurfaceView width is " + params.width);
+
+
+        //获取屏幕角度
+        int degrees = 0;
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                System.out.println("rotation is Surface.ROTATION_0");
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                System.out.println("rotation is Surface.ROTATION_90");
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                System.out.println("rotation is Surface.ROTATION_180");
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                System.out.println("rotation is Surface.ROTATION_270");
+                break;
+        }
     }
 
     private void face() {
-
         camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
             @Override
             public void onFaceDetection(Camera.Face[] faces, Camera camera) {
@@ -672,6 +597,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
         //焦距
         System.out.println("-------Zoom--------");
+        System.out.println("isZoomSupported is " + parameters.isZoomSupported());
         System.out.println("getMaxZoom is " + parameters.getMaxZoom());
         System.out.println("getZoom is " + parameters.getZoom());
         System.out.println("getZoomRatios is " + parameters.getZoomRatios());

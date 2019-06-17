@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ZoomControls;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 public class ZoomActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
+    int zoom = 0;
 
 
     @Override
@@ -33,30 +35,25 @@ public class ZoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_horizontal);
 
 
-        //判断是否设备有摄像头
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            System.out.println("Camera is supported");
-            camera = Camera.open();//获取摄像头
-        } else {
-            System.out.println("Camera isn't supported");
-            return;
-        }
-
-        //是否支持自动对焦
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_AUTOFOCUS)) {
-            System.out.println("Camera autofocus is supported");
-        } else {
-            System.out.println("Camera autofocus isn't supported");
-            return;
-        }
-
-
         if (camera == null) {
             camera = Camera.open();
         } else {
             camera.release();//先释放
             camera = Camera.open();//再获取实例
         }
+
+
+        if (camera.getParameters().isSmoothZoomSupported())
+            camera.setZoomChangeListener(new Camera.OnZoomChangeListener() {
+                @Override
+                public void onZoomChange(int zoomValue, boolean stopped, Camera camera) {
+                    System.out.println("~~onZoomChange~~");
+                    System.out.println("zoomValue is " + zoomValue);
+                    System.out.println("stopped is " + stopped);
+                    System.out.println("camera is " + camera);
+
+                }
+            });
 
         surfaceView(); //使用SurfaceView
 
@@ -116,6 +113,20 @@ public class ZoomActivity extends AppCompatActivity {
 
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(surfaceView);
+
+
+        ZoomControls zoomControls = new ZoomControls(this);
+        zoomControls.setOnZoomInClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~setOnZoomInClickListener~~");
+                camera.startSmoothZoom(zoom += 2);
+            }
+        });
+
+        viewGroup.addView(zoomControls);
+
+
     }
 
     @Override
@@ -196,6 +207,63 @@ public class ZoomActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        camera.autoFocus(new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success, Camera camera) {
+                System.out.println("~~onAutoFocus~~");
+                System.out.println("success is " + success);
+                System.out.println("camera is " + camera);
+            }
+        });
+
+        camera.startPreview();
+    }
+
+    private void smoothZoom(int zoom) {
+
+
+        Camera.Parameters parameters = camera.getParameters();
+
+        if (parameters.isSmoothZoomSupported()) {
+
+            this.zoom += zoom;
+
+            if (this.zoom < 0) this.zoom = 0;//设置上限
+
+            int max = camera.getParameters().getMaxZoom();
+            if (this.zoom > max) this.zoom = max;//设置下限
+
+            camera.startSmoothZoom(this.zoom);
+
+        } else {
+            System.out.println("Smooth Zoom isn't Supported");
+        }
+
+
+    }
+
+
+    private void zoom(int zoom) {
+
+
+        Camera.Parameters parameters = camera.getParameters();
+
+        if (parameters.isZoomSupported()) {
+
+            this.zoom += zoom;
+
+            if (this.zoom < 0) this.zoom = 0;//设置上限
+
+            int max = camera.getParameters().getMaxZoom();
+            if (this.zoom > max) this.zoom = max;//设置下限
+
+
+            parameters.setZoom(this.zoom); //修改焦距
+            camera.setParameters(parameters);
+
+        } else {
+            System.out.println("Zoom isn't Supported");
+        }
 
 
     }
@@ -212,17 +280,23 @@ public class ZoomActivity extends AppCompatActivity {
     public void config(View view) {
         System.out.println("~~button.config~~");
 
-
     }
 
-    public void video(View view) {
-        System.out.println("~~button.video~~");
+    public void change(View view) {
+        System.out.println("~~button.change~~");
 
+
+        zoom(10); //普通变焦
+//        smoothZoom(10);//平滑变焦
     }
 
     public void modify(View view) {
         System.out.println("~~button.modify~~");
 
+        zoom(-10);//普通变焦
+//        smoothZoom(-10);//普通变焦
+
+//        camera.stopSmoothZoom();//停止变焦
     }
 
 
@@ -312,6 +386,8 @@ public class ZoomActivity extends AppCompatActivity {
 
         //焦距
         System.out.println("-------Zoom--------");
+        System.out.println("isSmoothZoomSupported is " + parameters.isSmoothZoomSupported());
+        System.out.println("isZoomSupported is " + parameters.isZoomSupported());
         System.out.println("getMaxZoom is " + parameters.getMaxZoom());
         System.out.println("getZoom is " + parameters.getZoom());
         System.out.println("getZoomRatios is " + parameters.getZoomRatios());

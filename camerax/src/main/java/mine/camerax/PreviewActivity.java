@@ -533,6 +533,7 @@ public class PreviewActivity extends AppCompatActivity {
 
         //焦距
         System.out.println("-------Zoom--------");
+        System.out.println("isZoomSupported is " + parameters.isZoomSupported());
         System.out.println("getMaxZoom is " + parameters.getMaxZoom());
         System.out.println("getZoom is " + parameters.getZoom());
         System.out.println("getZoomRatios is " + parameters.getZoomRatios());

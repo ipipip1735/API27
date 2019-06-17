@@ -277,22 +277,33 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
     private void face() {
 
-        camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
-            @Override
-            public void onFaceDetection(Camera.Face[] faces, Camera camera) {
-                System.out.println("~~onFaceDetection~~");
-                for (Camera.Face face : faces) {
 
-                    System.out.println("id is " + face.id);
-                    System.out.println("leftEye is " + face.leftEye);
-                    System.out.println("rightEye is " + face.rightEye);
-                    System.out.println("mouth is " + face.mouth);
-                    System.out.println("rect is " + face.rect);
-                    System.out.println("score is " + face.score);
+        if (camera.getParameters().getMaxNumDetectedFaces() > 0) {
+
+            System.out.println("Max face detection's is" + camera.getParameters().getMaxNumDetectedFaces());
+
+            //绑定监听器
+            camera.setFaceDetectionListener(new Camera.FaceDetectionListener() {
+                @Override
+                public void onFaceDetection(Camera.Face[] faces, Camera camera) {
+                    System.out.println("~~onFaceDetection~~");
+                    for (Camera.Face face : faces) {
+
+                        System.out.println("id is " + face.id);
+                        System.out.println("leftEye is " + face.leftEye);
+                        System.out.println("rightEye is " + face.rightEye);
+                        System.out.println("mouth is " + face.mouth);
+                        System.out.println("rect is " + face.rect);
+                        System.out.println("score is " + face.score);
+                    }
                 }
-            }
-        });
-        camera.startFaceDetection();
+            });
+            camera.startFaceDetection();
+
+        } else {
+            System.out.println("face detection isn't surpported!");
+        }
+
     }
 
 
@@ -357,6 +368,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
         //焦距
         System.out.println("-------Zoom--------");
+        System.out.println("isZoomSupported is " + parameters.isZoomSupported());
         System.out.println("getMaxZoom is " + parameters.getMaxZoom());
         System.out.println("getZoom is " + parameters.getZoom());
         System.out.println("getZoomRatios is " + parameters.getZoomRatios());

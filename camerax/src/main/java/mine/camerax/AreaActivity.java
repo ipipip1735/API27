@@ -1,43 +1,24 @@
 package mine.camerax;
 
 
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.OrientationEventListener;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ZoomControls;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
-import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
-import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
-
-/**
- * 本对象专门用于测试图片格式转换，其他代码全部去掉了
- */
-public class FormatConvertActivity extends AppCompatActivity {
+public class AreaActivity extends AppCompatActivity {
     Camera camera;
-    TextureView textureView;
+    SurfaceView surfaceView;
+    int zoom = 0;
 
 
     @Override
@@ -47,59 +28,96 @@ public class FormatConvertActivity extends AppCompatActivity {
         setContentView(R.layout.activity_horizontal);
 
 
-        textureView = new TextureView(this);
-        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+        if (camera == null) {
+            camera = Camera.open();
+        } else {
+            camera.release();//先释放
+            camera = Camera.open();//再获取实例
+        }
+
+
+        if (camera.getParameters().isSmoothZoomSupported())
+            camera.setZoomChangeListener(new Camera.OnZoomChangeListener() {
+                @Override
+                public void onZoomChange(int zoomValue, boolean stopped, Camera camera) {
+                    System.out.println("~~onZoomChange~~");
+                    System.out.println("zoomValue is " + zoomValue);
+                    System.out.println("stopped is " + stopped);
+                    System.out.println("camera is " + camera);
+
+                }
+            });
+
+        surfaceView(); //使用SurfaceView
+
+    }
+
+    private void surfaceView() {
+        surfaceView = new SurfaceView(this);
+        SurfaceHolder surfaceHolder = surfaceView.getHolder();
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
-            public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-                System.out.println("~~onSurfaceTextureAvailable~~");
-                System.out.println("surface is " + surface);
-                System.out.println("width is " + width + ", height is " + height);
-
-
-                System.out.println("getTimestamp is " + surface.getTimestamp());
-
+            public void surfaceCreated(final SurfaceHolder holder) {
+                System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceCreated  ~~~~~~~");
+                System.out.println("holder is " + holder);
 
                 try {
-                    camera.setPreviewTexture(surface);
+                    //配置预览
+                    camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的）
+                    camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
+                    camera.startPreview();//开始预览
+
+                    //监听器自动对焦
+                    camera.autoFocus(new Camera.AutoFocusCallback() {
+                        @Override
+                        public void onAutoFocus(boolean success, Camera camera) {
+                            System.out.println("~~onAutoFocus~~");
+                            System.out.println("success is " + success);
+                            System.out.println("camera is " + camera);
+                        }
+                    });
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-                System.out.println("~~onSurfaceTextureSizeChanged~~");
-                System.out.println("surface is " + surface);
-                System.out.println("width is " + width + ", height is " + height);
+            public void surfaceChanged(SurfaceHolder holder, int frmt, int w, int h) {
+                System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceChanged  ~~~~~~~");
+
+                System.out.println("holder is " + holder);
+                System.out.println("frmt is " + frmt);
+                System.out.println("h is " + h);
+                System.out.println("w is " + w);
+
+
             }
 
             @Override
-            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-                System.out.println("~~onSurfaceTextureDestroyed~~");
-                System.out.println("surface is " + surface);
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
+                System.out.println("holder is " + holder);
 
-                if (camera != null) {
-                    camera.stopPreview();
-                    camera.release();
-                }
-                return true;//表示SurfaceTexture已无渲染任务，可以安全销毁SurfaceTexture
-//                return false; //表示渲染任务还有结束，占不能销毁，等到SurfaceTexture.release()再销毁
-            }
-
-            @Override
-            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-//                System.out.println("~~onSurfaceTextureUpdated~~");
-//                System.out.println("surface is " + surface);
-//                Bitmap bitmap = textureView.getBitmap();
-//                System.out.println("getRowBytes is " + bitmap.getRowBytes());
-//                System.out.println("getHeight is " + bitmap.getHeight());
-//                System.out.println("getWidth is " + bitmap.getWidth());
+                camera.stopPreview();
 
             }
         });
 
         ViewGroup viewGroup = findViewById(R.id.fl);
-        viewGroup.addView(textureView);
+        viewGroup.addView(surfaceView);
+
+
+        ZoomControls zoomControls = new ZoomControls(this);
+        zoomControls.setOnZoomInClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~setOnZoomInClickListener~~");
+                camera.startSmoothZoom(zoom += 2);
+            }
+        });
+
+        viewGroup.addView(zoomControls);
 
 
     }
@@ -131,6 +149,9 @@ public class FormatConvertActivity extends AppCompatActivity {
         if (camera == null) {
             camera = Camera.open();
             System.out.println("re-open|" + camera);
+        } else {
+            camera.release();
+            camera = Camera.open();
         }
     }
 
@@ -176,8 +197,17 @@ public class FormatConvertActivity extends AppCompatActivity {
     }
 
 
-    public void preview(View view) {
-        System.out.println("~~button.preview~~");
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+
+        camera.autoFocus(new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success, Camera camera) {
+                System.out.println("~~onAutoFocus~~");
+                System.out.println("success is " + success);
+                System.out.println("camera is " + camera);
+            }
+        });
 
         camera.startPreview();
     }
@@ -186,6 +216,7 @@ public class FormatConvertActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
+        camera.stopFaceDetection();
         camera.stopPreview();
 
     }
@@ -193,44 +224,16 @@ public class FormatConvertActivity extends AppCompatActivity {
     public void config(View view) {
         System.out.println("~~button.config~~");
 
-//        camera.setDisplayOrientation(90);
-
-//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-//        camera.getCameraInfo(0, cameraInfo);
-
-
-        //设置拍摄角度
-//        Camera.Parameters parameters = camera.getParameters();
-//        System.out.println("orientation is " + (orientation += 90));
-//        parameters.setRotation(orientation % 360);
-//        camera.setParameters(parameters);
-
-
-        //预览设置
-        Camera.Parameters parameters = camera.getParameters();
-        parameters.setPreviewSize(320, 240);
-
-
-        //拍照设置
-//        parameters.setRotation(90);//配置拍摄图片的角度
-//        parameters.setPictureSize(352, 288);//配置拍摄图片的尺寸
-
-
-        camera.setParameters(parameters);
-
-
     }
 
-    public void video(View view) {
-        System.out.println("~~button.video~~");
+    public void change(View view) {
+        System.out.println("~~button.change~~");
+
 
     }
 
     public void modify(View view) {
         System.out.println("~~button.modify~~");
-
-        //方式一
-        camera.setDisplayOrientation(90);
 
 
     }
@@ -239,62 +242,16 @@ public class FormatConvertActivity extends AppCompatActivity {
     public void take(View view) {
         System.out.println("~~button.take~~");
 
-        camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
-            @Override
-            public void onPreviewFrame(byte[] data, Camera camera) {
-                System.out.println("~~onPreviewFrame~~");
-                System.out.println(data.length);
-            }
-        });
-
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-
-        //获取SurfaceView尺寸
-//        ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-//        System.out.println("SurfaceView height is " + params.height);
-//        System.out.println("SurfaceView width is " + params.width);
-
-
-        //获取屏幕角度
-//        int degrees = 0;
-//        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-//        switch (rotation) {
-//            case Surface.ROTATION_0:
-//                degrees = 0;
-//                System.out.println("rotation is Surface.ROTATION_0");
-//                break;
-//            case Surface.ROTATION_90:
-//                degrees = 90;
-//                System.out.println("rotation is Surface.ROTATION_90");
-//                break;
-//            case Surface.ROTATION_180:
-//                degrees = 180;
-//                System.out.println("rotation is Surface.ROTATION_180");
-//                break;
-//            case Surface.ROTATION_270:
-//                degrees = 270;
-//                System.out.println("rotation is Surface.ROTATION_270");
-//                break;
-//        }
-
-
-        //Camera
         paremeters();//参数
-//        face();//面
-//        size();//尺寸
-//        area();//区域
-
 
     }
 
-    private void area() {
-
-    }
 
     private void size(String prix, List<Camera.Size> sizes) {
         for (Camera.Size size : sizes) {
@@ -305,33 +262,17 @@ public class FormatConvertActivity extends AppCompatActivity {
 
     public void info(View view) {
 
-
-        for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-            StringBuilder stringBuilder = new StringBuilder(128);
-            camera.getCameraInfo(i, cameraInfo);
-            switch (cameraInfo.facing) {
-                case CAMERA_FACING_FRONT: //前置摄像头
-                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_BACK, ");
-                    break;
-                case CAMERA_FACING_BACK: //后置摄像头，即主摄像头
-                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_FRONT, ");
-                    break;
-                default:
-                    System.out.println("unknown!!");
-                    return;
+        Camera.Parameters parameters = camera.getParameters();
+        if(parameters.getMaxNumFocusAreas() > 0) {
+            for (Camera.Area area : parameters.getFocusAreas()) {
+                System.out.println("area is " + area);
             }
 
-            stringBuilder.append("orientation=" + cameraInfo.orientation + ", " +
-                    "canDisableShutterSound=" + cameraInfo.canDisableShutterSound);
-            System.out.println(stringBuilder);
+        }else {
+            System.out.println("FocusAreas isn't supported!!");
         }
-    }
-
-    private void face() {
 
     }
-
 
     private void paremeters() {
 
@@ -379,7 +320,7 @@ public class FormatConvertActivity extends AppCompatActivity {
         //对焦
         System.out.println("-------Focus--------");
         System.out.println("getFocalLength is " + parameters.getFocalLength());
-        System.out.println("getFocusAreas is " + parameters.getFocusAreas());
+//        System.out.println("getFocusAreas is " + parameters.getFocusAreas());
 
         float[] output = new float[3];
         parameters.getFocusDistances(output);
@@ -394,6 +335,7 @@ public class FormatConvertActivity extends AppCompatActivity {
 
         //焦距
         System.out.println("-------Zoom--------");
+        System.out.println("isSmoothZoomSupported is " + parameters.isSmoothZoomSupported());
         System.out.println("isZoomSupported is " + parameters.isZoomSupported());
         System.out.println("getMaxZoom is " + parameters.getMaxZoom());
         System.out.println("getZoom is " + parameters.getZoom());
@@ -405,11 +347,9 @@ public class FormatConvertActivity extends AppCompatActivity {
         System.out.println("getHorizontalViewAngle is " + parameters.getHorizontalViewAngle());
         System.out.println("getVerticalViewAngle is " + parameters.getVerticalViewAngle());
 
-
         //脸部识别
         System.out.println("-------Faces--------");
         System.out.println("getMaxNumDetectedFaces is " + parameters.getMaxNumDetectedFaces());
-
 
         //缩略图
         System.out.println("-------Thumbnail--------");
@@ -417,13 +357,12 @@ public class FormatConvertActivity extends AppCompatActivity {
         System.out.println("getJpegThumbnailSize is " + parameters.getJpegThumbnailSize());
         size("getSupportedJpegThumbnailSizes is", parameters.getSupportedJpegThumbnailSizes());
 
-
         //拍摄图片
-        System.out.println("-------Format--------");
+        System.out.println("-------Picture--------");
         System.out.println("getJpegQuality is " + parameters.getJpegQuality());
         System.out.println("getPictureFormat is " + parameters.getPictureFormat());
         System.out.println("getSupportedPictureFormats is " + parameters.getSupportedPictureFormats());
-        System.out.println("getPictureSize is " + parameters.getPictureSize());
+        System.out.println("getPictureSize is height=" + parameters.getPictureSize().height + ", width=" + parameters.getPreviewSize().width);
         size("getSupportedPictureSizes is", parameters.getSupportedPictureSizes());
 
         //录制
@@ -452,8 +391,8 @@ public class FormatConvertActivity extends AppCompatActivity {
 
         //区域
         System.out.println("-------Areas--------");
-        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
-        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
+//        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
+//        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
 
 
         //场景模式
