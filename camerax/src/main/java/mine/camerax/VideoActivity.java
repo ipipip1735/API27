@@ -9,6 +9,8 @@ import android.graphics.SurfaceTexture;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
+import android.media.CamcorderProfile;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.view.OrientationEventListener;
 import android.view.Surface;
@@ -30,10 +32,12 @@ import java.util.List;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 public class VideoActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
+    MediaRecorder mediaRecorder;
     TextureView textureView;
     SurfaceTexture surfaceTexture;
     OrientationEventListener orientationEventListener;
@@ -49,7 +53,6 @@ public class VideoActivity extends AppCompatActivity {
         //判断是否设备有摄像头
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             System.out.println("Camera is supported");
-            camera = Camera.open();//获取摄像头
         } else {
             System.out.println("Camera isn't supported");
             return;
@@ -65,66 +68,20 @@ public class VideoActivity extends AppCompatActivity {
 
 
         //监听器方向改变
-        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                System.out.println("~~onOrientationChanged~~");
-                System.out.println("orientation is " + orientation);
+//        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
+//            @Override
+//            public void onOrientationChanged(int orientation) {
+//                System.out.println("~~onOrientationChanged~~");
+//                System.out.println("orientation is " + orientation);
+//
+//            }
+//        };
 
-            }
-        };
 
-
-//        textureView(); //使用TextureView
         surfaceView(); //使用SurfaceView
 
     }
 
-    private void textureView() {
-        textureView = new TextureView(this);//实例化TextureView
-        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {//增加监听器
-            @Override
-            public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-                System.out.println("~~onSurfaceTextureAvailable~~");
-                System.out.println("surface is " + surface);
-                System.out.println("width is " + width + ", height is " + height);
-
-                try {
-                    camera.setPreviewTexture(surface);
-                    camera.startPreview();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-                System.out.println("~~onSurfaceTextureSizeChanged~~");
-                System.out.println("surface is " + surface);
-                System.out.println("width is " + width + ", height is " + height);
-            }
-
-            @Override
-            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-                System.out.println("~~onSurfaceTextureDestroyed~~");
-                System.out.println("surface is " + surface);
-
-                camera.stopPreview();
-                camera.release();
-                return true; //表示SurfaceTexture已无渲染任务，可以安全销毁SurfaceTexture
-//                return false; //表示渲染任务还有结束，占不能销毁，等到SurfaceTexture.release()再销毁
-            }
-
-            @Override
-            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-//                System.out.println("~~onSurfaceTextureUpdated~~");
-//                System.out.println("surface is " + surface);
-            }
-        });
-        ViewGroup viewGroup = findViewById(R.id.fl);
-        viewGroup.addView(textureView);
-
-    }
 
     private void surfaceView() {
         surfaceView = new SurfaceView(this);
@@ -137,7 +94,7 @@ public class VideoActivity extends AppCompatActivity {
 
                 try {
                     //配置预览
-                    camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的），一般需要通过info对象来计算，这里直接改为90（模拟器上默认90）
+                    setCameraDisplayOrientation(0, camera);//设置预览画面角度（默认是场景模式，画面是横向的），一般需要通过info对象来计算，这里直接改为90（模拟器上默认90）
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
                     camera.startPreview();//开始预览
 
@@ -187,7 +144,11 @@ public class VideoActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                camera.stopPreview();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
 
             }
         });
@@ -218,7 +179,7 @@ public class VideoActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
-        orientationEventListener.enable();//监听方向改变
+//        orientationEventListener.enable();//监听方向改变
 
         if (camera == null) {
             camera = Camera.open();
@@ -233,7 +194,7 @@ public class VideoActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-        orientationEventListener.disable();//停止监听方向改变
+//        orientationEventListener.disable();//停止监听方向改变
 
         if (camera != null) {
             camera.stopPreview(); //停止预览
@@ -289,7 +250,7 @@ public class VideoActivity extends AppCompatActivity {
         System.out.println("~~button.config~~");
 
         //设置预览尺寸
-        int widht=320, height=240;
+        int widht = 320, height = 240;
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(widht, height);
         camera.setParameters(parameters);
@@ -297,8 +258,8 @@ public class VideoActivity extends AppCompatActivity {
                 ", width=" + camera.getParameters().getPreviewSize().width);
 
         ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-        params.width=widht;
-        params.height=height;
+        params.width = widht;
+        params.height = height;
         surfaceView.setLayoutParams(params);
         System.out.println("SurfaceView|height=" + params.height + ", width=" + params.width);
 
@@ -331,56 +292,40 @@ public class VideoActivity extends AppCompatActivity {
     public void take(View view) {
         System.out.println("~~button.take~~");
 
-
-        //不知道怎么用
-//        camera.setAutoFocusMoveCallback(new Camera.AutoFocusMoveCallback() {
-//            @Override
-//            public void onAutoFocusMoving(boolean start, Camera camera) {
-//                System.out.println("~~onAutoFocusMoving~~");
-//                System.out.println("start is " + start);
-//
-//            }
-//        });
-
-        //处理预览画面
-        camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
-            @Override
-            public void onPreviewFrame(byte[] data, Camera camera) {
-                System.out.println("~~onPreviewFrame~~");
-                System.out.println("data is " + data.length);
-                System.out.println("camera is " + camera);
+        mediaRecorder = new MediaRecorder();
 
 
-                int width = camera.getParameters().getPreviewSize().width;
-                int height = camera.getParameters().getPreviewSize().height;
-                System.out.println("PreviewWidth=" + width + ", PreviewHeight=" + height);
-
-                YuvImage yuv = new YuvImage(data, camera.getParameters().getPreviewFormat(), width, height, null);
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                yuv.compressToJpeg(new Rect(0, 0, width, height), 100, out);
-//                yuv.compressToJpeg(new Rect(0, 0, 320, 240), 100, out);
+        // Step 1: Unlock and set camera to MediaRecorder
+        camera.unlock();//解锁摄像头
+        mediaRecorder.setCamera(camera);//控制器交给media
 
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeByteArray(out.toByteArray(), 0, out.toByteArray().length, options);
-                System.out.println("width=" + options.outWidth + ", height=" + options.outHeight);
+        // Step 2: Set sources
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 
 
-                File file = new File(getCacheDir(), "sscc.jpg");
-                try {
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-                    bufferedOutputStream.write(out.toByteArray());
-                    bufferedOutputStream.close();
+        // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
+        mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        // Step 4: Set output file
+//        File file = new File(getExternalMediaDirs(), );
+        mediaRecorder.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
+
+        // Step 5: Set the preview output
+        mediaRecorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
+
+
+        // Step 6: Prepare configured MediaRecorder
+        try {
+            mediaRecorder.prepare();
+        } catch (IllegalStateException e) {
+            System.out.println("IllegalStateException preparing MediaRecorder: " + e.getMessage());
+//            releaseMediaRecorder();
+        } catch (IOException e) {
+            System.out.println("IOException preparing MediaRecorder: " + e.getMessage());
+//            releaseMediaRecorder();
+        }
 
 
     }
@@ -432,19 +377,19 @@ public class VideoActivity extends AppCompatActivity {
         }
 
 
-
-
         //获取摄像头信息
         for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             StringBuilder stringBuilder = new StringBuilder(128);
-            camera.getCameraInfo(i, cameraInfo);
+
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, cameraInfo);
+
             switch (cameraInfo.facing) {
                 case CAMERA_FACING_FRONT: //前置摄像头
-                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_BACK, ");
+                    stringBuilder.append("cameraInfo|id=" + i + ", facing=CAMERA_FACING_BACK, ");
                     break;
                 case CAMERA_FACING_BACK: //后置摄像头，即主摄像头
-                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_FRONT, ");
+                    stringBuilder.append("cameraInfo|id=" + i + ", facing=CAMERA_FACING_FRONT, ");
                     break;
                 default:
                     System.out.println("unknown!!");
@@ -455,9 +400,34 @@ public class VideoActivity extends AppCompatActivity {
                     "canDisableShutterSound=" + cameraInfo.canDisableShutterSound);
             System.out.println(stringBuilder);
         }
+
     }
 
 
+    private void setCameraDisplayOrientation(int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);//获取摄像头的信息对象
+
+        //获取屏幕方向
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        //计算修正角度
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);//保存设置
+    }
 
     private void paremeters() {
 

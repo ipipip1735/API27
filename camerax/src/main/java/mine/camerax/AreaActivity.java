@@ -1,8 +1,8 @@
 package mine.camerax;
 
 
-import android.app.Activity;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.Surface;
@@ -10,17 +10,16 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ZoomControls;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AreaActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
-    int zoom = 0;
 
 
     @Override
@@ -65,8 +64,7 @@ public class AreaActivity extends AppCompatActivity {
 
                 try {
                     //配置预览
-                    setCameraDisplayOrientation(AreaActivity.this, 0, camera);
-//                    camera.setDisplayOrientation(0);//设置预览画面角度（默认是场景模式，画面是横向的）
+                    setCameraDisplayOrientation(0, camera);//设置预览画面角度
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
                     camera.startPreview();//开始预览
 
@@ -114,19 +112,6 @@ public class AreaActivity extends AppCompatActivity {
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(surfaceView);
 
-
-        ZoomControls zoomControls = new ZoomControls(this);
-        zoomControls.setOnZoomInClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("~~setOnZoomInClickListener~~");
-                camera.startSmoothZoom(zoom += 2);
-            }
-        });
-
-        viewGroup.addView(zoomControls);
-
-
     }
 
     @Override
@@ -166,7 +151,6 @@ public class AreaActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-
 
         if (camera != null) {
             camera.stopPreview(); //停止预览
@@ -214,8 +198,6 @@ public class AreaActivity extends AppCompatActivity {
                 System.out.println("~~onAutoFocus~~");
                 System.out.println("success is " + success);
                 System.out.println("camera is " + camera);
-
-
             }
         });
 
@@ -280,15 +262,53 @@ public class AreaActivity extends AppCompatActivity {
     }
 
     public void info(View view) {
+        Camera.Parameters parameters = camera.getParameters();
 
+        //面对焦
+        if (parameters.getMaxNumFocusAreas() > 0) {
+
+            System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumFocusAreas());
+            List<Camera.Area> focusAreas = new ArrayList<Camera.Area>();
+            Rect areaRect = new Rect(-1000, -1000, -900, -900);
+            focusAreas.add(new Camera.Area(areaRect, 1000));
+            parameters.setFocusAreas(focusAreas);
+            System.out.println("getFocusAreas is " + parameters.getFocusAreas().size());
+            camera.setParameters(parameters);
+
+        } else {
+            System.out.println("FocusAreas isn't supported !!");
+        }
+
+
+        //面测光
+
+
+
+
+
+
+//            parameters.getFocusAreas();
+//            System.out.println("getFocusAreas is " + parameters.getFocusAreas());
+//            for (Camera.Area area : parameters.getFocusAreas()) {
+//                System.out.println("area is " + area);
+//            }
+
+//        System.out.println("getMeteringAreas is " + parameters.getMaxNumFocusAreas());
+//        System.out.println("getMeteringAreas is " + parameters.getMaxNumMeteringAreas());
+//        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
+
+
+
+//        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
     }
 
-    private void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
+
+    private void setCameraDisplayOrientation(int cameraId, android.hardware.Camera camera) {
         android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);//获取摄像头的信息对象
 
         //获取屏幕方向
-        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
         switch (rotation) {
             case Surface.ROTATION_0: degrees = 0; break;
@@ -307,6 +327,7 @@ public class AreaActivity extends AppCompatActivity {
         }
         camera.setDisplayOrientation(result);//保存设置
     }
+
 
     private void paremeters() {
 

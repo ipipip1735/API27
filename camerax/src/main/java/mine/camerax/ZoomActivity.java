@@ -7,6 +7,7 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -51,7 +52,6 @@ public class ZoomActivity extends AppCompatActivity {
                     System.out.println("zoomValue is " + zoomValue);
                     System.out.println("stopped is " + stopped);
                     System.out.println("camera is " + camera);
-
                 }
             });
 
@@ -70,7 +70,7 @@ public class ZoomActivity extends AppCompatActivity {
 
                 try {
                     //配置预览
-                    camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的）
+                    setCameraDisplayOrientation(0, camera);//设置预览画面角度（默认是场景模式，画面是横向的）
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
                     camera.startPreview();//开始预览
 
@@ -106,7 +106,11 @@ public class ZoomActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                camera.stopPreview();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
 
             }
         });
@@ -115,15 +119,22 @@ public class ZoomActivity extends AppCompatActivity {
         viewGroup.addView(surfaceView);
 
 
+        //增加变焦控件
         ZoomControls zoomControls = new ZoomControls(this);
         zoomControls.setOnZoomInClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("~~setOnZoomInClickListener~~");
-                camera.startSmoothZoom(zoom += 2);
+                zoom(2);//放大
             }
         });
-
+        zoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~setOnZoomInClickListener~~");
+                zoom(-2);//缩小
+            }
+        });
         viewGroup.addView(zoomControls);
 
 
@@ -324,6 +335,33 @@ public class ZoomActivity extends AppCompatActivity {
     public void info(View view) {
 
     }
+
+
+    private void setCameraDisplayOrientation(int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);//获取摄像头的信息对象
+
+        //获取屏幕方向
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        //计算修正角度
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);//保存设置
+    }
+
 
     private void paremeters() {
 

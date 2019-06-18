@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!--<activity android:name=".MainActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -38,14 +39,13 @@
         <!--</activity>-->
 
 
-        <activity android:name=".PreviewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+        <!--<activity android:name=".PreviewActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
         <!--<activity android:name=".TakePictureActivity">-->
             <!--<intent-filter>-->
@@ -55,14 +55,12 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-
-
-        <!--<activity android:name=".VideoActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<activity android:name=".FormatConvertActivity">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity android:name=".ZoomActivity">-->
@@ -72,7 +70,6 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
-
 
         <!--<activity android:name=".AreaActivity">-->
             <!--<intent-filter>-->
@@ -90,13 +87,17 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <!--<activity android:name=".FormatConvertActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+
+
+
+        <activity android:name=".VideoActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
 
     </application>
 

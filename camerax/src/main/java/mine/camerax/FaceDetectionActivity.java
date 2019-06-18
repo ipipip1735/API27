@@ -109,7 +109,11 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                camera.stopPreview();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
 
             }
         });

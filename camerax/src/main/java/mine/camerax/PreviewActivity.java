@@ -1,6 +1,7 @@
 package mine.camerax;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ZoomControls;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +48,7 @@ import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 
 public class PreviewActivity extends AppCompatActivity {
     Camera camera;
+    int zoom = 0;
     SurfaceView surfaceView;
     TextureView textureView;
     SurfaceTexture surfaceTexture;
@@ -62,7 +65,6 @@ public class PreviewActivity extends AppCompatActivity {
         //判断是否设备有摄像头
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             System.out.println("Camera is supported");
-            camera = Camera.open();//获取摄像头
         } else {
             System.out.println("Camera isn't supported");
             return;
@@ -70,7 +72,7 @@ public class PreviewActivity extends AppCompatActivity {
 
 
         if (camera == null) {
-            camera = Camera.open();
+            camera = Camera.open();//获取摄像头
         } else {
             camera.release();//先释放
             camera = Camera.open();//再获取实例
@@ -78,14 +80,14 @@ public class PreviewActivity extends AppCompatActivity {
 
 
         //监听器方向改变
-        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                System.out.println("~~onOrientationChanged~~");
-                System.out.println("orientation is " + orientation);
-
-            }
-        };
+//        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
+//            @Override
+//            public void onOrientationChanged(int orientation) {
+//                System.out.println("~~onOrientationChanged~~");
+//                System.out.println("orientation is " + orientation);
+//
+//            }
+//        };
 
 
 //        textureView(); //使用TextureView
@@ -103,6 +105,7 @@ public class PreviewActivity extends AppCompatActivity {
                 System.out.println("width is " + width + ", height is " + height);
 
                 try {
+                    setCameraDisplayOrientation(0, camera);//设置预览画面角度
                     camera.setPreviewTexture(surface);
                     camera.startPreview();
                 } catch (IOException e) {
@@ -122,8 +125,12 @@ public class PreviewActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureDestroyed~~");
                 System.out.println("surface is " + surface);
 
-                camera.stopPreview();
-                camera.release();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
+
                 return true; //表示SurfaceTexture已无渲染任务，可以安全销毁SurfaceTexture
 //                return false; //表示渲染任务还有结束，占不能销毁，等到SurfaceTexture.release()再销毁
             }
@@ -136,6 +143,25 @@ public class PreviewActivity extends AppCompatActivity {
         });
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(textureView);
+
+
+        //增加变焦控件
+        ZoomControls zoomControls = new ZoomControls(this);
+        zoomControls.setOnZoomInClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~setOnZoomInClickListener~~");
+                camera.getParameters().setZoom(2);//放大
+            }
+        });
+        zoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~setOnZoomInClickListener~~");
+                camera.getParameters().setZoom(-2);//缩小
+            }
+        });
+        viewGroup.addView(zoomControls);
 
     }
 
@@ -150,7 +176,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 try {
                     //配置预览
-                    camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的），一般需要通过info对象来计算，这里直接改为90（模拟器上默认90）
+                    setCameraDisplayOrientation(0, camera);//设置预览画面角度
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
                     camera.startPreview();//开始预览
 
@@ -165,7 +191,6 @@ public class PreviewActivity extends AppCompatActivity {
                     });
 
 
-
                     //每帧画面显示后，将获取预览画面的像素数据交给监听器
 //                    camera.setPreviewCallback(new Camera.PreviewCallback() {
 //                        @Override
@@ -173,8 +198,6 @@ public class PreviewActivity extends AppCompatActivity {
 //                            System.out.println("~~onPreviewFrame~~");
 //                            System.out.println("data is " + data.length);
 //                            System.out.println("camera is " + camera);
-//
-//
 //                        }
 //                    });
 
@@ -200,13 +223,35 @@ public class PreviewActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                camera.stopPreview();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
 
             }
         });
 
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(surfaceView);
+
+        //增加变焦控件
+        ZoomControls zoomControls = new ZoomControls(this);
+        zoomControls.setOnZoomInClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~setOnZoomInClickListener~~");
+                zoom(2);//放大
+            }
+        });
+        zoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~setOnZoomInClickListener~~");
+                zoom(-2);//缩小
+            }
+        });
+        viewGroup.addView(zoomControls);
     }
 
     @Override
@@ -231,7 +276,7 @@ public class PreviewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
-        orientationEventListener.enable();//监听方向改变
+//        orientationEventListener.enable();//监听方向改变
 
         if (camera == null) {
             camera = Camera.open();
@@ -246,7 +291,7 @@ public class PreviewActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-        orientationEventListener.disable();//停止监听方向改变
+//        orientationEventListener.disable();//停止监听方向改变
 
         if (camera != null) {
             camera.stopPreview(); //停止预览
@@ -302,7 +347,7 @@ public class PreviewActivity extends AppCompatActivity {
         System.out.println("~~button.config~~");
 
         //设置预览尺寸
-        int widht=320, height=240;
+        int widht = 320, height = 240;
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(widht, height);
         camera.setParameters(parameters);
@@ -310,8 +355,8 @@ public class PreviewActivity extends AppCompatActivity {
                 ", width=" + camera.getParameters().getPreviewSize().width);
 
         ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
-        params.width=widht;
-        params.height=height;
+        params.width = widht;
+        params.height = height;
         surfaceView.setLayoutParams(params);
         System.out.println("SurfaceView|height=" + params.height + ", width=" + params.width);
 
@@ -445,8 +490,6 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
 
-
-
         //获取摄像头信息
         for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
             StringBuilder stringBuilder = new StringBuilder(128);
@@ -473,7 +516,69 @@ public class PreviewActivity extends AppCompatActivity {
 
     }
 
+    private void setCameraDisplayOrientation(int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);//获取摄像头的信息对象
 
+        //获取屏幕方向
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+        System.out.println("ROTATION is " + degrees);
+
+        //计算修正角度
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            System.out.println("CAMERA_FACING_FRONT's orientation is " + info.orientation);
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            System.out.println("CAMERA_FACING_BACK's orientation is " + info.orientation);
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        System.out.println("DisplayOrientation is " + result);
+        camera.setDisplayOrientation(result);//保存设置
+    }
+
+
+
+    private void zoom(int zoom) {
+
+
+        Camera.Parameters parameters = camera.getParameters();
+
+        if (parameters.isZoomSupported()) {
+
+            this.zoom += zoom;
+
+            if (this.zoom < 0) this.zoom = 0;//设置上限
+
+            int max = camera.getParameters().getMaxZoom();
+            if (this.zoom > max) this.zoom = max;//设置下限
+
+
+            parameters.setZoom(this.zoom); //修改焦距
+            camera.setParameters(parameters);
+
+        } else {
+            System.out.println("Zoom isn't Supported");
+        }
+
+
+    }
 
     private void paremeters() {
 
