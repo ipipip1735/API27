@@ -1,9 +1,11 @@
 package mine.camerax;
 
 
+import android.app.Activity;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -63,7 +65,8 @@ public class AreaActivity extends AppCompatActivity {
 
                 try {
                     //配置预览
-                    camera.setDisplayOrientation(90);//设置预览画面角度（默认是场景模式，画面是横向的）
+                    setCameraDisplayOrientation(AreaActivity.this, 0, camera);
+//                    camera.setDisplayOrientation(0);//设置预览画面角度（默认是场景模式，画面是横向的）
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
                     camera.startPreview();//开始预览
 
@@ -99,7 +102,11 @@ public class AreaActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
-                camera.stopPreview();
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
 
             }
         });
@@ -200,23 +207,25 @@ public class AreaActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        camera.startPreview();
         camera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean success, Camera camera) {
                 System.out.println("~~onAutoFocus~~");
                 System.out.println("success is " + success);
                 System.out.println("camera is " + camera);
+
+
             }
         });
 
-        camera.startPreview();
+
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
-        camera.stopFaceDetection();
         camera.stopPreview();
 
     }
@@ -229,6 +238,16 @@ public class AreaActivity extends AppCompatActivity {
     public void change(View view) {
         System.out.println("~~button.change~~");
 
+        Camera.Parameters parameters = camera.getParameters();
+        if(parameters.getMaxNumFocusAreas() > 0) {
+            System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumFocusAreas());
+            for (Camera.Area area : parameters.getFocusAreas()) {
+                System.out.println("area is " + area);
+            }
+
+        }else {
+            System.out.println("FocusAreas isn't supported!!");
+        }
 
     }
 
@@ -262,16 +281,31 @@ public class AreaActivity extends AppCompatActivity {
 
     public void info(View view) {
 
-        Camera.Parameters parameters = camera.getParameters();
-        if(parameters.getMaxNumFocusAreas() > 0) {
-            for (Camera.Area area : parameters.getFocusAreas()) {
-                System.out.println("area is " + area);
-            }
+    }
 
-        }else {
-            System.out.println("FocusAreas isn't supported!!");
+    private void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);//获取摄像头的信息对象
+
+        //获取屏幕方向
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
         }
 
+        //计算修正角度
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);//保存设置
     }
 
     private void paremeters() {

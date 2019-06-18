@@ -38,6 +38,15 @@
         <!--</activity>-->
 
 
+        <activity android:name=".PreviewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
         <!--<activity android:name=".TakePictureActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -46,14 +55,15 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-        <!--<activity android:name=".PreviewActivity">-->
+
+
+        <!--<activity android:name=".VideoActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <!--<action android:name="android.intent.action.VIEW" />-->
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
-
 
         <!--<activity android:name=".ZoomActivity">-->
             <!--<intent-filter>-->
@@ -64,13 +74,13 @@
         <!--</activity>-->
 
 
-        <activity android:name=".AreaActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!--<activity android:name=".AreaActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
         <!--<activity android:name=".FaceDetectionActivity">-->
             <!--<intent-filter>-->

@@ -1,13 +1,9 @@
 package mine.camerax;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.ImageFormat;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.graphics.YuvImage;
@@ -22,29 +18,20 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 
-public class PreviewActivity extends AppCompatActivity {
+public class VideoActivity extends AppCompatActivity {
     Camera camera;
     SurfaceView surfaceView;
     TextureView textureView;
@@ -449,17 +436,15 @@ public class PreviewActivity extends AppCompatActivity {
 
         //获取摄像头信息
         for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-            StringBuilder stringBuilder = new StringBuilder(128);
-
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-            Camera.getCameraInfo(i, cameraInfo);
-
+            StringBuilder stringBuilder = new StringBuilder(128);
+            camera.getCameraInfo(i, cameraInfo);
             switch (cameraInfo.facing) {
                 case CAMERA_FACING_FRONT: //前置摄像头
-                    stringBuilder.append("cameraInfo|id=" + i + ", facing=CAMERA_FACING_BACK, ");
+                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_BACK, ");
                     break;
                 case CAMERA_FACING_BACK: //后置摄像头，即主摄像头
-                    stringBuilder.append("cameraInfo|id=" + i + ", facing=CAMERA_FACING_FRONT, ");
+                    stringBuilder.append("cameraInfo|facing=CAMERA_FACING_FRONT, ");
                     break;
                 default:
                     System.out.println("unknown!!");
@@ -470,7 +455,6 @@ public class PreviewActivity extends AppCompatActivity {
                     "canDisableShutterSound=" + cameraInfo.canDisableShutterSound);
             System.out.println(stringBuilder);
         }
-
     }
 
 
