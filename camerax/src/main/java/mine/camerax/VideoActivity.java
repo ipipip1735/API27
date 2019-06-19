@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
@@ -47,7 +48,7 @@ public class VideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_horizontal);
+        setContentView(R.layout.activity_video);
 
 
         //判断是否设备有摄像头
@@ -107,7 +108,6 @@ public class VideoActivity extends AppCompatActivity {
                             System.out.println("camera is " + camera);
                         }
                     });
-
 
 
                     //每帧画面显示后，将获取预览画面的像素数据交给监听器
@@ -246,6 +246,41 @@ public class VideoActivity extends AppCompatActivity {
 
     }
 
+    public void begin(View view) {
+        System.out.println("~~button.begin~~");
+
+        mediaRecorder.start();
+
+
+    }
+
+    public void end(View view) {
+        System.out.println("~~button.end~~");
+
+//        mediaRecorder.stop();
+        mediaRecorder.reset();
+        mediaRecorder.release();
+//        try {
+//            camera.reconnect();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+    }
+
+    public void resume(View view) {
+        System.out.println("~~button.resume~~");
+
+        mediaRecorder.resume();
+
+    }
+    public void pause(View view) {
+        System.out.println("~~button.pause~~");
+
+        mediaRecorder.pause();
+
+    }
+
     public void config(View view) {
         System.out.println("~~button.config~~");
 
@@ -286,11 +321,12 @@ public class VideoActivity extends AppCompatActivity {
         Camera.getCameraInfo(0, info);
         camera.setDisplayOrientation(info.orientation);
 
+
     }
 
 
-    public void take(View view) {
-        System.out.println("~~button.take~~");
+    public void init(View view) {
+        System.out.println("~~button.init~~");
 
         mediaRecorder = new MediaRecorder();
 
@@ -308,9 +344,10 @@ public class VideoActivity extends AppCompatActivity {
         // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
         mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
 
+
         // Step 4: Set output file
-//        File file = new File(getExternalMediaDirs(), );
-        mediaRecorder.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
+        File file = new File(getExternalMediaDirs()[0], "" + new Random().nextInt(100) + ".mp4");
+        mediaRecorder.setOutputFile(file.toString());
 
         // Step 5: Set the preview output
         mediaRecorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
@@ -319,12 +356,9 @@ public class VideoActivity extends AppCompatActivity {
         // Step 6: Prepare configured MediaRecorder
         try {
             mediaRecorder.prepare();
-        } catch (IllegalStateException e) {
-            System.out.println("IllegalStateException preparing MediaRecorder: " + e.getMessage());
-//            releaseMediaRecorder();
         } catch (IOException e) {
-            System.out.println("IOException preparing MediaRecorder: " + e.getMessage());
-//            releaseMediaRecorder();
+            e.printStackTrace();
+            mediaRecorder.release();
         }
 
 
@@ -412,10 +446,18 @@ public class VideoActivity extends AppCompatActivity {
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
         switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
         }
 
         //计算修正角度
