@@ -28,11 +28,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
+import static android.media.CamcorderProfile.QUALITY_1080P;
+import static android.media.CamcorderProfile.QUALITY_720P;
+import static android.media.MediaRecorder.OutputFormat.MPEG_4;
+import static android.media.MediaRecorder.OutputFormat.THREE_GPP;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 public class VideoActivity extends AppCompatActivity {
@@ -117,8 +122,6 @@ public class VideoActivity extends AppCompatActivity {
 //                            System.out.println("~~onPreviewFrame~~");
 //                            System.out.println("data is " + data.length);
 //                            System.out.println("camera is " + camera);
-//
-//
 //                        }
 //                    });
 
@@ -135,8 +138,6 @@ public class VideoActivity extends AppCompatActivity {
                 System.out.println("frmt is " + frmt);
                 System.out.println("h is " + h);
                 System.out.println("w is " + w);
-
-
             }
 
             @Override
@@ -257,14 +258,13 @@ public class VideoActivity extends AppCompatActivity {
     public void end(View view) {
         System.out.println("~~button.end~~");
 
-//        mediaRecorder.stop();
-        mediaRecorder.reset();
-        mediaRecorder.release();
-//        try {
-//            camera.reconnect();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        mediaRecorder.stop();
+//        mediaRecorder.release();
+        try {
+            camera.reconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -274,6 +274,7 @@ public class VideoActivity extends AppCompatActivity {
         mediaRecorder.resume();
 
     }
+
     public void pause(View view) {
         System.out.println("~~button.pause~~");
 
@@ -317,9 +318,31 @@ public class VideoActivity extends AppCompatActivity {
     public void modify(View view) {
         System.out.println("~~button.modify~~");
 
-        Camera.CameraInfo info = new Camera.CameraInfo();
-        Camera.getCameraInfo(0, info);
-        camera.setDisplayOrientation(info.orientation);
+//        Camera.CameraInfo info = new Camera.CameraInfo();
+//        Camera.getCameraInfo(0, info);
+//        camera.setDisplayOrientation(info.orientation);
+
+
+        for (Field field : CamcorderProfile.class.getFields()) {
+
+            if (!field.getName().contains("_")) continue;
+            try {
+                if (CamcorderProfile.hasProfile((Integer) field.get(null))) {
+                    System.out.println(field.getName());
+
+                    CamcorderProfile p = CamcorderProfile.get((Integer) field.get(null));
+                    for (Field f : p.getClass().getFields()) {
+                        if (f.getName().contains("_")) continue;
+                        System.out.println("    -" + f.getName() + " is " + f.get(p));
+                    }
+                } else {
+                    System.out.println(field.getName() + " isn't support");
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
 
 
     }
@@ -328,7 +351,7 @@ public class VideoActivity extends AppCompatActivity {
     public void init(View view) {
         System.out.println("~~button.init~~");
 
-        mediaRecorder = new MediaRecorder();
+        MediaRecorder mediaRecorder = new MediaRecorder();
 
 
         // Step 1: Unlock and set camera to MediaRecorder
@@ -342,11 +365,22 @@ public class VideoActivity extends AppCompatActivity {
 
 
         // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
-        mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+        mediaRecorder.setProfile(profile);
+
+        String fileName = "";
+        switch (profile.fileFormat) {
+                    case MPEG_4:
+                        fileName = new Random().nextInt(100) + ".mp4";
+                        break;
+                    case THREE_GPP:
+                        fileName = new Random().nextInt(100) + ".3gp";
+                        break;
+        }
 
 
         // Step 4: Set output file
-        File file = new File(getExternalMediaDirs()[0], "" + new Random().nextInt(100) + ".mp4");
+        File file = new File(getExternalMediaDirs()[0], fileName);
         mediaRecorder.setOutputFile(file.toString());
 
         // Step 5: Set the preview output
