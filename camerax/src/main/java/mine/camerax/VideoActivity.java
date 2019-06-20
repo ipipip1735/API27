@@ -28,11 +28,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
+import static android.media.CamcorderProfile.QUALITY_1080P;
+import static android.media.CamcorderProfile.QUALITY_720P;
+import static android.media.MediaRecorder.OutputFormat.MPEG_4;
+import static android.media.MediaRecorder.OutputFormat.THREE_GPP;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 public class VideoActivity extends AppCompatActivity {
@@ -236,16 +241,6 @@ public class VideoActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         camera.startPreview();
-        camera.setPreviewCallback(new Camera.PreviewCallback() {
-            @Override
-            public void onPreviewFrame(byte[] data, Camera camera) {
-                System.out.println("~~onPreviewFrame~~");
-                System.out.println("data is " + data.length);
-                System.out.println("camera is " + camera);
-
-
-            }
-        });
     }
 
 
@@ -354,11 +349,22 @@ public class VideoActivity extends AppCompatActivity {
 
 
         // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
-        mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+        mediaRecorder.setProfile(profile);
+
+        String fileName = "";
+        switch (profile.fileFormat) {
+                    case MPEG_4:
+                        fileName = new Random().nextInt(100) + ".mp4";
+                        break;
+                    case THREE_GPP:
+                        fileName = new Random().nextInt(100) + ".3gp";
+                        break;
+        }
 
 
         // Step 4: Set output file
-        File file = new File(getExternalMediaDirs()[0], "" + new Random().nextInt(100) + ".mp4");
+        File file = new File(getExternalMediaDirs()[0], fileName);
         mediaRecorder.setOutputFile(file.toString());
 
         // Step 5: Set the preview output
@@ -529,9 +535,7 @@ public class VideoActivity extends AppCompatActivity {
         //对焦
         System.out.println("-------Focus--------");
         System.out.println("getFocalLength is " + parameters.getFocalLength());
-        System.out.println("getFocusAreas is " + parameters.getMaxNumFocusAreas());//获取对焦面的最大个数
-//        System.out.println("getFocusAreas is " + parameters.getFocusAreas());//获取当前对焦面，真机没有默认对焦面，所以空指针抛异常，要使用对应的set方法设置后才能调用
-
+//        System.out.println("getFocusAreas is " + parameters.getFocusAreas());
 
         float[] output = new float[3];
         parameters.getFocusDistances(output);
