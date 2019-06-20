@@ -111,16 +111,16 @@ public class VideoActivity extends AppCompatActivity {
 
 
                     //每帧画面显示后，将获取预览画面的像素数据交给监听器
-//                    camera.setPreviewCallback(new Camera.PreviewCallback() {
-//                        @Override
-//                        public void onPreviewFrame(byte[] data, Camera camera) {
-//                            System.out.println("~~onPreviewFrame~~");
-//                            System.out.println("data is " + data.length);
-//                            System.out.println("camera is " + camera);
-//
-//
-//                        }
-//                    });
+                    camera.setPreviewCallback(new Camera.PreviewCallback() {
+                        @Override
+                        public void onPreviewFrame(byte[] data, Camera camera) {
+                            System.out.println("~~onPreviewFrame~~");
+                            System.out.println("data is " + data.length);
+                            System.out.println("camera is " + camera);
+
+
+                        }
+                    });
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -236,6 +236,16 @@ public class VideoActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         camera.startPreview();
+        camera.setPreviewCallback(new Camera.PreviewCallback() {
+            @Override
+            public void onPreviewFrame(byte[] data, Camera camera) {
+                System.out.println("~~onPreviewFrame~~");
+                System.out.println("data is " + data.length);
+                System.out.println("camera is " + camera);
+
+
+            }
+        });
     }
 
 
@@ -257,9 +267,10 @@ public class VideoActivity extends AppCompatActivity {
     public void end(View view) {
         System.out.println("~~button.end~~");
 
-//        mediaRecorder.stop();
+//        mediaRecorder.stop();//stop()和release()等价
         mediaRecorder.reset();
         mediaRecorder.release();
+        camera.lock();
 //        try {
 //            camera.reconnect();
 //        } catch (IOException e) {
@@ -274,6 +285,7 @@ public class VideoActivity extends AppCompatActivity {
         mediaRecorder.resume();
 
     }
+
     public void pause(View view) {
         System.out.println("~~button.pause~~");
 
@@ -517,7 +529,9 @@ public class VideoActivity extends AppCompatActivity {
         //对焦
         System.out.println("-------Focus--------");
         System.out.println("getFocalLength is " + parameters.getFocalLength());
-//        System.out.println("getFocusAreas is " + parameters.getFocusAreas());
+        System.out.println("getFocusAreas is " + parameters.getMaxNumFocusAreas());//获取对焦面的最大个数
+//        System.out.println("getFocusAreas is " + parameters.getFocusAreas());//获取当前对焦面，真机没有默认对焦面，所以空指针抛异常，要使用对应的set方法设置后才能调用
+
 
         float[] output = new float[3];
         parameters.getFocusDistances(output);
@@ -587,8 +601,8 @@ public class VideoActivity extends AppCompatActivity {
 
         //区域
         System.out.println("-------Areas--------");
-//        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
-//        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
+        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
+//        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());//亮度测量区真机上是0，要使用对应的set方法增加后才有，否则抛空指针异常
 
 
         //场景模式

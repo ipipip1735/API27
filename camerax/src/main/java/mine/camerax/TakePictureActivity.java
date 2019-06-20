@@ -628,7 +628,9 @@ public class TakePictureActivity extends AppCompatActivity {
         //对焦
         System.out.println("-------Focus--------");
         System.out.println("getFocalLength is " + parameters.getFocalLength());
-//        System.out.println("getFocusAreas is " + parameters.getFocusAreas());
+        System.out.println("getFocusAreas is " + parameters.getMaxNumFocusAreas());//获取对焦面的最大个数
+//        System.out.println("getFocusAreas is " + parameters.getFocusAreas());//获取当前对焦面，真机没有默认对焦面，所以空指针抛异常，要使用对应的set方法设置后才能调用
+
 
         float[] output = new float[3];
         parameters.getFocusDistances(output);
@@ -698,8 +700,8 @@ public class TakePictureActivity extends AppCompatActivity {
 
         //区域
         System.out.println("-------Areas--------");
-//        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
-//        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
+        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
+//        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());//亮度测量区真机上是0，要使用对应的set方法增加后才有，否则抛空指针异常
 
 
         //场景模式
