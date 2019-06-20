@@ -9,7 +9,8 @@
     <!-- Declare permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.hardware.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 
 
@@ -28,6 +29,14 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
+
+        <activity android:name=".MediaStoreActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
         <!--<activity android:name=".CameraActivity">-->
@@ -87,16 +96,13 @@
             <!--</intent-filter>-->
         <!--</activity>-->
 
-
-
-
-        <activity android:name=".VideoActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
+        <!--<activity android:name=".VideoActivity">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
 
 
     </application>
