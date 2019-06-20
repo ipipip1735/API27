@@ -2,11 +2,14 @@ package mine.camerax;
 
 
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -70,14 +73,14 @@ public class TakePictureActivity extends AppCompatActivity {
         }
 
         //监听器方向改变
-        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                System.out.println("~~onOrientationChanged~~");
-                System.out.println("orientation is " + orientation);
-
-            }
-        };
+//        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
+//            @Override
+//            public void onOrientationChanged(int orientation) {
+//                System.out.println("~~onOrientationChanged~~");
+//                System.out.println("orientation is " + orientation);
+//
+//            }
+//        };
 
         textureView(); //使用TextureView
 //        surfaceView(); //使用SurfaceView
@@ -255,7 +258,7 @@ public class TakePictureActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
-        orientationEventListener.enable();
+//        orientationEventListener.enable();
 
         if (camera == null) {
             camera = Camera.open();
@@ -270,7 +273,7 @@ public class TakePictureActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-        orientationEventListener.disable();
+//        orientationEventListener.disable();
 
 
         if (camera != null) {
@@ -469,11 +472,7 @@ public class TakePictureActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-
-        //Camera
-        paremeters();//参数
-
-
+        paremeters();//参数信息
     }
 
     private void size(String prix, List<Camera.Size> sizes) {
@@ -565,10 +564,18 @@ public class TakePictureActivity extends AppCompatActivity {
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
         switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
         }
 
         //计算修正角度
