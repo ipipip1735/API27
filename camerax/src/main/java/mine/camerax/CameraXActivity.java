@@ -2,30 +2,37 @@ package mine.camerax;
 
 
 import android.os.Bundle;
+import android.util.Size;
+import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraX;
+import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.ImageAnalysisConfig;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureConfig;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.core.PreviewConfig;
 import androidx.lifecycle.LifecycleOwner;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.File;
+import java.util.Random;
+
+public class CameraXActivity extends AppCompatActivity {
 
     private ImageCapture imageCapture;
     private Preview preview;
+    TextureView textureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_main);
-
-
-
+        setContentView(R.layout.activity_camerax);
 
 
     }
@@ -87,13 +94,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
+    public void preview(View view) {
+        System.out.println("~~button.preview~~");
 
-        PreviewConfig config = new PreviewConfig.Builder().build();
+        textureView = new TextureView(this);
+        PreviewConfig config = new PreviewConfig.Builder()
+                .setTargetRotation(Surface.ROTATION_180)
+                .setTargetResolution(new Size(1280, 720))
+                .build();
         Preview preview = new Preview(config);
 
-        final TextureView textureView = findViewById(R.id.textureView);
 
         preview.setOnPreviewOutputUpdateListener(new Preview.OnPreviewOutputUpdateListener() {
             @Override
@@ -104,15 +114,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        CameraX.bindToLifecycle((LifecycleOwner) this, preview);
+        CameraX.bindToLifecycle(this, preview);
+
+
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(textureView);
+
+
     }
 
 
-    public void capture(View view) {
-        System.out.println("~~button.capture~~");
+    public void take(View view) {
+        System.out.println("~~button.take~~");
+
+
+        //拍照
+        File file = new File(getCacheDir(), new Random().nextInt(100) + ".jpg");
+
+        imageCapture.takePicture(file, new ImageCapture.OnImageSavedListener() {
+            @Override
+            public void onImageSaved(File file) {
+                System.out.println("~~onImageSaved~~");
+                System.out.println("file is " + file);
+            }
+
+            @Override
+            public void onError(ImageCapture.UseCaseError useCaseError, String message, Throwable cause) {
+                System.out.println("~~onError~~");
+                System.out.println("useCaseError is " + useCaseError);
+                System.out.println("message is " + message);
+                System.out.println("cause is " + cause);
+            }
+        });
+    }
+
+
+    public void config(View view) {
+        System.out.println("~~button.config~~");
 
         //获取纹理容器
-        TextureView textureView = findViewById(R.id.textureView);
+        textureView = new TextureView(this);
 
         //创建预览UseCase
         PreviewConfig previewConfig = new PreviewConfig.Builder().build();//配置预览配置对象
@@ -127,12 +168,37 @@ public class MainActivity extends AppCompatActivity {
         ImageCaptureConfig imageCaptureConfig = new ImageCaptureConfig.Builder().build();//配置抓拍配置对象
         imageCapture = new ImageCapture(imageCaptureConfig);//实例化抓图对象
 
-        CameraX.bindToLifecycle((LifecycleOwner) this, preview, imageCapture);//将预览UseCase和抓拍UseCase绑定到生命周期
+        CameraX.bindToLifecycle(this, preview, imageCapture);//将预览UseCase和抓拍UseCase绑定到生命周期
+
+
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(textureView);
+
 
     }
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+    public void analyze(View view) {
+        System.out.println("~~button.analyze~~");
+
+
+        //图片分析
+        ImageAnalysisConfig config =
+                new ImageAnalysisConfig.Builder()
+                        .setTargetResolution(new Size(1280, 720))
+                        .build();
+
+        ImageAnalysis imageAnalysis = new ImageAnalysis(config);
+
+        imageAnalysis.setAnalyzer(
+                new ImageAnalysis.Analyzer() {
+                    @Override
+                    public void analyze(ImageProxy image, int rotationDegrees) {
+                        // insert your code here.
+                    }
+                });
+
+        CameraX.bindToLifecycle((LifecycleOwner) this, imageAnalysis, preview);
+
 
     }
 
