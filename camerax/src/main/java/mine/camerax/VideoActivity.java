@@ -267,7 +267,7 @@ public class VideoActivity extends AppCompatActivity {
         mediaRecorder.release();
         camera.lock();
 //        try {
-//            camera.reconnect();
+//            camera.reconnect();//隐式调用lock()方法
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
