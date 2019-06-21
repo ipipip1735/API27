@@ -1,6 +1,8 @@
 package mine.camerax;
 
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,8 +11,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -21,14 +25,18 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class MediaStoreActivity extends AppCompatActivity {
 
@@ -36,7 +44,7 @@ public class MediaStoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_media_store);
 
     }
 
@@ -97,74 +105,43 @@ public class MediaStoreActivity extends AppCompatActivity {
     }
 
 
+    public void query(View view) {
+        System.out.println("~~button.query~~");
+
+        //查询缩略图表
+        Cursor cursor = getContentResolver().query(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI, null, null, null, null);
+        System.out.println("getCount is " + cursor.getCount());
+        while (cursor.moveToNext()) {
+            for (String c : cursor.getColumnNames()) {
+                System.out.println(c + " is " + cursor.getString(cursor.getColumnIndex(c)));
+            }
+            System.out.println("============");
+        }
+
+    }
+
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        //获取缩略图
+        Bitmap bitmap = MediaStore.Video.Thumbnails.getThumbnail(getContentResolver(), 36, 1, null);
+        System.out.println("bitmap's size is " + bitmap.getByteCount());
 
-//        for (Field field : MediaStore.class.getFields()) {
-//            try {
-//                System.out.println(field.getName() + " is " + field.get(null));
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        ImageView imageView = new ImageView(this);
+        imageView.setImageBitmap(bitmap);//设置缩略图
 
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(imageView);
 
-//        Method[] methods = MediaStore.class.getMethods();
-//        for (Method method : methods) {
-//            System.out.print(method.getName());
-//        }
+    }
 
 
-//
+    public void search(View view) {
+        System.out.println("~~button.search~~");
 
-//        MediaStore.Video.Media.getContentUri("")
-
-
-        List<String> list = new ArrayList<>();
-        for (Field field : MediaStore.Video.Thumbnails.class.getFields()) {
-//            if(field.getName() == "IS_DRM")continue;
-            try {
-                System.out.println(field.getName() + " = " + field.get(null));
-//                list.add((String) field.get(null));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-//        Cursor cursor = MediaStore.Video.query(getContentResolver(), Uri.parse(MediaStore.Video.Media.CONTENT_TYPE), list.toArray(new String[list.size()]));
-
-        String[] projection = {
-                MediaStore.Video.VideoColumns.DATA,
-                MediaStore.Video.VideoColumns.DATE_ADDED,
-                MediaStore.Video.VideoColumns.DATE_MODIFIED,
-                MediaStore.Video.VideoColumns.DISPLAY_NAME,
-                MediaStore.Video.VideoColumns.MIME_TYPE,
-                MediaStore.Video.VideoColumns.HEIGHT,
-                MediaStore.Video.VideoColumns.SIZE,
-                MediaStore.Video.VideoColumns.TITLE,
-                MediaStore.Video.VideoColumns.WIDTH,
-                MediaStore.Video.VideoColumns.ALBUM,
-                MediaStore.Video.VideoColumns.ARTIST,
-                MediaStore.Video.VideoColumns.BOOKMARK,
-                MediaStore.Video.VideoColumns.CATEGORY,
-                MediaStore.Video.VideoColumns.DESCRIPTION,
-                MediaStore.Video.VideoColumns.IS_PRIVATE,
-                MediaStore.Video.VideoColumns.LANGUAGE,
-                MediaStore.Video.VideoColumns.LATITUDE,
-                MediaStore.Video.VideoColumns.LONGITUDE,
-                MediaStore.Video.VideoColumns.MINI_THUMB_MAGIC,
-                MediaStore.Video.VideoColumns.RESOLUTION,
-                MediaStore.Video.VideoColumns.TAGS,
-        };
-//        Cursor cursor = MediaStore.Video.query(getContentResolver(), MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null);
-
-
-        Cursor cursor = getContentResolver().query(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI, null, null, null, null);
-
-
-//        Cursor cursor = MediaStore.Video.query(getContentResolver(), MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI, null);
-
-
+        //查询媒体文件表
+//        Cursor cursor = getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+        Cursor cursor = MediaStore.Video.query(getContentResolver(), MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null);
 
         System.out.println("getCount is " + cursor.getCount());
         while (cursor.moveToNext()) {
@@ -174,74 +151,78 @@ public class MediaStoreActivity extends AppCompatActivity {
             System.out.println("============");
         }
 
-
     }
 
+    public void play(View view) {
+        System.out.println("~~button.play~~");
 
-    public void capture(View view) {
-        System.out.println("~~button.capture~~");
-
-
-//        String[] projects = {MediaStore.Video.Media._ID,
-//                MediaStore.Video.Media.DATA,
-//                MediaStore.Video.Media.DISPLAY_NAME,
-//                MediaStore.Video.Media.SIZE};
-
-//        Cursor cursor = getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, proj, null, null, null);
-//        Cursor cursor = MediaStore.Video.query(getContentResolver(), MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projects);
-//        int count = cursor.getCount();
-//        System.out.println("count is " + count);
-
-
-//        while (cursor.moveToNext()) {
-//            for (String c : cursor.getColumnNames()) {
-//                System.out.println(c + " is " + cursor.getString(cursor.getColumnIndex(c)));
-//            }
-//        }
-//
-//        cursor.close();
-
-//        Uri uri = MediaStore.Video.Thumbnails.getContentUri("external");
-//        System.out.println("uri is " + uri);
-//
-//        try {
-//            ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
-//            System.out.println("size is " + parcelFileDescriptor.getStatSize());
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
-
-        Bitmap bitmap = MediaStore.Video.Thumbnails.getThumbnail(getContentResolver(), 54, 1, null);
-        System.out.println("bitmap's size is " + bitmap.getByteCount());
+        VideoView videoView = new VideoView(this);
+        videoView.setVideoPath("/storage/emulated/0/DCIM/Camera/VID_20190620_054835.mp4");
+        videoView.setMediaController(new MediaController(this));
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(videoView);
 
 
     }
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+    public void stop(View view) {
+        System.out.println("~~button.stop~~");
 
     }
 
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
+
+    public void add(View view) {
+        System.out.println("~~button.add~~");
+
+        //方法一：将DCIM文件增加到数据库
+//        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera/35.mp4");
+//        ContentValues values = new ContentValues(3);
+//        values.put(MediaStore.Video.Media.TITLE, "xxx");
+//        values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+//        values.put(MediaStore.Video.Media.DATA, mediaStorageDir.toString());
+//        Uri uri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+//        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+
+
+        //方法二：将任意路径文件移动到DICM，再增加到数据库
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "camera/aaa.mp4");
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.Video.Media.TITLE, "xxx");
+        values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        values.put(MediaStore.Video.Media.DATA, mediaStorageDir.toString());
+        Uri uri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+        System.out.println("uri is " + uri);
+//        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+
+        try {
+            InputStream is = new FileInputStream(new File(getCacheDir(), "56.mp4"));
+            OutputStream os = getContentResolver().openOutputStream(uri);
+            byte[] buffer = new byte[4096]; // tweaking this number may increase performance
+            int len;
+            while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+            is.close();
+            os.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
-
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
-
-    }
-
 
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+        Uri uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, 60);
+        System.out.println(uri);
+        getContentResolver().delete(uri, null, null);
+        getContentResolver().notifyChange(uri,null);
+
     }
 
 
-    public void query(View view) {
-        System.out.println("~~button.query~~");
-
-    }
 }

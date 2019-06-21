@@ -12,6 +12,7 @@ import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -116,16 +117,16 @@ public class VideoActivity extends AppCompatActivity {
 
 
                     //每帧画面显示后，将获取预览画面的像素数据交给监听器
-                    camera.setPreviewCallback(new Camera.PreviewCallback() {
-                        @Override
-                        public void onPreviewFrame(byte[] data, Camera camera) {
-                            System.out.println("~~onPreviewFrame~~");
-                            System.out.println("data is " + data.length);
-                            System.out.println("camera is " + camera);
-
-
-                        }
-                    });
+//                    camera.setPreviewCallback(new Camera.PreviewCallback() {
+//                        @Override
+//                        public void onPreviewFrame(byte[] data, Camera camera) {
+//                            System.out.println("~~onPreviewFrame~~");
+//                            System.out.println("data is " + data.length);
+//                            System.out.println("camera is " + camera);
+//
+//
+//                        }
+//                    });
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -364,8 +365,10 @@ public class VideoActivity extends AppCompatActivity {
 
 
         // Step 4: Set output file
-        File file = new File(getExternalMediaDirs()[0], fileName);
-        mediaRecorder.setOutputFile(file.toString());
+        mediaRecorder.setOutputFile(new File(getCacheDir(), fileName).toString());//内部私有目录
+//        mediaRecorder.setOutputFile(new File(getExternalMediaDirs()[0], fileName).toString());//外部私有目录
+//        mediaRecorder.setOutputFile(new File(Environment.getExternalStoragePublicDiretory(Environment.DIRECTORY_DCIM), getPackageName() + fileName).toString());//共用目录
+
 
         // Step 5: Set the preview output
         mediaRecorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
