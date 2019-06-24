@@ -1,13 +1,13 @@
 package mine.camerax;
 
 
-import android.graphics.SurfaceTexture;
-import android.location.Location;
+import android.graphics.ImageFormat;
+import android.graphics.Matrix;
+import android.media.Image;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.util.Rational;
-import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -22,17 +22,17 @@ import androidx.camera.core.ImageCaptureConfig;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.core.PreviewConfig;
-import androidx.lifecycle.LifecycleOwner;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 public class CameraXActivity extends AppCompatActivity {
 
     private ImageCapture imageCapture;
     private Preview preview;
-    ImageAnalysis imageAnalysis;
-    TextureView textureView;
+    private ImageAnalysis imageAnalysis;
+    private TextureView textureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,16 +107,16 @@ public class CameraXActivity extends AppCompatActivity {
 
 
         PreviewConfig config = new PreviewConfig.Builder()
-//                .setLensFacing(CameraX.LensFacing.BACK)
-//                .setTargetAspectRatio(new Rational(3, 4))
+                .setLensFacing(CameraX.LensFacing.BACK)
+                .setTargetAspectRatio(new Rational(3, 4))
                 .setTargetName("ConfigOne")
 //                .setTargetResolution(new Size(1080, 720))
-                .setTargetRotation(Surface.ROTATION_0)
+//                .setTargetRotation(Surface.ROTATION_180)
                 .build();
 
 
+
         preview = new Preview(config);
-//        preview.setTargetRotation(Surface.ROTATION_90);
         preview.setOnPreviewOutputUpdateListener(new Preview.OnPreviewOutputUpdateListener() {
             @Override
             public void onUpdated(Preview.PreviewOutput previewOutput) {
@@ -127,7 +127,13 @@ public class CameraXActivity extends AppCompatActivity {
                 System.out.println("getSurfaceTexture is " + previewOutput.getSurfaceTexture());
 
                 if (!textureView.isAvailable()) {
+
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(-previewOutput.getRotationDegrees());
+//                    textureView.setTransform(matrix);
+
                     textureView.setSurfaceTexture(previewOutput.getSurfaceTexture());
+                    System.out.println("...bind surface...");
 //                    textureView.getSurfaceTexture().setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
 //                        @Override
 //                        public void onFrameAvailable(SurfaceTexture surfaceTexture) {
@@ -136,8 +142,6 @@ public class CameraXActivity extends AppCompatActivity {
 //                        }
 //                    });
                 }
-
-
 
 
 //                try {
@@ -153,6 +157,7 @@ public class CameraXActivity extends AppCompatActivity {
         CameraX.bindToLifecycle(this, preview);
 
         ViewGroup viewGroup = findViewById(R.id.fl);
+
         viewGroup.addView(textureView);
 
 
@@ -173,7 +178,9 @@ public class CameraXActivity extends AppCompatActivity {
 //        preview = new Preview(config);
 
 
-        System.out.println("name is " + preview.getName());
+//        System.out.println("name is " + preview.getName());
+//        textureView.setRotation(90);
+
 
 
     }
@@ -181,7 +188,6 @@ public class CameraXActivity extends AppCompatActivity {
 
     public void take(View view) {
         System.out.println("~~button.take~~");
-
 
 
         //方式一：拍照
@@ -202,9 +208,6 @@ public class CameraXActivity extends AppCompatActivity {
                 System.out.println("cause is " + cause);
             }
         });
-
-
-
 
 
         //方式二：拍照并增加图片位置信息
@@ -254,8 +257,8 @@ public class CameraXActivity extends AppCompatActivity {
         //创建抓拍UseCase
         ImageCaptureConfig imageCaptureConfig = new ImageCaptureConfig.Builder()
                 .setLensFacing(CameraX.LensFacing.BACK)
-//                .setTargetRotation(Surface.ROTATION_90)
-                .setTargetAspectRatio(new Rational(1, 9))
+                .setTargetRotation(Surface.ROTATION_90)
+                .setTargetAspectRatio(new Rational(4, 3))
                 .build();//配置抓拍配置对象
         imageCapture = new ImageCapture(imageCaptureConfig);//实例化抓图对象
 
@@ -300,28 +303,62 @@ public class CameraXActivity extends AppCompatActivity {
                     @Override
                     public void analyze(ImageProxy image, int rotationDegrees) {
                         System.out.println("~~analyze~~");
-                        System.out.println("image is " + image);
                         System.out.println("rotationDegrees is " + rotationDegrees);
+                        System.out.println("image is " + image);
 
+                        System.out.println("----ImageProxy-----");
                         System.out.println("getCropRect is " + image.getCropRect());
-                        System.out.println("getFormat is " + image.getFormat());
                         System.out.println("getHeight is " + image.getHeight());
                         System.out.println("getWidth is " + image.getWidth());
-                        System.out.println("getImage is " + image.getImage());
                         System.out.println("getImageInfo is " + image.getImageInfo());
-                        System.out.println("getPlanes is " + image.getPlanes());
+                        imageFormat(image.getFormat());
+                        System.out.println("getPlanes's is " + image.getPlanes().length);
                         System.out.println("getTimestamp is " + image.getTimestamp());
+                        for (ImageProxy.PlaneProxy planeProxy : image.getPlanes()) {
+                            System.out.println("...plane...");
+                            System.out.println("BufferSize is  " + planeProxy.getBuffer().capacity());
+                            System.out.println("getRowStride() is  " + planeProxy.getRowStride());
+                            System.out.println("getPixelStride() is  " + planeProxy.getPixelStride());
+                        }
+
+                        System.out.println("----Image-----");
+                        System.out.println("getImage is " + image.getImage());
+                        Image img = image.getImage();
+
+                        System.out.println("getCropRect is " + img.getCropRect());
+                        System.out.println("getHeight is " + img.getHeight());
+                        System.out.println("getWidth is " + img.getWidth());
+//                        System.out.println("getHardwareBuffer is " + img.getHardwareBuffer()); //API 28可用
+                        imageFormat(img.getFormat());
+                        System.out.println("getPlanes'size is " + img.getPlanes().length);
+                        System.out.println("getTimestamp is " + img.getTimestamp());
+                        for (Image.Plane plane : img.getPlanes()) {
+                            System.out.println("...plane...");
+                            System.out.println("BufferSize is  " + plane.getBuffer().capacity());
+                            System.out.println("getRowStride is  " + plane.getRowStride());
+                            System.out.println("getPixelStride is  " + plane.getPixelStride());
+                        }
 
                         image.close();
-
                         imageAnalysis.removeAnalyzer();
                     }
                 });
 
-        CameraX.bindToLifecycle((LifecycleOwner) this, imageAnalysis, preview);
+        CameraX.bindToLifecycle(this, imageAnalysis, preview);
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(textureView);
 
+    }
+
+    private void imageFormat(int format) {
+        for (Field field : ImageFormat.class.getFields()) {
+            try {
+                if ((int) field.get(null) != format) continue;
+                System.out.println("getFormat is " + field.getName());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void end(View view) {
@@ -329,9 +366,9 @@ public class CameraXActivity extends AppCompatActivity {
         imageAnalysis.removeAnalyzer();
     }
 
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
-
+    public void init(View view) {
+        System.out.println("~~button.init~~");
+        System.out.println(Thread.currentThread());
     }
 
 
