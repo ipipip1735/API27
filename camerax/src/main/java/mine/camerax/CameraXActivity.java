@@ -108,10 +108,10 @@ public class CameraXActivity extends AppCompatActivity {
 
         PreviewConfig config = new PreviewConfig.Builder()
                 .setLensFacing(CameraX.LensFacing.BACK)
-                .setTargetAspectRatio(new Rational(3, 4))
+                .setTargetAspectRatio(new Rational(1, 4))
                 .setTargetName("ConfigOne")
 //                .setTargetResolution(new Size(1080, 720))
-//                .setTargetRotation(Surface.ROTATION_180)
+                .setTargetRotation(Surface.ROTATION_0)
                 .build();
 
 
@@ -128,27 +128,23 @@ public class CameraXActivity extends AppCompatActivity {
 
                 if (!textureView.isAvailable()) {
 
-                    Matrix matrix = new Matrix();
-                    matrix.postRotate(-previewOutput.getRotationDegrees());
-//                    textureView.setTransform(matrix);
+                    //打印矩阵
+                    float[] floats = new float[4 * 4];
+                    previewOutput.getSurfaceTexture().getTransformMatrix(floats);
+                    for (int i = 0; i < 4; i++) {
+                        for (int j = 0; j < 4; j++) {
+                            System.out.print(floats[i*4 + j] + ",");
 
+                        }
+                        System.out.println("");
+                    }
+
+                    //设置SurfaceTexture
                     textureView.setSurfaceTexture(previewOutput.getSurfaceTexture());
-                    System.out.println("...bind surface...");
-//                    textureView.getSurfaceTexture().setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
-//                        @Override
-//                        public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-//                            System.out.println("~~onFrameAvailable~~");
-//                            System.out.println("surfaceTexture is " + surfaceTexture);
-//                        }
-//                    });
+
+                    System.out.println("...surface has been bound...");
                 }
 
-
-//                try {
-//                    Thread.sleep(2000L);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
 
             }
         });
@@ -182,6 +178,13 @@ public class CameraXActivity extends AppCompatActivity {
 //        textureView.setRotation(90);
 
 
+//        Matrix matrix = new Matrix();
+//        matrix.setRotate(3);
+//        textureView.getTransform(matrix);
+//        System.out.println(matrix);
+//        matrix.postRotate(90);
+//        System.out.println(matrix);
+//        textureView.setTransform(matrix);
 
     }
 
