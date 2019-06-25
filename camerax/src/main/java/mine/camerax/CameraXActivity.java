@@ -3,7 +3,10 @@ package mine.camerax;
 
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
 import android.media.Image;
+import android.media.ImageReader;
+import android.media.ImageWriter;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,6 +36,7 @@ public class CameraXActivity extends AppCompatActivity {
     private Preview preview;
     private ImageAnalysis imageAnalysis;
     private TextureView textureView;
+    private int degree = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,10 +112,10 @@ public class CameraXActivity extends AppCompatActivity {
 
         PreviewConfig config = new PreviewConfig.Builder()
                 .setLensFacing(CameraX.LensFacing.BACK)
-                .setTargetAspectRatio(new Rational(1, 4))
+                .setTargetAspectRatio(new Rational(2, 4))
                 .setTargetName("ConfigOne")
 //                .setTargetResolution(new Size(1080, 720))
-                .setTargetRotation(Surface.ROTATION_0)
+//                .setTargetRotation(Surface.ROTATION_0)
                 .build();
 
 
@@ -129,15 +133,17 @@ public class CameraXActivity extends AppCompatActivity {
                 if (!textureView.isAvailable()) {
 
                     //打印矩阵
-                    float[] floats = new float[4 * 4];
-                    previewOutput.getSurfaceTexture().getTransformMatrix(floats);
-                    for (int i = 0; i < 4; i++) {
-                        for (int j = 0; j < 4; j++) {
-                            System.out.print(floats[i*4 + j] + ",");
+//                    float[] floats = new float[4 * 4];
+//                    previewOutput.getSurfaceTexture().getTransformMatrix(floats);
+//                    for (int i = 0; i < 4; i++) {
+//                        for (int j = 0; j < 4; j++) {
+//                            System.out.print(floats[i*4 + j] + ",");
+//
+//                        }
+//                        System.out.println("");
+//                    }
 
-                        }
-                        System.out.println("");
-                    }
+                    degree = previewOutput.getRotationDegrees();
 
                     //设置SurfaceTexture
                     textureView.setSurfaceTexture(previewOutput.getSurfaceTexture());
@@ -154,7 +160,17 @@ public class CameraXActivity extends AppCompatActivity {
 
         ViewGroup viewGroup = findViewById(R.id.fl);
 
+
         viewGroup.addView(textureView);
+        System.out.println(textureView.getSurfaceTexture() + "----");
+        textureView.getSurfaceTexture().setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
+            @Override
+            public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+                System.out.println("~~onFrameAvailable~~");
+
+            }
+        });
+
 
 
     }
@@ -162,6 +178,12 @@ public class CameraXActivity extends AppCompatActivity {
 
     public void change(View view) {
         System.out.println("~~button.change~~");
+
+
+
+
+        System.out.println("DefaultDisplay.getRotation is " + getWindowManager().getDefaultDisplay().getRotation());
+        preview.setTargetRotation(Surface.ROTATION_90);
 
 //        PreviewConfig config = new PreviewConfig.Builder()
 //                .setLensFacing(CameraX.LensFacing.BACK)
@@ -178,13 +200,17 @@ public class CameraXActivity extends AppCompatActivity {
 //        textureView.setRotation(90);
 
 
+        //设置TextureView画面方向，需要使用矩阵变换，不要使用View.setRotation()，这个是变换它本身，而不是它的画面
 //        Matrix matrix = new Matrix();
-//        matrix.setRotate(3);
+//        matrix.setRotate(90, textureView.getWidth()/2, textureView.getHeight()/2);
+//        textureView.setTransform(matrix);
+
+
+
 //        textureView.getTransform(matrix);
 //        System.out.println(matrix);
 //        matrix.postRotate(90);
 //        System.out.println(matrix);
-//        textureView.setTransform(matrix);
 
     }
 
