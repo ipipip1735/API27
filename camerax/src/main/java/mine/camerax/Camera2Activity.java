@@ -2,30 +2,27 @@ package mine.camerax;
 
 
 import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
-import android.media.Image;
+import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.ImageReader;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Rational;
-import android.view.Surface;
+import android.os.Handler;
+import android.util.Size;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.CameraX;
 import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageAnalysisConfig;
 import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureConfig;
-import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
-import androidx.camera.core.PreviewConfig;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Camera2Activity extends AppCompatActivity {
 
@@ -34,6 +31,8 @@ public class Camera2Activity extends AppCompatActivity {
     private ImageAnalysis imageAnalysis;
     private TextureView textureView;
     private int degree = 0;
+    ImageReader imageReader;
+    Integer sensorOrientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,13 +105,75 @@ public class Camera2Activity extends AppCompatActivity {
     public void preview(View view) {
         System.out.println("~~button.preview~~");
 
-        CameraManager cameraManager = getSystemServiceName(CameraManager.class);
+        CameraManager cameraManager = getSystemService(CameraManager.class);
+        try {
+            for (String cameraId : cameraManager.getCameraIdList()) {
+                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
+                // We don't use a front facing camera in this sample.
+                Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
+                System.out.println("facing is " + facing);
+
+                if (facing != null && facing == CameraMetadata.LENS_FACING_FRONT) {
+                    continue;
+                }
+
+                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                if (map == null) {
+                    continue;
+                }
+
+                Size[] size = characteristics.get(CameraCharacteristics.JPEG_AVAILABLE_THUMBNAIL_SIZES);
+                for (Size size1 : size) {
+                    System.out.println("size is " + size);
+                }
+
+                // For still image captures, we use the largest available size.
+                Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new Comparator<Size>() {
+                    @Override
+                    public int compare(Size o1, Size o2) {
+                        int r = Long.signum((long) o1.getWidth() * o1.getHeight() - (long) o2.getWidth() * o2.getHeight());
+                        return r;
+                    }
+                });
+
+                imageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
+                imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                    @Override
+                    public void onImageAvailable(ImageReader reader) {
+                        System.out.println("~~onImageAvailable~~");
+                        System.out.println("reader is " + reader);
+                    }
+                }, new Handler(getMainLooper()));
 
 
+//                // Find out if we need to swap dimension to get the preview size relative to sensor
+//                // coordinate.
+                int displayRotation = getWindowManager().getDefaultDisplay().getRotation();
+                //noinspection ConstantConditions
+                sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+                boolean swappedDimensions = false;
+                switch (displayRotation) {
+                    case Surface.ROTATION_0:
+                    case Surface.ROTATION_180:
+                        if (sensorOrientation == 90 || sensorOrientation == 270) {
+                            swappedDimensions = true;
+                        }
+                        break;
+                    case Surface.ROTATION_90:
+                    case Surface.ROTATION_270:
+                        if (sensorOrientation == 0 || sensorOrientation == 180) {
+                            swappedDimensions = true;
+                        }
+                        break;
+                    default:
+                        Log.e(TAG, "Display rotation is invalid: " + displayRotation);
+                }
 
 
-
-
+            }
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -131,7 +192,6 @@ public class Camera2Activity extends AppCompatActivity {
 
     public void config(View view) {
         System.out.println("~~button.config~~");
-
 
 
     }
@@ -172,6 +232,29 @@ public class Camera2Activity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+        try {
+            for (String camera : cameraManager.getCameraIdList()) {
+                System.out.println("camera is " + camera);
+                CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(camera);
+//                Integer integer = cameraCharacteristics.get(CameraCharacteristics.LENS_FACING);
+
+                for (Field field : CameraCharacteristics.class.getFields()) {
+                    try {
+                        System.out.println(field.getName() + " is " + field.get(null));
+
+
+
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
 
     }
 }
