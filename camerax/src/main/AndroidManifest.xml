@@ -31,7 +31,7 @@
         <!--</activity>-->
 
 
-        <activity android:name=".Camera2Activity">
+        <activity android:name=".Camera2PreviewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

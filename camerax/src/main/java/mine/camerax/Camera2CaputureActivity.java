@@ -27,17 +27,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.Preview;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-public class Camera2Activity extends AppCompatActivity {
+public class Camera2CaputureActivity extends AppCompatActivity {
 
 
     private TextureView textureView;
@@ -62,7 +57,7 @@ public class Camera2Activity extends AppCompatActivity {
                 System.out.println("surface is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
 
-//                openCamera(width, height);
+//                openCamera();
 
 
             }
@@ -99,7 +94,7 @@ public class Camera2Activity extends AppCompatActivity {
 
     }
 
-    private void openCamera(int width, int height) {
+    private void openCamera() {
         //检查权限
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             System.out.println("have no PERMISSION of CAMERA");
@@ -118,14 +113,12 @@ public class Camera2Activity extends AppCompatActivity {
                 if (facing != null && facing == CameraMetadata.LENS_FACING_FRONT) continue;
 
 
-
-
                 //图片流配置
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 if (map == null) continue;
 
                 Size[] sizes = map.getOutputSizes(ImageFormat.JPEG);
-                Size largest = sizes[sizes.length];//获取最大尺寸
+                Size largest = sizes[sizes.length-1];//获取最大尺寸
                 imageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
                 imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                     @Override
@@ -134,10 +127,8 @@ public class Camera2Activity extends AppCompatActivity {
                     }
                 }, new Handler(getMainLooper()));
 
-
-
                 Size[] previewSizes = map.getOutputSizes(SurfaceTexture.class);
-                Size previewSize = previewSizes[previewSizes.length];//获取最大尺寸
+                Size previewSize = previewSizes[previewSizes.length-1];//获取最大尺寸
                 imageReader = ImageReader.newInstance(previewSize.getWidth(), previewSize.getHeight(), ImageFormat.JPEG, 1);
 
                 this.cameraId = cameraId;//保存摄像头ID
@@ -157,8 +148,6 @@ public class Camera2Activity extends AppCompatActivity {
 
                     cameraDevice = camera;//保存摄像头对象
                     createCameraPreviewSession();//创建预览会话
-
-
                 }
 
                 @Override
@@ -241,7 +230,7 @@ public class Camera2Activity extends AppCompatActivity {
         System.out.println("~~button.preview~~");
 
         if (textureView.isAvailable())
-            openCamera(1280, 720);
+            openCamera();
     }
 
     private void createCameraPreviewSession() {
@@ -339,15 +328,15 @@ public class Camera2Activity extends AppCompatActivity {
             cameraCaptureSession = null;
         }
 
-//        if (null != cameraDevice) {
-//            cameraDevice.close();
-//            cameraDevice = null;
-//        }
+        if (null != cameraDevice) {
+            cameraDevice.close();
+            cameraDevice = null;
+        }
 
-//        if (null != imageReader) {
-//            imageReader.close();
-//            imageReader = null;
-//        }
+        if (null != imageReader) {
+            imageReader.close();
+            imageReader = null;
+        }
 
     }
 
@@ -387,6 +376,10 @@ public class Camera2Activity extends AppCompatActivity {
 
     public void init(View view) {
         System.out.println("~~button.init~~");
+
+        System.out.println(cameraDevice.getId());
+        System.out.println(cameraId);
+
     }
 
 
