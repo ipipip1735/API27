@@ -16,7 +16,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Size;
@@ -27,26 +26,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.Preview;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class Camera2PreviewActivity extends AppCompatActivity {
 
 
     private TextureView textureView;
-    private ImageReader imageReader;
     private CameraDevice cameraDevice;
     private CameraCaptureSession cameraCaptureSession;
-    private CaptureRequest.Builder previewRequestBuilder;
-    private CaptureRequest previewRequest;
-    private String cameraId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +89,8 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     }
 
     private void openCamera() {
+
+
         //检查权限
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             System.out.println("have no PERMISSION of CAMERA");
@@ -109,6 +100,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
         //配置摄像头
         CameraManager cameraManager = getSystemService(CameraManager.class);//获取管理对象
+
         try {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
@@ -117,45 +109,39 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                 Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (facing != null && facing == CameraMetadata.LENS_FACING_FRONT) continue;
 
-
                 //图片流配置
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 if (map == null) continue;
 
                 Size[] sizes = map.getOutputSizes(ImageFormat.JPEG);
-                Size largest = sizes[sizes.length-1];//获取最大尺寸
+                Size largest = sizes[sizes.length - 1];//获取最大尺寸
 
-                this.cameraId = cameraId;//保存摄像头ID
+
+                //打开摄像头
+                cameraManager.openCamera(cameraId, new CameraDevice.StateCallback() {
+                    @Override
+                    public void onOpened(@NonNull CameraDevice camera) {
+                        System.out.println("~~onOpened~~");
+
+                        cameraDevice = camera;//保存摄像头对象
+                        createCameraPreviewSession();//创建预览会话
+                    }
+
+                    @Override
+                    public void onDisconnected(@NonNull CameraDevice camera) {
+                        System.out.println("~~onDisconnected~~");
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull CameraDevice camera, int error) {
+                        System.out.println("~~onError~~");
+
+                    }
+                }, new Handler(getMainLooper()));
+
                 break;
             }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-
-
-        //打开摄像头
-        try {
-            cameraManager.openCamera(cameraId, new CameraDevice.StateCallback() {
-                @Override
-                public void onOpened(@NonNull CameraDevice camera) {
-                    System.out.println("~~onOpened~~");
-
-                    cameraDevice = camera;//保存摄像头对象
-                    createCameraPreviewSession();//创建预览会话
-                }
-
-                @Override
-                public void onDisconnected(@NonNull CameraDevice camera) {
-                    System.out.println("~~onDisconnected~~");
-
-                }
-
-                @Override
-                public void onError(@NonNull CameraDevice camera, int error) {
-                    System.out.println("~~onError~~");
-
-                }
-            }, new Handler(getMainLooper()));
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -228,15 +214,17 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     }
 
     private void createCameraPreviewSession() {
-        Surface surface = new Surface(textureView.getSurfaceTexture());
 
         try {
+            //创建预览请求
             CaptureRequest.Builder previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            previewRequestBuilder.addTarget(surface);
+            Surface surface = new Surface(textureView.getSurfaceTexture());
+            previewRequestBuilder.addTarget(surface);//增加Surface
             previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);
             CaptureRequest previewRequest = previewRequestBuilder.build();
 
 
+            //创建会话
             cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
@@ -244,7 +232,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     cameraCaptureSession = session;//保存会话对象
 
                     try {
-                        cameraCaptureSession.setRepeatingRequest(previewRequest, new CameraCaptureSession.CaptureCallback() {
+                        session.setRepeatingRequest(previewRequest, new CameraCaptureSession.CaptureCallback() {
                             @Override
                             public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
                                 super.onCaptureStarted(session, request, timestamp, frameNumber);
@@ -271,8 +259,9 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
                             @Override
                             public void onCaptureSequenceCompleted(@NonNull CameraCaptureSession session, int sequenceId, long frameNumber) {
-                                super.onCaptureSequenceCompleted(session, sequenceId, frameNumber);
                                 System.out.println("~~onCaptureSequenceCompleted~~");
+                                System.out.println("sequenceId is" + sequenceId);
+                                System.out.println("frameNumber is" + frameNumber);
                             }
 
                             @Override
@@ -322,22 +311,23 @@ public class Camera2PreviewActivity extends AppCompatActivity {
             cameraDevice = null;
         }
 
-        if (null != imageReader) {
-            imageReader.close();
-            imageReader = null;
+    }
+
+
+    public void pause(View view) {
+        System.out.println("~~button.pause~~");
+
+        try {
+            cameraCaptureSession.stopRepeating();
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
         }
 
     }
 
 
-    public void take(View view) {
-        System.out.println("~~button.take~~");
-
-    }
-
-
-    public void config(View view) {
-        System.out.println("~~button.config~~");
+    public void resume(View view) {
+        System.out.println("~~button.resume~~");
 
 
     }
@@ -366,45 +356,11 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     public void init(View view) {
         System.out.println("~~button.init~~");
 
-        System.out.println(cameraDevice.getId());
-        System.out.println(cameraId);
-
     }
 
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-
-
-//                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-//                if (map == null) continue;
-//                for (Size size : map.getOutputSizes(ImageFormat.JPEG))
-//                    System.out.println("sizes is " + size);
-
-
-        //缩略图配置
-//                Size[] size = characteristics.get(CameraCharacteristics.JPEG_AVAILABLE_THUMBNAIL_SIZES);
-//                for (Size size1 : size) {
-//                    System.out.println("size is " + size);
-//                }
-//                // For still image captures, we use the largest available size.
-//                Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new Comparator<Size>() {
-//                    @Override
-//                    public int compare(Size o1, Size o2) {
-//                        int r = Long.signum((long) o1.getWidth() * o1.getHeight() - (long) o2.getWidth() * o2.getHeight());
-//                        return r;
-//                    }
-//                });
-//
-//                imageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
-//                imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
-//                    @Override
-//                    public void onImageAvailable(ImageReader reader) {
-//                        System.out.println("~~onImageAvailable~~");
-//                        System.out.println("reader is " + reader);
-//                    }
-//                }, new Handler(getMainLooper()));
-
 
     }
 
