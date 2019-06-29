@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.hardware.HardwareBuffer;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -20,7 +21,9 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Size;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -32,9 +35,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Camera2PreviewActivity extends AppCompatActivity {
 
@@ -154,12 +161,12 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                 if (map == null) continue;
 
                 Size[] sizes = map.getOutputSizes(SurfaceTexture.class);
-                Size size = sizes[0];//获取最大尺寸
+                Size size = sizes[0];//获取最小尺寸
                 textureView.getSurfaceTexture().setDefaultBufferSize(size.getWidth(), size.getHeight());
 
 
                 sizes = map.getOutputSizes(ImageReader.class);
-                size = sizes[sizes.length - 1];
+                size = sizes[sizes.length - 1];//获取最大尺寸
                 imageReader = ImageReader.newInstance(size.getWidth(), size.getHeight(), ImageFormat.JPEG, 1);
                 imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                     @Override
@@ -167,6 +174,29 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                         System.out.println("~~onImageAvailable~~");
                         Image image = reader.acquireNextImage();
                         System.out.println("image|width=" + image.getWidth() + ", height=" + image.getHeight());
+                            System.out.println("getTimestamp is " + image.getTimestamp());
+                            System.out.println("getCropRect is " + image.getCropRect());
+                            System.out.println("getFormat is " + image.getFormat());
+
+
+
+                        for (Image.Plane plane : image.getPlanes()) {
+                            System.out.println("..........");
+                            System.out.println("Buffer'capacity is " + plane.getBuffer().capacity());
+                            System.out.println("getPixelStride is " + plane.getPixelStride());
+                            System.out.println("getRowStride is " + plane.getRowStride());
+
+                            Random random = new Random();
+                            String fileName = (int)image.getTimestamp()  + "_" + random.nextInt(100);
+//
+//                            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), )
+
+
+
+                        }
+
+
+
 
 
                     }
@@ -186,7 +216,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     @Override
                     public void onDisconnected(@NonNull CameraDevice camera) {
                         System.out.println("~~onDisconnected~~");
-
+camera.close();
                     }
 
                     @Override
@@ -322,10 +352,12 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
                     try {
 
+                        //方式一：最简使用
                         int id = session.setRepeatingRequest(previewRequest, null, null);
                         System.out.println("setRepeatingRequest'id is " + id);
 
 
+                        //方式二：传递监听器
 //                        int id = session.setRepeatingRequest(previewRequest, new CameraCaptureSession.CaptureCallback() {
 //                            @Override
 //                            public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
@@ -371,6 +403,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 //                            }
 //                        }, new Handler(getMainLooper()));
 //                        System.out.println("setRepeatingRequest'id is " + id);
+
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
                     }
@@ -405,6 +438,11 @@ public class Camera2PreviewActivity extends AppCompatActivity {
         if (null != cameraDevice) {
             cameraDevice.close();
             cameraDevice = null;
+        }
+
+        if (null != imageReader) {
+            imageReader.close();
+            imageReader = null;
         }
 
     }
