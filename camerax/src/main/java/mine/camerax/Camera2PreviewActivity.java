@@ -35,8 +35,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.Instant;
@@ -173,29 +176,39 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     public void onImageAvailable(ImageReader reader) {
                         System.out.println("~~onImageAvailable~~");
                         Image image = reader.acquireNextImage();
+                        Image image1 = reader.acquireNextImage();
                         System.out.println("image|width=" + image.getWidth() + ", height=" + image.getHeight());
-                            System.out.println("getTimestamp is " + image.getTimestamp());
-                            System.out.println("getCropRect is " + image.getCropRect());
-                            System.out.println("getFormat is " + image.getFormat());
+                        System.out.println("getTimestamp is " + image.getTimestamp());
+                        System.out.println("getCropRect is " + image.getCropRect());
+                        printFieldValue(image.getFormat(), ImageFormat.class, "format");
 
 
 
-                        for (Image.Plane plane : image.getPlanes()) {
-                            System.out.println("..........");
-                            System.out.println("Buffer'capacity is " + plane.getBuffer().capacity());
-                            System.out.println("getPixelStride is " + plane.getPixelStride());
-                            System.out.println("getRowStride is " + plane.getRowStride());
+//                        System.out.println("Buffer'capacity is " + image.getPlanes()[0].getBuffer().capacity());
+//                        System.out.println("getPixelStride is " + image.getPlanes()[0].getPixelStride());
+//                        System.out.println("getRowStride is " + image.getPlanes()[0].getRowStride());
 
-                            Random random = new Random();
-                            String fileName = (int)image.getTimestamp()  + "_" + random.nextInt(100);
+
+//                        try {
+//                            String fileName = Long.toString(image.getTimestamp());
+//                            File file = File.createTempFile(fileName.substring(fileName.length() - 9) + "_",
+//                                    ".jpg",
+//                                    getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+//                            System.out.println(file);
 //
-//                            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), )
-
-
-
-                        }
-
-
+//                            FileOutputStream fileOutputStream = new FileOutputStream(file);
+//                            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+//                            while (image.getPlanes()[0].getBuffer().hasRemaining()) {
+//                                bufferedOutputStream.write(image.getPlanes()[0].getBuffer().get());
+//                            }
+//                            bufferedOutputStream.close();
+//                        } catch (IOException e) {
+//
+//                            e.printStackTrace();
+//                        }finally {
+//                            image.getPlanes()[0].getBuffer().rewind();
+//                            image.close();
+//                        }
 
 
 
@@ -216,7 +229,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     @Override
                     public void onDisconnected(@NonNull CameraDevice camera) {
                         System.out.println("~~onDisconnected~~");
-camera.close();
+                        camera.close();
                     }
 
                     @Override
