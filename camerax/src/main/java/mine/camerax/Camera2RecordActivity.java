@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 
 public class Camera2RecordActivity extends AppCompatActivity {
 
@@ -42,8 +43,6 @@ public class Camera2RecordActivity extends AppCompatActivity {
     private CaptureRequest.Builder previewRequestBuilder;
     private MediaRecorder mediaRecorder;
     private boolean isRecord = false;
-    private Size videoSize;
-    private Surface surface;
 
 
     @Override
@@ -67,7 +66,6 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureAvailable~~");
                 System.out.println("surface is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
-                Camera2RecordActivity.this.surface = new Surface(textureView.getSurfaceTexture());
 //                openCamera();
             }
 
@@ -127,13 +125,14 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 if (map == null) continue;
 
                 Size[] sizes = map.getOutputSizes(SurfaceTexture.class);
+                for (Size s : sizes) System.out.println("SurfaceTexture|size = " + s);
                 Size size = sizes[0];//获取最小尺寸
                 textureView.getSurfaceTexture().setDefaultBufferSize(size.getWidth(), size.getHeight());
 
 
+                //获取视频尺寸，其实没必要，太尺寸基本用不着，720p是手机最佳选择
                 sizes = map.getOutputSizes(MediaRecorder.class);
-                for (Size s : sizes) System.out.println(s);
-                videoSize = sizes[sizes.length - 1];//获取最大尺寸
+                for (Size s : sizes) System.out.println("MediaRecorder|size = " + s);
 
 
                 //打开摄像头
@@ -175,10 +174,11 @@ public class Camera2RecordActivity extends AppCompatActivity {
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-        mediaRecorder.setVideoEncodingBitRate(10000000);
-//        mediaRecorder.setVideoEncodingBitRate(8 * 1024 * 1024);
-        mediaRecorder.setVideoFrameRate(24);
-        mediaRecorder.setVideoSize(videoSize.getWidth(), videoSize.getHeight());
+        mediaRecorder.setVideoFrameRate(30);
+        mediaRecorder.setVideoSize(640, 480);
+        mediaRecorder.setVideoEncodingBitRate(3 * 1024 * 1024);
+//        mediaRecorder.setVideoSize(1280, 720);
+//        mediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024);
 
         File file = null;
         try {
@@ -289,10 +289,10 @@ public class Camera2RecordActivity extends AppCompatActivity {
 
     private void createCameraPreviewSession() {
 
+        List<Surface> surfaceList = Arrays.asList(new Surface(textureView.getSurfaceTexture()));
         try {
-
             //创建会话
-            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
+            cameraDevice.createCaptureSession(surfaceList, new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onReady(@NonNull CameraCaptureSession session) {
                     super.onReady(session);
@@ -332,7 +332,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
 
                         //创建预览请求
                         previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                        previewRequestBuilder.addTarget(surface);//增加Surface
+                        previewRequestBuilder.addTarget(surfaceList.get(0));//增加Surface
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);
                         CaptureRequest captureRequest = previewRequestBuilder.build();
 
@@ -364,17 +364,12 @@ public class Camera2RecordActivity extends AppCompatActivity {
     private void createCameraRecordSession() {
         try {
             prepare();
-            surface = new Surface(textureView.getSurfaceTexture());
-            //创建预览请求
-            previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-            previewRequestBuilder.addTarget(surface);//增加Surface
-            previewRequestBuilder.addTarget(mediaRecorder.getSurface());//增加Surface
-            previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);
-            CaptureRequest captureRequest = previewRequestBuilder.build();
+
+            List<Surface> surfaceList = Arrays.asList(new Surface(textureView.getSurfaceTexture()), mediaRecorder.getSurface());
 
 
             //创建会话
-            cameraDevice.createCaptureSession(Arrays.asList(surface, mediaRecorder.getSurface()), new CameraCaptureSession.StateCallback() {
+            cameraDevice.createCaptureSession(surfaceList, new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onReady(@NonNull CameraCaptureSession session) {
                     super.onReady(session);
@@ -412,6 +407,13 @@ public class Camera2RecordActivity extends AppCompatActivity {
                     recordSession = session;//保存会话对象
 
                     try {
+                        //创建预览请求
+                        previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+                        for (Surface surface : surfaceList) {
+                            previewRequestBuilder.addTarget(surface);//增加Surface
+                        }
+                        previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);
+                        CaptureRequest captureRequest = previewRequestBuilder.build();
 
                         //请求预览
                         int id = session.setRepeatingRequest(captureRequest, null, null);
