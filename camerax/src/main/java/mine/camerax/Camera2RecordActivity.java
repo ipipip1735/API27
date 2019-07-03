@@ -33,6 +33,11 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 这个版本是自己写的，和官方提供的代码示例不同
+ * Activity中仅保存会话对象和预览构建器
+ * 使用单会话对象，每次录制时，自动转换会话对象，充分利用系统自动关闭功能（新会话对象创建时，系统自动关闭旧会话对象）
+ */
 public class Camera2RecordActivity extends AppCompatActivity {
 
 
@@ -50,7 +55,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_camera2_video);
 
-
+        surfaceTexture();
     }
 
     private void surfaceTexture() {
@@ -59,7 +64,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
                 System.out.println("~~onSurfaceTextureAvailable~~");
-                System.out.println("surface is " + surface);
+                System.out.println("surfaceTexture is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
                 openCamera();
             }
@@ -67,7 +72,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
             @Override
             public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
                 System.out.println("~~onSurfaceTextureSizeChanged~~");
-                System.out.println("surface is " + surface);
+                System.out.println("surfaceTexture is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
                 configureTransform(width, height);
             }
@@ -75,7 +80,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
             @Override
             public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
                 System.out.println("~~onSurfaceTextureDestroyed~~");
-                System.out.println("surface is " + surface);
+                System.out.println("surfaceTexture is " + surface);
 
                 return true;
             }
@@ -83,7 +88,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
             @Override
             public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 //                System.out.println("~~onSurfaceTextureUpdated~~");
-//                System.out.println("surface is " + surface);
+//                System.out.println("surfaceTexture is " + surfaceTexture);
             }
         });
         ViewGroup viewGroup = findViewById(R.id.fl);
@@ -229,32 +234,10 @@ public class Camera2RecordActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
-        if(textureView ==null)surfaceTexture();
 
-        if (mediaRecorder == null) {
-            mediaRecorder = new MediaRecorder();
-        }
+        if (mediaRecorder == null) mediaRecorder = new MediaRecorder();
+        if (cameraCaptureSession == null && textureView.isAvailable()) openCamera();
 
-
-
-
-
-        if (textureView.isAvailable()) {
-
-            openCamera();
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        Thread.sleep(1000L);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    System.out.println("go");
-//                    openCamera();
-//                }
-//            }).start();
-        }
 
     }
 
@@ -309,7 +292,6 @@ public class Camera2RecordActivity extends AppCompatActivity {
         List<Surface> surfaceList = Arrays.asList(new Surface(textureView.getSurfaceTexture()));
         try {
             //创建会话
-
             cameraDevice.createCaptureSession(surfaceList, new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onReady(@NonNull CameraCaptureSession session) {
@@ -386,8 +368,6 @@ public class Camera2RecordActivity extends AppCompatActivity {
 
     private void createCameraRecordSession(CameraDevice cameraDevice) {
         try {
-            cameraCaptureSession.stopRepeating();
-            cameraCaptureSession.abortCaptures();
 
             prepare();
             isRecord = true;
@@ -474,7 +454,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
 
     public void open(View view) {
         System.out.println("~~button.open~~");
-        if (textureView.isAvailable()) openCamera();
+
     }
 
 
@@ -510,6 +490,13 @@ public class Camera2RecordActivity extends AppCompatActivity {
     public void record(View view) {
         System.out.println("~~button.record~~");
         if (isRecord) return;
+
+        try {
+            cameraCaptureSession.stopRepeating();
+            cameraCaptureSession.abortCaptures();
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
         createCameraRecordSession(cameraCaptureSession.getDevice());
         mediaRecorder.start();
     }
@@ -539,7 +526,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
     public void preview(View view) {
         System.out.println("~~button.preview~~");
 
-        if (textureView.isAvailable()) openCamera();
+        if (cameraCaptureSession == null && textureView.isAvailable()) openCamera();
 
     }
 
@@ -557,17 +544,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
 
     public void config(View view) {
         System.out.println("~~button.config~~");
-
-//        if (textureView.isAvailable()) {
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    System.out.println("go");
-//                    openCamera();
-//                }
-//            }).start();
-//        }
-
+        
     }
 
 
