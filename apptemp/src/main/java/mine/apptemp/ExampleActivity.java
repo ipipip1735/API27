@@ -29,8 +29,9 @@ public class ExampleActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -47,34 +48,39 @@ public class ExampleActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
+
+        super.onPause();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
+
+        super.onBackPressed();
     }
 
 
     @Override
     protected void onStop() {
-        super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
+
+        super.onStop();
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
+
+        super.onDestroy();
     }
 
 
