@@ -5,17 +5,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
-import android.hardware.HardwareBuffer;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
@@ -23,7 +19,7 @@ import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.SystemClock;
+import android.os.HandlerThread;
 import android.util.Size;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -39,12 +35,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Arrays;
-import java.util.Random;
+import java.util.List;
 
 public class Camera2PreviewActivity extends AppCompatActivity {
 
@@ -52,9 +45,9 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     private TextureView textureView;
     private SurfaceView surfaceView;
     private ImageReader imageReader;
-    private CameraDevice cameraDevice;
     private CameraCaptureSession cameraCaptureSession;
-    private CaptureRequest previewRequest;
+    private CaptureRequest.Builder captureRequestBuilder;
+    private HandlerThread handlerThread;
 
 
     @Override
@@ -77,7 +70,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureAvailable~~");
                 System.out.println("surface is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
-//                openCamera();
+                openCamera();
             }
 
             @Override
@@ -137,12 +130,8 @@ public class Camera2PreviewActivity extends AppCompatActivity {
         viewGroup.addView(surfaceView);
     }
 
-    private void configureTransform(int width, int height) {
 
-    }
-
-    private void openCamera() {
-
+    private void  openCamera() {
 
         //检查权限
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -150,6 +139,10 @@ public class Camera2PreviewActivity extends AppCompatActivity {
             return;
         }
 
+        if (handlerThread == null) {
+            handlerThread = new HandlerThread("Camera");
+            handlerThread.start();
+        }
 
         //配置摄像头
         CameraManager cameraManager = getSystemService(CameraManager.class);//获取管理对象
@@ -172,12 +165,12 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
                 sizes = map.getOutputSizes(ImageReader.class);
                 size = sizes[sizes.length - 1];//获取最大尺寸
-                imageReader = ImageReader.newInstance(size.getWidth(), size.getHeight(), ImageFormat.JPEG, 3);
+                imageReader = ImageReader.newInstance(size.getWidth(), size.getHeight(), ImageFormat.JPEG, 1);
                 imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                     @Override
                     public void onImageAvailable(ImageReader reader) {
                         System.out.println("~~onImageAvailable~~");
-
+                        System.out.println(Thread.currentThread());
 
                         Image image = reader.acquireLatestImage();
 
@@ -186,7 +179,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
                         for (Field field : ImageFormat.class.getFields()) {
                             try {
-                                if ((int)field.get(null) == reader.getImageFormat())
+                                if ((int) field.get(null) == reader.getImageFormat())
                                     System.out.println("reader|getImageFormat is " + field.getName());
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
@@ -199,7 +192,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                         System.out.println("image|getCropRect is " + image.getCropRect());
                         for (Field field : ImageFormat.class.getFields()) {
                             try {
-                                if ((int)field.get(null) == image.getFormat())
+                                if ((int) field.get(null) == image.getFormat())
                                     System.out.println("image|getImageFormat is " + field.getName());
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
@@ -228,34 +221,43 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                         } catch (IOException e) {
 
                             e.printStackTrace();
-                        }finally {
+                        } finally {
                             image.close();
                         }
 
                     }
-                }, null);
+                }, new Handler(handlerThread.getLooper()));
 
 
                 //打开摄像头
                 cameraManager.openCamera(cameraId, new CameraDevice.StateCallback() {
                     @Override
                     public void onOpened(@NonNull CameraDevice camera) {
-                        System.out.println("~~onOpened~~");
+                        System.out.println("~~Camera.onOpened~~");
+                        createCameraPreviewSession(camera);//创建预览会话
+                    }
 
-                        cameraDevice = camera;//保存摄像头对象
-                        createCameraPreviewSession();//创建预览会话
+                    @Override
+                    public void onClosed(@NonNull CameraDevice camera) {
+                        System.out.println("~~Camera.onClosed~~");
+                        super.onClosed(camera);
+
+                        if (handlerThread != null) {
+                            handlerThread.quitSafely();
+                            handlerThread = null;
+                        }
                     }
 
                     @Override
                     public void onDisconnected(@NonNull CameraDevice camera) {
-                        System.out.println("~~onDisconnected~~");
+                        System.out.println("~~Camera.onDisconnected~~");
                         camera.close();
                     }
 
                     @Override
                     public void onError(@NonNull CameraDevice camera, int error) {
-                        System.out.println("~~onError~~");
-
+                        System.out.println("~~Camera.onError~~");
+                        camera.close();
                     }
                 }, new Handler(getMainLooper()));
 
@@ -268,130 +270,48 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-    }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
-    }
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
-    }
-
-
-    public void preview(View view) {
-        System.out.println("~~button.preview~~");
-
-        if (textureView.isAvailable()) openCamera();
-//        if (!surfaceView.getHolder().isCreating()) openCamera();
-    }
-
-    private void createCameraPreviewSession() {
+    private void createCameraPreviewSession(CameraDevice camera) {
 
         try {
-            //创建预览请求
-            CaptureRequest.Builder previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            Surface surface = new Surface(textureView.getSurfaceTexture());
-//            Surface surface = surfaceView.getHolder().getSurface();
-
-            previewRequestBuilder.addTarget(surface);//增加Surface
-            previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);
-            previewRequest = previewRequestBuilder.build();
-
+            List<Surface> surfaceList = Arrays.asList(new Surface(textureView.getSurfaceTexture()), imageReader.getSurface());
 
             //创建会话
-            cameraDevice.createCaptureSession(Arrays.asList(surface, imageReader.getSurface()), new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onReady(@NonNull CameraCaptureSession session) {
-                    super.onReady(session);
-                    System.out.println("~~onReady~~");
-                }
-
-                @Override
-                public void onActive(@NonNull CameraCaptureSession session) {
-                    super.onActive(session);
-                    System.out.println("~~onActive~~");
-                }
-
-                @Override
-                public void onCaptureQueueEmpty(@NonNull CameraCaptureSession session) {
-                    super.onCaptureQueueEmpty(session);
-                    System.out.println("~~onCaptureQueueEmpty~~");
-                }
+            camera.createCaptureSession(surfaceList, new CameraCaptureSession.StateCallback() {
 
                 @Override
                 public void onClosed(@NonNull CameraCaptureSession session) {
                     super.onClosed(session);
-                    System.out.println("~~onClosed~~");
-                }
+                    System.out.println("~~Session.onClosed~~");
 
-                @Override
-                public void onSurfacePrepared(@NonNull CameraCaptureSession session, @NonNull Surface surface) {
-                    super.onSurfacePrepared(session, surface);
-                    System.out.println("~~onSurfacePrepared~~");
+                    if (null != imageReader) {
+                        imageReader.close();
+                        imageReader = null;
+                    }
+                    session.getDevice().close();
+
+
                 }
 
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
-                    System.out.println("~~onConfigured~~");
+                    System.out.println("~~Session.onConfigured~~");
                     cameraCaptureSession = session;//保存会话对象
 
 
-                    //请求预览
                     try {
+                        //创建预览请求
+                        CameraDevice cameraDevice = session.getDevice();
+                        captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                        captureRequestBuilder.addTarget(surfaceList.get(0));//增加Surface
+                        captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);
 
-                        //方式一：最简使用
-                        int id = session.setRepeatingRequest(previewRequest, null, null);
+                        //请求预览（最简使用）
+                        int id = session.setRepeatingRequest(captureRequestBuilder.build(), null, null);
                         System.out.println("setRepeatingRequest'id is " + id);
 
 
-                        //方式二：传递监听器
+                        //请求预览（传递监听器）
 //                        int id = session.setRepeatingRequest(previewRequest, new CameraCaptureSession.CaptureCallback() {
 //                            @Override
 //                            public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
@@ -447,8 +367,12 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                    System.out.println("~~onConfigureFailed~~");
-
+                    System.out.println("~~Session.onConfigureFailed~~");
+                    if (null != imageReader) {
+                        imageReader.close();
+                        imageReader = null;
+                    }
+                    session.getDevice().close();
                 }
             }, new Handler(getMainLooper()));
 
@@ -460,23 +384,86 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
     }
 
+    private void configureTransform(int width, int height) {
 
-    public void close(View view) {
-        System.out.println("~~button.close~~");
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+        if (cameraCaptureSession == null && textureView.isAvailable()) openCamera();
+    }
+
+    @Override
+    protected void onPause() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
         if (null != cameraCaptureSession) {
             cameraCaptureSession.close();
             cameraCaptureSession = null;
         }
 
-        if (null != cameraDevice) {
-            cameraDevice.close();
-            cameraDevice = null;
-        }
+        super.onPause();
+    }
 
-        if (null != imageReader) {
-            imageReader.close();
-            imageReader = null;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
+    }
+
+    public void preview(View view) {
+        System.out.println("~~button.preview~~");
+
+        if (cameraCaptureSession == null && textureView.isAvailable()) openCamera();
+//        if (!surfaceView.getHolder().isCreating()) openCamera();
+    }
+
+
+    public void close(View view) {
+        System.out.println("~~button.close~~");
+
+        if (cameraCaptureSession != null) {
+            cameraCaptureSession.close();
+            cameraCaptureSession = null;
         }
 
     }
@@ -496,17 +483,20 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     public void resume(View view) {
         System.out.println("~~button.resume~~");
 
-
+        try {
+            int id = cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(), null, null);
+            System.out.println("setRepeatingRequest'id is " + id);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public void take(View view) {
         System.out.println("~~button.take~~");
 
         try {
-            cameraCaptureSession.stopRepeating();//停止未启动请求
-            cameraCaptureSession.abortCaptures();//停止所有请求
-
             //创建拍摄请求
+            CameraDevice cameraDevice = cameraCaptureSession.getDevice();
             CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(imageReader.getSurface());
 
@@ -514,10 +504,6 @@ public class Camera2PreviewActivity extends AppCompatActivity {
             int id = cameraCaptureSession.capture(captureBuilder.build(), null, null);
             System.out.println("setRepeatingRequest'id is " + id);
 
-
-            //请求预览
-            id = cameraCaptureSession.setRepeatingRequest(previewRequest, null, null);
-            System.out.println("setRepeatingRequest'id is " + id);
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
