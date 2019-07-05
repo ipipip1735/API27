@@ -47,6 +47,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
     private MediaRecorder mediaRecorder;
     private boolean isRecord = false;
     private HandlerThread handlerThread;
+    private int orientation;
 
 
     @Override
@@ -74,7 +75,6 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureSizeChanged~~");
                 System.out.println("surfaceTexture is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
-                configureTransform(width, height);
             }
 
             @Override
@@ -96,8 +96,24 @@ public class Camera2RecordActivity extends AppCompatActivity {
     }
 
 
-    private void configureTransform(int width, int height) {
+    private int getJpegOrientation(CameraCharacteristics c) {
 
+        int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
+        if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN) return 0;
+        int sensorOrientation = c.get(CameraCharacteristics.SENSOR_ORIENTATION);
+
+        // Round device orientation to a multiple of 90
+        deviceOrientation = (deviceOrientation + 45) / 90 * 90;
+
+        // Reverse device orientation for front-facing cameras
+        boolean facingFront = c.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT;
+        if (facingFront) deviceOrientation = -deviceOrientation;
+
+        // Calculate desired JPEG orientation relative to camera orientation to make
+        // the image upright relative to the device orientation
+        int jpegOrientation = (sensorOrientation + deviceOrientation + 360) % 360;
+
+        return jpegOrientation;
     }
 
     private void openCamera() {
@@ -123,6 +139,8 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 //使用后置摄像头
                 Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (facing != null && facing == CameraMetadata.LENS_FACING_FRONT) continue;
+
+                orientation = getJpegOrientation(characteristics);
 
                 //图片流配置
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -193,6 +211,8 @@ public class Camera2RecordActivity extends AppCompatActivity {
         mediaRecorder.setVideoEncodingBitRate(3 * 1024 * 1024);
 //        mediaRecorder.setVideoSize(1280, 720);
 //        mediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024);
+
+
 
         File file = null;
         try {

@@ -121,18 +121,22 @@ public class RecoderVideoActivity extends AppCompatActivity {
         //initial
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC); //设置音频输入设备
         recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA); //设置视频输入设备
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP); //设置输出格式
 
 
         //DataSourceConfigured
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP); //设置输出格式
-        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP); //设置视频编码方式
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB); //设置音频编码方式
+        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP); //设置视频编码方式
+//        recorder.setVideoSize(320, 240);//视频尺寸
+        recorder.setVideoSize(1280, 720);//视频尺寸
+        recorder.setVideoEncodingBitRate(5 * 1024 * 1024);//设置视频编码率
 
         File path = new File(getExternalFilesDir(DIRECTORY_MOVIES), "/rc" + n + ".mp4");
         System.out.println(path);
         recorder.setOutputFile(path.toString());//设置输出路径
 
         SurfaceView surfaceView = findViewById(R.id.surfaceView);
+        surfaceView.getHolder().setFixedSize(640, 480);//设置预览尺寸
         recorder.setPreviewDisplay(surfaceView.getHolder().getSurface()); //设置预览
 
 
@@ -179,6 +183,17 @@ public class RecoderVideoActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
         recorder.start();   // Recording is now started
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+////                try {
+////                    Thread.sleep(3000L);
+////                } catch (InterruptedException e) {
+////                    e.printStackTrace();
+////                }
+//                recorder.start();
+//            }
+//        }).start();
 
     }
 

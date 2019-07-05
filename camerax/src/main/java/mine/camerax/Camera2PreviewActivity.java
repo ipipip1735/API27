@@ -48,6 +48,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     private CameraCaptureSession cameraCaptureSession;
     private CaptureRequest.Builder captureRequestBuilder;
     private HandlerThread handlerThread;
+    private int orientation;
 
 
     @Override
@@ -78,7 +79,6 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureSizeChanged~~");
                 System.out.println("surface is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
-                configureTransform(width, height);
             }
 
             @Override
@@ -153,6 +153,9 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                 //使用后置摄像头
                 Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (facing != null && facing == CameraMetadata.LENS_FACING_FRONT) continue;
+
+
+                orientation = getJpegOrientation(characteristics);
 
                 //图片流配置
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -311,7 +314,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                         System.out.println("setRepeatingRequest'id is " + id);
 
 
-                        //请求预览（传递监听器）
+                        //请求预览（使用监听器）
 //                        int id = session.setRepeatingRequest(previewRequest, new CameraCaptureSession.CaptureCallback() {
 //                            @Override
 //                            public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
@@ -384,8 +387,24 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
     }
 
-    private void configureTransform(int width, int height) {
+    private int getJpegOrientation(CameraCharacteristics c) {
 
+        int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
+        if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN) return 0;
+        int sensorOrientation = c.get(CameraCharacteristics.SENSOR_ORIENTATION);
+
+        // Round device orientation to a multiple of 90
+        deviceOrientation = (deviceOrientation + 45) / 90 * 90;
+
+        // Reverse device orientation for front-facing cameras
+        boolean facingFront = c.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT;
+        if (facingFront) deviceOrientation = -deviceOrientation;
+
+        // Calculate desired JPEG orientation relative to camera orientation to make
+        // the image upright relative to the device orientation
+        int jpegOrientation = (sensorOrientation + deviceOrientation + 360) % 360;
+
+        return jpegOrientation;
     }
 
     @Override
@@ -499,6 +518,8 @@ public class Camera2PreviewActivity extends AppCompatActivity {
             CameraDevice cameraDevice = cameraCaptureSession.getDevice();
             CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(imageReader.getSurface());
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, orientation);
+
 
             //请求拍摄
             int id = cameraCaptureSession.capture(captureBuilder.build(), null, null);
@@ -535,11 +556,12 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+
     }
 
 
-    public void modify(View view) {
-        System.out.println("~~button.modify~~");
+    public void state(View view) {
+        System.out.println("~~button.state~~");
 
         CameraManager cameraManager = getSystemService(CameraManager.class);
         try {
@@ -554,6 +576,9 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     printFieldValue(facing, CameraMetadata.class, "LENS_FACING");
                 }
 
+                Integer degree = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+                System.out.println("sensor is " + degree);
+                System.out.println("device is " + getWindowManager().getDefaultDisplay().getRotation());
 
                 //图片流配置
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -582,10 +607,19 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     System.out.println("getOutputSizes is " + size);
 
 
+
             }
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void config(View view) {
+        System.out.println("~~button.config~~");
+
+//        captureRequestBuilder.set
+
 
     }
 
