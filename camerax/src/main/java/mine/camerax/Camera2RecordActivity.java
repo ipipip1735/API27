@@ -4,6 +4,7 @@ package mine.camerax;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -96,11 +97,13 @@ public class Camera2RecordActivity extends AppCompatActivity {
     }
 
 
-    private int getJpegOrientation(CameraCharacteristics c) {
+    private int getOrientation(CameraCharacteristics c) {
 
         int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
-        if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN) return 0;
+        if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN)
+            return 0;
         int sensorOrientation = c.get(CameraCharacteristics.SENSOR_ORIENTATION);
+        System.out.println("sensorOrientation is " + sensorOrientation);
 
         // Round device orientation to a multiple of 90
         deviceOrientation = (deviceOrientation + 45) / 90 * 90;
@@ -111,9 +114,9 @@ public class Camera2RecordActivity extends AppCompatActivity {
 
         // Calculate desired JPEG orientation relative to camera orientation to make
         // the image upright relative to the device orientation
-        int jpegOrientation = (sensorOrientation + deviceOrientation + 360) % 360;
+        int orientation = (sensorOrientation + deviceOrientation + 360) % 360;
 
-        return jpegOrientation;
+        return orientation;
     }
 
     private void openCamera() {
@@ -140,7 +143,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (facing != null && facing == CameraMetadata.LENS_FACING_FRONT) continue;
 
-                orientation = getJpegOrientation(characteristics);
+                orientation = getOrientation(characteristics);//计算预览方向
 
                 //图片流配置
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -150,6 +153,11 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 for (Size s : sizes) System.out.println("SurfaceTexture|size = " + s);
                 Size size = sizes[0];//获取最小尺寸
                 textureView.getSurfaceTexture().setDefaultBufferSize(size.getWidth(), size.getHeight());
+
+                //设置预览方向（可能需要设置）
+//                Matrix matrix = new Matrix();
+//                matrix.setRotate(orientation, size.getWidth()/2, size.getHeight()/2);
+//                textureView.setTransform(matrix);
 
 
                 //获取视频尺寸，其实没必要，太尺寸基本用不着，720p是手机最佳选择
@@ -211,12 +219,13 @@ public class Camera2RecordActivity extends AppCompatActivity {
         mediaRecorder.setVideoEncodingBitRate(3 * 1024 * 1024);
 //        mediaRecorder.setVideoSize(1280, 720);
 //        mediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024);
-
+        mediaRecorder.setOrientationHint(getWindowManager().getDefaultDisplay().getRotation());
 
 
         File file = null;
         try {
-            file = File.createTempFile("XXX", ".mp4", getExternalFilesDir(Environment.DIRECTORY_MOVIES));
+//            file = File.createTempFile("XXX", ".mp4", getExternalFilesDir(Environment.DIRECTORY_MOVIES));
+            file = File.createTempFile("XXX", ".mp4", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -350,6 +359,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
                     System.out.println("~~PreviewSession.onConfigured~~");
+
                     cameraCaptureSession = session;//保存会话对象
 
                     try {
@@ -418,12 +428,11 @@ public class Camera2RecordActivity extends AppCompatActivity {
                     super.onClosed(session);
                     System.out.println("~~RecordSession.onClosed~~");
 
-                    if (isRecord) {
-                        CameraDevice cameraDevice = session.getDevice();
-                        cameraDevice.close();
-                    } else {
-                        createCameraPreviewSession(session.getDevice());
-                    }
+                    if (!isRecord) return;
+                    isRecord = false;
+                    System.out.println("isRecord is " + isRecord);
+                    CameraDevice cameraDevice = session.getDevice();
+                    cameraDevice.close();
 
                 }
 
@@ -451,6 +460,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
                         int id = session.setRepeatingRequest(captureRequest, null, null);
                         System.out.println("record'id is " + id);
 
+                        mediaRecorder.start();
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
                     }
@@ -463,7 +473,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
                     System.out.println("~~RecordSession.onConfigureFailed~~");
 
                 }
-            }, null);
+            }, new Handler(handlerThread.getLooper()));
 
 
         } catch (CameraAccessException e) {
@@ -517,8 +527,8 @@ public class Camera2RecordActivity extends AppCompatActivity {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+
         createCameraRecordSession(cameraCaptureSession.getDevice());
-        mediaRecorder.start();
     }
 
     public void cease(View view) {
@@ -527,7 +537,8 @@ public class Camera2RecordActivity extends AppCompatActivity {
         mediaRecorder.stop();
         mediaRecorder.reset();
         isRecord = false;
-        cameraCaptureSession.close();
+
+        createCameraPreviewSession(cameraCaptureSession.getDevice());
     }
 
     public void pause(View view) {
@@ -564,7 +575,11 @@ public class Camera2RecordActivity extends AppCompatActivity {
 
     public void config(View view) {
         System.out.println("~~button.config~~");
-        
+
+        int o = getWindowManager().getDefaultDisplay().getRotation();
+        printFieldValue(o, Surface.class, "ROTATION");
+        System.out.println("orientation is " + orientation);
+        createCameraPreviewSession(cameraCaptureSession.getDevice());
     }
 
 
