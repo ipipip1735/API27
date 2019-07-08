@@ -1,14 +1,18 @@
 package mine.workmanager;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
+
+import static androidx.work.ExistingWorkPolicy.APPEND;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,11 +91,20 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+//                .setRequiresDeviceIdle(true)
+//                .setRequiresCharging(true)
+//                .setTriggerContentMaxDelay(1000L, TimeUnit.MILLISECONDS)
+                .setTriggerContentMaxDelay(1L, TimeUnit.SECONDS)
+                .addContentUriTrigger(Uri.parse("content://A.B/c/d"), true)
+                .build();
+
 
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
-                .addTag("xxx")
-//                .setConstraints()
-                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
+//                .addTag("xxx")
+//                .setConstraints(constraints)
+//                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .build();
 
@@ -125,6 +138,13 @@ public class MainActivity extends AppCompatActivity {
     public void bind(View view) {
         System.out.println("~~button.bind~~");
 
+        Uri uri = Uri.parse("content://A.B/c/d/");
+        uri.buildUpon().appendPath("1");
+
+        getContentResolver().notifyChange(uri, null);
+
+
+
     }
 
     public void unbind(View view) {
@@ -141,6 +161,16 @@ public class MainActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+        WorkManager workManager = WorkManager.getInstance(this);
+
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
+//                .addTag("xxx")
+//                .setConstraints(constraints)
+//                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
+                .setInputData(new Data.Builder().putInt("one", 111).build())
+                .build();
+
+        workManager.enqueueUniqueWork("xxxUnique", APPEND, oneTimeWorkRequest);
     }
 
 
