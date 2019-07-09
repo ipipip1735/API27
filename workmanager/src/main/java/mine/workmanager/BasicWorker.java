@@ -13,12 +13,14 @@ public class BasicWorker extends Worker {
         super(context, workerParams);
         System.out.println("--" + getClass().getSimpleName() + ".constructor--");
         System.out.println(Thread.currentThread());
+        System.out.println("end|" + System.currentTimeMillis());
+
 
         System.out.println("context is " + context);
         System.out.println("workerParams is " + workerParams);
 
 
-//        System.out.println("workerParams.getId is " + workerParams.getId());
+        System.out.println("workerParams.getId is " + workerParams.getId());
 //        System.out.println("workerParams.getInputData is " + workerParams.getInputData());
 //        System.out.println(workerParams.getInputData().getInt("one", -1));
 //        System.out.println(workerParams.getInputData().getInt("two", -1));
@@ -40,15 +42,17 @@ public class BasicWorker extends Worker {
     public Result doWork() {
         System.out.println("~~doWork~~");
         System.out.println(Thread.currentThread());
+        System.out.println("end|" + System.currentTimeMillis());
+
 
 //        System.out.println("getApplicationContext is " + getApplicationContext());
 //        System.out.println("getId is " + getId());
+        System.out.println("getTags is " + getTags());
 //        System.out.println("getInputData is " + getInputData());
         System.out.println(getInputData().getInt("one", -1));
         System.out.println(getInputData().getInt("two", -1));
 //        System.out.println("getNetwork is " + getNetwork());
 //        System.out.println("getRunAttemptCount is " + getRunAttemptCount());
-//        System.out.println("getTags is " + getTags());
 //        System.out.println("getTriggeredContentAuthorities is " + getTriggeredContentAuthorities());
 //        System.out.println("getTriggeredContentUris is " + getTriggeredContentUris());
 

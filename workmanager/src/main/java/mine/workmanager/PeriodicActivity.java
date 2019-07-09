@@ -5,16 +5,27 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.Operation;
+import androidx.work.OverwritingInputMerger;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.util.Arrays;
+import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class PeriodicActivity extends AppCompatActivity {
 
+    private UUID id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,59 +98,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void con(View view) {
-        System.out.println("~~button.con~~");
+    public void single(View view) {
+        System.out.println("~~button.single~~");
 
         Constraints constraints = new Constraints.Builder()
-//                .setRequiresBatteryNotLow(true)
-//                .setRequiresDeviceIdle(true)
-//                .setRequiresCharging(true)
-//                .setTriggerContentMaxDelay(1000L, TimeUnit.MILLISECONDS)
-                .setTriggerContentMaxDelay(1L, TimeUnit.SECONDS)
-                .addContentUriTrigger(Uri.parse("content://A.B/c/d"), true)
+                .setRequiresCharging(true)
                 .build();
 
-
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
-//                .addTag("xxx")
-//                .setConstraints(constraints)
-//                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
-                .setInputData(new Data.Builder().putInt("one", 111).build())
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(BasicWorker.class, 1L, TimeUnit.SECONDS)
+//        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(BasicWorker.class, 15L, TimeUnit.MINUTES)
+                .setConstraints(constraints)
                 .build();
+        id = periodicWorkRequest.getId();
+        System.out.println("start|" + System.currentTimeMillis());
 
 
         WorkManager workManager = WorkManager.getInstance(this);
-        workManager.enqueue(oneTimeWorkRequest);
+        Operation operation = workManager.enqueue(periodicWorkRequest);
 
-    }
-
-
-    public void once(View view) {
-        System.out.println("~~button.once~~");
-
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
-                .addTag("xxx")
-//                .setConstraints()
-//                .setInitialDelay(1L, TimeUnit.SECONDS)
-                .setInputData(new Data.Builder().putInt("one", 111).build())
-                .build();
-
-
-        System.out.println("getId is " + oneTimeWorkRequest.getId());
-//        System.out.println("getStringId() is " + oneTimeWorkRequest.getStringId());
-//        System.out.println("getTags() is " + oneTimeWorkRequest.getTags());
-//        System.out.println("getWorkSpec() is " + oneTimeWorkRequest.getWorkSpec());
+        operation.getState().observe(this, new Observer<Operation.State>() {
+            @Override
+            public void onChanged(Operation.State state) {
+                System.out.println("~~onChanged~~");
+                System.out.println("state is " + state);
+            }
+        });
 
 
     }
 
-    public void chain(View view) {
-        System.out.println("~~button.chain~~");
 
-//        Uri uri = Uri.parse("content://A.B/c/d/");
-//        uri.buildUpon().appendPath("1");
-//
-//        getContentResolver().notifyChange(uri, null);
+    public void stop(View view) {
+        System.out.println("~~button.stop~~");
+
+        WorkManager workManager = WorkManager.getInstance(this);
+
+        workManager.cancelWorkById(id);
 
 
     }
@@ -184,18 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-//        Operation operation = workManager.enqueue(Arrays.asList(
-//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("one").setInitialDelay(1L, TimeUnit.SECONDS).build(),
-//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("two").build(),
-//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("three").build()));
 
-
-        //        workManager.beginWith(Arrays.asList(
-//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("one").setInitialDelay(1L, TimeUnit.SECONDS).build(),
-//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("two").build(),
-//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("three").build()))
-//                .then(new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("four").build())
-//                .enqueue();
 
     }
 
