@@ -7,12 +7,11 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.Constraints;
 import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
-
-import static androidx.work.ExistingWorkPolicy.APPEND;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
+    public void con(View view) {
+        System.out.println("~~button.con~~");
 
         Constraints constraints = new Constraints.Builder()
-                .setRequiresBatteryNotLow(true)
+//                .setRequiresBatteryNotLow(true)
 //                .setRequiresDeviceIdle(true)
 //                .setRequiresCharging(true)
 //                .setTriggerContentMaxDelay(1000L, TimeUnit.MILLISECONDS)
@@ -115,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
+    public void once(View view) {
+        System.out.println("~~button.once~~");
 
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
                 .addTag("xxx")
@@ -124,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
 //                .setInitialDelay(1L, TimeUnit.SECONDS)
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .build();
-
 
 
         System.out.println("getId is " + oneTimeWorkRequest.getId());
@@ -135,14 +133,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+    public void chain(View view) {
+        System.out.println("~~button.chain~~");
 
-        Uri uri = Uri.parse("content://A.B/c/d/");
-        uri.buildUpon().appendPath("1");
-
-        getContentResolver().notifyChange(uri, null);
-
+//        Uri uri = Uri.parse("content://A.B/c/d/");
+//        uri.buildUpon().appendPath("1");
+//
+//        getContentResolver().notifyChange(uri, null);
 
 
     }
@@ -158,24 +155,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void del(View view) {
-        System.out.println("~~button.del~~");
+    public void unique(View view) {
+        System.out.println("~~button.unique~~");
 
-        WorkManager workManager = WorkManager.getInstance(this);
 
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
 //                .addTag("xxx")
 //                .setConstraints(constraints)
-//                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
+                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .build();
 
-        workManager.enqueueUniqueWork("xxxUnique", APPEND, oneTimeWorkRequest);
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(BasicWorker.class)
+                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
+                .setInputData(new Data.Builder().putInt("two", 222).build())
+                .build();
+
+
+        WorkManager workManager = WorkManager.getInstance(this);
+//        workManager.enqueueUniqueWork("oneUnique", ExistingWorkPolicy.APPEND, two);
+        workManager.enqueueUniqueWork("oneUnique", ExistingWorkPolicy.KEEP, one);
+        workManager.enqueueUniqueWork("oneUnique", ExistingWorkPolicy.APPEND, two);
+
+
+        System.out.println("==============");
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+//        Operation operation = workManager.enqueue(Arrays.asList(
+//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("one").setInitialDelay(1L, TimeUnit.SECONDS).build(),
+//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("two").build(),
+//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("three").build()));
+
+
+        //        workManager.beginWith(Arrays.asList(
+//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("one").setInitialDelay(1L, TimeUnit.SECONDS).build(),
+//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("two").build(),
+//                new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("three").build()))
+//                .then(new OneTimeWorkRequest.Builder(BasicWorker.class).addTag("four").build())
+//                .enqueue();
 
     }
 
