@@ -152,27 +152,6 @@ public class PeriodicActivity extends AppCompatActivity {
     public void unique(View view) {
         System.out.println("~~button.unique~~");
 
-
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
-//                .addTag("xxx")
-//                .setConstraints(constraints)
-                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
-                .setInputData(new Data.Builder().putInt("one", 111).build())
-                .build();
-
-        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(BasicWorker.class)
-                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
-                .setInputData(new Data.Builder().putInt("two", 222).build())
-                .build();
-
-
-        WorkManager workManager = WorkManager.getInstance(this);
-//        workManager.enqueueUniqueWork("oneUnique", ExistingWorkPolicy.APPEND, two);
-        workManager.enqueueUniqueWork("oneUnique", ExistingWorkPolicy.KEEP, one);
-        workManager.enqueueUniqueWork("oneUnique", ExistingWorkPolicy.APPEND, two);
-
-
-        System.out.println("==============");
     }
 
 
