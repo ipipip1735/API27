@@ -104,11 +104,11 @@ public class OneTimeActivity extends AppCompatActivity {
     public void single(View view) {
         System.out.println("~~button.single~~");
 
-//        equeue();
+        equeue();
 //        chain();
 //        constraints();
 //        operation();
-        stop();
+//        stop();
 
 
     }
@@ -143,7 +143,7 @@ public class OneTimeActivity extends AppCompatActivity {
 
     private void equeue() {
         System.out.println("~~equeue~~");
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        final OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
                 .addTag("one")
                 .build();
 
@@ -159,7 +159,7 @@ public class OneTimeActivity extends AppCompatActivity {
                 .build();
 
 
-        WorkManager workManager = WorkManager.getInstance(this);
+        final WorkManager workManager = WorkManager.getInstance(this);
 
         //方式一：创建3个队列（每个队列仅包含单个任务）
         workManager.enqueue(one);
@@ -167,7 +167,7 @@ public class OneTimeActivity extends AppCompatActivity {
         workManager.enqueue(three);
 
         //方式二：创建1个队列（包含多个任务）
-        workManager.enqueue(Arrays.asList(one, two, three));
+//        workManager.enqueue(Arrays.asList(one, two, three));
 
     }
 
@@ -224,8 +224,6 @@ public class OneTimeActivity extends AppCompatActivity {
         Operation operation = workManager.enqueue(one);
 
 
-
-
         ListenableFuture<Operation.State.SUCCESS> listenableFuture = operation.getResult();//获取操作结果
         listenableFuture.addListener(new Runnable() {
             @Override
@@ -252,7 +250,6 @@ public class OneTimeActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }
