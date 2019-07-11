@@ -1,6 +1,5 @@
 package mine.workmanager;
 
-import android.app.VoiceInteractor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,16 +13,14 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.Operation;
 import androidx.work.OverwritingInputMerger;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class OneTimeActivity extends AppCompatActivity {
@@ -105,6 +102,7 @@ public class OneTimeActivity extends AppCompatActivity {
         System.out.println("~~button.single~~");
 
         equeue();
+        workInfo();
 //        chain();
 //        constraints();
 //        operation();
@@ -113,8 +111,9 @@ public class OneTimeActivity extends AppCompatActivity {
 
     }
 
+
     private void stop() {
-        final OneTimeWorkRequest longTime = new OneTimeWorkRequest.Builder(LongTimeWorker.class)
+        OneTimeWorkRequest longTime = new OneTimeWorkRequest.Builder(LongTimeWorker.class)
                 .addTag("longTime")
                 .setInitialDelay(1L, TimeUnit.SECONDS)
                 .build();
@@ -131,7 +130,7 @@ public class OneTimeActivity extends AppCompatActivity {
                     Thread.sleep(8000L);
 //                    workManager.cancelAllWork();//终止所有任务
 //                    workManager.cancelAllWorkByTag("longTime");//终止同标签的所有任务
-                    workManager.cancelWorkById(longTime.getId());
+                    workManager.cancelWorkById(id);
                     System.out.println("stop!");
 
                 } catch (InterruptedException e) {
@@ -143,16 +142,16 @@ public class OneTimeActivity extends AppCompatActivity {
 
     private void equeue() {
         System.out.println("~~equeue~~");
-        final OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        final OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("one")
                 .build();
 
-        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("two")
                 .setInitialDelay(1L, TimeUnit.SECONDS)
                 .build();
 
-        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("three")
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .setInputMerger(OverwritingInputMerger.class)
@@ -171,23 +170,80 @@ public class OneTimeActivity extends AppCompatActivity {
 
     }
 
-    private void chain() {
-        System.out.println("~~chain~~");
+    private void workInfo() {
 
-        //创建4个任务
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
-                .addTag("one")
+        String tag = "xxx";
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
+                .addTag(tag)
                 .build();
-        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(BasicWorker.class)
-                .addTag("two")
+
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
+                .addTag(tag)
                 .setInitialDelay(1L, TimeUnit.SECONDS)
                 .build();
-        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(BasicWorker.class)
+
+        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("three")
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .setInputMerger(OverwritingInputMerger.class)
                 .build();
-        OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(BasicWorker.class)
+
+        WorkManager workManager = WorkManager.getInstance(this);
+
+
+        //方法一：监听器某个任务状态的变化
+        LiveData<WorkInfo> liveData = workManager.getWorkInfoByIdLiveData(one.getId());
+        liveData.observe(this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                System.out.println("~~onChanged~~");
+                System.out.println(workInfo);
+            }
+        });
+
+
+        //方法二：监听同意标签所有任务状态的变化
+//        LiveData<List<WorkInfo>> listLiveData = workManager.getWorkInfosByTagLiveData(tag);
+//        listLiveData.observe(this, new Observer<List<WorkInfo>>() {
+//            @Override
+//            public void onChanged(List<WorkInfo> workInfos) {
+//                System.out.println("~~onChanged~~");
+//                System.out.println(workInfos);
+//            }
+//        });
+
+
+
+        //监听器（操作状态）
+        Operation operation = workManager.enqueue(Arrays.asList(one, two, three));
+        operation.getState().observe(this, new Observer<Operation.State>() {
+            @Override
+            public void onChanged(Operation.State state) {
+                System.out.println("~~operation.onChanged~~");
+                System.out.println("state is " + state);
+            }
+        });
+
+    }
+
+
+    private void chain() {
+        System.out.println("~~chain~~");
+
+        //创建4个任务
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
+                .addTag("one")
+                .build();
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
+                .addTag("two")
+                .setInitialDelay(1L, TimeUnit.SECONDS)
+                .build();
+        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
+                .addTag("three")
+                .setInputData(new Data.Builder().putInt("one", 111).build())
+                .setInputMerger(OverwritingInputMerger.class)
+                .build();
+        OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("four")
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .setInputMerger(OverwritingInputMerger.class)
@@ -212,7 +268,7 @@ public class OneTimeActivity extends AppCompatActivity {
 
 
         //创建任务对象
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("xxx")
 //                .setConstraints(constraints)
                 .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
@@ -268,7 +324,7 @@ public class OneTimeActivity extends AppCompatActivity {
 
 
         //创建任务对象
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(OnceWorker.class)
 //                .addTag("xxx")
 //                .setConstraints(constraints)
 //                .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
@@ -283,7 +339,7 @@ public class OneTimeActivity extends AppCompatActivity {
     public void once(View view) {
         System.out.println("~~button.once~~");
 
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("xxx")
 //                .setConstraints()
 //                .setInitialDelay(1L, TimeUnit.SECONDS)
@@ -324,14 +380,14 @@ public class OneTimeActivity extends AppCompatActivity {
         System.out.println("~~button.unique~~");
 
 
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
 //                .addTag("xxx")
 //                .setConstraints(constraints)
                 .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .build();
 
-        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
                 .setInputData(new Data.Builder().putInt("two", 222).build())
                 .build();

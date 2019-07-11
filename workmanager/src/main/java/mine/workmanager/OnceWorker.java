@@ -8,8 +8,8 @@ import androidx.work.WorkerParameters;
 
 import java.lang.reflect.Method;
 
-public class BasicWorker extends Worker {
-    public BasicWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+public class OnceWorker extends Worker {
+    public OnceWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         System.out.println("--" + getClass().getSimpleName() + ".constructor--");
         System.out.println(Thread.currentThread());

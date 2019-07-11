@@ -1,26 +1,20 @@
 package mine.workmanager;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.ExistingWorkPolicy;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.Operation;
-import androidx.work.OverwritingInputMerger;
 import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import java.util.Arrays;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 public class PeriodicActivity extends AppCompatActivity {
@@ -102,24 +96,37 @@ public class PeriodicActivity extends AppCompatActivity {
         System.out.println("~~button.single~~");
 
         Constraints constraints = new Constraints.Builder()
-                .setRequiresCharging(true)
+                .setRequiresBatteryNotLow(true)
                 .build();
 
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(BasicWorker.class, 1L, TimeUnit.SECONDS)
-//        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(BasicWorker.class, 15L, TimeUnit.MINUTES)
-                .setConstraints(constraints)
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(OnceWorker.class, 1L, TimeUnit.SECONDS)
+//        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(OnceWorker.class, 16L, TimeUnit.MINUTES)
+//                .setConstraints(constraints)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, WorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
                 .build();
         id = periodicWorkRequest.getId();
         System.out.println("start|" + System.currentTimeMillis());
 
 
         WorkManager workManager = WorkManager.getInstance(this);
-        Operation operation = workManager.enqueue(periodicWorkRequest);
+        //监听器（任务状态）
+        LiveData<WorkInfo> liveData = workManager.getWorkInfoByIdLiveData(id);
+        liveData.observe(this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                System.out.println("~~periodicWork.onChanged~~");
+                System.out.println(workInfo);
+            }
+        });
 
+
+
+        //监听器（操作状态）
+        Operation operation = workManager.enqueue(periodicWorkRequest);
         operation.getState().observe(this, new Observer<Operation.State>() {
             @Override
             public void onChanged(Operation.State state) {
-                System.out.println("~~onChanged~~");
+                System.out.println("~~operation.onChanged~~");
                 System.out.println("state is " + state);
             }
         });

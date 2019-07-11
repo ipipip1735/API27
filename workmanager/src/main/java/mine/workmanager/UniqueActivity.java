@@ -6,12 +6,10 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.Operation;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -131,24 +129,24 @@ public class UniqueActivity extends AppCompatActivity {
 
 
 
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("one")
                 .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .build();
-        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("two")
                 .setInputData(new Data.Builder().putInt("two", 222).build())
                 .build();
-        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
           .addTag("three")
           .setInputData(new Data.Builder().putInt("three", 333).build())
           .build();
-        OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(OnceWorker.class)
           .addTag("four")
           .setInputData(new Data.Builder().putInt("four", 444).build())
           .build();
-        PeriodicWorkRequest five = new PeriodicWorkRequest.Builder(BasicWorker.class, 1L, TimeUnit.SECONDS)
+        PeriodicWorkRequest five = new PeriodicWorkRequest.Builder(OnceWorker.class, 1L, TimeUnit.SECONDS)
                 .addTag("five")
                 .setInputData(new Data.Builder().putInt("five", 444).build())
                 .build();
@@ -204,20 +202,20 @@ public class UniqueActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("one")
                 .setInitialDelay(1000L, TimeUnit.MILLISECONDS)
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .build();
-        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("two")
                 .setInputData(new Data.Builder().putInt("two", 222).build())
                 .build();
-        final OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        final OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("three")
                 .setInputData(new Data.Builder().putInt("three", 333).build())
                 .build();
-        final OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(BasicWorker.class)
+        final OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("four")
                 .setInputData(new Data.Builder().putInt("four", 444).build())
                 .build();
