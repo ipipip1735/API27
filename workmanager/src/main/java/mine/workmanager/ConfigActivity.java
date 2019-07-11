@@ -1,5 +1,6 @@
 package mine.workmanager;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -7,20 +8,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.work.BackoffPolicy;
+import androidx.work.Configuration;
 import androidx.work.Constraints;
-import androidx.work.NetworkType;
+import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.Operation;
-import androidx.work.PeriodicWorkRequest;
+import androidx.work.OverwritingInputMerger;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
-import static androidx.work.PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
-
-public class PeriodicActivity extends AppCompatActivity {
+public class ConfigActivity extends AppCompatActivity {
 
     private UUID id;
 
@@ -29,6 +35,13 @@ public class PeriodicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
+
+
+        Configuration myConfig = new Configuration.Builder()
+                .setMinimumLoggingLevel(android.util.Log.INFO)
+                .build();
+
+        WorkManager.initialize(this, myConfig);//初始化
 
     }
 
@@ -98,40 +111,33 @@ public class PeriodicActivity extends AppCompatActivity {
     public void single(View view) {
         System.out.println("~~button.single~~");
 
-//        period();
-        retry();
+        custom();
+
 
     }
 
-    private void period() {
+    private void custom() {
+        //创建构建器
 
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(OnceWorker.class, MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
+                .addTag("one")
                 .build();
-        id = periodicWorkRequest.getId();
-        System.out.println("start|" + System.currentTimeMillis());
+        id = one.getId();
 
 
         WorkManager workManager = WorkManager.getInstance(this);
-        //监听器（任务状态）
         LiveData<WorkInfo> liveData = workManager.getWorkInfoByIdLiveData(id);
         liveData.observe(this, new Observer<WorkInfo>() {
             @Override
             public void onChanged(WorkInfo workInfo) {
-                System.out.println("~~periodicWork.onChanged~~");
+                System.out.println("~~onChanged~~");
                 System.out.println(workInfo);
             }
         });
 
-        Operation operation = workManager.enqueue(periodicWorkRequest);//创建任务链
+        workManager.enqueue(one);
 
-        //监听器（操作状态）
-//        operation.getState().observe(this, new Observer<Operation.State>() {
-//            @Override
-//            public void onChanged(Operation.State state) {
-//                System.out.println("~~operation.onChanged~~");
-//                System.out.println("state is " + state);
-//            }
-//        });
+
     }
 
 
@@ -139,42 +145,14 @@ public class PeriodicActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 
         WorkManager workManager = WorkManager.getInstance(this);
-
         workManager.cancelWorkById(id);
 
 
     }
 
-    private void retry() {
-        System.out.println("~~button.retry~~");
+    public void unbind(View view) {
+        System.out.println("~~button.unbind~~");
 
-        Constraints constraints = new Constraints.Builder()
-                .setRequiresBatteryNotLow(true)
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(RetryWorker.class, MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
-                .setConstraints(constraints)
-                .setBackoffCriteria(BackoffPolicy.LINEAR, WorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
-                .build();
-
-        id = periodicWorkRequest.getId();
-        System.out.println("start|" + System.currentTimeMillis());
-
-
-        WorkManager workManager = WorkManager.getInstance(this);
-
-        //监听器（任务状态）
-        LiveData<WorkInfo> liveData = workManager.getWorkInfoByIdLiveData(id);
-        liveData.observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                System.out.println("~~periodicWork.onChanged~~");
-                System.out.println(workInfo);
-            }
-        });
-
-        workManager.enqueue(periodicWorkRequest);//创建任务链
     }
 
     public void reloading(View view) {
@@ -185,14 +163,11 @@ public class PeriodicActivity extends AppCompatActivity {
 
     public void unique(View view) {
         System.out.println("~~button.unique~~");
-
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
-
     }
 
 }

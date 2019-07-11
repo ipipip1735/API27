@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
@@ -15,6 +16,7 @@ import androidx.work.Operation;
 import androidx.work.OverwritingInputMerger;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -102,15 +104,15 @@ public class OneTimeActivity extends AppCompatActivity {
         System.out.println("~~button.single~~");
 
         equeue();
-        workInfo();
+//        workInfo();
 //        chain();
 //        constraints();
 //        operation();
 //        stop();
+//        retry();
 
 
     }
-
 
     private void stop() {
         OneTimeWorkRequest longTime = new OneTimeWorkRequest.Builder(LongTimeWorker.class)
@@ -142,7 +144,7 @@ public class OneTimeActivity extends AppCompatActivity {
 
     private void equeue() {
         System.out.println("~~equeue~~");
-        final OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("one")
                 .build();
 
@@ -214,7 +216,7 @@ public class OneTimeActivity extends AppCompatActivity {
 
 
 
-        //监听器（操作状态）
+        //监听器（操作状态，操作就是在子线程中异步访问数据库）
         Operation operation = workManager.enqueue(Arrays.asList(one, two, three));
         operation.getState().observe(this, new Observer<Operation.State>() {
             @Override
@@ -351,6 +353,31 @@ public class OneTimeActivity extends AppCompatActivity {
 //        System.out.println("getStringId() is " + oneTimeWorkRequest.getStringId());
 //        System.out.println("getTags() is " + oneTimeWorkRequest.getTags());
 //        System.out.println("getWorkSpec() is " + oneTimeWorkRequest.getWorkSpec());
+
+
+    }
+
+
+
+    private void retry() {
+        System.out.println("~~retry~~");
+
+        OneTimeWorkRequest retry = new OneTimeWorkRequest.Builder(RetryWorker.class)
+                .addTag("retry")
+                .setBackoffCriteria(BackoffPolicy.LINEAR, WorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.getWorkInfoByIdLiveData(retry.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        System.out.println("~~onChanged~~");
+                        System.out.println(workInfo);
+                    }
+                });
+        workManager.enqueue(retry);
+
 
 
     }

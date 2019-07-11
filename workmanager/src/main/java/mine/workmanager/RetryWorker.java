@@ -54,7 +54,15 @@ public class RetryWorker extends Worker {
 //        System.out.println("getTriggeredContentAuthorities is " + getTriggeredContentAuthorities());
 //        System.out.println("getTriggeredContentUris is " + getTriggeredContentUris());
 
+        for (int i = 0; i < 15; i++) {
+            try {
+                Thread.sleep(1000L);
+                System.out.println(i + "|" + System.currentTimeMillis());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return Result.success();
 
-        return Result.retry();
     }
 }
