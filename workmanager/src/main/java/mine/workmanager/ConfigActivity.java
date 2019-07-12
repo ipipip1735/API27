@@ -38,6 +38,14 @@ public class ConfigActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        //方法一
+//        Configuration myConfig = new Configuration.Builder()
+//                .setMinimumLoggingLevel(android.util.Log.INFO)
+//                .setExecutor(Executors.newFixedThreadPool(2))//官方文档示例是直接使用线程池
+//                .build();
+
+
+        //方法二
         Configuration myConfig = new Configuration.Builder()
                 .setMinimumLoggingLevel(android.util.Log.INFO)
                 .setExecutor(new Executor() {
@@ -47,14 +55,14 @@ public class ConfigActivity extends AppCompatActivity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                System.out.println("Configuration.execute.run");
+                                System.out.println("setExecutor.execute.run");
                                 command.run();
                             }
                         }, "ooooooo").start();
                     }
                 })
-//                .setExecutor(Executors.newFixedThreadPool(8))//官方文档示例是直接使用线程池
                 .build();
+
 
         WorkManager.initialize(this, myConfig);//初始化
 
@@ -152,8 +160,6 @@ public class ConfigActivity extends AppCompatActivity {
         });
 
         workManager.enqueue(one);
-
-
     }
 
 

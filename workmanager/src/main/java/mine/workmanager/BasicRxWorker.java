@@ -64,19 +64,23 @@ public class BasicRxWorker extends RxWorker {
     @NonNull
     @Override
     protected Scheduler getBackgroundScheduler() {
-        return Schedulers.from(new Executor() {
-            @Override
-            public void execute(final Runnable command) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println("~~execute.run~~");
-                        System.out.println(Thread.currentThread());
-                        command.run();
-                    }
-                }, "mmm").start();
-            }
-        });
+        return super.getBackgroundScheduler();//不需要自定义，直接调用父类实现
+
+//        return Schedulers.io();//使用调度器
+
+//        return Schedulers.from(new Executor() { //使用自定义线程
+//            @Override
+//            public void execute(final Runnable command) {
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        System.out.println("~~execute.run~~");
+//                        System.out.println(Thread.currentThread());
+//                        command.run();
+//                    }
+//                }, "mmm").start();
+//            }
+//        });
 
     }
 }

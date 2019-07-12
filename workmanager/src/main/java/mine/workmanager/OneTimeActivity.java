@@ -104,14 +104,14 @@ public class OneTimeActivity extends AppCompatActivity {
         System.out.println("~~button.single~~");
 
 //        equeue();
-        rxWork();
 //        workInfo();
 //        chain();
 //        constraints();
 //        operation();
 //        stop();
 //        retry();
-
+        //-----------
+//        rxWork();
 
     }
 

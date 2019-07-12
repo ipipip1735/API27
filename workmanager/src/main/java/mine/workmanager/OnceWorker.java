@@ -56,7 +56,7 @@ public class OnceWorker extends Worker {
 //        System.out.println("getTriggeredContentAuthorities is " + getTriggeredContentAuthorities());
 //        System.out.println("getTriggeredContentUris is " + getTriggeredContentUris());
 
-        for (int i = 0; i < 5 && !isStopped(); i++) {
+        for (int i = 0; i < 5 ; i++) {
             try {
                 Thread.sleep(1000L);
                 System.out.println(i);
