@@ -18,13 +18,20 @@ public class BasicJobService extends JobService {
     public boolean onStartJob(JobParameters params) {
         System.out.println("~~BasicJobService.onStartJob~~");
         System.out.println("params is " + params);
+
+        System.out.println("getJobId is " + params.getJobId());
+        System.out.println("getTriggeredContentAuthorities is " + params.getTriggeredContentAuthorities());
+        System.out.println("getTriggeredContentUris is " + params.getTriggeredContentUris());
+        System.out.println("isOverrideDeadlineExpired is " + params.isOverrideDeadlineExpired());
+
+
         PersistableBundle persistableBundle = params.getExtras();
         double d = persistableBundle.getDouble("min");
         String s = persistableBundle.getString("exclude");
         System.out.println(s);
         System.out.println("min is " + d);
 
-//        jobFinished(params, true);
+        jobFinished(params, false);
 
 //        new Thread(new Runnable() {
 //            @Override

@@ -104,8 +104,9 @@ public class ScheduleActivity extends AppCompatActivity {
         ComponentName componentName = new ComponentName(this, BasicJobService.class);
 
         JobInfo jobInfo = new JobInfo.Builder(1, componentName)
-                .setPeriodic(5 * 1000L) //延迟时间，小于15分钟按15分钟计算
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED) //需要网络
+                .setPeriodic(15 * 60 * 1000L)
+//                .setPeriodic(5 * 1000L) //延迟时间，小于15分钟按15分钟计算
+//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED) //需要网络
                 .build();
         jobID = jobInfo.getId();
 
@@ -127,7 +128,6 @@ public class ScheduleActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~stop~~");
-
         JobScheduler jobScheduler = getSystemService(JobScheduler.class);
         jobScheduler.cancel(jobID);
     }
