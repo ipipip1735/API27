@@ -24,6 +24,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class ConfigActivity extends AppCompatActivity {
@@ -39,9 +40,24 @@ public class ConfigActivity extends AppCompatActivity {
 
         Configuration myConfig = new Configuration.Builder()
                 .setMinimumLoggingLevel(android.util.Log.INFO)
+                .setExecutor(new Executor() {
+                    @Override
+                    public void execute(final Runnable command) {
+                        System.out.println("Configuration.execute");
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("Configuration.execute.run");
+                                command.run();
+                            }
+                        }, "ooooooo").start();
+                    }
+                })
+//                .setExecutor(Executors.newFixedThreadPool(8))//官方文档示例是直接使用线程池
                 .build();
 
         WorkManager.initialize(this, myConfig);//初始化
+
 
     }
 

@@ -103,7 +103,8 @@ public class OneTimeActivity extends AppCompatActivity {
     public void single(View view) {
         System.out.println("~~button.single~~");
 
-        equeue();
+//        equeue();
+        rxWork();
 //        workInfo();
 //        chain();
 //        constraints();
@@ -112,6 +113,19 @@ public class OneTimeActivity extends AppCompatActivity {
 //        retry();
 
 
+    }
+
+    private void rxWork() {
+        System.out.println("~~rxWork~~");
+
+        OneTimeWorkRequest rxWork = new OneTimeWorkRequest.Builder(BasicRxWorker.class)
+                .addTag("RX")
+                .setInitialDelay(1L, TimeUnit.SECONDS)
+                .build();
+        id = rxWork.getId();
+
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueue(rxWork);
     }
 
     private void stop() {
@@ -123,7 +137,6 @@ public class OneTimeActivity extends AppCompatActivity {
 
         final WorkManager workManager = WorkManager.getInstance(this);
         workManager.enqueue(longTime);
-
 
         new Thread(new Runnable() {
             @Override
@@ -140,17 +153,19 @@ public class OneTimeActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
     }
 
     private void equeue() {
         System.out.println("~~equeue~~");
         OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("one")
+                .setInitialDelay(1L, TimeUnit.SECONDS)
                 .build();
+        id = one.getId();
 
         OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("two")
-                .setInitialDelay(1L, TimeUnit.SECONDS)
                 .build();
 
         OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
@@ -213,7 +228,6 @@ public class OneTimeActivity extends AppCompatActivity {
 //                System.out.println(workInfos);
 //            }
 //        });
-
 
 
         //监听器（操作状态，操作就是在子线程中异步访问数据库）
@@ -291,10 +305,20 @@ public class OneTimeActivity extends AppCompatActivity {
             }
         }, new Executor() {
             @Override
-            public void execute(Runnable command) {
+            public void execute(final Runnable command) {
                 System.out.println("~~listenableFuture.addListener.execute~~");
                 System.out.println("command is " + command);
-                command.run();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(3000L);
+                            command.run();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
 
@@ -358,7 +382,6 @@ public class OneTimeActivity extends AppCompatActivity {
     }
 
 
-
     private void retry() {
         System.out.println("~~retry~~");
 
@@ -377,7 +400,6 @@ public class OneTimeActivity extends AppCompatActivity {
                     }
                 });
         workManager.enqueue(retry);
-
 
 
     }

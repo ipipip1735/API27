@@ -47,14 +47,23 @@ public class OnceWorker extends Worker {
 
 //        System.out.println("getApplicationContext is " + getApplicationContext());
 //        System.out.println("getId is " + getId());
-        System.out.println("getTags is " + getTags());
+//        System.out.println("getTags is " + getTags());
 //        System.out.println("getInputData is " + getInputData());
-        System.out.println(getInputData().getInt("one", -1));
-        System.out.println(getInputData().getInt("two", -1));
+//        System.out.println(getInputData().getInt("one", -1));
+//        System.out.println(getInputData().getInt("two", -1));
 //        System.out.println("getNetwork is " + getNetwork());
 //        System.out.println("getRunAttemptCount is " + getRunAttemptCount());
 //        System.out.println("getTriggeredContentAuthorities is " + getTriggeredContentAuthorities());
 //        System.out.println("getTriggeredContentUris is " + getTriggeredContentUris());
+
+        for (int i = 0; i < 5 && !isStopped(); i++) {
+            try {
+                Thread.sleep(1000L);
+                System.out.println(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
 
         return Result.success();
