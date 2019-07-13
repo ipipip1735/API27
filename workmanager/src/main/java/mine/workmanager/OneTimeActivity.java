@@ -2,6 +2,7 @@ package mine.workmanager;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -106,12 +107,33 @@ public class OneTimeActivity extends AppCompatActivity {
 //        equeue();
 //        workInfo();
 //        chain();
+        uri();
 //        constraints();
 //        operation();
 //        stop();
 //        retry();
         //-----------
 //        rxWork();
+
+    }
+
+    private void uri() {
+        System.out.println("~~uri~~");
+
+        //创建限制对象
+        Constraints constraints = new Constraints.Builder()
+                .addContentUriTrigger(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true)
+                .build();
+
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
+                .addTag("one")
+                .setConstraints(constraints)
+                .build();
+        id = one.getId();
+
+        WorkManager workManager = WorkManager.getInstance(this);
+
+        workManager.enqueue(one);
 
     }
 

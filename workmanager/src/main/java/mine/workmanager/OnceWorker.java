@@ -27,8 +27,8 @@ public class OnceWorker extends Worker {
 //        System.out.println("workerParams.getNetwork is " + workerParams.getNetwork());
 //        System.out.println("workerParams.getRunAttemptCount is " + workerParams.getRunAttemptCount());
 //        System.out.println("workerParams.getTags is " + workerParams.getTags());
-//        System.out.println("workerParams.getTriggeredContentAuthorities is " + workerParams.getTriggeredContentAuthorities());
-//        System.out.println("workerParams.getTriggeredContentUris is " + workerParams.getTriggeredContentUris());
+        System.out.println("workerParams.getTriggeredContentAuthorities is " + workerParams.getTriggeredContentAuthorities());
+        System.out.println("workerParams.getTriggeredContentUris is " + workerParams.getTriggeredContentUris());
 //        System.out.println("---------------");
 //        System.out.println("workerParams.getBackgroundExecutor is " + workerParams.getBackgroundExecutor());
 //        System.out.println("workerParams.getTaskExecutor is " + workerParams.getTaskExecutor());
