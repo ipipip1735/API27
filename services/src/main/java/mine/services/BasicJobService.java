@@ -11,17 +11,19 @@ import android.os.PersistableBundle;
 public class BasicJobService extends JobService {
     public BasicJobService() {
         super();
-        System.out.println("++BasicJobService.Constructor++");
+        System.out.println("+++" + getClass().getSimpleName() + ".Constructor+++");
     }
 
     @Override
-    public boolean onStartJob(JobParameters params) {
-        System.out.println("~~BasicJobService.onStartJob~~");
+    public boolean onStartJob(final JobParameters params) {
+        System.out.println("~~" + getClass().getSimpleName() + ".onStartJob~~");
         System.out.println("params is " + params);
 
         System.out.println("getJobId is " + params.getJobId());
-        System.out.println("getTriggeredContentAuthorities is " + params.getTriggeredContentAuthorities());
-        System.out.println("getTriggeredContentUris is " + params.getTriggeredContentUris());
+        for (int i = 0; i < params.getTriggeredContentAuthorities().length; i++) {
+            System.out.println("getTriggeredContentAuthorities is " + params.getTriggeredContentAuthorities()[i]);
+            System.out.println("getTriggeredContentUris is " + params.getTriggeredContentUris()[i]);
+        }
         System.out.println("isOverrideDeadlineExpired is " + params.isOverrideDeadlineExpired());
 
 
@@ -31,28 +33,28 @@ public class BasicJobService extends JobService {
         System.out.println(s);
         System.out.println("min is " + d);
 
-        jobFinished(params, false);
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                try {
-//                    Thread.sleep(20000L);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                jobFinished(params, false);
-//            }
-//        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                System.out.println("~~run~~");
+                try {
+                    Thread.sleep(10 * 1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                jobFinished(params, false);
+//                jobFinished(params, true);
+            }
+        }).start();
 
-        return true;
-//        return false;
+        return true;//任务需要重启
+//        return false;//任务不需要重启
     }
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        System.out.println("~~BasicJobService.onStopJob~~");
+        System.out.println("~~" + getClass().getSimpleName() + ".onStopJob~~");
         System.out.println("params is " + params);
 
         PersistableBundle persistableBundle = params.getExtras();
@@ -60,11 +62,13 @@ public class BasicJobService extends JobService {
         System.out.println("min is " + d);
 
         return false;
+//        return true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("++BasicJobService.onDestroy++");
+        System.out.println("~~" + getClass().getSimpleName() + ".onDestroy~~");
+
     }
 }

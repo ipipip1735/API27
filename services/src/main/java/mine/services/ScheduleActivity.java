@@ -7,12 +7,14 @@ import android.app.job.JobWorkItem;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.PersistableBundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -103,11 +105,23 @@ public class ScheduleActivity extends AppCompatActivity {
 
         ComponentName componentName = new ComponentName(this, BasicJobService.class);
 
+
+        //方式一
         JobInfo jobInfo = new JobInfo.Builder(1, componentName)
                 .setPeriodic(15 * 60 * 1000L)
-//                .setPeriodic(5 * 1000L) //延迟时间，小于15分钟按15分钟计算
-//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED) //需要网络
+                .setPeriodic(5 * 1000L) //延迟时间，小于15分钟按15分钟计算
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY) //需要网络
+                .setBackoffCriteria(1000L, JobInfo.BACKOFF_POLICY_LINEAR)
                 .build();
+
+        //方式二：监听URI（不能和setPeriodic()、setPersisted(boolean)共同使用）
+//        JobInfo jobInfo = new JobInfo.Builder(1, componentName)
+//                .addTriggerContentUri(new JobInfo.TriggerContentUri(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                        JobInfo.TriggerContentUri.FLAG_NOTIFY_FOR_DESCENDANTS))
+//                .build();
+
+
+
         jobID = jobInfo.getId();
 
         int r = jobScheduler.schedule(jobInfo);
@@ -163,9 +177,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 System.out.println("job is unknown");
         }
 
-
     }
-
 
     public void unbind(View view) {
         System.out.println("~~unbind~~");
@@ -197,6 +209,41 @@ public class ScheduleActivity extends AppCompatActivity {
 //        JobWorkItem jobWorkItem = new JobWorkItem(intent); //获取任务对象，API26以后可用
 //        jobScheduler.enqueue(jobInfo, jobWorkItem); //替换任务
 
+
+        JobScheduler jobScheduler = getSystemService(JobScheduler.class);
+
+        JobInfo jobInfo = jobScheduler.getPendingJob(jobID);
+
+        //        System.out.println("isImportantWhileForeground is " + jobInfo.isImportantWhileForeground());
+        System.out.println("isPeriodic is " + jobInfo.isPeriodic());
+        System.out.println("isPersisted is " + jobInfo.isPersisted());
+//        System.out.println("isPrefetch is " + jobInfo.isPrefetch());
+//        System.out.println("isRequireBatteryNotLow is " + jobInfo.isRequireBatteryNotLow());
+        System.out.println("isRequireCharging is " + jobInfo.isRequireCharging());
+        System.out.println("isRequireDeviceIdle is " + jobInfo.isRequireDeviceIdle());
+//        System.out.println("isRequireStorageNotLow is " + jobInfo.isRequireStorageNotLow());
+
+        System.out.println("getBackoffPolicy is " + jobInfo.getBackoffPolicy());
+//        System.out.println("getClipData is " + jobInfo.getClipData());
+//        System.out.println("getClipGrantFlags is " + jobInfo.getClipGrantFlags());
+//        System.out.println("getEstimatedNetworkDownloadBytes is " + jobInfo.getEstimatedNetworkDownloadBytes());
+//        System.out.println("getEstimatedNetworkUploadBytes is " + jobInfo.getEstimatedNetworkUploadBytes());
+        System.out.println("getExtras is " + jobInfo.getExtras());
+        System.out.println("getFlexMillis is " + jobInfo.getFlexMillis());
+        System.out.println("getId is " + jobInfo.getId());
+        System.out.println("getInitialBackoffMillis is " + jobInfo.getInitialBackoffMillis());
+        System.out.println("getIntervalMillis is " + jobInfo.getIntervalMillis());
+        System.out.println("getMaxExecutionDelayMillis is " + jobInfo.getMaxExecutionDelayMillis());
+        System.out.println("getMinFlexMillis is " + jobInfo.getMinFlexMillis());
+        System.out.println("getMinLatencyMillis is " + jobInfo.getMinLatencyMillis());
+        System.out.println("getMinPeriodMillis is " + jobInfo.getMinPeriodMillis());
+        System.out.println("getNetworkType is " + jobInfo.getNetworkType());
+//        System.out.println("getRequiredNetwork is " + jobInfo.getRequiredNetwork());
+        System.out.println("getService is " + jobInfo.getService());
+//        System.out.println("getTransientExtras is " + jobInfo.getTransientExtras());
+        System.out.println("getTriggerContentMaxDelay is " + jobInfo.getTriggerContentMaxDelay());
+        System.out.println("getTriggerContentUpdateDelay is " + jobInfo.getTriggerContentUpdateDelay());
+        System.out.println("getTriggerContentUris is " + jobInfo.getTriggerContentUris());
 
 
     }
