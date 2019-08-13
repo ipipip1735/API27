@@ -55,7 +55,7 @@ public class VolleyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-        setContentView(R.layout.activity_cronet);
+        setContentView(R.layout.activity_main);
 
     }
 
@@ -119,10 +119,10 @@ public class VolleyActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
 
-//        volleyBasic();
+        volleyBasic();
 //        volleyPostText();
 //        volleyPostFile(); //失败了，Volley不支持multipart/form-data
-        volleyForJSON();
+//        volleyForJSON();
 //        volleyWithCustomQuest();
 //        volleyWithCookie();
 
@@ -488,7 +488,8 @@ public class VolleyActivity extends AppCompatActivity {
 //        String url = "http://192.168.0.126:8008/cookies.php";
 //        String url = "http://192.168.0.126:8008/index.html";
 //        String url = "http://192.168.0.126:8008/index.html";
-        String url = "http://192.168.0.127/index.html";
+//        String url = "http://192.168.0.127/index.html";
+        String url = "http://192.168.0.127:8080/alipay";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -507,6 +508,8 @@ public class VolleyActivity extends AppCompatActivity {
             }
         });
 
+        System.out.println("stringRequest.getCacheKey is " + stringRequest.getCacheKey());
+        stringRequest.setShouldCache(false);//禁用缓存
         queue.add(stringRequest);
     }
 
