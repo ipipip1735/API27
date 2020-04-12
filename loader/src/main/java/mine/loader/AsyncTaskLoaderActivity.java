@@ -10,6 +10,32 @@ import android.view.View;
 public class AsyncTaskLoaderActivity extends AppCompatActivity {
     BaseCursorAdapter baseCursorAdapter;
 
+    LoaderManager.LoaderCallbacks callback = new LoaderManager.LoaderCallbacks() {
+
+        @Override
+        public Loader onCreateLoader(int id, Bundle args) {
+            System.out.println("--- " + getClass().getSimpleName() + ".onCreateLoader ---");
+            BaseAsyncTaskLoader baseAsyncTaskLoader = new BaseAsyncTaskLoader(AsyncTaskLoaderActivity.this);
+            return baseAsyncTaskLoader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader loader, Object data) {
+            System.out.println("--- " + getClass().getSimpleName() + ".onLoadFinished ---");
+
+            System.out.println("loader is " + loader);
+            System.out.println(loader.dataToString(data) + " is " + data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader loader) {
+            System.out.println("--- " + getClass().getSimpleName() + ".onLoaderReset ---");
+
+            System.out.println("loader is " + loader);
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("**********  Main.onStart  ***********");
@@ -78,7 +104,7 @@ public class AsyncTaskLoaderActivity extends AppCompatActivity {
 
     public void loading(View view) {
         System.out.println("~~loading~~");
-        getLoaderManager().initLoader(0, null, new AsyncTaskLoaderCallback(this));
+        getLoaderManager().initLoader(0, null, callback);
 
     }
 
@@ -90,7 +116,7 @@ public class AsyncTaskLoaderActivity extends AppCompatActivity {
     public void reloading(View view) {
         System.out.println("~~reloading~~");
 
-        getLoaderManager().restartLoader(0, null, new AsyncTaskLoaderCallback(this));
+        getLoaderManager().restartLoader(0, null, callback);
 
     }
 
@@ -105,38 +131,5 @@ public class AsyncTaskLoaderActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~query~~");
 
-    }
-}
-
-
-
-class AsyncTaskLoaderCallback implements LoaderManager.LoaderCallbacks {
-
-    Context context;
-
-    public AsyncTaskLoaderCallback(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-        System.out.println("--- " + getClass().getSimpleName() + ".onCreateLoader ---");
-        BaseAsyncTaskLoader baseAsyncTaskLoader = new BaseAsyncTaskLoader(context);
-        return baseAsyncTaskLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader loader, Object data) {
-        System.out.println("--- " + getClass().getSimpleName() + ".onLoadFinished ---");
-
-        System.out.println("loader is " + loader);
-        System.out.println(loader.dataToString(data) + " is " + data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-        System.out.println("--- " + getClass().getSimpleName() + ".onLoaderReset ---");
-
-        System.out.println("loader is " + loader);
     }
 }

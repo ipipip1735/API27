@@ -29,6 +29,12 @@ public class BaseAsyncTaskLoader extends AsyncTaskLoader<String> {
         System.out.println("~~ " + getClass().getSimpleName() + ".onStartLoading ~~");
         super.onStartLoading();
 
+        if (result != null) {
+            deliverResult(result);
+        }
+        if (takeContentChanged() || result == null) {
+            forceLoad();
+        }
         forceLoad();
 
     }

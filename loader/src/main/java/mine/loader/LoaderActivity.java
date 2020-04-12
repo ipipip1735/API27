@@ -1,5 +1,6 @@
 package mine.loader;
 
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -14,6 +15,29 @@ import android.widget.TextView;
  */
 
 public class LoaderActivity extends AppCompatActivity {
+
+    LoaderManager.LoaderCallbacks callbacks =  new LoaderManager.LoaderCallbacks<String>() {
+        @Override
+        public Loader<String> onCreateLoader(int id, Bundle args) {
+            System.out.println("******* LoaderManager.onCreateLoader() *********");
+            System.out.println(args.get("name"));
+        MyLoader<String> loader = new MyLoader<String>(LoaderActivity.this);
+//            MyAsyncTaskLoader<String> loader = new MyAsyncTaskLoader<String>(LoaderActivity.this);
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<String> loader, String data) {
+            System.out.println("******* LoaderManager.onLoadFinished() *********");
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<String> loader) {
+            System.out.println("******* LoaderManager.onLoaderReset() *********");
+
+        }
+    };
 
 
     @Override
@@ -106,7 +130,7 @@ public class LoaderActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString("name", "abc");
-        getLoaderManager().restartLoader(0, bundle, new LoaderCallbacks(this));
+        getLoaderManager().restartLoader(0, bundle, callbacks);
 
 
     }
@@ -115,46 +139,8 @@ public class LoaderActivity extends AppCompatActivity {
     public void stopService(View view) {
         System.out.println("button stop");
         Bundle bundle = new Bundle();
-//        getLoaderManager().stopLoader(0, bundle, new LoaderCallbacks(this));
+        getLoaderManager().destroyLoader(0);
 
     }
-
 
 }
-
-
-class LoaderCallbacks implements android.app.LoaderManager.LoaderCallbacks<String> {
-
-    private Context context = null;
-
-    public LoaderCallbacks(Context context) {
-        this.context = context;
-    }
-
-
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        System.out.println("******* LoaderManager.onCreateLoader() *********");
-        System.out.println(args.get("name"));
-//        MyLoader<String> loader = new MyLoader<String>(context);
-        MyAsyncTaskLoader<String> loader = new MyAsyncTaskLoader<String>(context);
-        return loader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        System.out.println("******* LoaderManager.onLoadFinished() *********");
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        System.out.println("******* LoaderManager.onLoaderReset() *********");
-
-    }
-}
-
-
-
-
-
