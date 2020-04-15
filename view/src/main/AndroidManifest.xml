@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--<activity android:name=".CustomViewActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+<!--        <activity android:name=".CustomViewActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <!--<activity android:name=".MenuActivity">-->
             <!--<intent-filter>-->
@@ -39,23 +39,23 @@
 
 
 
-        <!--<activity android:name=".ComponentsActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<action android:name="android.intent.action.VIEW"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
-
-
-        <activity android:name=".SurfaceViewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity android:name=".ComponentsActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
         </activity>
+
+
+
+<!--        <activity android:name=".SurfaceViewActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 
         <!--<activity android:name=".CanvasActivity">-->

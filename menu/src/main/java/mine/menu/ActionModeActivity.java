@@ -107,8 +107,8 @@ public class ActionModeActivity extends AppCompatActivity {
 //    }
 
 
-    public void initLoad(View view) {
-        System.out.println("~~button.initLoad~~");
+    public void start(View view) {
+        System.out.println("~~button.start~~");
 
         startActionMode(mActionCallback);
 //        tween.setSelected(true);

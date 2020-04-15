@@ -11,12 +11,12 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".MainActivity" android:parentActivityName=".ActionBarActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-        </activity>
+<!--        <activity android:name=".MainActivity" android:parentActivityName=".ActionBarActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN" />-->
+<!--        <category android:name="android.intent.category.DEFAULT" />-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
 
 
         <!--<activity android:name=".ExampleActivity">-->
@@ -53,15 +53,7 @@
 
 
 
-    <!--<activity android:name=".ActionBarActivity">-->
-    <!--<intent-filter>-->
-    <!--<action android:name="android.intent.action.MAIN"/>-->
-    <!--<action android:name="android.intent.action.VIEW"/>-->
-    <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-    <!--</intent-filter>-->
-    <!--</activity>-->
-
-    <activity android:name=".ActionProviderActivity">
+    <activity android:name=".ActionBarActivity">
     <intent-filter>
     <action android:name="android.intent.action.MAIN"/>
     <action android:name="android.intent.action.VIEW"/>
@@ -69,40 +61,43 @@
     </intent-filter>
     </activity>
 
+<!--    <activity android:name=".ActionProviderActivity">-->
+<!--    <intent-filter>-->
+<!--    <action android:name="android.intent.action.MAIN"/>-->
+<!--    <action android:name="android.intent.action.VIEW"/>-->
+<!--    <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--    </intent-filter>-->
+<!--    </activity>-->
 
+    </application>
 
 
 
 
 <!--*********************************toolbar部分*******************************************-->
-    <!--<application-->
-        <!--android:allowBackup="true"-->
-        <!--android:icon="@mipmap/ic_launcher"-->
-        <!--android:label="@string/app_name"-->
-        <!--android:roundIcon="@mipmap/ic_launcher_round"-->
-        <!--android:supportsRtl="true"-->
-        <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar">-->
-        <!---->
-        <!--<activity android:name=".ToolbarActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+<!--    <application-->
+<!--        android:allowBackup="true"-->
+<!--        android:icon="@mipmap/ic_launcher"-->
+<!--        android:label="@string/app_name"-->
+<!--        android:roundIcon="@mipmap/ic_launcher_round"-->
+<!--        android:supportsRtl="true"-->
+<!--        android:theme="@style/Theme.AppCompat.Light.NoActionBar">-->
+
+<!--        <activity android:name=".ToolbarActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 
-
-
-        <!--<activity android:name=".ActionModeActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
-
-
-    </application>
+<!--        <activity android:name=".ActionModeActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
+<!--    </application>-->
 
 </manifest>

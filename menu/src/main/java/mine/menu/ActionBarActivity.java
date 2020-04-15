@@ -9,6 +9,7 @@ import android.view.ActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -173,12 +174,87 @@ public class ActionBarActivity extends AppCompatActivity {
         System.out.println("getSubtitle is " + actionBar.getSubtitle());
 
 
-
-
     }
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+
+        walk(getWindow().getDecorView(), "");
+
     }
+
+    private void walk(View view, String split) {
+
+        System.out.println(split + "->" + view);
+        if (view instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) view;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                walk(vg.getChildAt(i), split + "-");
+            }
+            return;
+        }
+    }
+
+    public void bind(View view) {
+        System.out.println("~~button.bind~~");
+
+        ViewGroup vg = (ViewGroup) getWindow().getDecorView();
+        System.out.println("vg is " + vg);
+        vg.setBackground(getResources().getDrawable(R.color.BlueViolet, null));
+
+        ViewGroup vg2 = (ViewGroup) vg.getChildAt(0);
+        System.out.println("vg2 is " + vg2);
+        vg2.setBackground(getResources().getDrawable(R.color.fuchsia, null));
+
+        View vg21 = vg.getChildAt(1);
+        System.out.println("vg2-1 is " + vg21);
+        vg21.setBackground(getResources().getDrawable(R.color.Gold, null));
+
+        View vg22 = vg.getChildAt(2);
+        System.out.println("vg2-2 is " + vg22);
+        vg22.setBackground(getResources().getDrawable(R.color.DeepPink, null));
+
+
+        ViewGroup vg3 = (ViewGroup) vg2.getChildAt(1);
+        System.out.println("vg3 is " + vg3);
+        vg3.setBackground(getResources().getDrawable(R.color.aqua, null));
+
+
+        ViewGroup vg4 = (ViewGroup) vg3.getChildAt(0);
+        System.out.println("vg4 is " + vg4);
+        vg4.setBackground(getResources().getDrawable(R.color.lime, null));
+
+
+        ViewGroup vg5 = (ViewGroup) vg4.getChildAt(1);
+        System.out.println("vg5 is " + vg5);
+        vg5.setBackground(getResources().getDrawable(R.color.Orange, null));
+
+
+        ViewGroup vg6 = (ViewGroup) vg5.getChildAt(0);
+        System.out.println("vg6 is " + vg6);
+        vg6.setBackground(getResources().getDrawable(R.color.BlueViolet, null));
+
+
+        ViewGroup vg7 = (ViewGroup) vg6.getChildAt(1);
+        System.out.println("vg7 is " + vg7);
+        vg7.setBackground(getResources().getDrawable(R.color.LightCoral, null));
+
+
+    }
+
+
+    public void unbind(View view) {
+        System.out.println("~~button.unbind~~");
+        View v = getWindow().getDecorView().findViewById(android.R.id.content);
+//        View v = getWindow().getDecorView().findViewById(R.id.action_bar);
+//        View v = getWindow().getDecorView().findViewById(android.R.id.statusBarBackground);
+//        View v = getWindow().getDecorView().findViewById(R.id.action_mode_bar_stub);//此ID无法使用
+//        View v = getWindow().getDecorView().findViewById(android.R.id.navigationBarBackground);
+//        View v = getWindow().getDecorView().findViewById(R.id.decor_content_parent);
+        v.setBackground(getResources().getDrawable(R.color.BlueViolet, null));
+
+
+    }
+
 }
 

@@ -86,8 +86,7 @@ public class CustomViewGroup extends ViewGroup {
             super(c, attrs);
             System.out.println("~~ " + this.getClass().getSimpleName() + ".CVGLayoutParams ~~");
             TypedArray array = c.obtainStyledAttributes(attrs, R.styleable.CustomViewGroup);
-            align = array.getInt(R.styleable.CustomViewGroup_align, 0);
-
+            align = array.getInt(R.styleable.CustomViewGroup_align, -1);
             array.recycle();
         }
     }

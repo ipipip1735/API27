@@ -10,10 +10,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/adapter" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/contentProvide" />
-            <option value="$PROJECT_DIR$/loader" />
+            <option value="$PROJECT_DIR$/menu" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
