@@ -78,9 +78,9 @@ public class MyLL extends LinearLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onTouchEvent  *********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onInterceptTouchEvent  *********");
 
-//        System.out.println("action is " + ev.actionToString(ev.getAction()));
+        System.out.println("action is " + ev.actionToString(ev.getAction()));
 
 //        return true;
         return super.onInterceptTouchEvent(ev);
@@ -97,6 +97,9 @@ public class MyLL extends LinearLayout {
 
         System.out.println("action is " + event.actionToString(event.getAction()));
 
+//        boolean b = super.onTouchEvent(event);
+//        System.out.println(b);
+//        return true;
 
 //        return super.onTouchEvent(event);
         return false;

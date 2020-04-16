@@ -31,61 +31,62 @@ public class DragActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  Example  onCreate  ***********");
 
-        setContentView(R.layout.activity_drag_event);
+//        setContentView(R.layout.activity_drag_event);
+        setContentView(R.layout.activity_touch_event);
 
 
-        this.one = (AppCompatImageView) findViewById(R.id.VOne);
-        this.two = (AppCompatImageView) findViewById(R.id.VTWO);
-
-
-        //长按监听器
-        one.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                System.out.println("**********  " + getClass().getSimpleName() + ".onLongClick  **********");
-
-                String[] mineType = {"aa", "bb"};
-                ClipData clipData = new ClipData("ok", mineType, new ClipData.Item("cia"));
-                View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(v) {
-                    @Override
-                    public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
-                        System.out.println("~~ onProvideShadowMetrics ~~");
-                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint);
-
-//                        outShadowSize.set(400, 500);
-//                        outShadowTouchPoint.set(0, 0);
-
-                    }
-
-                    @Override
-                    public void onDrawShadow(Canvas canvas) {
-                        System.out.println("~~ onDrawShadow ~~");
-
-                        Paint paint = new Paint();
-                        canvas.drawColor(getResources().getColor(R.color.MEDIUMPURPLE, null));
-
-                        canvas.scale(1f, 0.5f);
-                        canvas.rotate(30f);
-                        paint.setColor(getResources().getColor(R.color.IVORY, null));
-                        canvas.drawCircle(300, 200, 100, paint);
-
-//                        canvas.save();
-
-
-//                        canvas.scale(1f, 1f);
+//        this.one = (AppCompatImageView) findViewById(R.id.VOne);
+//        this.two = (AppCompatImageView) findViewById(R.id.VTWO);
+//
+//
+//        //长按监听器
+//        one.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                System.out.println("**********  " + getClass().getSimpleName() + ".onLongClick  **********");
+//
+//                String[] mineType = {"aa", "bb"};
+//                ClipData clipData = new ClipData("ok", mineType, new ClipData.Item("cia"));
+//                View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(v) {
+//                    @Override
+//                    public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
+//                        System.out.println("~~ onProvideShadowMetrics ~~");
+//                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint);
+//
+////                        outShadowSize.set(400, 500);
+////                        outShadowTouchPoint.set(0, 0);
+//
+//                    }
+//
+//                    @Override
+//                    public void onDrawShadow(Canvas canvas) {
+//                        System.out.println("~~ onDrawShadow ~~");
+//
+//                        Paint paint = new Paint();
+//                        canvas.drawColor(getResources().getColor(R.color.MEDIUMPURPLE, null));
+//
+//                        canvas.scale(1f, 0.5f);
 //                        canvas.rotate(30f);
-//                        paint.setColor(getResources().getColor(R.color.PERU, null));
-//                        canvas.drawCircle(200, 420, 100, paint);
-//                        canvas.save();
-
-
-                    }
-                };
-
-                v.startDragAndDrop(clipData, dragShadowBuilder, null, View.DRAG_FLAG_GLOBAL);
-                return true;
-            }
-        });
+//                        paint.setColor(getResources().getColor(R.color.IVORY, null));
+//                        canvas.drawCircle(300, 200, 100, paint);
+//
+////                        canvas.save();
+//
+//
+////                        canvas.scale(1f, 1f);
+////                        canvas.rotate(30f);
+////                        paint.setColor(getResources().getColor(R.color.PERU, null));
+////                        canvas.drawCircle(200, 420, 100, paint);
+////                        canvas.save();
+//
+//
+//                    }
+//                };
+//
+//                v.startDragAndDrop(clipData, dragShadowBuilder, null, View.DRAG_FLAG_GLOBAL);
+//                return true;
+//            }
+//        });
 
 
     }
