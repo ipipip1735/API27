@@ -147,9 +147,9 @@ public class AnimationActivity extends AppCompatActivity {
         System.out.println("********start******");
 
 
-//        tween();
+        tween();
 //        frame();
-        viewAnimator(); //视图属性动画
+//        viewAnimator(); //视图属性动画
 
 //        vectorAnimated();//矢量动画
 
@@ -268,6 +268,7 @@ public class AnimationActivity extends AppCompatActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.tween);
+
         animation.setDuration(3000l);
         imageView.startAnimation(animation);
 

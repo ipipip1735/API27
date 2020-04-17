@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 //        valueAnimator();
-//        objectAnimator();
 //        animatorSet();
 //        values();
 //        frame();
@@ -147,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 //        property();
 //        keyFrameAnimator();
 //        TypeEvalutors();
-        LayoutTransition();
+//        LayoutTransition();
 //        SpringAnimation();
     }
 

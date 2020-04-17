@@ -11,44 +11,44 @@
         android:theme="@style/AppTheme">
 
 
-        <!--<activity android:name=".MainActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--<action android:name="android.intent.action.VIEW"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
+<!--        <activity android:name=".MainActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN" />-->
+<!--        <action android:name="android.intent.action.VIEW"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER" />-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
 
 
         <!--物理动画-->
-        <!--<activity android:name=".PhysicsAnimationActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<action android:name="android.intent.action.VIEW"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name=".PhysicsAnimationActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+        </activity>
 
 
 
         <!--属性动画（包括值动画 / 对象动画 / 对象动画集）-->
-        <!--<activity android:name=".AnimatorActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<action android:name="android.intent.action.VIEW"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+<!--        <activity android:name=".AnimatorActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 
         <!--视图动画（包括视图属性动画 / 帧动画 / 补间动画）-->
-        <!--<activity android:name=".AnimationActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<action android:name="android.intent.action.VIEW"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+<!--        <activity android:name=".AnimationActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 
 
@@ -92,20 +92,20 @@
         <!--</activity>-->
 
 
-        <activity android:name=".WindowOneTransitionActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-        </activity>
-        <activity android:name=".WindowTwoTransitionActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        </intent-filter>
-        </activity>
+<!--        <activity android:name=".WindowOneTransitionActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <action android:name="android.intent.action.VIEW"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
+<!--        <activity android:name=".WindowTwoTransitionActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <action android:name="android.intent.action.VIEW"/>-->
+<!--        <category android:name="android.intent.category.DEFAULT"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
 
     </application>
 

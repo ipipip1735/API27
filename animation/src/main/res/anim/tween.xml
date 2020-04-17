@@ -2,17 +2,20 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:interpolator="@android:anim/overshoot_interpolator"
     android:shareInterpolator="true">
-    <alpha
-        android:fromAlpha="1"
-        android:toAlpha="0.5" />
+<!--    <alpha-->
+<!--        android:fromAlpha="1"-->
+<!--        android:toAlpha="0.5" />-->
 
-    <scale
-        android:fromXScale="1"
-        android:toXScale="1.5"
-        android:fromYScale="0.8"
-        android:toYScale="1"
-        android:pivotX="0.3"
-        android:pivotY="0.9" />
+<!--    <scale-->
+<!--        android:fromXScale="1"-->
+<!--        android:toXScale="1.5"-->
+<!--        android:fromYScale="0.8"-->
+<!--        android:toYScale="1"-->
+<!--        android:pivotX="0.3"-->
+<!--        android:pivotY="0.9" />-->
 
+    <translate
+        android:fromXDelta="20%"
+        android:toXDelta="90%" />
 </set>
 

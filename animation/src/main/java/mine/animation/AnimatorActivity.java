@@ -107,12 +107,12 @@ public class AnimatorActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 
-        valueAnimator(); //值动画
+//        valueAnimator(); //值动画
 //        propertyAnimator(); //属性动画
 
 
 //        objectAnimator(); //对象动画
-//        animatorSet(); //对象动画集
+        animatorSet(); //对象动画集
 //        keyFrameAnimator(); //属性关键帧
 
 //        pathObjectAnimator();//路径动画
@@ -304,22 +304,22 @@ public class AnimatorActivity extends AppCompatActivity {
 
 
         //例一：最简使用
-//        ObjectAnimator animator1 = ObjectAnimator.ofFloat(imageView, "x", 250f);
-//        animator1.setDuration(3000).start();
-//        ObjectAnimator animator2 = ObjectAnimator.ofFloat(imageView, "y", 250f);
-//        animator2.setDuration(3000).start();//并行动画
+        ObjectAnimator animator1 = ObjectAnimator.ofFloat(imageView, "x", 250f);
+        animator1.setDuration(3000).start();
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(imageView, "y", 250f);
+        animator2.setDuration(3000).start();//并行动画
 
 
         //例二：使用属性值持有器
-//        PropertyValuesHolder top = PropertyValuesHolder.ofInt("top", 250);
+//        PropertyValuesHolder top = PropertyValuesHolder.ofInt("top", 350, 150);
 //        PropertyValuesHolder scrollY = PropertyValuesHolder.ofInt("scrollY", 350);
 //        PropertyValuesHolder scalex = PropertyValuesHolder.ofFloat("scaleX", 1f, 1.6f, 2f);
 //        PropertyValuesHolder scaley = PropertyValuesHolder.ofFloat("scaleY", 0f, 0.6f, 1f, 1.3f);
 //
-////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, top); //单值动画
+//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, top); //单值动画
 ////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex); //单值动画
 ////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scrollY); //单值动画
-//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex, scaley); //并行动画
+////        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, scalex, scaley); //并行动画
 //        o.setDuration(2000).start();
 //
 ////        //绑定监听器，可以在start()后绑定
@@ -335,31 +335,31 @@ public class AnimatorActivity extends AppCompatActivity {
 
 
         //例三：使用求值器
-        PropertyValuesHolder top = PropertyValuesHolder.ofInt("top", 250);
-
-        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, top); //单值动画
-        o.setEvaluator(new TypeEvaluator<Integer>() {
-            @Override
-            public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
-                System.out.println("~~evaluate~~");
-                System.out.println("fraction is " + fraction);
-                System.out.println("startValue is " + startValue);
-                System.out.println("endValue is " + endValue);
-                return (int) (startValue + fraction * (endValue - startValue));
-            }
-        });
-        o.setDuration(2000).start();
-
-//        //绑定监听器，可以在start()后绑定
-        o.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                System.out.println("  >>> update <<<");
-                System.out.println(animation.getAnimatedFraction());
-                System.out.println(animation.getAnimatedValue());
-                System.out.println(animation.getDuration());
-            }
-        });
+//        PropertyValuesHolder top = PropertyValuesHolder.ofInt("top", 250);
+//
+//        ObjectAnimator o = ObjectAnimator.ofPropertyValuesHolder(imageView, top); //单值动画
+//        o.setEvaluator(new TypeEvaluator<Integer>() {
+//            @Override
+//            public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+//                System.out.println("~~evaluate~~");
+//                System.out.println("fraction is " + fraction);
+//                System.out.println("startValue is " + startValue);
+//                System.out.println("endValue is " + endValue);
+//                return (int) (startValue + fraction * (endValue - startValue));
+//            }
+//        });
+//        o.setDuration(2000).start();
+//
+////        //绑定监听器，可以在start()后绑定
+//        o.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                System.out.println("  >>> update <<<");
+//                System.out.println(animation.getAnimatedFraction());
+//                System.out.println(animation.getAnimatedValue());
+//                System.out.println(animation.getDuration());
+//            }
+//        });
 
 
 
@@ -452,39 +452,39 @@ public class AnimatorActivity extends AppCompatActivity {
 
 
         //方式二：代码方式
-        ValueAnimator animator1 = ObjectAnimator.ofFloat(imageView, "alpha", 0.1f);
-        ValueAnimator animator2 = ObjectAnimator.ofFloat(imageView, "x", 500f);
-        ValueAnimator animator3 = ObjectAnimator.ofFloat(imageView, "y", 365f);
-        ValueAnimator animator4 = ObjectAnimator.ofFloat(imageView, "x", 365f);
-
-        animator1.setDuration(2000);
-        animator2.setDuration(2000);
-        animator3.setDuration(2000);
-        animator4.setDuration(2000);
-
-        //控制监听器
-        animator2.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                System.out.println("******onAnimationStart*****");
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                System.out.println("******onAnimationEnd*****");
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                System.out.println("******onAnimationCancel*****");
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-                System.out.println("******onAnimationRepeat*****");
-            }
-        });
+//        ValueAnimator animator1 = ObjectAnimator.ofFloat(imageView, "alpha", 0.1f);
+//        ValueAnimator animator2 = ObjectAnimator.ofFloat(imageView, "x", 500f);
+//        ValueAnimator animator3 = ObjectAnimator.ofFloat(imageView, "y", 365f);
+//        ValueAnimator animator4 = ObjectAnimator.ofFloat(imageView, "x", 365f);
+//
+//        animator1.setDuration(2000);
+//        animator2.setDuration(2000);
+//        animator3.setDuration(2000);
+//        animator4.setDuration(2000);
+//
+//        //控制监听器
+//        animator2.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                System.out.println("******onAnimationStart*****");
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                System.out.println("******onAnimationEnd*****");
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animation) {
+//                System.out.println("******onAnimationCancel*****");
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animation) {
+//
+//                System.out.println("******onAnimationRepeat*****");
+//            }
+//        });
 
 //        animator2.addListener(new AnimatorListenerAdapter() { //绑定监听器使用适配器对象更简洁
 //            @Override
@@ -494,10 +494,10 @@ public class AnimatorActivity extends AppCompatActivity {
 //        });
 
 
-        AnimatorSet bouncer = new AnimatorSet();
-        bouncer.play(animator2).before(animator3);
-        bouncer.play(animator3).after(animator1);
-        bouncer.start();
+//        AnimatorSet bouncer = new AnimatorSet();
+//        bouncer.play(animator2).before(animator3);
+//        bouncer.play(animator3).after(animator1);
+//        bouncer.start();
 
 
         //方式三：动画集嵌套播放
