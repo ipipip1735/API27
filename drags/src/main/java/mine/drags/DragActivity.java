@@ -1,8 +1,13 @@
 package mine.drags;
 
+import android.content.ClipData;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
+import android.view.DragEvent;
 import android.view.View;
 
 /**
@@ -23,59 +28,93 @@ public class DragActivity extends AppCompatActivity {
         setContentView(R.layout.activity_touch_event);
 
 
-//        this.one = (AppCompatImageView) findViewById(R.id.VOne);
-//        this.two = (AppCompatImageView) findViewById(R.id.VTWO);
-//
-//
-//        //长按监听器
-//        one.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                System.out.println("**********  " + getClass().getSimpleName() + ".onLongClick  **********");
-//
-//                String[] mineType = {"aa", "bb"};
-//                ClipData clipData = new ClipData("ok", mineType, new ClipData.Item("cia"));
-//                View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(v) {
-//                    @Override
-//                    public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
-//                        System.out.println("~~ onProvideShadowMetrics ~~");
-//                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint);
-//
-////                        outShadowSize.set(400, 500);
-////                        outShadowTouchPoint.set(0, 0);
-//
-//                    }
-//
-//                    @Override
-//                    public void onDrawShadow(Canvas canvas) {
-//                        System.out.println("~~ onDrawShadow ~~");
-//
-//                        Paint paint = new Paint();
-//                        canvas.drawColor(getResources().getColor(R.color.MEDIUMPURPLE, null));
-//
-//                        canvas.scale(1f, 0.5f);
-//                        canvas.rotate(30f);
-//                        paint.setColor(getResources().getColor(R.color.IVORY, null));
-//                        canvas.drawCircle(300, 200, 100, paint);
-//
-////                        canvas.save();
-//
-//
-////                        canvas.scale(1f, 1f);
-////                        canvas.rotate(30f);
-////                        paint.setColor(getResources().getColor(R.color.PERU, null));
-////                        canvas.drawCircle(200, 420, 100, paint);
-////                        canvas.save();
-//
-//
-//                    }
-//                };
-//
-//                v.startDragAndDrop(clipData, dragShadowBuilder, null, View.DRAG_FLAG_GLOBAL);
-//                return true;
-//            }
-//        });
+        this.one = (AppCompatImageView) findViewById(R.id.VOne);
+        this.two = (AppCompatImageView) findViewById(R.id.VTWO);
 
+
+        //长按监听器
+        one.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                System.out.println("**********  " + getClass().getSimpleName() + ".onLongClick  **********");
+
+                String[] mineType = {"aa", "bb"};
+                ClipData clipData = new ClipData("ok", mineType, new ClipData.Item("cia"));
+                View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(v) {
+                    @Override
+                    public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
+                        System.out.println("~~ onProvideShadowMetrics ~~");
+                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint);
+
+//                        outShadowSize.set(400, 500);
+//                        outShadowTouchPoint.set(0, 0);
+
+                    }
+
+                    @Override
+                    public void onDrawShadow(Canvas canvas) {
+                        System.out.println("~~ onDrawShadow ~~");
+
+                        Paint paint = new Paint();
+                        canvas.drawColor(getResources().getColor(R.color.MEDIUMPURPLE, null));
+
+                        canvas.scale(1f, 0.5f);
+                        canvas.rotate(30f);
+                        paint.setColor(getResources().getColor(R.color.IVORY, null));
+                        canvas.drawCircle(300, 200, 100, paint);
+
+//                        canvas.save();
+
+//                        canvas.scale(1f, 1f);
+//                        canvas.rotate(30f);
+//                        paint.setColor(getResources().getColor(R.color.PERU, null));
+//                        canvas.drawCircle(200, 420, 100, paint);
+//                        canvas.save();
+
+                    }
+                };
+
+                v.startDragAndDrop(null, dragShadowBuilder, null, 0);
+//                v.startDragAndDrop(clipData, dragShadowBuilder, null, View.DRAG_FLAG_GLOBAL);
+                return true;
+            }
+        });
+
+
+        View pv = (View) two.getParent();
+        pv.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                System.out.println("~~PV.onDrag~~");
+
+                int action = event.getAction();
+                switch (action) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        System.out.println("action is ACTION_DRAG_STARTED");
+                        break;
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        System.out.println("action is ACTION_DRAG_ENTERED");
+                        break;
+                    case DragEvent.ACTION_DRAG_LOCATION:
+                        System.out.println("action is ACTION_DRAG_LOCATION");
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        System.out.println("action is ACTION_DRAG_EXITED");
+                        break;
+                    case DragEvent.ACTION_DROP:
+                        System.out.println("action is ACTION_DROP");
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        System.out.println("action is ACTION_DRAG_ENDED");
+                        break;
+                    default:
+                        System.out.println("Default");
+                }
+
+//                return false;
+                return true;
+            }
+        });
 
     }
 
@@ -168,7 +207,6 @@ public class DragActivity extends AppCompatActivity {
         System.out.println("~~button.del~~");
 
     }
-
 
 
 }
