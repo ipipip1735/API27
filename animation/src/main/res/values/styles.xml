@@ -11,13 +11,17 @@
 
 
         <!--Activity过渡转换-->
-        <!--<item name="android:windowActivityTransitions">true</item>-->
+<!--        <item name="android:windowActivityTransitions">true</item>-->
 
         <!-- 指定进出Activity使用的转换对象 -->
-        <!--<item name="android:windowEnterTransition">@transition/fade_transition</item>-->
-        <!--<item name="android:windowExitTransition">@transition/explode_transition</item>-->
+<!--        <item name="android:windowEnterTransition">@transition/fade_transition</item>-->
+<!--        <item name="android:windowEnterTransition">@transition/slide_transition</item>-->
+<!--        <item name="android:windowEnterTransition">@transition/explode_transition</item>-->
+<!--        <item name="android:windowExitTransition">@transition/fade_transition</item>-->
+<!--        <item name="android:windowExitTransition">@transition/slide_transition</item>-->
+<!--        <item name="android:windowExitTransition">@transition/explode_transition</item>-->
 
         <!-- 指定共享组件 -->
-        <!--<item name="android:windowSharedElementEnterTransition">@transition/change_transition</item>-->
+<!--        <item name="android:windowSharedElementEnterTransition">@transition/change_transition</item>-->
     </style>
 </resources>

@@ -30,7 +30,7 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_window_two);
 
-        long duration = 2000L;
+        long duration = 5000L;
 
 
         Window window = getWindow();
@@ -86,12 +86,12 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
 
 
 
-        slide.excludeTarget(R.id.action_bar_container, true);
-        slide.excludeTarget(android.R.id.statusBarBackground, true);
-        slide.excludeTarget(android.R.id.navigationBarBackground, true);
-        explode.excludeTarget(R.id.action_bar_container, true);
-        explode.excludeTarget(android.R.id.statusBarBackground, true);
-        explode.excludeTarget(android.R.id.navigationBarBackground, true);
+//        slide.excludeTarget(R.id.action_bar_container, true);
+//        slide.excludeTarget(android.R.id.statusBarBackground, true);
+//        slide.excludeTarget(android.R.id.navigationBarBackground, true);
+//        explode.excludeTarget(R.id.action_bar_container, true);
+//        explode.excludeTarget(android.R.id.statusBarBackground, true);
+//        explode.excludeTarget(android.R.id.navigationBarBackground, true);
 
 
 
@@ -105,8 +105,7 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
         //设置共享组件转换对象
         window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
 //        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-//        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
-
+//        window.setSharedElementsUseOverlay(true); //共享组件转换禁用遮罩层
 
 
 
@@ -117,13 +116,6 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
 //        System.out.println("getExitTransition is "  + window.getExitTransition());
 //        System.out.println("getReturnTransition is "  + window.getReturnTransition());
 //        System.out.println("getReenterTransition is "  + window.getReenterTransition());
-
-
-//        ImageView imageView = findViewById(R.id.ivTwo);
-//        imageView
-
-
-
 
 
     }

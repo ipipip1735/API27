@@ -59,12 +59,32 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
             public void onTransitionStart(Transition transition) {
                 System.out.println("~~Fade.onTransitionStart~~");
                 System.out.println(transition.getTransitionValues(findViewById(R.id.imageViewShared), true));
+                System.out.println("getDuration is " + transition.getDuration());
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+                System.out.println("~~Fade.onTransitionCancel~~");
+                super.onTransitionCancel(transition);
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+                System.out.println("~~Fade.onTransitionPause~~");
+                super.onTransitionPause(transition);
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+                System.out.println("~~Fade.onTransitionResume~~");
+                super.onTransitionResume(transition);
             }
 
             @Override
             public void onTransitionEnd(Transition transition) {
                 System.out.println("~~Fade.onTransitionEnd~~");
                 System.out.println(transition.getTransitionValues(findViewById(R.id.imageViewShared), true));
+                System.out.println("getDuration is " + transition.getDuration());
             }
         });
         Transition explode = new Explode().setDuration(duration);
@@ -84,11 +104,13 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
             @Override
             public void onTransitionStart(Transition transition) {
                 System.out.println("~~Slide.onTransitionStart~~");
+                System.out.println("getDuration is " + transition.getDuration());
             }
 
             @Override
             public void onTransitionEnd(Transition transition) {
                 System.out.println("~~Slide.onTransitionEnd~~");
+                System.out.println("getDuration is " + transition.getDuration());
             }
         });
         Transition changesBounds = new ChangeBounds().setDuration(duration);
@@ -106,14 +128,14 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 
 
         //排除状态条和导航条
-        slide.excludeTarget(R.id.action_bar_container, true);
-        slide.excludeTarget(android.R.id.statusBarBackground, true);
-        slide.excludeTarget(android.R.id.navigationBarBackground, true);
+//        slide.excludeTarget(R.id.action_bar_container, true);
+//        slide.excludeTarget(android.R.id.statusBarBackground, true);
+//        slide.excludeTarget(android.R.id.navigationBarBackground, true);
 
 
         //设置转换对象
 //        window.setExitTransition(slide); //退出变换
-//        window.setReenterTransition(slide); //重进入变换
+//        window.setReenterTransition(fade); //重进入变换
 //        window.setAllowReturnTransitionOverlap(false); //返回播放模式，false为顺序播放，默认值true为同时播放
 //        window.setTransitionBackgroundFadeDuration(duration);
 
@@ -122,7 +144,7 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
         window.setSharedElementExitTransition(changesBounds); //共享组件退出变换
 //        window.setSharedElementReenterTransition(changesBounds); //共享组件重进入变换
 //        window.setSharedElementReturnTransition(fade);
-//        window.setSharedElementsUseOverlay(false); //共享转换禁用遮罩层
+//        window.setSharedElementsUseOverlay(true); //共享转换禁用遮罩层
 
     }
 

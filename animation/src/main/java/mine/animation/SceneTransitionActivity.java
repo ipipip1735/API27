@@ -152,7 +152,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
     public void recovery(View view) {
         System.out.println("********recovery******");
 
-        TransitionManager.go(oneScene);
+//        TransitionManager.go(oneScene);
+        TransitionManager.go(fiveScene);
 
     }
 
@@ -165,11 +166,11 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        propagationExplode();
 
 
-        visibility(); //使用Fade/Explode/Slide
+//        visibility(); //使用Fade/Explode/Slide
 
 
 //        changeBounds(); //使用边界变换
-//        changeClipBounds(); //使用剪切区域边界变换
+        changeClipBounds(); //使用剪切区域边界变换
 //        changeTransform(); //使用变形变换
 //        changeScroll(); //使滚动变换
 
@@ -415,16 +416,16 @@ public class SceneTransitionActivity extends AppCompatActivity {
                 });
 
         //方式一：场景切换
-//        TransitionManager.go(fourScene, new ChangeBounds().setDuration(3000L));
+        TransitionManager.go(fourScene, new ChangeBounds().setDuration(3000L));
 
 
 
 
         //方式二：无场景切换
-        TransitionManager.beginDelayedTransition(threeScene.getSceneRoot(), new ChangeBounds().setDuration(3000L));
-        ImageView imageView = findViewById(R.id.imageView3);
-
-        imageView.layout(150, 0, imageView.getRight()-100, imageView.getBottom()-50);//修改四个布局参数
+//        TransitionManager.beginDelayedTransition(threeScene.getSceneRoot(), new ChangeBounds().setDuration(3000L));
+//        ImageView imageView = findViewById(R.id.imageView3);
+//
+//        imageView.layout(150, 0, imageView.getRight()-100, imageView.getBottom()-50);//修改四个布局参数
 
 //        imageView.setLeft(imageView.getLeft() - 150);//布局参数之一有变化即可，不需要四个都修改（所以本方式和上面是等价的）
 //        imageView.setTop(imageView.getTop() + 150);
@@ -539,6 +540,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
             public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
                 System.out.println("~~onAppear~~");
 
+                System.out.println("view is " + view);
                 System.out.println("startValues is " + startValues);
                 System.out.println("endValues is " + endValues);
 
@@ -549,6 +551,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
             public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
                 System.out.println("~~onDisappear~~");
 
+                System.out.println("view is " + view);
                 System.out.println("startValues is " + startValues);
                 System.out.println("endValues is " + endValues);
 
@@ -564,6 +567,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
                 Rect rect = new Rect();
                 view.getGlobalVisibleRect(rect); //设置Explode变换的震心为ImageView9的中心
+                System.out.println(rect);
                 return rect;
             }
         });
@@ -580,19 +584,28 @@ public class SceneTransitionActivity extends AppCompatActivity {
     private void customTransition() {
 
         //设置出场场景为不可见，这样能迫使动画应用到每个子View，否则动画仅用于场景对应ViewGroup
-        Transition transition = new VisibilityTransition().setDuration(5000L);
+        Transition transition = new VisibilityTransition().setDuration(1000L);
 
+        twoScene.setExitAction(new Runnable() {
+            @Override
+            public void run() { //绑定进场钩子函数
+                System.out.println("exit!!");
+
+                //为了说明啥时候可以修改进场场景，设置进场场景为不可见，即屏蔽进场的View
+//                findViewById(R.id.cl2).setVisibility(View.INVISIBLE);
+            }
+        });
         twoScene.setEnterAction(new Runnable() {
             @Override
             public void run() { //绑定进场钩子函数
                 System.out.println("enter!!");
 
                 //为了说明啥时候可以修改进场场景，设置进场场景为不可见，即屏蔽进场的View
-                //findViewById(R.id.cl2).setVisibility(View.INVISIBLE);
+//                findViewById(R.id.cl2).setVisibility(View.INVISIBLE);
             }
         });
+//        findViewById(R.id.cl1).setVisibility(View.INVISIBLE);
         TransitionManager.go(twoScene, transition);
-
     }
 
 

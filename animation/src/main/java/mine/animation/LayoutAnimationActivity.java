@@ -93,8 +93,8 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("********del******");
-//        disappearing();
-        changeDisappearing();
+        disappearing();
+//        changeDisappearing();
 
 
     }
@@ -237,9 +237,9 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 
     public void add(View view) {
         System.out.println("********add******");
-        appearing();
+//        appearing();
 //        changeAppearing();
-//        layoutTransition();
+        layoutTransition();
 
     }
 
@@ -396,8 +396,8 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 //        APPEARING + CHANGEAPPEARING动画
 
         //主属性动画
-        PropertyValuesHolder pvhLeft = PropertyValuesHolder.ofInt("left", 0, 0);
-        PropertyValuesHolder pvhTop = PropertyValuesHolder.ofInt("top", 0, 0);
+        PropertyValuesHolder pvhLeft = PropertyValuesHolder.ofInt("left", 0, 630, 0);
+        PropertyValuesHolder pvhTop = PropertyValuesHolder.ofInt("top", 0, 163, 0);
         PropertyValuesHolder pvhRight = PropertyValuesHolder.ofInt("right", 0, 0);
         PropertyValuesHolder pvhBottom = PropertyValuesHolder.ofInt("bottom", 0, 0);
         PropertyValuesHolder pvhScaleX = PropertyValuesHolder.ofFloat("scaleX", 1f, 0f, 1f);
@@ -405,10 +405,13 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 
         //非布局属性动画
         ObjectAnimator x = ObjectAnimator.ofFloat(null, "x", 155f);
+        ObjectAnimator top = ObjectAnimator.ofInt(null, "top", 0, 155, 0);
+
 
         //创建动画对象
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
-                0, pvhLeft, pvhTop, pvhRight, pvhBottom, pvhScaleX, pvhScaleY);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(0,
+                pvhLeft, pvhTop, pvhRight, pvhBottom, pvhScaleX, pvhScaleY);
+
 
         //绑定监听器
 //        objectAnimator.addListener(new Animator.AnimatorListener() {
@@ -448,8 +451,9 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 
 
         LayoutTransition layoutTransition = new LayoutTransition();
-        layoutTransition.setAnimator(LayoutTransition.APPEARING, x);
-        layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING, objectAnimator);
+//        layoutTransition.setAnimator(LayoutTransition.APPEARING, x);
+//        layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING, objectAnimator);
+        layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING, top);
         layoutTransition.setDuration(5000l);
 
 

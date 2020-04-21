@@ -61,9 +61,11 @@ public class VisibilityTransition extends Visibility {
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, View view, final TransitionValues startValues, TransitionValues endValues) {
         System.out.println("~~onDisappear~~");
-        System.out.println(view);
+        System.out.println("view is " + view);
         System.out.println("startValues is " + startValues);
         System.out.println("endValues is " + endValues);
+
+
 
         float startX = (Float) startValues.values.get(X);
         float startAlpha = (Float) startValues.values.get(ALPHA);

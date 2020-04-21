@@ -21,13 +21,13 @@
 
 
         <!--物理动画-->
-        <activity android:name=".PhysicsAnimationActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-        </activity>
+<!--        <activity android:name=".PhysicsAnimationActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <action android:name="android.intent.action.VIEW"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
 
 
 
@@ -64,48 +64,48 @@
 
 
         <!--布局动画-->
-        <!--<activity android:name=".LayoutAnimationActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<action android:name="android.intent.action.VIEW"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+<!--        <activity android:name=".LayoutAnimationActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 
 
 
-        <!--<activity android:name=".CanvasActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<action android:name="android.intent.action.VIEW"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
-        <!--<activity android:name=".SceneTransitionActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<action android:name="android.intent.action.VIEW"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
-
-<!--        <activity android:name=".WindowOneTransitionActivity">-->
+<!--        <activity android:name=".CanvasActivity">-->
 <!--        <intent-filter>-->
 <!--        <action android:name="android.intent.action.MAIN"/>-->
 <!--        <action android:name="android.intent.action.VIEW"/>-->
 <!--        <category android:name="android.intent.category.LAUNCHER"/>-->
 <!--        </intent-filter>-->
 <!--        </activity>-->
-<!--        <activity android:name=".WindowTwoTransitionActivity">-->
+
+<!--        <activity android:name=".SceneTransitionActivity">-->
 <!--        <intent-filter>-->
 <!--        <action android:name="android.intent.action.MAIN"/>-->
 <!--        <action android:name="android.intent.action.VIEW"/>-->
-<!--        <category android:name="android.intent.category.DEFAULT"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
 <!--        </intent-filter>-->
 <!--        </activity>-->
+
+
+        <activity android:name=".WindowOneTransitionActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+        </activity>
+        <activity android:name=".WindowTwoTransitionActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        </intent-filter>
+        </activity>
 
     </application>
 
