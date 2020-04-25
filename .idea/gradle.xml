@@ -10,10 +10,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/animation" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/drags" />
-            <option value="$PROJECT_DIR$/view" />
+            <option value="$PROJECT_DIR$/connectivity" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

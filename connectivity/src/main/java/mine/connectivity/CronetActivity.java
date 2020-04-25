@@ -4,7 +4,7 @@ import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import org.chromium.net.CronetEngine;
@@ -14,7 +14,6 @@ import org.chromium.net.UploadDataProviders;
 import org.chromium.net.UploadDataSink;
 import org.chromium.net.UrlRequest;
 import org.chromium.net.UrlResponseInfo;
-import org.chromium.net.urlconnection.CronetHttpURLConnection;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -48,6 +47,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class CronetActivity extends AppCompatActivity {
     CronetEngine cronetEngine = null;
+    ExecutorService executorService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +112,11 @@ public class CronetActivity extends AppCompatActivity {
         super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
 
-        if (Objects.nonNull(cronetEngine)) cronetEngine.shutdown();
+        if (Objects.nonNull(cronetEngine)){
+            cronetEngine.shutdown();
+            executorService.shutdown();
+        }
+
     }
 
     public void get(View view) {
@@ -182,8 +186,8 @@ public class CronetActivity extends AppCompatActivity {
     public void post(View view) {
         System.out.println("~~button.post~~");
 
-        cronetPost();
-//        cronetMultipleDate();//自定义提供器复合POST
+//        cronetPost();
+        cronetMultipleDate();//自定义提供器复合POST
 
 //        cronetWithURLConnection();
 //        cronetMultipleDateWithURLConnection();
@@ -193,114 +197,114 @@ public class CronetActivity extends AppCompatActivity {
 
     private void cronetWithURLConnection() {
 
-        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
-        CronetEngine cronetEngine = myBuilder.build();
-
-        try {
-//            URL url = new URL("http://192.168.0.127/post.php");
-            URL url = new URL("http://192.168.0.126:8008/post.php");
-            CronetHttpURLConnection connection =
-                    (CronetHttpURLConnection) cronetEngine.openConnection(url);
-
-            connection.setDoOutput(true);
-
-
-            String w = "param1=a&param2=b&param3=阿航";
-            byte[] postData = w.getBytes(UTF_8);
-            int postDataLength = postData.length;
-
-
-            //设置请求头信息
-            String charset = "utf-8";
-            connection.setRequestProperty("Accept-Charset", charset);
-            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-            connection.setFixedLengthStreamingMode(Integer.valueOf(postDataLength));
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-
-
-            //发送请求主体
-            OutputStream outputStream = connection.getOutputStream();
-            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write(w);
-            bufferedWriter.close();
-
-
-            //读取服务端回应
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String r;
-            while ((r = bufferedReader.readLine()) != null) {
-                System.out.println(r);
-            }
-            bufferedReader.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
+//        CronetEngine cronetEngine = myBuilder.build();
+//
+//        try {
+////            URL url = new URL("http://192.168.0.127/post.php");
+//            URL url = new URL("http://192.168.0.126:8008/post.php");
+//            CronetHttpURLConnection connection =
+//                    (CronetHttpURLConnection) cronetEngine.openConnection(url);
+//
+//            connection.setDoOutput(true);
+//
+//
+//            String w = "param1=a&param2=b&param3=阿航";
+//            byte[] postData = w.getBytes(UTF_8);
+//            int postDataLength = postData.length;
+//
+//
+//            //设置请求头信息
+//            String charset = "utf-8";
+//            connection.setRequestProperty("Accept-Charset", charset);
+//            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+//            connection.setFixedLengthStreamingMode(Integer.valueOf(postDataLength));
+//            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+//
+//
+//            //发送请求主体
+//            OutputStream outputStream = connection.getOutputStream();
+//            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+//            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+//            bufferedWriter.write(w);
+//            bufferedWriter.close();
+//
+//
+//            //读取服务端回应
+//            InputStream inputStream = connection.getInputStream();
+//            InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+//
+//            String r;
+//            while ((r = bufferedReader.readLine()) != null) {
+//                System.out.println(r);
+//            }
+//            bufferedReader.close();
+//
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void cronetMultipleDateWithURLConnection() {
 
-        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
-        CronetEngine cronetEngine = myBuilder.build();
-
-        try {
-//            URL url = new URL("http://192.168.0.127/post.php");
-            URL url = new URL("http://192.168.0.126:8008/post.php");
-            CronetHttpURLConnection connection =
-                    (CronetHttpURLConnection) cronetEngine.openConnection(url);
-
-            connection.setDoOutput(true);
-
-
-            //设置请求头信息
-            String charset = "utf-8";
-            connection.setRequestProperty("Accept-Charset", charset);
-            String boundaryString = UUID.randomUUID().toString().substring(0, 6);
-            connection.addRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundaryString);
-            connection.setChunkedStreamingMode(1024);
-
-
-            //发送请求主体
-            OutputStream outputStream = connection
-                    .getOutputStream();
-            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write("--" + boundaryString + "\n");
-            bufferedWriter.write("Content-Disposition: form-data; name=\"one\"" + "\n\n");
-            bufferedWriter.write("111" + "\n");
-
-            bufferedWriter.write("--" + boundaryString + "\n");
-            bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
-            bufferedWriter.write("222" + "\n");
-
-
-            bufferedWriter.write("\n--" + boundaryString + "--\n");
-            bufferedWriter.flush();
-            bufferedWriter.close();
-
-
-            //读取服务端回应
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String r;
-            while ((r = bufferedReader.readLine()) != null) {
-                System.out.println(r);
-            }
-            bufferedReader.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        CronetEngine.Builder myBuilder = new CronetEngine.Builder(this);
+//        CronetEngine cronetEngine = myBuilder.build();
+//
+//        try {
+////            URL url = new URL("http://192.168.0.127/post.php");
+//            URL url = new URL("http://192.168.0.126:8008/post.php");
+//            CronetHttpURLConnection connection =
+//                    (CronetHttpURLConnection) cronetEngine.openConnection(url);
+//
+//            connection.setDoOutput(true);
+//
+//
+//            //设置请求头信息
+//            String charset = "utf-8";
+//            connection.setRequestProperty("Accept-Charset", charset);
+//            String boundaryString = UUID.randomUUID().toString().substring(0, 6);
+//            connection.addRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundaryString);
+//            connection.setChunkedStreamingMode(1024);
+//
+//
+//            //发送请求主体
+//            OutputStream outputStream = connection
+//                    .getOutputStream();
+//            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+//            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+//            bufferedWriter.write("--" + boundaryString + "\n");
+//            bufferedWriter.write("Content-Disposition: form-data; name=\"one\"" + "\n\n");
+//            bufferedWriter.write("111" + "\n");
+//
+//            bufferedWriter.write("--" + boundaryString + "\n");
+//            bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
+//            bufferedWriter.write("222" + "\n");
+//
+//
+//            bufferedWriter.write("\n--" + boundaryString + "--\n");
+//            bufferedWriter.flush();
+//            bufferedWriter.close();
+//
+//
+//            //读取服务端回应
+//            InputStream inputStream = connection.getInputStream();
+//            InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+//
+//            String r;
+//            while ((r = bufferedReader.readLine()) != null) {
+//                System.out.println(r);
+//            }
+//            bufferedReader.close();
+//
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -550,13 +554,13 @@ public class CronetActivity extends AppCompatActivity {
             //使用内存缓存
             myBuilder.enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 1024 * 1024);
 
+            executorService = Executors.newSingleThreadExecutor();
             cronetEngine = myBuilder.build();
         }
 
 //        String url = "http://192.168.0.127/get.php";
-//        String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
-        String url = "http://192.168.0.126:8008/html/index.html";
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        String url = "https://docs.oracle.com/javase/8/docs/api/help-doc.html";
+//        String url = "http://192.168.0.126:8008/html/index.html";
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new CacheUrlRequestCallback(), executorService);
 

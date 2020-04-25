@@ -9,7 +9,7 @@ import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import java.io.IOException;
@@ -100,7 +100,7 @@ public class NetworkManagerActivity extends AppCompatActivity {
 
 
 
-//        request(); //新方法
+        request(); //新方法
         linkProperties(); //查询连接信息
         networkCapabilities(); //查询上下行带宽
 

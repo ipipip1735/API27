@@ -1,7 +1,12 @@
 package mine.connectivity;
 
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.StrictMode;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -19,11 +24,58 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class URLConnectionActivity extends AppCompatActivity {
 
+    Network network;
+
+    ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
+        @Override
+        public void onAvailable(Network network) {
+            System.out.println("~~onAvailable~~");
+
+            System.out.println("network is " + network);
+            URLConnectionActivity.this.network = network;
+
+
+        }
+
+        @Override
+        public void onLinkPropertiesChanged(Network network, LinkProperties linkProperties) {
+            System.out.println("~~onLinkPropertiesChanged~~");
+
+            System.out.println("network is " + network);
+            System.out.println("linkProperties is " + linkProperties);
+            URLConnectionActivity.this.network = network;
+        }
+
+        @Override
+        public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
+            System.out.println("~~onCapabilitiesChanged~~");
+
+            System.out.println("network is " + network);
+            System.out.println("networkCapabilities is " + networkCapabilities);
+            URLConnectionActivity.this.network = network;
+        }
+
+        @Override
+        public void onLost(Network network) {
+            System.out.println("~~onLost~~");
+            System.out.println("network is " + network);
+            URLConnectionActivity.this.network = null;
+        }
+    };
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
 
     }
 
@@ -93,7 +145,7 @@ public class URLConnectionActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                httpsConnection();
+//                httpsConnection();
                 httpConnection();
             }
 
@@ -114,9 +166,26 @@ public class URLConnectionActivity extends AppCompatActivity {
         String result = null;
 
 
-        //获取数据流
+        //方式一：直接访问网络
+//        try {
+//            connection = (HttpURLConnection) url.openConnection();
+//            stream = connection.getInputStream();
+//
+//            InputStreamReader reader = new InputStreamReader(stream, UTF_8);
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+//            String s;
+//            while ((s = bufferedReader.readLine()) != null) {
+//                System.out.println(s);
+//            }
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        //方式二：使用网络对象访问网络
         try {
-            connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) network.openConnection(url);
             stream = connection.getInputStream();
 
             InputStreamReader reader = new InputStreamReader(stream, UTF_8);

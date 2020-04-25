@@ -2,11 +2,12 @@ package mine.connectivity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -119,7 +120,7 @@ public class VolleyActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
 
-        volleyBasic();
+//        volleyBasic();
 //        volleyPostText();
 //        volleyPostFile(); //失败了，Volley不支持multipart/form-data
 //        volleyForJSON();
@@ -127,7 +128,7 @@ public class VolleyActivity extends AppCompatActivity {
 //        volleyWithCookie();
 
         //加载图片
-//        volleyForNetworkImageView();
+        volleyForNetworkImageView();
 //        volleyForImageView();
 
         //自定义Cache接口和NetWork接口
@@ -145,11 +146,13 @@ public class VolleyActivity extends AppCompatActivity {
 
             public void putBitmap(String url, Bitmap bitmap) {
                 System.out.println("-->putBitmap");
+                System.out.println("url is " + url);
                 mCache.put(url, bitmap);
             }
 
             public Bitmap getBitmap(String url) {
                 System.out.println("<--getBitmap");
+                System.out.println("url is " + url);
                 return mCache.get(url);
             }
         };
@@ -157,18 +160,26 @@ public class VolleyActivity extends AppCompatActivity {
         ImageLoader imageLoader = new ImageLoader(queue, cache);
 
 //        final String url = "http://192.168.0.126:8008/a.jpg";
-        final String url = "http://192.168.0.127/w1.jpg";
+//        final String url = "http://192.168.0.127/w1.jpg";
+        final String url = "https://ubmcmm.baidustatic.com/media/v1/0f000DTw89QNVxRHwQ8C7s.png";
+        int maxWidth = 100, maxHeight = 100;
+
+
         ImageLoader.ImageContainer container = imageLoader.get(url, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 System.out.println("~~onResponse~~");
-//                System.out.println("getBitmap is " + response.getBitmap());
-//                System.out.println("isCache is " + imageLoader.isCached(url, 0, 0));
+                System.out.println("response is " + response);
+                System.out.println("isImmediate is " + isImmediate);
+                System.out.println("getBitmap is " + response.getBitmap());
+                System.out.println("isCache is " + imageLoader.isCached(url, maxWidth, maxHeight));
+
+
                 if (Objects.isNull(response.getBitmap())) {
-                    ImageView imageView = findViewById(R.id.imageView);
+                    ImageView imageView = findViewById(R.id.imageView2);
                     imageView.setImageResource(R.drawable.w3);
                 } else {
-                    ImageView imageView = findViewById(R.id.imageView);
+                    ImageView imageView = findViewById(R.id.imageView2);
                     imageView.setImageBitmap(response.getBitmap());
 //                    queue.stop();
                 }
@@ -180,7 +191,8 @@ public class VolleyActivity extends AppCompatActivity {
                 System.out.println(error);
 //                queue.stop();
             }
-        }, 1000, 10);
+        }, maxWidth, maxHeight);
+
 
 //        container.cancelRequest();
 
@@ -193,14 +205,18 @@ public class VolleyActivity extends AppCompatActivity {
         networkImageView.setDefaultImageResId(R.drawable.w3);
 
 
-        String url = "http://192.168.0.126:8008/a.jpg";
+//        String url = "http://192.168.0.126:8008/a.jpg";
+//        final String url = "https://ubmcmm.baidustatic.com/media/v1/0f000DTw89QNVxRHwQ8C7s.png";
+        final String url = "http://dict-pc.cache.iciba.com/news/2020/0424/20200424101509207.jpg";
         ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
                 System.out.println("~~onResponse~~");
+                System.out.println(response.getWidth());
+                System.out.println(response.getHeight());
                 networkImageView.setImageBitmap(response);
             }
-        }, 900, 508,
+        }, 720, 450,
                 ImageView.ScaleType.CENTER,
                 Bitmap.Config.ALPHA_8, null);
 
@@ -404,7 +420,6 @@ public class VolleyActivity extends AppCompatActivity {
     }
 
 
-
     private void volleyPostFile() {
         System.out.println("~~button.volleyPostFile~~");
 
@@ -433,7 +448,7 @@ public class VolleyActivity extends AppCompatActivity {
                 System.out.println("~~getHeaders~~");
 //                return super.getHeaders();
 
-                String boundaryString = UUID.randomUUID().toString().substring(0,6);
+                String boundaryString = UUID.randomUUID().toString().substring(0, 6);
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "multipart/form-data; boundary=" + boundaryString + "; charset=utf-8");
                 map.put("Accept", "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2");
@@ -448,7 +463,7 @@ public class VolleyActivity extends AppCompatActivity {
                 System.out.println("~~getBody~~");
 //                return super.getBody();
 
-                String boundaryString = UUID.randomUUID().toString().substring(0,6);
+                String boundaryString = UUID.randomUUID().toString().substring(0, 6);
                 StringBuffer stringBuffer = new StringBuffer(1024);
                 stringBuffer.append("--" + boundaryString + "\n");
                 stringBuffer.append("Content-Disposition: form-data; name=\"one\"" + "\n\n");
