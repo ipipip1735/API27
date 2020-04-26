@@ -97,76 +97,66 @@ public class FileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onActivityResult  **********");
 
+        if (data == null) {
+            System.out.println("data is null and code is " + resultCode);
+            return;
+        }
 
         if (requestCode == 333) {
 
+            Uri uri = data.getData();
+            System.out.println("uri is " + uri);
 
-            if (Objects.isNull(data)) {
-                System.out.println("data is null and code is " + resultCode);
-            } else {
-                Uri uri = data.getData();
-                System.out.println("uri is " + uri);
-
-                String type = getContentResolver().getType(uri);
-                System.out.println("type is " + type);
+            String type = getContentResolver().getType(uri);
+            System.out.println("type is " + type);
 
 
-                try (ParcelFileDescriptor parcelFileDescriptor =
-                             getContentResolver().openFileDescriptor(uri, "r")) {
-                    FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+            try (ParcelFileDescriptor parcelFileDescriptor =
+                         getContentResolver().openFileDescriptor(uri, "r")) {
+                FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
 
-                    try (InputStream inputStream = new FileInputStream(fdp);
-                         InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
-                         BufferedReader bufferedReader = new BufferedReader(reader)) {
+                try (InputStream inputStream = new FileInputStream(fdp);
+                     InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
+                     BufferedReader bufferedReader = new BufferedReader(reader)) {
 
-                        String s;
-                        while (Objects.nonNull((s = bufferedReader.readLine()))) {
-                            System.out.println("File'Content is " + s);
-                        }
+                    String s;
+                    while (Objects.nonNull((s = bufferedReader.readLine()))) {
+                        System.out.println("File'Content is " + s);
                     }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
 
-                try (ParcelFileDescriptor parcelFileDescriptor =
-                             getContentResolver().openFileDescriptor(uri, "wa")) {
-                    FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-                    try (OutputStream outputStream = new FileOutputStream(fdp);
-                         OutputStreamWriter writer = new OutputStreamWriter(outputStream, UTF_8);
-                         BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-                        String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
-                        bufferedWriter.write(sql, 0, sql.length());
-                        bufferedWriter.newLine();
-                    }
+            try (ParcelFileDescriptor parcelFileDescriptor =
+                         getContentResolver().openFileDescriptor(uri, "wa")) {
+                FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                try (OutputStream outputStream = new FileOutputStream(fdp);
+                     OutputStreamWriter writer = new OutputStreamWriter(outputStream, UTF_8);
+                     BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+                    String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
+                    bufferedWriter.write(sql, 0, sql.length());
+                    bufferedWriter.newLine();
                 }
 
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         }
 
 
         if (requestCode == 444) {
+            Uri uri = data.getData();
+            System.out.println("uri is " + uri);
 
+            String type = getContentResolver().getType(uri);
+            System.out.println("type is " + type);
 
-            if (Objects.isNull(data)) {
-                System.out.println("data is null and code is " + resultCode);
-            } else {
-                Uri uri = data.getData();
-                System.out.println("uri is " + uri);
-
-                String type = getContentResolver().getType(uri);
-                System.out.println("type is " + type);
-
-                int n = getContentResolver().delete(uri, null, null);
-                System.out.println(" the number of files deleted are " + n);
-
-
-            }
+            int n = getContentResolver().delete(uri, null, null);
+            System.out.println(" the number of files deleted are " + n);
 
         }
 

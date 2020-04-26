@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import mine.services.IRemoteService;
 
 /**
  * Created by Administrator on 2018/9/6.

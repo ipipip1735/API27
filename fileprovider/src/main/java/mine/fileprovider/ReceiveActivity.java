@@ -28,7 +28,7 @@ public class ReceiveActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_receiver);
 
 
@@ -67,7 +67,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
 
 
-                    setResult(255, intent);
+                    setResult(444, intent);
                     finish();
 
 

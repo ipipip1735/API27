@@ -115,6 +115,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("requestCode is " + requestCode);
         System.out.println("resultCode is " + resultCode);
 
+        if (data == null) {
+            System.out.println("uri is NULL");
+            return;
+        }
+
         Uri uri = data.getData();
         System.out.println("uri is " + uri);
 
@@ -254,10 +259,10 @@ public class MainActivity extends AppCompatActivity {
     public void read(View view) {
         System.out.println("~~button.read~~");
 
-        //方法一：读取文件，使用BufferedReader
+        //方法一：读取文件，使用BufferedReader，读取单个文件
 //        try {
 //
-//            Path path = Paths.get(getFilesDir().toString(), "logs", "sql.log");
+//            Path path = Paths.get(getFilesDir().toString(), "logs", "sql.log");//硬编码文件名
 //            System.out.println("path is " + path);
 //
 //            BufferedReader bufferedReader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
@@ -281,14 +286,18 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-        //方法二：读取文件，使用Stream对象
+        //方法二：读取文件，使用Stream对象，遍历读取
         try {
-            Path path = Paths.get(getFilesDir().toString(), "logs/sql.log");
+            Path path = Paths.get(getFilesDir().toString(), "logs");
 
-            if (Files.exists(path)) {
-                Stream<String> stringStream = Files.lines(path);
-                stringStream.forEach(System.out::println);
-            }
+            Files.list(path).filter(p -> p.toString().endsWith(".log"))
+                    .forEach(p -> {
+                        try {
+                            Files.lines(p).forEach(System.out::println);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -306,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         Intent intent = new Intent("getURI");
-        intent.setPackage(getPackageName());
+        intent.setPackage(getPackageName());//因为是本App，所以可以省略
         intent.setType("log/sql");
 
         startActivityForResult(intent, 333);

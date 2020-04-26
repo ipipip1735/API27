@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mine.fileprovider">
 
+    <permission android:name="o.p" />
 
     <application
         android:allowBackup="true"
@@ -30,12 +31,12 @@
             </intent-filter>
         </activity>
 
+<!--            android:readPermission="dd"-->
+<!--            android:writePermission="cc"-->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="TNT"
-            android:permission="op"
-            android:readPermission="dd"
-            android:writePermission="cc"
+
             android:exported="false"
             android:grantUriPermissions="false">
             <meta-data

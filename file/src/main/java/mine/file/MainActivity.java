@@ -94,8 +94,9 @@ public class MainActivity extends AppCompatActivity {
         File file;
 
 
-        file = getDir("myfile", MODE_PRIVATE); //结果为 /data/user/0/mine.file/app_myfile
-        System.out.println("Dir is " + file.getAbsolutePath());
+//        file = getDir("myfile", MODE_PRIVATE); //结果为 /data/user/0/mine.file/app_myfile
+//        file = getDir("myfile", MODE_APPEND); //结果为 /data/user/0/mine.file/app_myfile
+//        System.out.println("Dir is " + file.getAbsolutePath());
 
 
 //        file = getDataDir(); //结果为 /data/user/0/mine.file
@@ -113,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        other();
 //        readInternal();
-//        readInternalDir();
-        writeInternal();
+//        writeInternal();
 
 
     }
@@ -129,14 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
         size = file.getTotalSpace();
         System.out.println("total size is " + size);
-
-
-    }
-
-    private void readInternalDir() {
-
-        File file = getDir("kk", MODE_PRIVATE);
-        System.out.println("path is " + file.getAbsolutePath());
 
 
     }
@@ -169,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 //        try {
 //            FileOutputStream outputStream;
 //            String filename = "myfile";
-//            String fileContents = "Hello world!1";
+//            String fileContents = "Hello world!";
 ////            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
 //            outputStream = openFileOutput(filename, Context.MODE_APPEND);
 //            outputStream.write(fileContents.getBytes());
@@ -228,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
     public void external(View view) {
         System.out.println("~~button.external~~");
 
-//        environmentDir();
-        contextDir();
+        environmentDir();
+//        contextDir();
     }
 
     private void contextDir() {
@@ -264,11 +256,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         //外部存储公用目录的图片目录
-        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); //结果为 /storage/emulated/0/Pictures
-        System.out.println("ExternalStoragePublicDirectory'PICTURES is " + file.getAbsoluteFile());
+//        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); //结果为 /storage/emulated/0/Pictures
+//        System.out.println("ExternalStoragePublicDirectory'PICTURES is " + file.getAbsoluteFile());
 
-//        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-//        System.out.println("getAbsoluteFile is " + file.getAbsoluteFile());
+        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        System.out.println("getAbsoluteFile is " + file.getAbsoluteFile());
 
 
         file = Environment.getRootDirectory(); //结果为 /system
