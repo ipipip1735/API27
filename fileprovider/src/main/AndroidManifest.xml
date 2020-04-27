@@ -36,17 +36,16 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="TNT"
-
             android:exported="false"
             android:grantUriPermissions="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
 
-            <grant-uri-permission
-                android:path="string"
-                android:pathPattern="string"
-                android:pathPrefix="string" />
+<!--            <grant-uri-permission android:path="/logFiles/sql64.log" />-->
+<!--            <grant-uri-permission android:pathPrefix="/logFiles/" />-->
+            <grant-uri-permission android:pathPattern="/log.*" />
+
 
         </provider>
 

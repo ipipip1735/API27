@@ -1,10 +1,12 @@
 package mine.apptemp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -97,12 +99,17 @@ public class FileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onActivityResult  **********");
 
+
+        System.out.println("requestCode is " + requestCode);
+        System.out.println("resultCode is " + resultCode);
+
+
         if (data == null) {
             System.out.println("data is null and code is " + resultCode);
             return;
         }
 
-        if (requestCode == 333) {
+        if (resultCode == 333) {
 
             Uri uri = data.getData();
             System.out.println("uri is " + uri);
@@ -148,7 +155,7 @@ public class FileActivity extends AppCompatActivity {
         }
 
 
-        if (requestCode == 444) {
+        if (resultCode == 444) {
             Uri uri = data.getData();
             System.out.println("uri is " + uri);
 
@@ -157,6 +164,22 @@ public class FileActivity extends AppCompatActivity {
 
             int n = getContentResolver().delete(uri, null, null);
             System.out.println(" the number of files deleted are " + n);
+
+        }
+
+
+        if (resultCode == 555) {
+            Uri uri = data.getData();
+            System.out.println("uri is " + uri);
+
+            Cursor cursor = getContentResolver().query(uri,
+                    null, null, null, null);
+
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            cursor.moveToFirst();
+            System.out.println("name is " + (cursor.getString(nameIndex)));
+            System.out.println("size is " + (Long.toString(cursor.getLong(sizeIndex))) + " Byte");
 
         }
 
@@ -203,7 +226,6 @@ public class FileActivity extends AppCompatActivity {
         intent.setType("log/sql");
 
         startActivityForResult(intent, 444);//假如444表示删除文件
-
     }
 
     public void reloading(View view) {
