@@ -36,6 +36,7 @@ public class MatrixActivity extends AppCompatActivity {
         image = new ImageView(this);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.w1);
         image.setImageBitmap(bitmap);
+        image.setScaleType(ImageView.ScaleType.MATRIX);
         image.setBackgroundColor(Color.parseColor("#abcdef"));
 
 
@@ -112,8 +113,43 @@ public class MatrixActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        set();
+//        set();
+        post();
 
+//        cala();
+
+    }
+
+    private void cala() {
+
+
+    }
+
+    private void post() {
+        Matrix m = new Matrix();
+        System.out.println(m);
+
+        Matrix mT = new Matrix();
+        mT.setTranslate(0, degree+=100);
+
+        Matrix mR = new Matrix();
+        mR.setRotate(10);
+
+        Matrix mS = new Matrix();
+        mS.setScale(1.5f, 1f);
+
+
+        m.postConcat(mS);
+        m.postConcat(mR);
+        m.postConcat(mT);
+
+//        m.preConcat(mR);
+//        m.preConcat(mS);
+//        m.preConcat(mT);
+
+
+        image.setScaleType(ImageView.ScaleType.MATRIX);
+        image.setImageMatrix(m);
     }
 
     private void set() {
@@ -123,25 +159,23 @@ public class MatrixActivity extends AppCompatActivity {
 
         //旋转矩阵
         matrix.setRotate(degree+=10);
-        matrix.setRotate(degree+=10, width / 2, height / 2);
-
+//        matrix.setRotate(degree+=10, width / 2, height / 2);
 
         //缩放矩阵
 //        matrix.setScale(1, scale += 1.5f);
 //        matrix.setScale(1, scale += 0.1f, width / 2, height / 2);
 
-
         //移动矩阵
-//        matrix.setTranslate(0, degree+=10);
-
+        matrix.setTranslate(0, degree+=10);
 
         //斜切
 //        matrix.setSkew(1, skew += 1.5f);
 //        matrix.setSkew(1, skew += 0.1f, width / 2, height / 2);
 
-
         image.setScaleType(ImageView.ScaleType.MATRIX);
         image.setImageMatrix(matrix);
+
+
 
 
         //矩阵相乘
@@ -154,8 +188,9 @@ public class MatrixActivity extends AppCompatActivity {
 //        m1.setValues(f1);
 //        m2.setValues(f2);
 //
-//        m.setConcat(m1, m2);
-//        System.out.println(m);
+//        boolean r = m.setConcat(m1, m2); // 将M1 X M2结果赋值给当前矩阵
+//        System.out.println("r is " + r);
+//        System.out.println("m is " + m);
     }
 
 
