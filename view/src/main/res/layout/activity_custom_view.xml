@@ -28,13 +28,13 @@
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="225dp" />
 
-        <mine.view.CustomView
-            android:id="@+id/imageView1"
-            android:layout_width="130dp"
-            android:layout_height="160dp"
-            app:srcCompat="@android:color/holo_blue_dark"
-            tools:layout_editor_absoluteX="153dp"
-            tools:layout_editor_absoluteY="45dp" />
+<!--        <mine.view.CustomView-->
+<!--            android:id="@+id/imageView1"-->
+<!--            android:layout_width="130dp"-->
+<!--            android:layout_height="160dp"-->
+<!--            app:srcCompat="@android:color/holo_blue_dark"-->
+<!--            tools:layout_editor_absoluteX="153dp"-->
+<!--            tools:layout_editor_absoluteY="45dp" />-->
     </FrameLayout>
 
     <android.support.constraint.Guideline

@@ -10,7 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 public class CustomViewActivity extends AppCompatActivity {
     CustomView customView1, customView2;
@@ -23,7 +28,7 @@ public class CustomViewActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_view);
-        customView1 = findViewById(R.id.imageView1);
+//        customView1 = findViewById(R.id.imageView1);
         customView2 = findViewById(R.id.imageView2);
         frameLayout = findViewById(R.id.fl);
 
@@ -63,30 +68,32 @@ public class CustomViewActivity extends AppCompatActivity {
 
     @Override
     public void onContextMenuClosed(Menu menu) {
-        System.out.println("*******  ContextMenuActivity  onContextMenuClosed  *********");
+        System.out.println("... " + this.getClass().getSimpleName() + ".onContextMenuClosed ...");
         super.onContextMenuClosed(menu);
     }
 
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        System.out.println("*******  ContextMenuActivity  onContextItemSelected  *********");
+        System.out.println("... " + this.getClass().getSimpleName() + ".onContextItemSelected ...");
         return super.onContextItemSelected(item);
 //        return true;
     }
 
+    public void notify(View view) {
+        System.out.println("~~notify~~");
+    }
 
     public void del(View view) {
 
         int l = 250;
         int t = 50;
         int r = l + 250;
-        int b = t +230;
+        int b = t + 230;
 
 
 //        frameLayout.layout(l, t, r, b);
-        customView1.layout(l, t, r, b);
-
+        customView2.layout(l, t, r, b);
 
 
 //        customView1.setDegree(degrees);
@@ -105,6 +112,6 @@ public class CustomViewActivity extends AppCompatActivity {
 //        customView1.setXY(x, y);
 
 //        customView1.requestLayout();
-                customView2.invalidate();
+        customView2.invalidate();
     }
 }
