@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class MatrixActivity extends AppCompatActivity {
     ImageView image;
@@ -121,8 +122,8 @@ public class MatrixActivity extends AppCompatActivity {
         Matrix matrix = new Matrix();
 
         //旋转矩阵
-//        matrix.setRotate(degree+=10);
-//        matrix.setRotate(degree+=10, width / 2, height / 2);
+        matrix.setRotate(degree+=10);
+        matrix.setRotate(degree+=10, width / 2, height / 2);
 
 
         //缩放矩阵
@@ -131,7 +132,7 @@ public class MatrixActivity extends AppCompatActivity {
 
 
         //移动矩阵
-//        matrix.setTranslate(0, 100);
+//        matrix.setTranslate(0, degree+=10);
 
 
         //斜切
@@ -139,25 +140,24 @@ public class MatrixActivity extends AppCompatActivity {
 //        matrix.setSkew(1, skew += 0.1f, width / 2, height / 2);
 
 
-        //矩阵相乘
-        float[] f1 = {1f, 2f, 0f, 3f, 4f, 0f, 0f, 0f, 0f};
-        float[] f2 = {1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f};
-
-        Matrix m = new Matrix();
-        Matrix m1 = new Matrix();
-        Matrix m2 = new Matrix();
-        m1.setValues(f1);
-        m2.setValues(f2);
-
-
-        m.setConcat(m1, m2);
-        System.out.println(m);
-
-
         image.setScaleType(ImageView.ScaleType.MATRIX);
         image.setImageMatrix(matrix);
 
+
+        //矩阵相乘
+//        float[] f1 = {1f, 2f, 0f, 3f, 4f, 0f, 0f, 0f, 0f};
+//        float[] f2 = {1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f};
+//
+//        Matrix m = new Matrix();
+//        Matrix m1 = new Matrix();
+//        Matrix m2 = new Matrix();
+//        m1.setValues(f1);
+//        m2.setValues(f2);
+//
+//        m.setConcat(m1, m2);
+//        System.out.println(m);
     }
+
 
     private void resource() {
         ImageView image = new ImageView(this);

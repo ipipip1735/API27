@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,12 +88,38 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-
 //        file();//使用文件创建位图
-//        byteArray();//使用字节数组创建位图
+//        copyPixels();
+        byteArray();//使用字节数组创建位图
 //        stream();//使用流创建位图
 //        resource();//使用资源ID创建位图
 
+    }
+
+    private void copyPixels() {
+
+        //提取像素数据
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.w1);
+        int size = bitmap.getByteCount();
+        ByteBuffer buf = ByteBuffer.allocate(size);
+        bitmap.copyPixelsToBuffer(buf);//提取像素数据
+        byte[] byteArray = buf.array();
+        System.out.println(byteArray.length);
+
+
+        //填充像素
+        int w = bitmap.getWidth();//尺寸必须一致，否则ImageView将自动拉伸
+        int h = bitmap.getHeight();
+        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);//创建空Bitmap
+//        Bitmap bm = Bitmap.createBitmap(w/2, h/2, Bitmap.Config.ARGB_8888);//创建空Bitmap
+//        Bitmap bm = Bitmap.createBitmap(w-50, h, Bitmap.Config.ARGB_8888);//创建空Bitmap
+        bm.copyPixelsFromBuffer(ByteBuffer.wrap(byteArray));//填充像素
+
+
+        ImageView image = new ImageView(this);
+        image.setImageBitmap(bm);
+        ViewGroup viewGroup = findViewById(R.id.fl);
+        viewGroup.addView(image);
     }
 
     private void resource() {
