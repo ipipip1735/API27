@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -114,15 +117,64 @@ public class MatrixActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
 //        set();
-        post();
+//        post();
+        map();
 
 //        cala();
 
     }
 
+    private void map() {
+
+
+        //平移/缩放变换矩阵
+//        Drawable drawable = image.getDrawable();
+//        Rect rect = drawable.getBounds();
+//
+//        RectF rectF = new RectF(rect.left, rect.top, rect.right, rect.bottom);
+//        System.out.println(rectF);
+//        Matrix m = new Matrix();
+////        m.setTranslate(10, 20);//平移变换矩阵
+//        m.setScale(0.95f, 1.02f);//缩放变换矩阵
+//        m.mapRect(rectF);
+//        System.out.println(rectF);
+//
+//        drawable.setBounds((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
+
+
+
+
+        //旋转变换矩阵，测试失败
+        Drawable drawable = image.getDrawable();
+        Rect rect = drawable.getBounds();
+        System.out.println(rect);
+
+        RectF rectF = new RectF(0,0, 100, 100);
+//        RectF rectF = new RectF(rect.left, rect.top, rect.right, rect.bottom);
+        System.out.println(rectF);
+        Matrix m = new Matrix();
+//        m.setRotate(degree+=90, rect.centerX(), rect.centerY());//旋转变换矩阵
+        m.setRotate(degree+=90, 100, 100);//旋转变换矩阵
+        m.mapRect(rectF);
+        System.out.println(rectF);
+
+        drawable.setBounds((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
+
+
+
+    }
+
     private void cala() {
+        Matrix m1 = new Matrix();
+        m1.setValues(new float[]{1, 0, 0, 1, 1, 3, 3, 1, 0});
 
+        Matrix m2 = new Matrix();
+        m2.setValues(new float[]{1, 2, 3, 1, 1, 3, 3, 1, 0});
 
+        Matrix m = new Matrix();
+        m.postConcat(m2);
+        m.postConcat(m1);
+        System.out.println(m);
     }
 
     private void post() {
@@ -130,22 +182,23 @@ public class MatrixActivity extends AppCompatActivity {
         System.out.println(m);
 
         Matrix mT = new Matrix();
-        mT.setTranslate(0, degree+=100);
+        mT.setTranslate(0, 100);
 
         Matrix mR = new Matrix();
-        mR.setRotate(10);
+        mR.setRotate(degree += 10);
 
         Matrix mS = new Matrix();
         mS.setScale(1.5f, 1f);
 
-
-        m.postConcat(mS);
         m.postConcat(mR);
+        m.postConcat(mS);
         m.postConcat(mT);
+        System.out.println(m);
 
-//        m.preConcat(mR);
-//        m.preConcat(mS);
-//        m.preConcat(mT);
+//        m.postConcat(mT);
+//        m.postConcat(mR);
+//        m.postConcat(mS);
+//        System.out.println(m);
 
 
         image.setScaleType(ImageView.ScaleType.MATRIX);
@@ -158,7 +211,7 @@ public class MatrixActivity extends AppCompatActivity {
         Matrix matrix = new Matrix();
 
         //旋转矩阵
-        matrix.setRotate(degree+=10);
+        matrix.setRotate(degree += 10);
 //        matrix.setRotate(degree+=10, width / 2, height / 2);
 
         //缩放矩阵
@@ -166,7 +219,7 @@ public class MatrixActivity extends AppCompatActivity {
 //        matrix.setScale(1, scale += 0.1f, width / 2, height / 2);
 
         //移动矩阵
-        matrix.setTranslate(0, degree+=10);
+        matrix.setTranslate(0, degree += 10);
 
         //斜切
 //        matrix.setSkew(1, skew += 1.5f);
@@ -174,8 +227,6 @@ public class MatrixActivity extends AppCompatActivity {
 
         image.setScaleType(ImageView.ScaleType.MATRIX);
         image.setImageMatrix(matrix);
-
-
 
 
         //矩阵相乘
