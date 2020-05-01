@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Bisque">
+    android:background="@color/MidnightBlue">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@color/Chartreuse"
         android:text="XXXXXXXXX" />
 
     <TextView
@@ -16,8 +16,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/DarkKhaki"
+        android:layout_marginTop="23dp"
+        android:background="@color/Yellow"
         android:text="YYYYYYYYYYYY" />
 </RelativeLayout>
 

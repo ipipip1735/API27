@@ -18,6 +18,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import java.util.Random;
+
+import static android.app.Notification.BADGE_ICON_SMALL;
+
 
 public class NotificationActivity extends AppCompatActivity {
     int mId = 1, incr = 0;
@@ -104,12 +108,12 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
 
-//        basicNotify(notificationManager); //创建通知
+        basicNotify(notificationManager); //创建通知
 //        componentNotify(notificationManager); //组件通知(点击通知启动组件)
-        stackNotify(notificationManager); //回退栈通知
+//        stackNotify(notificationManager); //回退栈通知
 //
 //        groupNotify(notificationManager); //通知分组
-//        actionNotify(notificationManager); //附加任通知
+//        actionNotify(notificationManager); //附加任务通知
 //        progressNotify(notificationManager); //进度条通知
 //
 //        styleNotify(notificationManager); //样式通知
@@ -159,7 +163,6 @@ public class NotificationActivity extends AppCompatActivity {
                 "ccccccccccccccccccccccccend";
 
 
-
         NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()//长文本样式
 
                 .setSummaryText(subText)
@@ -167,12 +170,10 @@ public class NotificationActivity extends AppCompatActivity {
                 .bigText(context);
 
 
-
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
 //                .setVisibility(Notification.VISIBILITY_PUBLIC)
-                .setVisibility(Notification.VISIBILITY_SECRET )
+                .setVisibility(Notification.VISIBILITY_SECRET)
 //                .setVisibility(Notification.VISIBILITY_PRIVATE)//默认值，显示通知图标和内容标题等基本信息，但是隐藏通知的完整内容
                 .setStyle(style)
                 .setContentTitle("cTitle")
@@ -333,7 +334,7 @@ public class NotificationActivity extends AppCompatActivity {
                 .setContentText("Hello World!")
                 .setAutoCancel(true);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);//将给启动的Intent创建新的Task栈
         stackBuilder.addParentStack(OneActivity.class);//增加OneActivity的父Activity，即NotificationActivity
         stackBuilder.addNextIntent(new Intent(this, OneActivity.class)); //增加第一个Activity
 //        stackBuilder.addNextIntent(new Intent(this, MainActivity.class)); //增加第二个Activity
@@ -386,71 +387,123 @@ public class NotificationActivity extends AppCompatActivity {
     private void customNotify(NotificationManager notificationManager) {
 
         //部分自定义
-        Bitmap gg = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
-        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
-
-        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small); //折叠时样式
-        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large); //展开后样式
-        notificationLayoutExpanded.setBitmap(R.id.imageView, "setImageBitmap", ff); //运行时，动态修改子元素
-
-        Notification customNotification = new NotificationCompat.Builder(this, "c1")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setLargeIcon(gg)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout) //通知折叠时的UI
-                .setCustomBigContentView(notificationLayoutExpanded) //通知展开时的UI
-                .setSubText("sub")
-//                .setContentTitle("My notification") //由于使用自定义布局，此方法无效
-//                .setContentText("Hello World!") //由于使用自定义布局，此方法无效
-                .build();
-        notificationManager.notify(mId, customNotification);
-
-
-        //完全自定义
-//        Intent intent = new Intent(this, OneActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
-//        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
+//        Bitmap gg = BitmapFactory.decodeResource(getResources(), R.drawable.gg);
+//        Bitmap ff = BitmapFactory.decodeResource(getResources(), R.drawable.ff);
+//
+//        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small); //折叠时样式
+//        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large); //展开后样式
+//        notificationLayoutExpanded.setBitmap(R.id.imageView, "setImageBitmap", ff); //运行时，动态修改子元素
 //
 //        Notification customNotification = new NotificationCompat.Builder(this, "c1")
 //                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContent(notificationLayout)
-//                .setCustomContentView(notificationLayout)
-////                .setCustomBigContentView(notificationLayoutExpanded)
+//                .setLargeIcon(gg)
+//                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())//使用部分自定义通知样式
+//                .setCustomContentView(notificationLayout) //通知折叠时的UI
+//                .setCustomBigContentView(notificationLayoutExpanded) //通知展开时的UI
+//                .setSubText("sub")
+////                .setContentTitle("My notification") //由于使用自定义布局，此方法无效
+////                .setContentText("Hello World!") //由于使用自定义布局，此方法无效
 //                .build();
 //        notificationManager.notify(mId, customNotification);
+
+
+        //完全自定义
+        Intent intent = new Intent(this, OneActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        RemoteViews notificationLayout1 = new RemoteViews(getPackageName(), R.layout.notification_small);
+        RemoteViews notificationLayout2 = new RemoteViews(getPackageName(), R.layout.notification_normal);
+        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
+
+        Notification customNotification = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContent(notificationLayout1)//折叠时的布局
+                .setCustomContentView(notificationLayout2)//比setContent()优先级高
+                .setCustomBigContentView(notificationLayoutExpanded)//设置展开后的样式，优先级最高
+                .build();
+        notificationManager.notify(mId, customNotification);
 
 
     }
 
     private void groupNotify(NotificationManager notificationManager) {
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "c1");
-        Notification notification1 = mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
+        //单个分组
+        Notification notification1 = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("n1")
                 .setContentText("aaaaaaaaaa")
                 .setGroup("myGroup") //指定所属的组
-                .setNumber(15)
                 .setAutoCancel(true)
                 .build();
-
-        Notification notification2 = mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
+        Notification groupNotify = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("GG")
+                .setContentText("n1, n2")
+                .setGroup("myGroup")
+                .setAutoCancel(true)
+                .setGroupSummary(true) //设置为组简洁通知
+                .build();
+        Notification notification2 = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("n2")
                 .setContentText("bbbbbbbbbbbbbb")
                 .setGroup("myGroup") //指定所属的组
                 .setAutoCancel(true)
                 .build();
 
-        Notification groupNotify = mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("GG")
-                .setContentText("n1, n2")
-                .setGroup("myGroup")
-                .setAutoCancel(true)
-                .setGroupSummary(true) //设置为组通知
-                .build();
-        notificationManager.notify(3, groupNotify);
         notificationManager.notify(1, notification1);
+        notificationManager.notify(3, groupNotify);
         notificationManager.notify(2, notification2);
+
+
+        //多个分组
+//        Notification notification10 = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("n10")
+//                .setContentText("aaaaaaaaaa")
+//                .setGroup("myGroup1") //指定所属的组
+//                .setAutoCancel(true)
+//                .build();
+//        Notification groupNotify1 = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("GG")
+//                .setContentText("n1")
+//                .setGroup("myGroup1")
+//                .setAutoCancel(true)
+//                .setGroupSummary(true) //设置为组简介通知
+//                .build();
+//
+//        notificationManager.notify(10, notification10);
+//        notificationManager.notify(1, groupNotify1);
+//
+//
+//        Notification notification20 = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("n20")
+//                .setContentText("aaaaaaaaaa")
+//                .setGroup("myGroup2") //指定所属的组
+//                .setAutoCancel(true)
+//                .build();
+//        Notification notification21 = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("n21")
+//                .setContentText("aaaaaaaaaa")
+//                .setGroup("myGroup2") //指定所属的组
+//                .setAutoCancel(true)
+//                .build();
+//        Notification groupNotify2 = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("GG")
+//                .setContentText("n2")
+//                .setGroup("myGroup2")
+//                .setAutoCancel(true)
+//                .setGroupSummary(true) //设置为组简介通知
+//                .build();
+//
+//        notificationManager.notify(20, notification20);
+//        notificationManager.notify(21, notification21);
+//        notificationManager.notify(2, groupNotify2);
+
 
     }
 
@@ -573,8 +626,6 @@ public class NotificationActivity extends AppCompatActivity {
         }
 
 
-
-
 //        mNotificationManager.cancel(1);
 
 //        incr += 20;
@@ -683,12 +734,32 @@ public class NotificationActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+
+        //勋章通知
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        String channelId = "c1";
+        CharSequence channelName = "cf";
+
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+        notificationManager.createNotificationChannel(notificationChannel);
+
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this, "c1")
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setNumber(3)
+                        .setContentTitle("CTitleeee")
+                        .setContentText("cTexttttt")
+                        .setSubText("sText");
+        notificationManager.notify(new Random().nextInt(99), mBuilder.build());
+
+
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
     }
 
 }
