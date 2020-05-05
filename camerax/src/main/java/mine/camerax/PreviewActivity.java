@@ -15,6 +15,7 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -67,15 +68,8 @@ public class PreviewActivity extends AppCompatActivity {
             System.out.println("Camera is supported");
         } else {
             System.out.println("Camera isn't supported");
+            finish();
             return;
-        }
-
-
-        if (camera == null) {
-            camera = Camera.open();//获取摄像头
-        } else {
-            camera.release();//先释放
-            camera = Camera.open();//再获取实例
         }
 
 
@@ -103,6 +97,18 @@ public class PreviewActivity extends AppCompatActivity {
                 System.out.println("~~onSurfaceTextureAvailable~~");
                 System.out.println("surface is " + surface);
                 System.out.println("width is " + width + ", height is " + height);
+
+                if (camera == null) {
+                    System.out.println("camera is NULL!");
+                    camera = Camera.open();//获取默认摄像头
+//                        camera = Camera.open(CAMERA_FACING_BACK);//获取后置摄像头
+//                        camera = Camera.open(CAMERA_FACING_FRONT);//获取前置摄像头
+                } else {
+                    camera.release();
+                    System.out.println("camera is release!");
+                    camera = Camera.open();
+                }
+
 
                 try {
                     setCameraDisplayOrientation(0, camera);//设置预览画面角度
@@ -161,7 +167,7 @@ public class PreviewActivity extends AppCompatActivity {
                 camera.getParameters().setZoom(-2);//缩小
             }
         });
-        viewGroup.addView(zoomControls);
+//        viewGroup.addView(zoomControls);
 
     }
 
@@ -175,6 +181,17 @@ public class PreviewActivity extends AppCompatActivity {
                 System.out.println("holder is " + holder);
 
                 try {
+                    if (camera == null) {
+                        System.out.println("camera is NULL!");
+                        camera = Camera.open();//获取默认摄像头
+//                        camera = Camera.open(CAMERA_FACING_BACK);//获取后置摄像头
+//                        camera = Camera.open(CAMERA_FACING_FRONT);//获取前置摄像头
+                    } else {
+                        camera.release();
+                        System.out.println("camera is release!");
+                        camera = Camera.open();
+                    }
+
                     //配置预览
                     setCameraDisplayOrientation(0, camera);//设置预览画面角度
                     camera.setPreviewDisplay(holder);//绑定展示画面用的SurfaceHolder
@@ -223,10 +240,12 @@ public class PreviewActivity extends AppCompatActivity {
                 System.out.println("~~~~~~~  " + getClass().getSimpleName() + ".surfaceDestroyed  ~~~~~~~");
                 System.out.println("holder is " + holder);
 
+
                 if (camera != null) {
-                    camera.stopPreview();
-                    camera.release();
+                    camera.stopPreview(); //停止预览
+                    camera.release(); //释放资源
                     camera = null;
+                    System.out.println("camera is " + camera);
                 }
 
             }
@@ -262,8 +281,14 @@ public class PreviewActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
     }
 
     @Override
@@ -278,13 +303,15 @@ public class PreviewActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 //        orientationEventListener.enable();//监听方向改变
 
-        if (camera == null) {
-            camera = Camera.open();
-            System.out.println("re-open|" + camera);
-        } else {
-            camera.release();
-            camera = Camera.open();
-        }
+//        if (camera == null) {
+//            System.out.println("camera is NULL!");
+//            camera = Camera.open();
+//        } else {
+//            camera.release();
+//            System.out.println("camera is release!");
+//            camera = Camera.open();
+//        }
+
     }
 
     @Override
@@ -293,12 +320,12 @@ public class PreviewActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
 //        orientationEventListener.disable();//停止监听方向改变
 
-        if (camera != null) {
-            camera.stopPreview(); //停止预览
-            camera.release(); //释放资源
-            camera = null;
-            System.out.println("camera is " + camera);
-        }
+//        if (camera != null) {
+//            camera.stopPreview(); //停止预览
+//            camera.release(); //释放资源
+//            camera = null;
+//            System.out.println("camera is " + camera);
+//        }
 
     }
 
@@ -552,7 +579,6 @@ public class PreviewActivity extends AppCompatActivity {
         System.out.println("DisplayOrientation is " + result);
         camera.setDisplayOrientation(result);//保存设置
     }
-
 
 
     private void zoom(int zoom) {

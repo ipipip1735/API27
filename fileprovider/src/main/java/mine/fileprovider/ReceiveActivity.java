@@ -59,9 +59,16 @@ public class ReceiveActivity extends AppCompatActivity {
                     System.out.println("type is " + type);
 
                     Intent intent = new Intent();
-                    intent.setDataAndType(uriForFile, type);
+                    intent.setData(uriForFile);//设置Uri
+//                    intent.setDataAndType(uriForFile, type);//设置Uri和 MIME
+
+
+
+                    //临时授权读/写权限
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+
 
 //                    grantUriPermission();
 

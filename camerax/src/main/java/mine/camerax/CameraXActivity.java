@@ -108,7 +108,7 @@ public class CameraXActivity extends AppCompatActivity {
 
     public void preview(View view) {
         System.out.println("~~button.preview~~");
-
+        System.out.println(textureView.getSurfaceTexture() + "----");
 
         PreviewConfig config = new PreviewConfig.Builder()
                 .setLensFacing(CameraX.LensFacing.BACK)
@@ -149,6 +149,16 @@ public class CameraXActivity extends AppCompatActivity {
                     textureView.setSurfaceTexture(previewOutput.getSurfaceTexture());
 
                     System.out.println("...surface has been bound...");
+
+
+
+//                    textureView.getSurfaceTexture().setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
+//                        @Override
+//                        public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+//                            System.out.println("~~onFrameAvailable~~");
+//
+//                        }
+//                    });
                 }
 
 
@@ -162,14 +172,7 @@ public class CameraXActivity extends AppCompatActivity {
 
 
         viewGroup.addView(textureView);
-        System.out.println(textureView.getSurfaceTexture() + "----");
-        textureView.getSurfaceTexture().setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
-            @Override
-            public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-                System.out.println("~~onFrameAvailable~~");
 
-            }
-        });
 
 
 
@@ -398,12 +401,12 @@ public class CameraXActivity extends AppCompatActivity {
     public void init(View view) {
         System.out.println("~~button.init~~");
         System.out.println(Thread.currentThread());
+
     }
 
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-
     }
 
 

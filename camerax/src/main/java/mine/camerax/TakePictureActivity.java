@@ -216,7 +216,6 @@ public class TakePictureActivity extends AppCompatActivity {
                 System.out.println("h is " + h);
                 System.out.println("w is " + w);
 
-
             }
 
             @Override
@@ -386,84 +385,84 @@ public class TakePictureActivity extends AppCompatActivity {
         camera.setParameters(parameters);
 
         //直接拍照
-//        camera.takePicture(new Camera.ShutterCallback() {
-//            @Override
-//            public void onShutter() {
-//                System.out.println("~~onShutter~~");
-//            }
-//        }, new Camera.PictureCallback() {
-//            @Override
-//            public void onPictureTaken(byte[] data, Camera camera) {
-//                System.out.println("~~raw~~");
-////                System.out.println("data'size is " + data.length);
-//                System.out.println("camera is " + camera);
-//
-//            }
-//        }, new Camera.PictureCallback() {
-//            @Override
-//            public void onPictureTaken(byte[] data, Camera camera) {
-//                System.out.println("~~postview~~");
-////                System.out.println("data'size is " + data.length);
-//                System.out.println("camera is " + camera);
-//
-//            }
-//        }, new Camera.PictureCallback() {
-//            @Override
-//            public void onPictureTaken(byte[] data, Camera camera) {
-//                System.out.println("~~jpeg~~");
-//                System.out.println("data'size is " + data.length);
-//                System.out.println("camera is " + camera);
-//
-//                try {
-//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                    File pic = File.createTempFile(timeStamp, ".jpg", getCacheDir());
-//                    FileOutputStream fileOutputStream = new FileOutputStream(pic);
-//                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-//                    bufferedOutputStream.write(data);
-//                    bufferedOutputStream.close();
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    camera.startPreview();
-//                }
-//
-//
-//            }
-//        });
-
-
-        //自动对焦后再拍照
-        camera.autoFocus(new Camera.AutoFocusCallback() {
+        camera.takePicture(new Camera.ShutterCallback() {
             @Override
-            public void onAutoFocus(boolean success, Camera camera) {
-                System.out.println("~~onAutoFocus~~");
-                System.out.println("success is " + success);
+            public void onShutter() {
+                System.out.println("~~onShutter~~");
+            }
+        }, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                System.out.println("~~raw~~");
+//                System.out.println("data'size is " + data.length);
                 System.out.println("camera is " + camera);
 
-                if (!success) return;
+            }
+        }, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                System.out.println("~~postview~~");
+//                System.out.println("data'size is " + data.length);
+                System.out.println("camera is " + camera);
 
-                camera.takePicture(null, null, new Camera.PictureCallback() {
-                    @Override
-                    public void onPictureTaken(byte[] data, Camera camera) {
-                        try {
-                            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                            File pic = File.createTempFile(timeStamp, ".jpg", getCacheDir());
-                            FileOutputStream fileOutputStream = new FileOutputStream(pic);
-                            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-                            bufferedOutputStream.write(data);
-                            bufferedOutputStream.close();
+            }
+        }, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                System.out.println("~~jpeg~~");
+                System.out.println("data'size is " + data.length);
+                System.out.println("camera is " + camera);
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } finally {
-                            camera.startPreview();
-                        }
-                    }
-                });
+                try {
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                    File pic = File.createTempFile(timeStamp, ".jpg", getCacheDir());
+                    FileOutputStream fileOutputStream = new FileOutputStream(pic);
+                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+                    bufferedOutputStream.write(data);
+                    bufferedOutputStream.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    camera.startPreview();
+                }
+
 
             }
         });
+
+
+        //自动对焦后再拍照
+//        camera.autoFocus(new Camera.AutoFocusCallback() {
+//            @Override
+//            public void onAutoFocus(boolean success, Camera camera) {
+//                System.out.println("~~onAutoFocus~~");
+//                System.out.println("success is " + success);
+//                System.out.println("camera is " + camera);
+//
+//                if (!success) return;
+//
+//                camera.takePicture(null, null, new Camera.PictureCallback() {
+//                    @Override
+//                    public void onPictureTaken(byte[] data, Camera camera) {
+//                        try {
+//                            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//                            File pic = File.createTempFile(timeStamp, ".jpg", getCacheDir());
+//                            FileOutputStream fileOutputStream = new FileOutputStream(pic);
+//                            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+//                            bufferedOutputStream.write(data);
+//                            bufferedOutputStream.close();
+//
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        } finally {
+//                            camera.startPreview();
+//                        }
+//                    }
+//                });
+//
+//            }
+//        });
 
 
     }

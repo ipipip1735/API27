@@ -3,6 +3,7 @@ package mine.camerax;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +26,8 @@ import androidx.core.content.FileProvider;
 import androidx.lifecycle.LifecycleOwner;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -116,7 +119,7 @@ public class CameraActivity extends AppCompatActivity {
         //方式一：直接显示
         if (requestCode == SHOW && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = (Bitmap) extras.get("data");//获取缩略图对应的Bitmap
             ImageView imageView = new ImageView(this);
             imageView.setImageBitmap(imageBitmap);
             ViewGroup viewGroup = findViewById(R.id.fl);
@@ -127,12 +130,52 @@ public class CameraActivity extends AppCompatActivity {
         //方式二：保存到文件
         if (requestCode == SAVE && resultCode == RESULT_OK) {
 
+            if (image.exists()) {
+                try {
+                    FileInputStream fileInputStream = new FileInputStream(image);
+                    System.out.println("size is " + fileInputStream.available());//获取文件尺寸
+                    if(fileInputStream.available() == 0) return;
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            ViewGroup viewGroup = findViewById(R.id.fl);
+            ImageView imageView = new ImageView(this);
+            viewGroup.addView(imageView);
+
+            //设置imageView尺寸
+            int targetW = 250;
+            int targetH = 500;
+
+            //获取Bitmap尺寸
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true; //仅解析图片信息，而不解析像素数据
+            int photoW = bmOptions.outWidth; //获取尺寸
+            int photoH = bmOptions.outHeight;
+
+            //计算采样因子
+            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+            bmOptions.inJustDecodeBounds = false;//解析图片信息和像素数据
+            bmOptions.inSampleSize = scaleFactor;//设置采用因子
+
+            //解析图片
+            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+
+
+            imageView.setImageBitmap(bitmap);
 
         }
 
         //方式二：录像
         if (requestCode == VIDEO && resultCode == RESULT_OK) {
             Uri videoUri = data.getData();//获取URI
+            System.out.println("uri is " + videoUri);
             VideoView videoView = new VideoView(this);
             videoView.setVideoURI(videoUri);//绑定URI
             videoView.setMediaController(new MediaController(this));//绑定控制器
@@ -189,7 +232,7 @@ public class CameraActivity extends AppCompatActivity {
 
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//创建Intent
 
-            //授权是可选的，估计是使用的外部目录，所以摄像头可以直接访问文件
+            //不需要授权，启用摄像头就已经授权了，使用FileProvider仅仅为了让URI映射实际地址
 //            takePictureIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //授予临时读权限
 //            takePictureIntent.setFlags(FLAG_GRANT_WRITE_URI_PERMISSION); //授予临时写权限
 

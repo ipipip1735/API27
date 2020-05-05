@@ -191,7 +191,7 @@ public class AreaActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        camera.startPreview();
+//        camera.startPreview();
         camera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean success, Camera camera) {
@@ -200,6 +200,8 @@ public class AreaActivity extends AppCompatActivity {
                 System.out.println("camera is " + camera);
             }
         });
+
+
 
 
     }
@@ -221,15 +223,33 @@ public class AreaActivity extends AppCompatActivity {
         System.out.println("~~button.change~~");
 
         Camera.Parameters parameters = camera.getParameters();
-        if(parameters.getMaxNumFocusAreas() > 0) {
-            System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumFocusAreas());
-            for (Camera.Area area : parameters.getFocusAreas()) {
+//        if (parameters.getMaxNumFocusAreas() > 0) {
+//            System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumFocusAreas());
+//            System.out.println("getFocusAreas is " + parameters.getFocusAreas());
+//
+//            if (parameters.getFocusAreas() == null) return;
+//            for (Camera.Area area : parameters.getFocusAreas()) {
+//                System.out.println("area is " + area);
+//            }
+//
+//        } else {
+//            System.out.println("FocusAreas isn't supported!!");
+//        }
+
+
+        if (parameters.getMaxNumMeteringAreas() > 0) {
+            System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumMeteringAreas());
+            System.out.println("getMeteringAreas() is " + parameters.getMeteringAreas());
+
+            if (parameters.getMeteringAreas() == null) return;
+            for (Camera.Area area : parameters.getMeteringAreas()) {
                 System.out.println("area is " + area);
             }
 
-        }else {
+        } else {
             System.out.println("FocusAreas isn't supported!!");
         }
+
 
     }
 
@@ -269,11 +289,11 @@ public class AreaActivity extends AppCompatActivity {
 
             System.out.println("getMaxNumFocusAreas is " + parameters.getMaxNumFocusAreas());
             List<Camera.Area> focusAreas = new ArrayList<Camera.Area>();
-            Rect areaRect = new Rect(-1000, -1000, -900, -900);
+            Rect areaRect = new Rect(-1000, -1000, -500, -500);
             focusAreas.add(new Camera.Area(areaRect, 1000));
             parameters.setFocusAreas(focusAreas);
             System.out.println("getFocusAreas is " + parameters.getFocusAreas().size());
-            camera.setParameters(parameters);
+//            camera.setParameters(parameters);
 
         } else {
             System.out.println("FocusAreas isn't supported !!");
@@ -281,25 +301,20 @@ public class AreaActivity extends AppCompatActivity {
 
 
         //面测光
+        if (parameters.getMaxNumMeteringAreas() > 0)
+            System.out.println("getFocusAreas is " + parameters.getMeteringAreas());
+        List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+        Rect areaRect = new Rect(-1000, -1000, -500, -500);
+        meteringAreas.add(new Camera.Area(areaRect, 1000));
+        parameters.setMeteringAreas(meteringAreas);
+        for (Camera.Area area : parameters.getMeteringAreas()) {
+            System.out.println("area is " + area);
+        }
+        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas().size());
+
+        camera.setParameters(parameters);
 
 
-
-
-
-
-//            parameters.getFocusAreas();
-//            System.out.println("getFocusAreas is " + parameters.getFocusAreas());
-//            for (Camera.Area area : parameters.getFocusAreas()) {
-//                System.out.println("area is " + area);
-//            }
-
-//        System.out.println("getMeteringAreas is " + parameters.getMaxNumFocusAreas());
-//        System.out.println("getMeteringAreas is " + parameters.getMaxNumMeteringAreas());
-//        System.out.println("getMeteringAreas is " + parameters.getMeteringAreas());
-
-
-
-//        System.out.println("getMaxNumMeteringAreas is " + parameters.getMaxNumMeteringAreas());
     }
 
 
@@ -311,10 +326,18 @@ public class AreaActivity extends AppCompatActivity {
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
         switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
         }
 
         //计算修正角度
