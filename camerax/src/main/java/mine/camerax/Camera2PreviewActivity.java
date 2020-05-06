@@ -11,7 +11,9 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
@@ -131,7 +133,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     }
 
 
-    private void  openCamera() {
+    private void openCamera() {
 
         //检查权限
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -162,7 +164,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                 if (map == null) continue;
 
                 Size[] sizes = map.getOutputSizes(SurfaceTexture.class);
-                Size size = sizes[0];//获取最小尺寸
+                Size size = sizes[0];//获取默认尺寸
                 textureView.getSurfaceTexture().setDefaultBufferSize(size.getWidth(), size.getHeight());
 
 
@@ -203,9 +205,12 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                         }
 
 
-                        System.out.println("Buffer'capacity is " + image.getPlanes()[0].getBuffer().capacity());
-                        System.out.println("getPixelStride is " + image.getPlanes()[0].getPixelStride());
-                        System.out.println("getRowStride is " + image.getPlanes()[0].getRowStride());
+                        System.out.println(image.getPlanes().length);
+                        for (int i = 0; i < image.getPlanes().length; i++) {
+                            System.out.println("Buffer'capacity is " + image.getPlanes()[i].getBuffer().capacity());
+                            System.out.println("getPixelStride is " + image.getPlanes()[i].getPixelStride());
+                            System.out.println("getRowStride is " + image.getPlanes()[i].getRowStride());
+                        }
 
 
                         try {
@@ -315,34 +320,48 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
 
                         //请求预览（使用监听器）
-//                        int id = session.setRepeatingRequest(previewRequest, new CameraCaptureSession.CaptureCallback() {
+//                        int id = session.setRepeatingRequest(captureRequestBuilder.build(), new CameraCaptureSession.CaptureCallback() {
 //                            @Override
 //                            public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
 //                                super.onCaptureStarted(session, request, timestamp, frameNumber);
 //                                System.out.println("~~onCaptureStarted~~");
+//                                System.out.println("session is " + session);
+//                                System.out.println("timestamp is " + timestamp);
+//                                System.out.println("frameNumber is " + frameNumber);
 //                            }
 //
 //                            @Override
 //                            public void onCaptureProgressed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureResult partialResult) {
 //                                super.onCaptureProgressed(session, request, partialResult);
 //                                System.out.println("~~onCaptureProgressed~~");
+//                                System.out.println("session is " + session);
+//                                System.out.println("request is " + request);
+//                                System.out.println("partialResult is " + partialResult);
 //                            }
 //
 //                            @Override
 //                            public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
 //                                super.onCaptureCompleted(session, request, result);
 //                                System.out.println("~~onCaptureCompleted~~");
+//                                System.out.println("session is " + session);
+//                                System.out.println("request is " + request);
+//
 //                            }
 //
 //                            @Override
 //                            public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
 //                                super.onCaptureFailed(session, request, failure);
 //                                System.out.println("~~onCaptureFailed~~");
+//                                System.out.println("session is " + session);
+//                                System.out.println("request is " + request);
+//                                System.out.println("failure is " + failure);
 //                            }
 //
 //                            @Override
 //                            public void onCaptureSequenceCompleted(@NonNull CameraCaptureSession session, int sequenceId, long frameNumber) {
+//                                super.onCaptureSequenceCompleted(session, sequenceId, frameNumber);
 //                                System.out.println("~~onCaptureSequenceCompleted~~");
+//                                System.out.println("session is " + session);
 //                                System.out.println("sequenceId is " + sequenceId);
 //                                System.out.println("frameNumber is " + frameNumber);
 //                            }
@@ -351,12 +370,18 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 //                            public void onCaptureSequenceAborted(@NonNull CameraCaptureSession session, int sequenceId) {
 //                                super.onCaptureSequenceAborted(session, sequenceId);
 //                                System.out.println("~~onCaptureSequenceAborted~~");
+//                                System.out.println("session is " + session);
+//                                System.out.println("sequenceId is " + sequenceId);
 //                            }
 //
 //                            @Override
 //                            public void onCaptureBufferLost(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull Surface target, long frameNumber) {
 //                                super.onCaptureBufferLost(session, request, target, frameNumber);
 //                                System.out.println("~~onCaptureBufferLost~~");
+//                                System.out.println("session is " + session);
+//                                System.out.println("target is " + target);
+//                                System.out.println("frameNumber is " + frameNumber);
+//
 //                            }
 //                        }, new Handler(getMainLooper()));
 //                        System.out.println("setRepeatingRequest'id is " + id);
@@ -364,7 +389,6 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
                     }
-
 
                 }
 
@@ -390,7 +414,8 @@ public class Camera2PreviewActivity extends AppCompatActivity {
     private int getJpegOrientation(CameraCharacteristics c) {
 
         int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
-        if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN) return 0;
+        if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN)
+            return 0;
         int sensorOrientation = c.get(CameraCharacteristics.SENSOR_ORIENTATION);
 
         // Round device orientation to a multiple of 90
@@ -523,7 +548,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 
             //请求拍摄
             int id = cameraCaptureSession.capture(captureBuilder.build(), null, null);
-            System.out.println("setRepeatingRequest'id is " + id);
+            System.out.println("capture'id is " + id);
 
 
         } catch (CameraAccessException e) {
@@ -576,9 +601,9 @@ public class Camera2PreviewActivity extends AppCompatActivity {
                     printFieldValue(facing, CameraMetadata.class, "LENS_FACING");
                 }
 
-                Integer degree = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
-                System.out.println("sensor is " + degree);
-                System.out.println("device is " + getWindowManager().getDefaultDisplay().getRotation());
+//                Integer degree = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+//                System.out.println("sensor is " + degree);
+//                System.out.println("device is " + getWindowManager().getDefaultDisplay().getRotation());
 
                 //图片流配置
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -586,26 +611,28 @@ public class Camera2PreviewActivity extends AppCompatActivity {
 //                System.out.println(map);//一次性打印所有信息
 
 
-                for (int format : map.getOutputFormats()) {//获取所有支持格式
-                    for (Field field : ImageFormat.class.getFields()) {
-                        try {
-                            if ((int) field.get(null) == format) {
-                                System.out.println("Format is " + field.getName());
-                                for (Size size : map.getOutputSizes(format)) {//获取格式支持的所有尺寸
-                                    System.out.println("  size is " + size);
-                                }
-
-                            }
-
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+//                for (int format : map.getOutputFormats()) {//获取所有支持格式
+//                    for (Field field : ImageFormat.class.getFields()) {
+//                        try {
+//                            if ((int) field.get(null) == format) {
+//                                System.out.println("Format is " + field.getName());
+//                                for (Size size : map.getOutputSizes(format)) {//获取格式支持的所有尺寸
+//                                    System.out.println("  size is " + size);
+//                                }
+//
+//                            }
+//
+//                        } catch (IllegalAccessException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
 
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) //获取UI组件支持的所有尺寸
-                    System.out.println("getOutputSizes is " + size);
+                    System.out.println("SurfaceTexture getOutputSizes is " + size);
 
+                for (Size size : map.getOutputSizes(ImageReader.class)) //获取UI组件支持的所有尺寸
+                    System.out.println("ImageReader getOutputSizes is " + size);
 
 
             }

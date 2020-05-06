@@ -469,8 +469,6 @@ public class Camera2RecordActivity extends AppCompatActivity {
                     }
 
                     mediaRecorder.start();//开始录制
-
-
                 }
 
                 @Override
