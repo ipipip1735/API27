@@ -543,7 +543,7 @@ public class Camera2PreviewActivity extends AppCompatActivity {
             CameraDevice cameraDevice = cameraCaptureSession.getDevice();
             CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(imageReader.getSurface());
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, orientation);
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, orientation);//设置图片方向
 
 
             //请求拍摄

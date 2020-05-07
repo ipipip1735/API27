@@ -145,6 +145,8 @@ public class Camera2RecordActivity extends AppCompatActivity {
                 if (facing != null && facing == CameraMetadata.LENS_FACING_FRONT) continue;//使用后置摄像头
 
                 orientation = getOrientation(characteristics);//计算预览方向
+                System.out.println("orientation is " + orientation);
+
 
 
                 //图片流配置
@@ -456,6 +458,7 @@ public class Camera2RecordActivity extends AppCompatActivity {
                         for (Surface surface : surfaceList) {
                             captureRequestBuilder.addTarget(surface);//使用全部管线
                         }
+
                         captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_AUTO);//使用自动对焦
                         CaptureRequest captureRequest = captureRequestBuilder.build();
 
