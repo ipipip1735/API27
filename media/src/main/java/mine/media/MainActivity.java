@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     if (Objects.nonNull(mediaControllerCompats[0])) {
                         publishProgress(mediaControllerCompats[0]);
                     }
+                    System.out.println("updateing...");
                     try {
                         Thread.sleep(1000L);
                     } catch (InterruptedException e) {

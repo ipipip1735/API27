@@ -405,14 +405,14 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
                         MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
         mStateBuilder = new PlaybackStateCompat.Builder()
-                .setActions(PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PLAY_PAUSE)
+                .setActions(PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PLAY_PAUSE)//设置启用的功能
                 .setState(PlaybackStateCompat.STATE_CONNECTING, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 0);
 
         mMediaSession.setPlaybackState(mStateBuilder.build());
 
 
         mMediaSession.setCallback(sessionCallback); //增加会话监听器
-        mMediaSession.setActive(true);
+        mMediaSession.setActive(true);//会话激活
 
 
         mediaPlayer = new MediaPlayer();
