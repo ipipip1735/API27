@@ -14,7 +14,7 @@ import static android.os.Environment.DIRECTORY_MUSIC;
 /**
  * Created by Administrator on 2019/2/1.
  */
-public class RecoderActivity extends AppCompatActivity {
+public class RecoderAudioActivity extends AppCompatActivity {
 
     MediaRecorder recorder;
     int n;
