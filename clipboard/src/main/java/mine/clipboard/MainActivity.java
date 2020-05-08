@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -87,11 +88,22 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.copy~~");
         copyText(); //复制文本
 //        copyUri(); //复制URI
+        copyIntent(); //复制Intent
 //        copyPIC();
 //        readRAW();
 //        readFile();
 //        copyFile();
 //        pasteFile();
+    }
+
+    private void copyIntent() {
+
+        Intent intent = new Intent("gogo");
+        ClipData clipData = ClipData.newIntent("go", intent);
+
+        ClipboardManager clipboardManager = getSystemService(ClipboardManager.class);
+        clipboardManager.setPrimaryClip(clipData);
+
     }
 
     private void pasteFile() {
