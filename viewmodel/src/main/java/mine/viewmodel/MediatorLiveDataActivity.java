@@ -44,32 +44,34 @@ public class MediatorLiveDataActivity extends AppCompatActivity {
 
 
         mediatorLiveData = new MediatorLiveData();
+        mediatorLiveData.setValue(new HashMap<>());
+
         mediatorLiveData.addSource(liveData1, value -> {
-            System.out.println("~~Transformer~~");
+            System.out.println("~~Transformer1~~");
             System.out.println("value is " + value);
             HashMap<String, String> data = (HashMap<String, String>) mediatorLiveData.getValue();
             if (Objects.isNull(data)) {
                 data = new HashMap<>();
                 data.put("liveData1", (String) value);
-                System.out.println("null");
+                System.out.println("~~ init MediatorLiveData ~~");
             } else {
                 data.put("liveData1", (String) value);
             }
-            mediatorLiveData.setValue(data);
+//            mediatorLiveData.setValue(data);
         });
 
         mediatorLiveData.addSource(liveData2, value -> {
-            System.out.println("~~Transformer~~");
+            System.out.println("~~Transformer2~~");
             System.out.println("value is " + value);
             HashMap<String, String> data = (HashMap<String, String>) mediatorLiveData.getValue();
             if (Objects.isNull(data)) {
                 data = new HashMap<>();
                 data.put("liveData2", (String) value);
-                System.out.println("null");
+                System.out.println("~~ init MediatorLiveData ~~");
             } else {
                 data.put("liveData2", (String) value);
             }
-            mediatorLiveData.setValue(data);
+//            mediatorLiveData.setValue(data);
         });
 
         mediatorLiveData.observe(this, value -> {

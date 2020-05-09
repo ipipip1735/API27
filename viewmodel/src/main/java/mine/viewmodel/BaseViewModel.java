@@ -14,6 +14,11 @@ import java.util.Random;
 public class BaseViewModel extends ViewModel {
     private MutableLiveData<String> users;
 
+    public BaseViewModel(MutableLiveData<String> users) {
+        System.out.println("~~" + getClass().getSimpleName() + ".Constructor~~");
+        this.users = users;
+    }
+
     public MutableLiveData<String> getUsers() {
         if (users == null) {
             users = new MutableLiveData<String>(){

@@ -26,7 +26,6 @@ public class CarLiveData extends MutableLiveData<Car> {
     @Override
     protected void onActive() {
         System.out.println("~~ onActive ~~");
-
     }
 
     @Override

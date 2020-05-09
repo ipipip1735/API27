@@ -10,7 +10,7 @@ public class ToolClass {
 
     static public void showThread() {
         long id = Thread.currentThread().getId();
-        System.out.println("**********************thread'id is " + id + "!**********************");
+        System.out.println("**********************" + Thread.currentThread() + ", id = " +  id + "!**********************");
     }
 
     static public void sout(String string) {

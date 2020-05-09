@@ -35,22 +35,20 @@ public class LiveDataActivity extends AppCompatActivity {
             System.out.println("--carLiveData initial--");
             carLiveData = CarLiveData.get();
             carLiveData.observe(this, car -> {
-                System.out.print("observer car|");
-                System.out.println(car);
+                System.out.println("observer car|" + car);
             });
         }
 
 
         //方法一
-        userLiveData = Transformations.map(carLiveData, car->{
-            System.out.println("~~Transformations~~");
-            System.out.println(car);
-            return new User("bob", "lee");
-        });
-        userLiveData.observe(this, user -> {
-            System.out.print("observer user|");
-            System.out.println(user);
-        });
+//        userLiveData = Transformations.map(carLiveData, car->{
+//            System.out.println("~~Transformations~~");
+//            System.out.println(car);
+//            return new User("bob", "lee");
+//        });
+//        userLiveData.observe(this, user -> {
+//            System.out.println("observer user|" + user);
+//        });
 
 
 
@@ -143,6 +141,7 @@ public class LiveDataActivity extends AppCompatActivity {
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+        System.out.println("carLiveData is " + userLiveData.getValue());
 
     }
 

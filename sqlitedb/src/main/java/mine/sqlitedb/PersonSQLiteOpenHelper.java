@@ -22,7 +22,8 @@ public class PersonSQLiteOpenHelper extends SQLiteOpenHelper {
 
     public PersonSQLiteOpenHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
-        System.out.println("PersonSQLiteOpenHelper Constructor");
+        System.out.println("~~" + getClass().getSimpleName() + ".Constructor~~");
+        ToolClass.showThread();
     }
 
 
@@ -30,8 +31,7 @@ public class PersonSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        System.out.println("************on create***********");
+        System.out.println("~~" + getClass().getSimpleName() + ".onCreate~~");
 
         String sql = "create table IF NOT EXISTS " +
                 "Person(" +
@@ -44,7 +44,7 @@ public class PersonSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        System.out.println("************on Upgrade**start**********");
+        System.out.println("~~" + getClass().getSimpleName() + ".onUpgrade~~");
 
         System.out.println(oldVersion);
         System.out.println(newVersion);
@@ -60,16 +60,14 @@ public class PersonSQLiteOpenHelper extends SQLiteOpenHelper {
                 ");";
         System.out.println(sql);
         db.execSQL(sql);
-        System.out.println("************on Upgrade**end**********");
 
 
     }
 
     @Override
     public void onOpen(SQLiteDatabase db) {
+        System.out.println("~~" + getClass().getSimpleName() + ".onUpgrade~~");
         super.onOpen(db);
-        System.out.println("*********on open*************");
-        ToolClass.showThread();
 
         int age = new Random().nextInt(100);
         System.out.println("age is " + age);

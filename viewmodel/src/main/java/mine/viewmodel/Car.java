@@ -11,6 +11,7 @@ public class Car {
     private int carPrice;
 
     public Car(String carName) {
+        System.out.println("~~" + getClass().getSimpleName() + ".Constructor~~");
         this.carName = carName;
         this.carPrice = new Random().nextInt(100);
     }

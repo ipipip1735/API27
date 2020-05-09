@@ -28,22 +28,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
 
         //方式一：最简使用
-//        stringViewModel = ViewModelProviders.of(this).get(StringViewModel.class);
-//        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
+        stringViewModel = ViewModelProviders.of(this).get(StringViewModel.class);
+        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
 
 
 
         //方式二：最简LiveData
-        textView = new TextView(this);
-        textView.setText("go go go");
-        ViewGroup viewGroup = findViewById(R.id.fl);
-        viewGroup.addView(textView);
-
-        baseViewModel = ViewModelProviders.of(this).get(BaseViewModel.class);
-        baseViewModel.getUsers().observe(this, data -> {
-            System.out.println("~~update ViewModel~~");
-            textView.setText(data);//更新UI
-        });
+//        textView = new TextView(this);
+//        textView.setText("go go go");
+//        ViewGroup viewGroup = findViewById(R.id.fl);
+//        viewGroup.addView(textView);
+//
+//        baseViewModel = ViewModelProviders.of(this).get(BaseViewModel.class);
+//        baseViewModel.getUsers().observe(this, data -> {
+//            System.out.println("~~update ViewModel~~");
+//            textView.setText(data);//更新UI
+//        });
 
 
     }

@@ -3,6 +3,7 @@ package mine.sqlitedb;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("~~" + getClass().getSimpleName() + ".onCreate~~");
+        ToolClass.showThread();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -118,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getData(View view) {
-
-
 
     }
 }

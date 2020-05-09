@@ -23,11 +23,12 @@ public class PersonContentProvide extends ContentProvider implements BaseColumns
     Context context = null;
 
     public PersonContentProvide() {
-        System.out.println("PersonContentProvide Constructor");
+        System.out.println("~~" + getClass().getSimpleName() + ".Constructor1~~");
     }
 
     public PersonContentProvide(Context context) {
-        this();
+        ToolClass.showThread();
+        System.out.println("~~" + getClass().getSimpleName() + ".Constructor2~~");
         this.context = context;
         if (personSQLiteOpenHelper == null) {
             personSQLiteOpenHelper = new PersonSQLiteOpenHelper(this.context);
@@ -63,22 +64,24 @@ public class PersonContentProvide extends ContentProvider implements BaseColumns
 
     @Override
     public boolean onCreate() {
-        System.out.println("******CP*create*begin******");
-
+        System.out.println("~~" + getClass().getSimpleName() + ".onCreate~~");
+        ToolClass.showThread();
+        System.out.println("******CP*create***begin******");
         if (personSQLiteOpenHelper == null) {
             Context context = getContext();
             personSQLiteOpenHelper = new PersonSQLiteOpenHelper(context);
         }
+        System.out.println("******CP*create***over******");
 
-        System.out.println("******CP*create*over******");
         return true;
     }
 
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        System.out.println("person content provide query");
+        System.out.println("~~" + getClass().getSimpleName() + ".query~~");
         ToolClass.showThread();
+
         SQLiteQueryBuilder sqLiteQueryBuilder = new SQLiteQueryBuilder();
         sqLiteQueryBuilder.setTables(DATA_TABLE_NAME);
         String sql = sqLiteQueryBuilder.buildQuery(projection, selection, null, null, sortOrder, null);

@@ -24,6 +24,7 @@ public class CententObserverActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("~~" + getClass().getSimpleName() + ".onCreate~~");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cursor);
     }
@@ -36,7 +37,8 @@ public class CententObserverActivity extends AppCompatActivity {
 //        contentValues.put("person_age", new Random().nextInt(100));
 //        pcp.insert(uri, contentValues);
 
-        Uri uri = Uri.parse("content://A/B/C/D");
+        Uri uri = Uri.parse("content://ABC/D/E");
+        getContentResolver().registerContentObserver(uri, false, contentObserver);
         getContentResolver().notifyChange(uri, null);
 
     }
@@ -53,7 +55,7 @@ public class CententObserverActivity extends AppCompatActivity {
 //        Uri uri = Uri.parse("content://A/B");
 //        Cursor cursor = pcp.query(uri, projection, null, null, sortOrder);
 
-        Uri uri = Uri.parse("content://A/B/C");
+        Uri uri = Uri.parse("content://ABC/D/E");
         getContentResolver().registerContentObserver(uri, false, this.contentObserver);
 
     }
