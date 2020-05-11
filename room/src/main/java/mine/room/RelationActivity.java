@@ -9,6 +9,7 @@ import android.view.View;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2018/9/6.
@@ -98,15 +99,18 @@ public class RelationActivity extends AppCompatActivity {
             @Override
             public void run() {
                 long id;
+
                 Company company = new Company();
-                company.setCompany_name("Microsoft");
-                id= db.companyDao().insert1(company);
+                company.setCompany_name("Company" + new Random().nextInt(100));
+                id = db.companyDao().insert1(company);
                 System.out.println("company'id is " + id);
 
-                Employee employee = new Employee();
-                employee.setCname(company.getCompany_name());
-                id = db.employeeDao().insert1(employee);
-                System.out.println("employee'id is " + id);
+                for (int i = new Random().nextInt(5); i > 0; i--) {
+                    Employee employee = new Employee();
+                    employee.setCname(company.getCompany_name());
+                    id = db.employeeDao().insert1(employee);
+                    System.out.println("employee'id is " + id);
+                }
             }
         }.start();
 
