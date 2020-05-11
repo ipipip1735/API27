@@ -105,9 +105,9 @@ public class OneTimeActivity extends AppCompatActivity {
         System.out.println("~~button.single~~");
 
 //        equeue();
-//        workInfo();
+        workInfo();
 //        chain();
-        uri();
+//        uri();
 //        constraints();
 //        operation();
 //        stop();
@@ -230,7 +230,7 @@ public class OneTimeActivity extends AppCompatActivity {
         WorkManager workManager = WorkManager.getInstance(this);
 
 
-        //方法一：监听器某个任务状态的变化
+        //方法一：监听某个任务状态的变化
         LiveData<WorkInfo> liveData = workManager.getWorkInfoByIdLiveData(one.getId());
         liveData.observe(this, new Observer<WorkInfo>() {
             @Override
@@ -241,7 +241,7 @@ public class OneTimeActivity extends AppCompatActivity {
         });
 
 
-        //方法二：监听同意标签所有任务状态的变化
+        //方法二：监听同一标签所有任务状态的变化
 //        LiveData<List<WorkInfo>> listLiveData = workManager.getWorkInfosByTagLiveData(tag);
 //        listLiveData.observe(this, new Observer<List<WorkInfo>>() {
 //            @Override
