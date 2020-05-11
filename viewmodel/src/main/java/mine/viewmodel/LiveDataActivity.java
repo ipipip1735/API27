@@ -51,8 +51,6 @@ public class LiveDataActivity extends AppCompatActivity {
 //        });
 
 
-
-
         //方法二
 //        userLiveData = Transformations.switchMap(carLiveData, car->{
 //            System.out.println();
@@ -129,7 +127,20 @@ public class LiveDataActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        carLiveData.postValue(new Car("VOLVO"));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                carLiveData.postValue(new Car("VOLVO"));
+            }
+        }).start();
+
+//        carLiveData.setValue(new Car("VOLVO"));
 //        System.out.println(userLiveData);
     }
 

@@ -85,8 +85,7 @@ public class ForeignKeyActivity extends AppCompatActivity {
 
     public void insert(View view) {
         System.out.println("~~button.insert~~");
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "userDB")
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "userDB")
                 .allowMainThreadQueries()
                 .build();
 

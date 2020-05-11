@@ -144,8 +144,8 @@ public class RawQueryActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-//        rawQueryInWork();
-        liveDataRawQueryInWork();
+        rawQueryInWork();
+//        liveDataRawQueryInWork();
 
     }
 
@@ -182,9 +182,9 @@ public class RawQueryActivity extends AppCompatActivity {
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(sql, objects);
 
 
-//        System.out.println(query);
-//        System.out.println("ArgCount is " + query.getArgCount());
-//        System.out.println("sql is " + query.getSql());
+        System.out.println(query);
+        System.out.println("ArgCount is " + query.getArgCount());
+        System.out.println("sql is " + query.getSql());
 
 
         new Thread() {

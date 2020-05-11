@@ -27,7 +27,7 @@ public class BasicRxWorker extends RxWorker {
         super(appContext, workerParams);
         System.out.println("--" + getClass().getSimpleName() + ".constructor--");
         System.out.println(Thread.currentThread());
-        System.out.println("workParams is " + workerParams);
+        System.out. println("workParams is " + workerParams);
     }
 
     @NonNull
