@@ -54,9 +54,6 @@ public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insert1(User user);
 
-    @RawQuery(observedEntities = User.class)
-    LiveData<List<Long>> liveDateRawInsert(SupportSQLiteQuery query);
-
     @Delete
     int delete(User... user);
 

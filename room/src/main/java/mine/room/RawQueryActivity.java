@@ -89,35 +89,8 @@ public class RawQueryActivity extends AppCompatActivity {
 
     public void insert(View view) {
         System.out.println("~~button.insert~~");
-//        insertInUI();
-        rawInsert();
-
+        insertInUI();
     }
-
-    private void rawInsert() {
-
-        if (Objects.isNull(db))
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "userDB").build();
-
-        String s = "INSERT INTO User(first_name, last_name, age, car_id)" +
-                " VALUES(chris" + new Random().nextInt(100) + ", " +
-                "lee, " +
-                new Random().nextInt(100) + ", " +
-                1 + ")";
-        System.out.println(s);
-        SimpleSQLiteQuery sql = new SimpleSQLiteQuery(s);
-
-        new Thread() {
-            @Override
-            public void run() {
-                db.userDao().liveDateRawInsert(sql);
-//                System.out.println("id is " + id);
-            }
-        }.start();
-
-    }
-
 
     private void insertInUI() {
 
