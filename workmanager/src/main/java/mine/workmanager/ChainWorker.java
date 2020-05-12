@@ -7,10 +7,8 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import java.lang.reflect.Method;
-
-public class OnceWorker extends Worker {
-    public OnceWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+public class ChainWorker extends Worker {
+    public ChainWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         System.out.println("--" + getClass().getSimpleName() + ".constructor--");
         System.out.println(Thread.currentThread());
@@ -51,7 +49,7 @@ public class OnceWorker extends Worker {
 //        System.out.println("getTags is " + getTags());
 //        System.out.println("getInputData is " + getInputData());
         System.out.println("one is " + getInputData().getInt("one", -1));
-//        System.out.println("two is " + getInputData().getInt("two", -1));
+        System.out.println("r is " + getInputData().getInt("r", -1));
 //        System.out.println("getNetwork is " + getNetwork());
 //        System.out.println("getRunAttemptCount is " + getRunAttemptCount());
 //        System.out.println("getTriggeredContentAuthorities is " + getTriggeredContentAuthorities());
@@ -66,6 +64,14 @@ public class OnceWorker extends Worker {
             }
         }
 
-        return Result.success();
+
+//        return Result.success();
+
+        int i = getInputData().getInt("one", -1);
+        System.out.println(i);
+        if(i == 111) i = 111999;
+        if(i == 222) i = 222999;
+        System.out.println(i);
+        return Result.success(new Data.Builder().putInt("one", i).build());
     }
 }

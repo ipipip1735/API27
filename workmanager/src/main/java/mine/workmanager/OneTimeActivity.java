@@ -22,6 +22,7 @@ import androidx.work.WorkRequest;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
@@ -105,8 +106,8 @@ public class OneTimeActivity extends AppCompatActivity {
         System.out.println("~~button.single~~");
 
 //        equeue();
-        workInfo();
-//        chain();
+//        workInfo();
+        chain();
 //        uri();
 //        constraints();
 //        operation();
@@ -132,7 +133,6 @@ public class OneTimeActivity extends AppCompatActivity {
         id = one.getId();
 
         WorkManager workManager = WorkManager.getInstance(this);
-
         workManager.enqueue(one);
 
     }
@@ -185,27 +185,30 @@ public class OneTimeActivity extends AppCompatActivity {
                 .setInitialDelay(1L, TimeUnit.SECONDS)
                 .build();
         id = one.getId();
+        System.out.println("one'id is " + one.getId());
 
         OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("two")
                 .build();
+        System.out.println("two'id is " + two.getId());
 
         OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
                 .addTag("three")
                 .setInputData(new Data.Builder().putInt("one", 111).build())
                 .setInputMerger(OverwritingInputMerger.class)
                 .build();
+        System.out.println("three'id is " + three.getId());
 
 
         final WorkManager workManager = WorkManager.getInstance(this);
 
         //方式一：创建3个队列（每个队列仅包含单个任务）
-        workManager.enqueue(one);
-        workManager.enqueue(two);
-        workManager.enqueue(three);
+//        workManager.enqueue(one);
+//        workManager.enqueue(two);
+//        workManager.enqueue(three);
 
         //方式二：创建1个队列（包含多个任务）
-//        workManager.enqueue(Arrays.asList(one, two, three));
+        workManager.enqueue(Arrays.asList(one, two, three));
 
     }
 
@@ -231,14 +234,14 @@ public class OneTimeActivity extends AppCompatActivity {
 
 
         //方法一：监听某个任务状态的变化
-        LiveData<WorkInfo> liveData = workManager.getWorkInfoByIdLiveData(one.getId());
-        liveData.observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                System.out.println("~~onChanged~~");
-                System.out.println(workInfo);
-            }
-        });
+//        LiveData<WorkInfo> liveData = workManager.getWorkInfoByIdLiveData(one.getId());
+//        liveData.observe(this, new Observer<WorkInfo>() {
+//            @Override
+//            public void onChanged(WorkInfo workInfo) {
+//                System.out.println("~~onChanged~~");
+//                System.out.println(workInfo);
+//            }
+//        });
 
 
         //方法二：监听同一标签所有任务状态的变化
@@ -252,7 +255,8 @@ public class OneTimeActivity extends AppCompatActivity {
 //        });
 
 
-        //监听器（操作状态，操作就是在子线程中异步访问数据库）
+        //监听器（操作状态，WorkerManager将在子线程中异步访问数据库记录操作，这里可以监听读写数据库是否成功，一般批处理时，将给数据库插入大批数据才会出现延时）
+//        Operation operation = workManager.enqueue(Arrays.asList(one));
         Operation operation = workManager.enqueue(Arrays.asList(one, two, three));
         operation.getState().observe(this, new Observer<Operation.State>() {
             @Override
@@ -269,32 +273,39 @@ public class OneTimeActivity extends AppCompatActivity {
         System.out.println("~~chain~~");
 
         //创建4个任务
-        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
+        OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(ChainWorker.class)
                 .addTag("one")
-                .build();
-        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(OnceWorker.class)
-                .addTag("two")
-                .setInitialDelay(1L, TimeUnit.SECONDS)
-                .build();
-        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(OnceWorker.class)
-                .addTag("three")
                 .setInputData(new Data.Builder().putInt("one", 111).build())
+                .build();
+        OneTimeWorkRequest two = new OneTimeWorkRequest.Builder(ChainWorker.class)
+                .addTag("two")
+                .setInputData(new Data.Builder().putInt("one", 222).build())
+//                .setInitialDelay(1L, TimeUnit.SECONDS)
+                .build();
+        OneTimeWorkRequest three = new OneTimeWorkRequest.Builder(ChainWorker.class)
+                .addTag("three")
+                .setInputData(new Data.Builder().putInt("one", 333).build())
                 .setInputMerger(OverwritingInputMerger.class)
                 .build();
-        OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(OnceWorker.class)
+        OneTimeWorkRequest four = new OneTimeWorkRequest.Builder(ChainWorker.class)
                 .addTag("four")
-                .setInputData(new Data.Builder().putInt("one", 111).build())
+                .setInputData(new Data.Builder().putInt("one", 444).build())
                 .setInputMerger(OverwritingInputMerger.class)
                 .build();
 
         WorkManager workManager = WorkManager.getInstance(this);
 
         //方式一：创建3个队列（每任务无依赖关系，并行执行）
-        workManager.enqueue(Arrays.asList(one, two, three, four));
+//        workManager.enqueue(Arrays.asList(one, two, three, four));
 
 
         //方式二：创建1个队列（任务之间有依赖关系）
-        workManager.beginWith(Arrays.asList(one, two))
+//        workManager.beginWith(three)
+//                .then(one)
+//                .enqueue();
+
+        //方式三：创建1个队列（父任务为并行任务）
+        workManager.beginWith(Arrays.asList(two, one))
                 .then(Arrays.asList(three, four))
                 .enqueue();
 
@@ -345,15 +356,15 @@ public class OneTimeActivity extends AppCompatActivity {
         });
 
 
-        LiveData<Operation.State> liveData = operation.getState();//获取LiveData
-        liveData.observe(this, new Observer<Operation.State>() {
-            @Override
-            public void onChanged(Operation.State state) {
-                System.out.println("~~operation.getState.onChanged~~");
-                System.out.println("stata is " + state);
-
-            }
-        });
+//        LiveData<Operation.State> liveData = operation.getState();//获取LiveData
+//        liveData.observe(this, new Observer<Operation.State>() {
+//            @Override
+//            public void onChanged(Operation.State state) {
+//                System.out.println("~~operation.getState.onChanged~~");
+//                System.out.println("stata is " + state);
+//
+//            }
+//        });
 
 
     }
@@ -412,13 +423,14 @@ public class OneTimeActivity extends AppCompatActivity {
                 .setBackoffCriteria(BackoffPolicy.LINEAR, WorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
                 .build();
 
-        WorkManager workManager = WorkManager.getInstance(this);
+        final WorkManager workManager = WorkManager.getInstance(this);
         workManager.getWorkInfoByIdLiveData(retry.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         System.out.println("~~onChanged~~");
                         System.out.println(workInfo);
+
                     }
                 });
         workManager.enqueue(retry);
@@ -447,8 +459,8 @@ public class OneTimeActivity extends AppCompatActivity {
     }
 
 
-    public void unique(View view) {
-        System.out.println("~~button.unique~~");
+    public void del(View view) {
+        System.out.println("~~button.del~~");
 
 
         OneTimeWorkRequest one = new OneTimeWorkRequest.Builder(OnceWorker.class)
