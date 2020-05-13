@@ -11,11 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/contentProvide" />
-            <option value="$PROJECT_DIR$/room" />
-            <option value="$PROJECT_DIR$/sqlitedb" />
-            <option value="$PROJECT_DIR$/viewmodel" />
-            <option value="$PROJECT_DIR$/workmanager" />
+            <option value="$PROJECT_DIR$/recyclerview" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

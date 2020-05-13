@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
+
 /**
  * Created by Administrator on 2019/3/26.
  */
@@ -41,24 +45,24 @@ public class MainActivity extends AppCompatActivity {
 
 
         dataset = new ArrayList<>(12);
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 180; i++) {
             dataset.add("item" + i);
         }
         adapter = new RVAdapter<>(dataset, this.list);
 
         recyclerView = findViewById(R.id.rv);
-        recyclerView.setHasFixedSize(true);//使用固定尺寸
+//        recyclerView.setHasFixedSize(true);//使用固定尺寸
         recyclerView.setLayoutManager(layoutManager);//绑定布局管理器
         recyclerView.setAdapter(adapter);//绑定适配器
 
-        recyclerView.setItemViewCacheSize(3);//设置离屏缓存尺寸，默认尺寸为2
-        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 6);//设置缓存池尺寸，默认尺寸为5
+//        recyclerView.setItemViewCacheSize(3);//设置离屏缓存尺寸，默认尺寸为2
+//        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 6);//设置缓存池尺寸，默认尺寸为5
 
 
 //        bindListen(); //绑定各种监听器
-//        bindAnimator(); //绑定动画
+        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
-        bindDragDrop();//绑定侧滑
+//        bindDragDrop();//绑定侧滑
     }
 
     @Override
@@ -264,7 +268,6 @@ public class MainActivity extends AppCompatActivity {
             TextView textView = (TextView) recyclerView.getChildAt(i);
             System.out.print(textView.getText() + "|");
         }
-        System.out.println("");
 
     }
 
@@ -317,11 +320,12 @@ public class MainActivity extends AppCompatActivity {
                 Random random = new Random();
                 Paint paint = new Paint();
                 int width = parent.getWidth();
+
                 for (int i = 1; i < parent.getChildCount(); i++) { //遍历绘制
                     int left = parent.getChildAt(i).getLeft();
                     int top = parent.getChildAt(i).getTop();
-//                    paint.setColor(Color.BLUE);
-                    paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+                    paint.setColor(Color.BLUE);
+//                    paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
                     c.drawLine(left, top, width, top, paint);
                 }
 
@@ -333,9 +337,32 @@ public class MainActivity extends AppCompatActivity {
 
                 System.out.println(state);
                 System.out.println("getItemCount is " + state.getItemCount());
+                System.out.println("getChildCount is " + parent.getChildCount());
                 System.out.println("getRemainingScrollHorizontal is " + state.getRemainingScrollHorizontal());
                 System.out.println("getRemainingScrollVertical is " + state.getRemainingScrollVertical());
                 System.out.println("getTargetScrollPosition is " + state.getTargetScrollPosition());
+
+//                Paint paint = new Paint();
+//                int width = parent.getWidth();
+//                int height = parent.getHeight();
+//                c.drawRect(100, 100, width/2, height/2, paint);
+
+
+                Random random = new Random();
+                Paint paint = new Paint();
+                int width = parent.getWidth();
+
+                for (int i = 0; i < parent.getChildCount(); i++) { //遍历绘制
+                    int left = parent.getChildAt(i).getLeft();
+                    int top = parent.getChildAt(i).getTop();
+                    int right = parent.getChildAt(i).getRight();
+                    int bottom = parent.getChildAt(i).getBottom();
+//                    paint.setColor(Color.BLUE);
+                    paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+                    c.drawRect(left+10, top+10, right-10, bottom-10, paint);
+                }
+
+
 
             }
 
@@ -358,8 +385,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindAnimator() {
 
-//        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
-        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
+        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
+//        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
 
 //        animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() { //所有Item动画完成时调用
@@ -397,39 +424,39 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                System.out.println("~~onScrollStateChanged~~");
-//                switch (newState) {
-//                    case SCROLL_STATE_IDLE:
-//                        System.out.println("newState is SCROLL_STATE_IDLE");
-//                        break;
-//                    case SCROLL_STATE_DRAGGING:
-//                        System.out.println("newState is SCROLL_STATE_DRAGGING");
-//                        break;
-//                    case SCROLL_STATE_SETTLING:
-//                        System.out.println("newState is SCROLL_STATE_SETTLING");
-//                        break;
-//                    default:
-//                        System.out.println("newState is unknown");
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                System.out.println("~~onScrolled~~");
-//                System.out.println("dx is " + dx);
-//                System.out.println("dy is " + dy);
-//                //滚动监听器
-//                System.out.println("computeHorizontalScrollExtent() is " + recyclerView.computeHorizontalScrollExtent());
-//                System.out.println("computeHorizontalScrollOffset() is " + recyclerView.computeHorizontalScrollOffset());
-//                System.out.println("computeHorizontalScrollRange() is " + recyclerView.computeHorizontalScrollRange());
-//                System.out.println("computeVerticalScrollExtent() is " + recyclerView.computeVerticalScrollExtent());
-//                System.out.println("computeVerticalScrollOffset() is " + recyclerView.computeVerticalScrollOffset());
-//                System.out.println("computeVerticalScrollRange() is " + recyclerView.computeVerticalScrollRange());
-//            }
-//        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                System.out.println("~~onScrollStateChanged~~");
+                switch (newState) {
+                    case SCROLL_STATE_IDLE:
+                        System.out.println("newState is SCROLL_STATE_IDLE");
+                        break;
+                    case SCROLL_STATE_DRAGGING:
+                        System.out.println("newState is SCROLL_STATE_DRAGGING");
+                        break;
+                    case SCROLL_STATE_SETTLING:
+                        System.out.println("newState is SCROLL_STATE_SETTLING");
+                        break;
+                    default:
+                        System.out.println("newState is unknown");
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                System.out.println("~~onScrolled~~");
+                System.out.println("dx is " + dx);
+                System.out.println("dy is " + dy);
+                //滚动监听器
+                System.out.println("computeHorizontalScrollExtent() is " + recyclerView.computeHorizontalScrollExtent());
+                System.out.println("computeHorizontalScrollOffset() is " + recyclerView.computeHorizontalScrollOffset());
+                System.out.println("computeHorizontalScrollRange() is " + recyclerView.computeHorizontalScrollRange());
+                System.out.println("computeVerticalScrollExtent() is " + recyclerView.computeVerticalScrollExtent());
+                System.out.println("computeVerticalScrollOffset() is " + recyclerView.computeVerticalScrollOffset());
+                System.out.println("computeVerticalScrollRange() is " + recyclerView.computeVerticalScrollRange());
+            }
+        });
 
 
     }

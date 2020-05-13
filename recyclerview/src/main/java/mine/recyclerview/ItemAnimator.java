@@ -28,7 +28,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
     @Override
     public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
-        System.out.println("-->pendingDisappearance<--");
+        System.out.println("-->animateDisappearance<--");
         System.out.println(((TextView) viewHolder.itemView).getText() + "|viewHolder is " + viewHolder);
 
         //获取信息
@@ -64,7 +64,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
     @Override
     public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-        System.out.println("-->pendingAppearance<--");
+        System.out.println("-->animateAppearance<--");
         System.out.println(((TextView) viewHolder.itemView).getText() + "|viewHolder is " + viewHolder);
 
         //获取信息
@@ -102,7 +102,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
     @Override
     public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-        System.out.println("-->pendingPersistence<--");
+        System.out.println("-->animatePersistence<--");
         System.out.println(((TextView) viewHolder.itemView).getText() + "|viewHolder is " + viewHolder);
 
         //获取信息
