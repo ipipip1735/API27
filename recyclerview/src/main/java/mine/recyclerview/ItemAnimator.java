@@ -2,6 +2,7 @@ package mine.recyclerview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +54,9 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         System.out.println("target.getRight is " + viewHolder.itemView.getRight());
         System.out.println("target.getBottom is " + viewHolder.itemView.getBottom());
 
+        System.out.println("getAlpha is " + viewHolder.itemView.getAlpha());
+        System.out.println("getTranslationX is " + viewHolder.itemView.getTranslationX());
+
         //通过布局值计算动画值，这里为了简化直接取布局值
         float[] values = new float[2];
         values[0] = viewHolder.itemView.getAlpha();
@@ -89,13 +93,13 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         System.out.println("target.getRight is " + viewHolder.itemView.getRight());
         System.out.println("target.getBottom is " + viewHolder.itemView.getBottom());
 
-        //通过布局值计算动画值，这里为了简化直接取布局值
-        float[] values = new float[2];
-        values[0] = viewHolder.itemView.getAlpha();;
-        values[1] = viewHolder.itemView.getTranslationX();
-        pendingAppearance.put(viewHolder, values);
+        System.out.println("target.getAlpha is " + viewHolder.itemView.getAlpha());
 
-        viewHolder.itemView.setAlpha(viewHolder.itemView.getAlpha());
+        //通过布局值计算动画值，这里为了简化直接取布局值
+        float[] values = new float[1];
+        values[0] = viewHolder.itemView.getTranslationX();
+        pendingAppearance.put(viewHolder, values);
+        viewHolder.itemView.setAlpha(0f);
         viewHolder.itemView.setTranslationX(-viewHolder.itemView.getWidth());
         return true;
     }
@@ -128,11 +132,12 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         System.out.println("target.getBottom is " + viewHolder.itemView.getBottom());
 
         //通过布局值计算动画值，这里为了简化直接取布局值
-        float[] values = new float[1];
-        values[0] = postLayoutInfo.top;
+        float[] values = new float[2];
+        values[0] = preLayoutInfo.top;
+        values[1] = postLayoutInfo.top;
         pendingPersistence.put(viewHolder, values);
 
-        viewHolder.itemView.setY(preLayoutInfo.top);
+        viewHolder.itemView.setY(preLayoutInfo.top);//设置为布局修改前的值
         return true;
     }
 
@@ -168,18 +173,18 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
         long duration = 3000L;
 
-        //创建出屏动画
+        //创建出屏动画（出屏动画几乎看不见，因为他们被直接删除了）
         for (final RecyclerView.ViewHolder holder : pendingDisappearance.keySet()) {
             final float alpha = pendingDisappearance.get(holder)[0];
             final float x = pendingDisappearance.get(holder)[1];
 
             animateDisappearance.add(holder);
             holder.itemView.animate().setDuration(duration)
-                    .alpha(alpha * 0f)
-                    .translationX(x + 150f)
+                    .translationX(-holder.itemView.getWidth())
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            System.out.println("~~onAnimationEnd~~");
                             holder.itemView.setAlpha(alpha);
                             holder.itemView.setTranslationX(x);
                             dispatchAnimationFinished(holder);
@@ -199,7 +204,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
             animateAppearance.add(holder);
             holder.itemView.animate().setDuration(duration)
                     .translationX(pendingAppearance.get(holder)[0])
-                    .alpha(pendingAppearance.get(holder)[0])
+                    .alpha(1f)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -219,8 +224,11 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         for (final RecyclerView.ViewHolder holder : pendingPersistence.keySet()) {
 
             animatePersistence.add(holder);
+
+            //方式一：使用View动画
+//            holder.itemView.setY(pendingPersistence.get(holder)[0]);//修改布局属性值
             holder.itemView.animate().setDuration(duration)
-                    .y(pendingPersistence.get(holder)[0])
+                    .y(pendingPersistence.get(holder)[1])
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -230,6 +238,19 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
                         }
                     })
                     .start();
+
+            //方式二：使用对象动画
+//            ObjectAnimator animator = ObjectAnimator.ofFloat(holder.itemView, "y", pendingPersistence.get(holder));
+//            animator.addListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    dispatchAnimationFinished(holder);
+//                    animatePersistence.remove(holder);
+//                    if(isRunning()) dispatchAnimationsFinished();
+//                }
+//            });
+//            animator.setDuration(duration).start();
+
             System.out.println("pendingPersistence|" + ((TextView) holder.itemView).getText());
         }
         pendingPersistence.clear();
