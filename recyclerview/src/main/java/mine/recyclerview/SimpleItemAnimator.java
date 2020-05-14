@@ -27,9 +27,8 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         System.out.println(((TextView) holder.itemView).getText() + "|holder is " + holder);
 
         View v = holder.itemView;
-        float[] values = new float[2];
+        float[] values = new float[1];
         values[0] = v.getTranslationX();
-        values[1] = v.getAlpha();
         animateRemove.put(holder, values);
         return true;
     }
@@ -40,12 +39,12 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         System.out.println(((TextView) holder.itemView).getText() + "|holder is " + holder);
 
         View v = holder.itemView;
-        float[] values = new float[2];
+        float[] values = new float[1];
         values[0] = v.getTranslationX();
-        values[1] = v.getAlpha();
+
         animateAdd.put(holder, values);
 
-        v.setAlpha(0);
+        v.setAlpha(0f);
         v.setTranslationX(-v.getWidth());
 
         return true;
@@ -100,13 +99,11 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
 
         System.out.println("animateRemove'count is " + animateRemove.keySet().size());
         for (final RecyclerView.ViewHolder holder : animateRemove.keySet()) {
-
             final float x = animateRemove.get(holder)[0];
-            final float alpha = animateRemove.get(holder)[1];
 
             holder.itemView.animate().setDuration(duration)
                     .translationX(animateRemove.get(holder)[0] + 150f)
-                    .alpha(animateRemove.get(holder)[1] * 0f)
+                    .alpha(0f)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -114,7 +111,7 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
                             System.out.println(holder);
                             holder.itemView.animate().setListener(null);
                             holder.itemView.setTranslationX(x);
-                            holder.itemView.setAlpha(alpha);
+                            holder.itemView.setAlpha(0f);
                             dispatchRemoveFinished(holder);
                         }
                     });
@@ -127,7 +124,7 @@ public class SimpleItemAnimator extends android.support.v7.widget.SimpleItemAnim
         for (final RecyclerView.ViewHolder holder : animateAdd.keySet()) {
             holder.itemView.animate().setDuration(duration)
                     .translationX(animateAdd.get(holder)[0])
-                    .alpha(animateAdd.get(holder)[1])
+                    .alpha(1f)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {

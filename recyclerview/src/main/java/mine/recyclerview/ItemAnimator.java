@@ -56,12 +56,14 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
         System.out.println("getAlpha is " + viewHolder.itemView.getAlpha());
         System.out.println("getTranslationX is " + viewHolder.itemView.getTranslationX());
+        System.out.println("getTranslationY is " + viewHolder.itemView.getTranslationY());
 
         //通过布局值计算动画值，这里为了简化直接取布局值
-        float[] values = new float[2];
-        values[0] = viewHolder.itemView.getAlpha();
-        values[1] = viewHolder.itemView.getTranslationX();
+        float[] values = new float[1];
+        values[0] = viewHolder.itemView.getTranslationX();
         pendingDisappearance.put(viewHolder, values);
+
+        viewHolder.itemView.setTop(preLayoutInfo.top);
 
         return true;
     }
@@ -99,6 +101,8 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         float[] values = new float[1];
         values[0] = viewHolder.itemView.getTranslationX();
         pendingAppearance.put(viewHolder, values);
+
+        //将View属性值设置为布局前的属性值
         viewHolder.itemView.setAlpha(0f);
         viewHolder.itemView.setTranslationX(-viewHolder.itemView.getWidth());
         return true;
@@ -137,6 +141,7 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
         values[1] = postLayoutInfo.top;
         pendingPersistence.put(viewHolder, values);
 
+        //将View属性值设置为布局前的属性值
         viewHolder.itemView.setY(preLayoutInfo.top);//设置为布局修改前的值
         return true;
     }
@@ -173,19 +178,19 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
 
         long duration = 3000L;
 
-        //创建出屏动画（出屏动画几乎看不见，因为他们被直接删除了）
+        //创建出屏动画
         for (final RecyclerView.ViewHolder holder : pendingDisappearance.keySet()) {
-            final float alpha = pendingDisappearance.get(holder)[0];
-            final float x = pendingDisappearance.get(holder)[1];
+            final float x = pendingDisappearance.get(holder)[0];
 
             animateDisappearance.add(holder);
             holder.itemView.animate().setDuration(duration)
+                    .alpha(0f)
                     .translationX(-holder.itemView.getWidth())
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            System.out.println("~~onAnimationEnd~~");
-                            holder.itemView.setAlpha(alpha);
+                            System.out.println("~~Disappearance onAnimationEnd~~");
+                            holder.itemView.setAlpha(1f);
                             holder.itemView.setTranslationX(x);
                             dispatchAnimationFinished(holder);
                             animateDisappearance.remove(holder);
@@ -226,30 +231,31 @@ public class ItemAnimator extends RecyclerView.ItemAnimator {
             animatePersistence.add(holder);
 
             //方式一：使用View动画
-//            holder.itemView.setY(pendingPersistence.get(holder)[0]);//修改布局属性值
-            holder.itemView.animate().setDuration(duration)
-                    .y(pendingPersistence.get(holder)[1])
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            dispatchAnimationFinished(holder);
-                            animatePersistence.remove(holder);
-                            if(isRunning()) dispatchAnimationsFinished();
-                        }
-                    })
-                    .start();
+//            holder.itemView.animate().setDuration(duration)
+//                    .y(pendingPersistence.get(holder)[1])
+//                    .setListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            dispatchAnimationFinished(holder);
+//                            animatePersistence.remove(holder);
+//                            if(isRunning()) dispatchAnimationsFinished();
+//                        }
+//                    })
+//                    .start();
 
             //方式二：使用对象动画
-//            ObjectAnimator animator = ObjectAnimator.ofFloat(holder.itemView, "y", pendingPersistence.get(holder));
-//            animator.addListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    dispatchAnimationFinished(holder);
-//                    animatePersistence.remove(holder);
-//                    if(isRunning()) dispatchAnimationsFinished();
-//                }
-//            });
-//            animator.setDuration(duration).start();
+            ObjectAnimator animator = ObjectAnimator.ofFloat(holder.itemView, "y", pendingPersistence.get(holder));
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    dispatchAnimationFinished(holder);
+                    animatePersistence.remove(holder);
+                    if(isRunning()) dispatchAnimationsFinished();
+                }
+            });
+            animator.setDuration(duration).start();
+
+
 
             System.out.println("pendingPersistence|" + ((TextView) holder.itemView).getText());
         }

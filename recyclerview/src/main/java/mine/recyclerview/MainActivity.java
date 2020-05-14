@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
 
-        layoutManager = new LinearLayoutManager(this);
-//        layoutManager = new LayoutManaager();//使用自定义布局管理器
+//        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LayoutManaager();//使用自定义布局管理器
 
 
 
@@ -59,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 6);//设置缓存池尺寸，默认尺寸为5
 
 
-//        bindListen(); //绑定各种监听器
-        bindAnimator(); //绑定动画
+        bindListen(); //绑定各种监听器
+//        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
 //        bindDragDrop();//绑定侧滑
     }
@@ -385,8 +386,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindAnimator() {
 
-        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
-//        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
+//        RecyclerView.ItemAnimator animator = new ItemAnimator(); //实现RecyclerView.ItemAnimator抽象类
+        RecyclerView.ItemAnimator animator = new SimpleItemAnimator(); //实现RecyclerView.SimpleItemAnimator抽象类
 
 
 //        animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() { //所有Item动画完成时调用
@@ -403,60 +404,60 @@ public class MainActivity extends AppCompatActivity {
 
 
         //拦截器
-//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-//            @Override
-//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//                System.out.println("~~onInterceptTouchEvent~~");
-//                return true;
-//            }
-//
-//            @Override
-//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//                System.out.println("~~onTouchEvent~~");
-//
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//                System.out.println("~~onRequestDisallowInterceptTouchEvent~~");
-//
-//            }
-//        });
-
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                System.out.println("~~onScrollStateChanged~~");
-                switch (newState) {
-                    case SCROLL_STATE_IDLE:
-                        System.out.println("newState is SCROLL_STATE_IDLE");
-                        break;
-                    case SCROLL_STATE_DRAGGING:
-                        System.out.println("newState is SCROLL_STATE_DRAGGING");
-                        break;
-                    case SCROLL_STATE_SETTLING:
-                        System.out.println("newState is SCROLL_STATE_SETTLING");
-                        break;
-                    default:
-                        System.out.println("newState is unknown");
-                }
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                System.out.println("~~onInterceptTouchEvent~~");
+                return true;
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                System.out.println("~~onScrolled~~");
-                System.out.println("dx is " + dx);
-                System.out.println("dy is " + dy);
-                //滚动监听器
-                System.out.println("computeHorizontalScrollExtent() is " + recyclerView.computeHorizontalScrollExtent());
-                System.out.println("computeHorizontalScrollOffset() is " + recyclerView.computeHorizontalScrollOffset());
-                System.out.println("computeHorizontalScrollRange() is " + recyclerView.computeHorizontalScrollRange());
-                System.out.println("computeVerticalScrollExtent() is " + recyclerView.computeVerticalScrollExtent());
-                System.out.println("computeVerticalScrollOffset() is " + recyclerView.computeVerticalScrollOffset());
-                System.out.println("computeVerticalScrollRange() is " + recyclerView.computeVerticalScrollRange());
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                System.out.println("~~onTouchEvent~~");
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                System.out.println("~~onRequestDisallowInterceptTouchEvent~~");
+
             }
         });
+
+
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                System.out.println("~~onScrollStateChanged~~");
+//                switch (newState) {
+//                    case SCROLL_STATE_IDLE:
+//                        System.out.println("newState is SCROLL_STATE_IDLE");
+//                        break;
+//                    case SCROLL_STATE_DRAGGING:
+//                        System.out.println("newState is SCROLL_STATE_DRAGGING");
+//                        break;
+//                    case SCROLL_STATE_SETTLING:
+//                        System.out.println("newState is SCROLL_STATE_SETTLING");
+//                        break;
+//                    default:
+//                        System.out.println("newState is unknown");
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                System.out.println("~~onScrolled~~");
+//                System.out.println("dx is " + dx);
+//                System.out.println("dy is " + dy);
+//                //滚动监听器
+//                System.out.println("computeHorizontalScrollExtent() is " + recyclerView.computeHorizontalScrollExtent());
+//                System.out.println("computeHorizontalScrollOffset() is " + recyclerView.computeHorizontalScrollOffset());
+//                System.out.println("computeHorizontalScrollRange() is " + recyclerView.computeHorizontalScrollRange());
+//                System.out.println("computeVerticalScrollExtent() is " + recyclerView.computeVerticalScrollExtent());
+//                System.out.println("computeVerticalScrollOffset() is " + recyclerView.computeVerticalScrollOffset());
+//                System.out.println("computeVerticalScrollRange() is " + recyclerView.computeVerticalScrollRange());
+//            }
+//        });
 
 
     }
