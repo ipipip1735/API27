@@ -48,112 +48,112 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh() {
                 System.out.println("~~onRefresh~~");
 
-                //方式一：异步更新
-//                listView.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        dataset.set(1, "name--");
-//                        ((ArrayAdapter<String>) listView.getAdapter()).notifyDataSetChanged();
-//                        swipeRefreshLayout.setRefreshing(false);
-//                    }
-//                }, 2000L);
-
-                //方式二：异步更新
-                new Thread(new Runnable() {
+                //方式一：同步更新
+                listView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //耗时任务
-                        for (int i = 5; i < 7; i++) {
-                            dataset.set(i, "name--" + i);
-                            try {
-                                Thread.sleep(500L);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        //更新UI
-                        listView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((ArrayAdapter<String>) listView.getAdapter()).notifyDataSetChanged();
-                                swipeRefreshLayout.setRefreshing(false);
-                            }
-                        });
+                        dataset.set(1, "name--");
+                        ((ArrayAdapter<String>) listView.getAdapter()).notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
-                }).start();
+                }, 2000L);
+
+                //方式二：异步更新
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        //耗时任务
+//                        for (int i = 5; i < 7; i++) {
+//                            dataset.set(i, "name--" + i);
+//                            try {
+//                                Thread.sleep(500L);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        //更新UI
+//                        listView.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                ((ArrayAdapter<String>) listView.getAdapter()).notifyDataSetChanged();
+//                                swipeRefreshLayout.setRefreshing(false);
+//                            }
+//                        });
+//                    }
+//                }).start();
 
             }
         });
 
 
         //设置进度条颜色
-        swipeRefreshLayout.setColorSchemeColors(Color.argb(255, 0, 0, 255),
-                Color.argb(255, 255, 0, 0),
-                Color.argb(255, 0, 255, 0));
-        swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);//设置尺寸
+//        swipeRefreshLayout.setColorSchemeColors(Color.argb(255, 0, 0, 255),
+//                Color.argb(255, 255, 0, 0),
+//                Color.argb(255, 0, 255, 0));
+//        swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);//设置尺寸
 
         //绑定向上滚动监听器
-        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-
-            boolean isAdding = false;
-            int tag = 0;
-
-            @Override
-            public boolean canChildScrollUp(@NonNull final SwipeRefreshLayout parent, @Nullable final View child) {
-                System.out.println("~~canChildScrollUp~~");
-
-                final ListView lv = (ListView) child;
-
-
-                if (!lv.canScrollList(1) && !isAdding) {//判断能否向下滚动，按需加载
-                    isAdding = true;
-                    final Toast toast = Toast.makeText(child.getContext(), "Loading...", Toast.LENGTH_LONG);
-                    toast.show();
-
-                    new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(3000L);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            child.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    TextView textView = new TextView(child.getContext());
-                                    textView.setText("nameHead-");
-
-                                    ArrayAdapter<String> arrayAdapter = (ArrayAdapter) ((ListView) child).getAdapter();
-
-
-                                    int n = lv.getLastVisiblePosition() - lv.getFirstVisiblePosition();
-                                    tag++;
-                                    //方式一
-                                    for (int i = 0; i < n; i++) {
-                                        arrayAdapter.add("name" + tag);
-                                    }
-
-                                    //方式二
+//        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
+//
+//            boolean isAdding = false;
+//            int tag = 0;
+//
+//            @Override
+//            public boolean canChildScrollUp(@NonNull final SwipeRefreshLayout parent, @Nullable final View child) {
+//                System.out.println("~~canChildScrollUp~~");
+//
+//                final ListView lv = (ListView) child;
+//
+//
+//                if (!lv.canScrollList(1) && !isAdding) {//判断能否向下滚动，按需加载
+//                    isAdding = true;
+//                    final Toast toast = Toast.makeText(child.getContext(), "Loading...", Toast.LENGTH_LONG);
+//                    toast.show();
+//
+//                    new Thread(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                Thread.sleep(3000L);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                            child.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    TextView textView = new TextView(child.getContext());
+//                                    textView.setText("nameHead-");
+//
+//                                    ArrayAdapter<String> arrayAdapter = (ArrayAdapter) ((ListView) child).getAdapter();
+//
+//
+//                                    int n = lv.getLastVisiblePosition() - lv.getFirstVisiblePosition();
+//                                    tag++;
+//                                    //方式一
 //                                    for (int i = 0; i < n; i++) {
 //                                        arrayAdapter.add("name" + tag);
 //                                    }
-//                                    arrayAdapter.notifyDataSetChanged();
-
-
-                                    isAdding = false;//加载完成修改标记
-                                    toast.cancel();
-                                }
-                            });
-                        }
-                    }).start();
-                    return false;
-                }
-
-                return child.canScrollVertically(-1); //判断能否向上滚动，下拉刷新UI
-            }
-        });
+//
+//                                    //方式二
+////                                    for (int i = 0; i < n; i++) {
+////                                        arrayAdapter.add("name" + tag);
+////                                    }
+////                                    arrayAdapter.notifyDataSetChanged();
+//
+//
+//                                    isAdding = false;//加载完成修改标记
+//                                    toast.cancel();
+//                                }
+//                            });
+//                        }
+//                    }).start();
+//                    return false;
+//                }
+//
+//                return child.canScrollVertically(-1); //判断能否向上滚动，下拉刷新UI
+//            }
+//        });
     }
 
     @Override

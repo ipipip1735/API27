@@ -1,6 +1,6 @@
 include ':apptemp'
 //include ':cardview'
-//include ':swiperefreshlayout'
+include ':swiperefreshlayout'
 include ':recyclerview'
 //include ':search'
 //include ':media'

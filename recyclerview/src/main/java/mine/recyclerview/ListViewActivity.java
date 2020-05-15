@@ -10,6 +10,7 @@ import android.view.ViewPropertyAnimator;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,8 +25,8 @@ import java.util.Random;
 public class ListViewActivity extends AppCompatActivity {
 
     ListView listView;
-    Adapter adapter;
-    String[]  nameArray;
+    ArrayAdapter<String> nameAdapter;
+    String[] nameArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,13 @@ public class ListViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.lv);
         System.out.println(listView);
 
+//        int n = 500;
+//        nameArray = new String[n];
+//
+//        for (int i = 0; i < n; i++) {
+//            nameArray[i] = "chris" + new Random().nextInt(9999);
+//        }
+
         nameArray=new  String[]{
                 "bob",
                 "jack",
@@ -43,10 +51,10 @@ public class ListViewActivity extends AppCompatActivity {
                 "anna"
         };
 
-        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, this.nameArray);
+//        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, this.nameArray);
+        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
         listView.setAdapter(nameAdapter);
-
 
 
     }
@@ -111,10 +119,10 @@ public class ListViewActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        ViewGroup viewGroup = findViewById(R.id.lv);
-        View v = viewGroup.getChildAt(0);
-        v.animate().x(150f);
-//
+//        ViewGroup viewGroup = findViewById(R.id.lv);
+//        View v = viewGroup.getChildAt(0);
+//        v.animate().x(150f);
+
 //        ViewPropertyAnimator viewPropertyAnimator = v.animate();
 //        System.out.println(viewPropertyAnimator);
 //
@@ -123,6 +131,9 @@ public class ListViewActivity extends AppCompatActivity {
 
 
 
+
+
+//                .notifyDataSetChanged();
 
 
     }
@@ -146,16 +157,26 @@ public class ListViewActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.add~~");
 
+        //方式一
 //        TextView textView = new TextView(this);
 //        textView.setText("aaaaa");
-//        System.out.println(recyclerView);
-
 //        listView.addHeaderView(textView);
+
+        //方式二
+        nameAdapter.add("sss" + new Random().nextInt(999));
+//        nameAdapter.insert("sss",  + new Random().nextInt(999));
+
+        nameAdapter.notifyDataSetChanged();
+
     }
 
 
     public void del(View view) {
         System.out.println("~~button.del~~");
+
+        nameAdapter.remove("sss");
+        nameAdapter.notifyDataSetChanged();
+
 
     }
 

@@ -12,10 +12,10 @@ import java.lang.reflect.Method;
  */
 public class MainActivity extends AppCompatActivity {
 
-    int left=0;
-    int top=0;
-    int right=0;
-    int bottom=0;
+    int left = 0;
+    int top = 0;
+    int right = 0;
+    int bottom = 0;
 
 
     @Override
@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("getRadius is " + cardView.getRadius());
 
 
-
         //更新padding
-        cardView.setContentPadding(this.left+=10, this.top, this.right, this.bottom);
+        cardView.setContentPadding(this.left += 10, this.top, this.right, this.bottom);
 
 
     }
+
     public void elevation(View view) {
         System.out.println("~~button.start~~");
 
