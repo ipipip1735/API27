@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -27,6 +28,7 @@ public class ListViewActivity extends AppCompatActivity {
     ListView listView;
     ArrayAdapter<String> nameAdapter;
     String[] nameArray;
+    List<String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +46,17 @@ public class ListViewActivity extends AppCompatActivity {
 //            nameArray[i] = "chris" + new Random().nextInt(9999);
 //        }
 
-        nameArray=new  String[]{
+        nameArray = new String[]{
                 "bob",
                 "jack",
                 "mack",
                 "anna"
         };
 
+        list = new ArrayList<>();
+
 //        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, this.nameArray);
-        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 
         listView.setAdapter(nameAdapter);
 
@@ -130,9 +134,6 @@ public class ListViewActivity extends AppCompatActivity {
 //        System.out.println(viewPropertyAnimator1);
 
 
-
-
-
 //                .notifyDataSetChanged();
 
 
@@ -163,10 +164,17 @@ public class ListViewActivity extends AppCompatActivity {
 //        listView.addHeaderView(textView);
 
         //方式二
-        nameAdapter.add("sss" + new Random().nextInt(999));
-//        nameAdapter.insert("sss",  + new Random().nextInt(999));
+//        for (int i = 0; i < 5; i++) {
+//            String s = "chris" + new Random().nextInt(999);
+//            list.add(s);
+//        }
+//        nameAdapter.addAll(list);
 
+
+        //方式三
+        list.add("chris");
         nameAdapter.notifyDataSetChanged();
+
 
     }
 
@@ -174,9 +182,12 @@ public class ListViewActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
-        nameAdapter.remove("sss");
-        nameAdapter.notifyDataSetChanged();
+        //方式一
+//        nameAdapter.remove(list.get(4));
 
+        //方式二
+        list.remove(0);
+        nameAdapter.notifyDataSetChanged();
 
     }
 
