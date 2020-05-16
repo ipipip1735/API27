@@ -1,9 +1,7 @@
 package mine.drags;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
@@ -11,10 +9,10 @@ import android.widget.RelativeLayout;
  * Created by Administrator on 2018/8/2.
  */
 
-public class GVTwo extends RelativeLayout {
+public class GVThree extends RelativeLayout {
 
 
-    public GVTwo(Context context, AttributeSet attrs) {
+    public GVThree(Context context, AttributeSet attrs) {
         super(context, attrs);
         System.out.println("+++  " + getClass().getSimpleName() + ".Constructor1  +++");
 
@@ -34,9 +32,6 @@ public class GVTwo extends RelativeLayout {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onInterceptTouchEvent  **********");
 
-//        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-//            return true;
-//        }
         return super.onInterceptTouchEvent(ev);
     }
 
@@ -45,9 +40,9 @@ public class GVTwo extends RelativeLayout {
         System.out.println("**********  " + getClass().getSimpleName() + ".onTouchEvent  **********");
         System.out.println("action is " + event.actionToString(event.getAction()));
 
-
+        return false;
 //        return true;
-        return super.onTouchEvent(event);
+//        return super.onTouchEvent(event);
     }
 
 }

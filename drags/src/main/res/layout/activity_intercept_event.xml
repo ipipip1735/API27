@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WHITESMOKE">
+
+    <mine.drags.GVThree
+        android:id="@+id/GVThree"
+        android:layout_width="450dp"
+        android:layout_height="match_parent"
+        android:background="@color/VIOLET">
+
+        <mine.drags.GVTwo
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:background="@color/INDIANRED">
+
+            <mine.drags.GVOne
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:background="@color/SADDLEBROWN">
+
+                <mine.drags.VOne
+                    android:id="@+id/VOne"
+                    android:layout_width="160dp"
+                    android:layout_height="130dp"
+                    android:background="@color/MEDIUMBLUE" />
+
+            </mine.drags.GVOne>
+
+            <mine.drags.VTwo
+                android:id="@+id/VTwo"
+                android:layout_width="120dp"
+                android:layout_height="577dp"
+                android:background="@color/OLIVE" />
+        </mine.drags.GVTwo>
+    </mine.drags.GVThree>
+
+</android.support.constraint.ConstraintLayout>

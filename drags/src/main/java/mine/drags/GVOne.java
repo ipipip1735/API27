@@ -32,6 +32,11 @@ public class GVOne extends RelativeLayout {
         System.out.println("**********  " + getClass().getSimpleName() + ".dispatchTouchEvent  **********");
         System.out.println("action is " + ev.actionToString(ev.getAction()));
 
+//        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+//            System.out.println("OOK-----");
+//        }
+
+
 //        return true;
         return super.dispatchTouchEvent(ev);
     }
@@ -41,7 +46,9 @@ public class GVOne extends RelativeLayout {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onInterceptTouchEvent  **********");
 
-//        return true;
+//        if(ev.getAction() == MotionEvent.ACTION_DOWN)
+        if(ev.getAction() == MotionEvent.ACTION_MOVE)
+        return true;
         return super.onInterceptTouchEvent(ev);
     }
 
@@ -49,6 +56,7 @@ public class GVOne extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent event) {
         System.out.println("**********  " + getClass().getSimpleName() + ".onTouchEvent  **********");
         System.out.println("action is " + event.actionToString(event.getAction()));
+
 
         return true;
 //        return super.onTouchEvent(event);
