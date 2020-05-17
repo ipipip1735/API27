@@ -11,10 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/drags" />
-            <option value="$PROJECT_DIR$/recyclerview" />
-            <option value="$PROJECT_DIR$/swiperefreshlayout" />
-            <option value="$PROJECT_DIR$/view" />
+            <option value="$PROJECT_DIR$/viewpager" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

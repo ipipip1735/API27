@@ -10,8 +10,8 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="start"
         android:onClick="start"
-        tools:layout_editor_absoluteX="16dp"
+        android:text="start"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="16dp" />
 </android.support.constraint.ConstraintLayout>
