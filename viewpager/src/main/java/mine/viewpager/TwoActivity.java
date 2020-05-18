@@ -1,5 +1,9 @@
 package mine.viewpager;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -7,9 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
+import java.util.Random;
+
+import static androidx.viewpager2.widget.ViewPager2.ORIENTATION_VERTICAL;
 
 public class TwoActivity extends AppCompatActivity {
     ViewPager2 mPager;
@@ -22,6 +31,7 @@ public class TwoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_two);
 
         mPager = findViewById(R.id.vp);
+        mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
         mPager.setAdapter(new FragmentStateAdapter(this) {
             @Override
@@ -95,6 +105,7 @@ public class TwoActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -140,6 +151,57 @@ public class TwoActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
+
+        mPager.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                System.out.println("~~onDraw~~");
+                super.onDraw(c, parent, state);
+            }
+
+            @Override
+            public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                System.out.println("~~onDrawOver~~");
+                super.onDrawOver(c, parent, state);
+
+                Random random = new Random();
+                Paint paint = new Paint();
+//                int height = parent.getHeight();
+
+                for (int i = 1; i < parent.getChildCount(); i++) { //遍历绘制
+                    int left = parent.getChildAt(i).getLeft();
+                    int top = parent.getChildAt(i).getTop();
+                    int right = parent.getChildAt(i).getRight();
+                    int bottom = parent.getChildAt(i).getBottom();
+
+                    System.out.println("child is " + i + ", " +
+                            "w is " + parent.getChildAt(i).getWidth() + ", " +
+                            "h is " + parent.getChildAt(i).getHeight() + ", " +
+                            "left is " + parent.getChildAt(i).getLeft() + ", " +
+                            "right is " + parent.getChildAt(i).getRight() + ", " +
+                            "top is " + parent.getChildAt(i).getTop() + ", " +
+                            "bottom is " + parent.getChildAt(i).getBottom());
+
+                    paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+                    c.drawRect(left, top, left+50, bottom, paint);
+                }
+            }
+
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                System.out.println("~~getItemOffsets~~");
+                super.getItemOffsets(outRect, view, parent, state);
+
+                System.out.println(outRect);
+
+                int paddingLeft, paddingTop, paddingRight, paddingBottom;
+                paddingLeft = 0;
+                paddingTop = 0;
+                paddingRight = 0;
+                paddingBottom = 0;
+                outRect.set(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            }
+        });
 
     }
 }
