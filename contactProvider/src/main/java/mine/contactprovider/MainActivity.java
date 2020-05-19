@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        insertContact();
 //        insertRawContact();
-        insertData();
+//        insertData();
 //        insertRawContactBatch(); //批量插入
 
     }
@@ -482,7 +482,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
 //        queryProfile();
-//        queryContact();
+        queryContact();
 //        queryWithLookupKey();
 //        queryRawContact();
 //        queryData();
@@ -705,20 +705,22 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    /**
+     * Contacts表相关的Uri如下：
+     * Uri uri = ContactsContract.Contacts.CONTENT_FREQUENT_URI;//常用联系人，API29后被废弃
+     * Uri uri = ContactsContract.Contacts.CONTENT_GROUP_URI;//联系人分组
+     * Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_FILTER_URI;//过滤认名
+     * Uri uri = ContactsContract.Contacts.CONTENT_ITEM_TYPE;//支持的MIME
+     * Uri uri = ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI;
+     * Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_URI;
+     * Uri uri = ContactsContract.Contacts.CONTENT_TYPE;
+     * Uri uri = ContactsContract.Contacts.CONTENT_VCARD_TYPE;
+     * Uri uri = ContactsContract.Contacts.CONTENT_VCARD_URI;
+     * Uri uri = ContactsContract.Contacts.CORP_CONTENT_URI;
+     * Uri uri = ContactsContract.Contacts.ENTERPRISE_CONTENT_FILTER_URI;
+     */
     private void queryContact() {
         System.out.println("=queryContact=");
-
-//        Uri uri = ContactsContract.Contacts.CONTENT_FREQUENT_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_GROUP_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_ITEM_TYPE;
-//        Uri uri = ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_FILTER_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_URI;
-//        Uri uri = ContactsContract.Contacts.CONTENT_TYPE;
-//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_TYPE;
-//        Uri uri = ContactsContract.Contacts.CONTENT_VCARD_URI;
-//        Uri uri = ContactsContract.Contacts.CORP_CONTENT_URI;
-//        Uri uri = ContactsContract.Contacts.ENTERPRISE_CONTENT_FILTER_URI;
 
         //查询所有
 //        Uri uri = ContactsContract.Contacts.CONTENT_URI;
@@ -728,9 +730,9 @@ public class MainActivity extends AppCompatActivity {
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131/2");
 
         //查询人名
-//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Tom");
-//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Lee");
-        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Lee Tom");
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"BOB");//名
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Lee");//姓
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Lee Tom");//姓名
 
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
