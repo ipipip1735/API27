@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -429,7 +430,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.quickbadge~~");
 
         //方法一
-
 //        Uri lookupURI = ContactsContract.Contacts.getLookupUri(getContentResolver(),
 //                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Jobs Lee"));
 //
@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //方法二
-        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Jobs");
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Chris");
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         if (Objects.isNull(cursor)) return;
 
@@ -486,45 +486,67 @@ public class MainActivity extends AppCompatActivity {
 //        queryRawContact();
 //        queryData();
 //        queryWithEtity();
-//        queryPhoneLookup();
+        queryPhoneLookup();
 //        queryQuickContact();
-        queryPhoto();
+//        queryPhoto();
 
     }
 
     private void queryPhoto() {
 
 
-        //方法一：使用RawContacts获取URI
-//        Uri displayPhotoUri = Uri.withAppendedPath(
-//                ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, 4),
-//                ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
-//        System.out.println(rawContactPhotoUri);
-
-
-        //方法二：使用RawContacts.DisplayPhoto获取URI
-        long photoKey = -1;
-        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 1);
-        String[] projection = {ContactsContract.Contacts.PHOTO_FILE_ID};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            photoKey = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_FILE_ID));
-            cursor.close();
-        } else {
-            cursor.close();
-            return;
-        }
-
-        Uri displayPhotoUri = ContentUris.withAppendedId(ContactsContract.DisplayPhoto.CONTENT_URI, photoKey);
-
-        System.out.println("displayPhotoUri is " + displayPhotoUri);
+        //方法一：使用过滤器匹配联系人
+//        Uri uri = Uri.parse("content://com.android.contacts/contacts/1/photo");
+        Uri uri = Uri.parse("content://com.android.contacts/contacts/filter/Chris");
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        System.out.println("count is " + cursor.getCount());
+        cursor.moveToNext();
+        //获取缩略图Uri
+        Uri photo_thumb_uri = Uri.parse(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI)));
+        System.out.println("photo_thumb_uri is " + photo_thumb_uri);
+        //获取全尺寸图Uri
+        Uri photo_uri = Uri.parse(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI)));
+        System.out.println("photo_uri is " + photo_uri);
+        cursor.close();
         try {
-            AssetFileDescriptor fd = getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
-            System.out.println("lenght is " + fd.getLength());
+            AssetFileDescriptor fd = getContentResolver().openAssetFileDescriptor(photo_thumb_uri, "r");
+            System.out.println("photo_thumb_uri'lenght is " + fd.getLength());
+            System.out.println("photo_thumb_uri'fd is " + fd.getFileDescriptor());
+            QuickContactBadge mBadge = findViewById(R.id.quickbadge);
+            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor(), null, null);
+            System.out.println("w = " + bitmap.getWidth() + ", h = " +  bitmap.getHeight());
+            mBadge.setImageBitmap(bitmap);
+
+            fd = getContentResolver().openAssetFileDescriptor(photo_uri, "r");
+            System.out.println("photo_uri'lenght is " + fd.getLength());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+
+        //方法二：分部查询
+//        long photoKey = -1;
+//        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 1);
+//        String[] projection = {ContactsContract.Contacts.PHOTO_FILE_ID};
+//        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+//
+//        if (cursor.moveToFirst()) {
+//            photoKey = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_FILE_ID));
+//            cursor.close();
+//        } else {
+//            cursor.close();
+//            return;
+//        }
+//
+//        Uri displayPhotoUri = ContentUris.withAppendedId(ContactsContract.DisplayPhoto.CONTENT_URI, photoKey);
+//
+//        System.out.println("displayPhotoUri is " + displayPhotoUri);
+//        try {
+//            AssetFileDescriptor fd = getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
+//            System.out.println("lenght is " + fd.getLength());
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
 
     }
@@ -717,10 +739,21 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    /**
+     * content://com.android.contacts/raw_contacts
+     * content://com.android.contacts/raw_contacts/1
+     * content://com.android.contacts/raw_contacts/1/data
+     * content://com.android.contacts/raw_contacts/1/display_photo
+     * content://com.android.contacts/raw_contacts/1/entity
+     * content://com.android.contacts/raw_contact_entities
+     * content://com.android.contacts/raw_contact_entities_corp
+     */
     private void queryRawContact() {
         System.out.println("=queryRawContact=");
 
-        Uri uri = Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI, "2");
+//        Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
+//        Uri uri = Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI, "1");
+        Uri uri = Uri.parse("content://com.android.contacts/raw_contacts/1/data");
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
         Cursor cursor = getContentResolver().query(uri, null, null, null, sortOrder);
@@ -790,11 +823,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("=queryContact=");
 
         //查询Contacts表
-        Uri uri = ContactsContract.Contacts.CONTENT_URI;
-//        uri = Uri.parse(uri.toString() + "/1");//返回id为联系人的状态信息
-        uri = Uri.parse(uri.toString() + "/2/data");//返回id为联系人的数据信息
-//        uri = Uri.parse(uri.toString() + "/1/entities");//使用实体和data后缀几乎没什么区别，返回id为联系人的数据信息
-//        uri = Uri.parse(uri.toString() + "/1/photo");
+//        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+//        uri = Uri.parse(uri.toString() + "/1");//返回contact_id = 1的联系人的状态信息
+//        uri = Uri.parse(uri.toString() + "/1/data");//返回contact_id = 1的联系人的数据信息
+//        uri = Uri.parse(uri.toString() + "/1/entities");//使用/entities和/data后缀几乎没什么区别，返回id为联系人的数据信息
+//        uri = Uri.parse(uri.toString() + "/1/photo");//返回contact_id = 1且mimetype = vnd.android.cursor.item/photo的联系人
 //        uri = Uri.parse(uri.toString() + "/2/suggestions");
 //        uri = Uri.parse(uri.toString() + "/1/suggestions/XXX");
 
@@ -804,9 +837,9 @@ public class MainActivity extends AppCompatActivity {
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131/2");//Lookup和ID组合查询
 
         //查询人名
-//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"BOB");//名
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Chris");//名
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Lee");//姓
-//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Lee aaa");//姓名
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Chris Lee");//姓名
 
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
