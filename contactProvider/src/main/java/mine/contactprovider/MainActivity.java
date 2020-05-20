@@ -127,9 +127,8 @@ public class MainActivity extends AppCompatActivity {
     public void insert(View view) {
         System.out.println("~~button.insert~~");
 
-//        insertContact();
 //        insertRawContact();
-//        insertData();
+        insertData();
 //        insertRawContactBatch(); //批量插入
 
     }
@@ -139,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
 
-        int rawContactInsertIndex = ops.size();
+        int rawContactInsertIndex = 0;//保存后向引用索引为0
         //add item to raw_contacts
         ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, "YaHoo")
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, "yh_mine")
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
                 .build());
 
         //Display name/Contact name
@@ -196,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 .build());
 
 
-        rawContactInsertIndex = ops.size();
+        rawContactInsertIndex = ops.size();//保存后向引用索引为0
         //add item to raw_contacts
         ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                 .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, "QQ")
@@ -482,31 +481,30 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
 //        queryProfile();
-        queryContact();
+//        queryContact();
 //        queryWithLookupKey();
 //        queryRawContact();
 //        queryData();
 //        queryWithEtity();
 //        queryPhoneLookup();
 //        queryQuickContact();
-//        queryPhoto();
+        queryPhoto();
 
     }
 
     private void queryPhoto() {
 
 
-        //方法一，使用RawContacts获取URI
+        //方法一：使用RawContacts获取URI
 //        Uri displayPhotoUri = Uri.withAppendedPath(
 //                ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, 4),
 //                ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
 //        System.out.println(rawContactPhotoUri);
 
 
-        //方法二，使用RawContacts.DisplayPhoto获取URI
-
+        //方法二：使用RawContacts.DisplayPhoto获取URI
         long photoKey = -1;
-        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 4);
+        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 1);
         String[] projection = {ContactsContract.Contacts.PHOTO_FILE_ID};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
 
@@ -558,7 +556,7 @@ public class MainActivity extends AppCompatActivity {
         //contacts lookupURI
         Uri lookupUri = ContactsContract.Contacts.getLookupUri(
                 getContentResolver(),
-                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "2"));
+                Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "1"));
 
 
         //raw_contacts lookupURI
@@ -585,17 +583,55 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    /**
+     * Data表Uri如下：
+     * content://com.android.contacts/data
+     * content://com.android.contacts/data/1
+     * content://com.android.contacts/data/phones
+     * content://com.android.contacts/data_enterprise/phones
+     * content://com.android.contacts/data/phones/1
+     * content://com.android.contacts/data/phones/filter
+     * content://com.android.contacts/data/phones/filter/XXX
+     * content://com.android.contacts/data/phones/filter_enterprise?directory=0
+     * content://com.android.contacts/data/phones/filter_enterprise/XXX?directory=0
+     * content://com.android.contacts/data/emails
+     * content://com.android.contacts/data/emails/1
+     * content://com.android.contacts/data/emails/lookup
+     * content://com.android.contacts/data/emails/lookup/XXX
+     * content://com.android.contacts/data/emails/filter
+     * content://com.android.contacts/data/emails/filter/XXX
+     * content://com.android.contacts/data/emails/filter_enterprise?directory=0
+     * content://com.android.contacts/data/emails/filter_enterprise/XXX?directory=0
+     * content://com.android.contacts/data/emails/lookup_enterprise
+     * content://com.android.contacts/data/emails/lookup_enterprise/XXX
+     * content://com.android.contacts/data/postals
+     * content://com.android.contacts/data/postals/1
+     * content://com.android.contacts/data/usagefeedback/1,2,3
+     * content://com.android.contacts/data/callables/
+     * content://com.android.contacts/data/callables/1
+     * content://com.android.contacts/data/callables/filter
+     * content://com.android.contacts/data/callables/filter/XXX
+     * content://com.android.contacts/data/callables/filter_enterprise?directory=0
+     * content://com.android.contacts/data/callables/filter_enterprise/XXX?directory=0
+     * content://com.android.contacts/data/contactables/
+     * content://com.android.contacts/data/contactables/filter
+     * content://com.android.contacts/data/contactables/filter/XXX
+     */
     private void queryData() {
         System.out.println("=queryData=");
 
 
-        Uri uri = ContactsContract.Data.CONTENT_URI;
+        //方法一：返回所有结果集
+//        Uri uri = ContactsContract.Data.CONTENT_URI;
+        Uri uri = Uri.parse("content://com.android.contacts/data/phones");
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
-        String[] projection = {ContactsContract.Data._ID};
-        String selection = ContactsContract.Data.RAW_CONTACT_ID + " = ?";
-        String[] selectionArgs = {"1"};
 
-        Cursor cursor = getContentResolver().query(uri, null, selection, selectionArgs, null);
+        //方法二：设置查询条件
+//        String[] projection = {ContactsContract.Data._ID};
+//        String selection = ContactsContract.Data.RAW_CONTACT_ID + " = ?";
+//        String[] selectionArgs = {"1"};
+//        Cursor cursor = getContentResolver().query(uri, null, selection, selectionArgs, null);
 
 
         if (Objects.isNull(cursor)) return;
@@ -707,6 +743,37 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Contacts表相关的Uri如下：
+     * content://com.android.contacts/contacts
+     * content://com.android.contacts/contacts/1
+     * content://com.android.contacts/contacts/1/data
+     * content://com.android.contacts/contacts/1/entities
+     * content://com.android.contacts/contacts/1/suggestions
+     * content://com.android.contacts/contacts/1/suggestions/XXX
+     * content://com.android.contacts/contacts/1/photo
+     * content://com.android.contacts/contacts/1/display_photo
+     * content://com.android.contacts/contacts_corp/1/photo
+     * content://com.android.contacts/contacts_corp/1/display_photo
+     * content://com.android.contacts/contacts/filter
+     * content://com.android.contacts/contacts/filter/XXX
+     * content://com.android.contacts/contacts/lookup/nlookup
+     * content://com.android.contacts/contacts/lookup/nlookup/data
+     * content://com.android.contacts/contacts/lookup/nlookup/photo
+     * content://com.android.contacts/contacts/lookup/nlookup/1
+     * content://com.android.contacts/contacts/lookup/nlookup/1/data
+     * content://com.android.contacts/contacts/lookup/nlookup/1/photo
+     * content://com.android.contacts/contacts/lookup/nlookup/display_photo
+     * content://com.android.contacts/contacts/lookup/nlookup/1/display_photo
+     * content://com.android.contacts/contacts/lookup/nlookup/entities
+     * content://com.android.contacts/contacts/lookup/nlookup/1/entities
+     * content://com.android.contacts/contacts/as_vcard/nlookup
+     * content://com.android.contacts/contacts/as_multi_vcard/XXX
+     * content://com.android.contacts/contacts/strequent/
+     * content://com.android.contacts/contacts/strequent/filter/XXX
+     * content://com.android.contacts/contacts/group/XXX
+     * content://com.android.contacts/contacts/frequent
+     * content://com.android.contacts/contacts/delete_usage
+     * content://com.android.contacts/contacts/filter_enterprise?directory=0
+     * content://com.android.contacts/contacts/filter_enterprise/XXX?directory=0
      * Uri uri = ContactsContract.Contacts.CONTENT_FREQUENT_URI;//常用联系人，API29后被废弃
      * Uri uri = ContactsContract.Contacts.CONTENT_GROUP_URI;//联系人分组
      * Uri uri = ContactsContract.Contacts.CONTENT_STREQUENT_FILTER_URI;//过滤认名
@@ -722,17 +789,24 @@ public class MainActivity extends AppCompatActivity {
     private void queryContact() {
         System.out.println("=queryContact=");
 
-        //查询所有
-//        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        //查询Contacts表
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+//        uri = Uri.parse(uri.toString() + "/1");//返回id为联系人的状态信息
+        uri = Uri.parse(uri.toString() + "/2/data");//返回id为联系人的数据信息
+//        uri = Uri.parse(uri.toString() + "/1/entities");//使用实体和data后缀几乎没什么区别，返回id为联系人的数据信息
+//        uri = Uri.parse(uri.toString() + "/1/photo");
+//        uri = Uri.parse(uri.toString() + "/2/suggestions");
+//        uri = Uri.parse(uri.toString() + "/1/suggestions/XXX");
+
 
         //查询lookup key
-//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131");
-//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131/2");
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r1-4032322A2A2A");//使用Lookup查询
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131/2");//Lookup和ID组合查询
 
         //查询人名
-        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"BOB");//名
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"BOB");//名
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Lee");//姓
-//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Lee Tom");//姓名
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Lee aaa");//姓名
 
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
