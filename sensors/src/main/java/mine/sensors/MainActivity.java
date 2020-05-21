@@ -119,16 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         //触发监听器
-        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        System.out.println("sensor is " + sensor.getName());
-        boolean b = mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
-        System.out.println(b);
+//        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+//        System.out.println("sensor is " + sensor.getName());
+//        boolean b = mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
+//        System.out.println(b);
 
 
 //        mSensorManager.createDirectChannel(mem);
 //        mSensorManager.createDirectChannel(mem);
 //        mSensorManager.flush(listener);
-
 
     }
 
