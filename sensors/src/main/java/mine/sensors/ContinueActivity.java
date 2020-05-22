@@ -22,11 +22,10 @@ import static android.hardware.Sensor.REPORTING_MODE_SPECIAL_TRIGGER;
 /**
  * Created by Administrator on 2018/1/20.
  */
-public class PositionActivity extends AppCompatActivity {
+public class ContinueActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
     private SensorEventListener listener;
-    TriggerEventListener triggerEventListener;
     private Sensor sensor;
     private TextView textView;
 
@@ -39,15 +38,6 @@ public class PositionActivity extends AppCompatActivity {
         textView = new TextView(this);
         textView.setText("");
         viewById.addView(textView);
-
-
-        triggerEventListener = new TriggerEventListener() {
-            @Override
-            public void onTrigger(TriggerEvent event) {
-                System.out.println("~~TriggerEventListener.onTrigger~~");
-                System.out.println("event is " + event);
-            }
-        };
 
 
         mSensorManager = getSystemService(SensorManager.class);
@@ -79,8 +69,8 @@ public class PositionActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
-
-        mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if (Objects.nonNull(listener))
+            mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -88,7 +78,8 @@ public class PositionActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-        if (Objects.nonNull(listener)) mSensorManager.unregisterListener(listener);
+        if (Objects.nonNull(listener))
+            mSensorManager.unregisterListener(listener);
     }
 
     @Override
@@ -119,24 +110,22 @@ public class PositionActivity extends AppCompatActivity {
         System.out.println("~~button.check~~");
         mSensorManager = getSystemService(SensorManager.class);
 
-
-        //触发监听器
-        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        System.out.println("sensor is " + sensor.getName());
-        boolean b = mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
-        System.out.println(b);
-
     }
 
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //陀螺仪
+        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION); //线性加速的
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR); //旋转向量
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION); //显著动作
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //计步器
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); //步伐探测器
+//        --------
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);//游戏旋度传感器
-        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);//地磁传感器
-
-
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);//地磁传感器
 
         if (Objects.nonNull(sensor)) {
             System.out.println(sensor);
@@ -174,6 +163,8 @@ public class PositionActivity extends AppCompatActivity {
             System.out.println("getPower is " + sensor.getPower());
             System.out.println("getResolution is " + sensor.getResolution());
 
+            System.out.println();
+
         }
 
     }
@@ -181,6 +172,7 @@ public class PositionActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("~~button.stop~~");
         if (Objects.nonNull(listener)) mSensorManager.unregisterListener(listener);
+        listener = null;
     }
 
     public void request(View view) {

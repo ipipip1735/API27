@@ -22,7 +22,7 @@ import static android.hardware.Sensor.REPORTING_MODE_SPECIAL_TRIGGER;
 /**
  * Created by Administrator on 2018/1/20.
  */
-public class TriggerActivity extends AppCompatActivity {
+public class OnceActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
     TriggerEventListener triggerEventListener;
@@ -36,26 +36,11 @@ public class TriggerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewGroup viewById = findViewById(R.id.ll);
         textView = new TextView(this);
+        textView.setText("");
         viewById.addView(textView);
 
-
-        triggerEventListener = new TriggerEventListener() {
-            @Override
-            public void onTrigger(TriggerEvent event) {
-                System.out.println("~~TriggerEventListener.onTrigger~~");
-                StringBuffer buffer = new StringBuffer();
-
-                for (int i = 0; i < event.values.length; i++) {
-                    System.out.println("value[" + i + "] is  " + event.values[i]);
-                    buffer.append("value[" + i + "] is  " + event.values[i] + "\n");
-                }
-                textView.setText(buffer.toString());
-            }
-        };
-
-
         mSensorManager = getSystemService(SensorManager.class);
-        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
+
 
     }
 
@@ -83,7 +68,8 @@ public class TriggerActivity extends AppCompatActivity {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
-        mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
+        if (Objects.nonNull(triggerEventListener))
+            mSensorManager.requestTriggerSensor(triggerEventListener, sensor);
 
     }
 
@@ -122,15 +108,16 @@ public class TriggerActivity extends AppCompatActivity {
     public void check(View view) {
         System.out.println("~~button.check~~");
         mSensorManager = getSystemService(SensorManager.class);
-        textView.setText("");
 
     }
 
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        //获取默认传感器
         mSensorManager = getSystemService(SensorManager.class);
+        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION); //显著动作
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //计步器
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); //步伐探测器
 
 
         if (Objects.nonNull(sensor)) {
@@ -168,7 +155,8 @@ public class TriggerActivity extends AppCompatActivity {
             System.out.println("getVersion is " + sensor.getVersion());
             System.out.println("getPower is " + sensor.getPower());
             System.out.println("getResolution is " + sensor.getResolution());
-            
+
+            System.out.println();
 
         }
 
@@ -176,10 +164,8 @@ public class TriggerActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
         if (Objects.nonNull(triggerEventListener))
             mSensorManager.cancelTriggerSensor(triggerEventListener, sensor);
-
     }
 
     public void request(View view) {
@@ -191,6 +177,16 @@ public class TriggerActivity extends AppCompatActivity {
                 public void onTrigger(TriggerEvent event) {
                     System.out.println("~~TriggerEventListener.onTrigger~~");
                     System.out.println("event is " + event);
+
+
+                    StringBuffer buffer = new StringBuffer();
+
+                    for (int i = 0; i < event.values.length; i++) {
+                        System.out.println("value[" + i + "] is  " + event.values[i]);
+                        buffer.append("value[" + i + "] is  " + event.values[i] + "\n");
+                    }
+                    textView.setText(buffer.toString());
+
                 }
             };
         }
