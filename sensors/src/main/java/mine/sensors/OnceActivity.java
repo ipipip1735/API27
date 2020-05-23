@@ -115,7 +115,7 @@ public class OnceActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         mSensorManager = getSystemService(SensorManager.class);
-        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION); //显著动作
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION); //显著动作
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //计步器
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); //步伐探测器
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.Objects;
 
 import static android.hardware.Sensor.REPORTING_MODE_CONTINUOUS;
@@ -70,6 +71,7 @@ public class ContinueActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
 
         if (Objects.nonNull(listener))
+            mSensorManager.flush(listener);
             mSensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
@@ -109,6 +111,10 @@ public class ContinueActivity extends AppCompatActivity {
     public void check(View view) {
         System.out.println("~~button.check~~");
         mSensorManager = getSystemService(SensorManager.class);
+        List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor s : sensors) {
+            System.out.println(s.getStringType() + " | sensor is " + s);
+        }
 
     }
 
@@ -116,13 +122,16 @@ public class ContinueActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         mSensorManager = getSystemService(SensorManager.class);
+
+        //使用ON_CHANGE模式的传感器
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY); //重力传感器
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE); //陀螺仪
-        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION); //线性加速的
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION); //线性加速的
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR); //旋转向量
-//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION); //显著动作
-//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //计步器
-//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); //步伐探测器
+
+        //使用ON_CHANGE模式的传感器
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); //光传感器
+//        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY); //近程传感器
 //        --------
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);//游戏旋度传感器
 //        sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);//地磁传感器
@@ -164,6 +173,9 @@ public class ContinueActivity extends AppCompatActivity {
             System.out.println("getResolution is " + sensor.getResolution());
 
             System.out.println();
+
+
+
 
         }
 
@@ -207,8 +219,9 @@ public class ContinueActivity extends AppCompatActivity {
 
     }
 
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
+    public void flush(View view) {
+        System.out.println("~~button.flush~~");
+        mSensorManager.flush(listener);
 
     }
 
