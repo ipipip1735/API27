@@ -14,17 +14,12 @@ import android.view.View;
 
 public class ContextMenuActivity extends AppCompatActivity {
 
-
-
-
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         System.out.println("**********  ContextMenuActivity  onCreate  ***********");
         setContentView(R.layout.activity_context_menu);
-
     }
-
 
     @Override
     protected void onStart() {
@@ -82,9 +77,6 @@ public class ContextMenuActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
-
-
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         System.out.println("*******  ContextMenuActivity  onCreateContextMenu!!  *********");
@@ -108,24 +100,16 @@ public class ContextMenuActivity extends AppCompatActivity {
         return true;
     }
 
-
     public void itemOne(MenuItem item) {
         System.out.println(" click itemone ");
     }
 
-
-
-
-
-
-
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        registerForContextMenu(findViewById(R.id.textView));
+        registerForContextMenu(findViewById(R.id.textView));//注册
 
     }
-
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
@@ -133,7 +117,7 @@ public class ContextMenuActivity extends AppCompatActivity {
 
     public void add(View view) {
         System.out.println("~~button.add~~");
-        openContextMenu(findViewById(R.id.textView));
+        openContextMenu(findViewById(R.id.textView));//先注册，才能使用本方法启动上下文菜单
     }
 
     public void del(View view) {
