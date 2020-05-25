@@ -1,12 +1,16 @@
 package mine.menu;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -64,7 +68,6 @@ public class ContextMenuActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -79,26 +82,44 @@ public class ContextMenuActivity extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        System.out.println("*******  ContextMenuActivity  onCreateContextMenu!!  *********");
+        System.out.println("~~~~  " + getClass().getSimpleName() + ".onCreateContextMenu  ~~~~");
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_item, menu);
 
-        super.onCreateContextMenu(menu, v, menuInfo);
+
+//        menu.setHeaderTitle("ttt");
+//        menu.setHeaderIcon(R.drawable.w2);//不起作用
+
+
+        //使用了View就无法再使用Title和ICON，不能并存
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View view = layoutInflater.inflate(R.layout.activity_action_provider, null);
+        menu.setHeaderView(view);//测试不成功
+
+
+
+
+
     }
 
     @Override
     public void onContextMenuClosed(Menu menu) {
-        System.out.println("*******  ContextMenuActivity  onContextMenuClosed  *********");
+        System.out.println("~~~~  " + getClass().getSimpleName() + ".onContextMenuClosed  ~~~~");
         super.onContextMenuClosed(menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        System.out.println("*******  ContextMenuActivity  onContextItemSelected  *********");
+        System.out.println("~~~~  " + getClass().getSimpleName() + ".onContextItemSelected  ~~~~");
 //        return super.onContextItemSelected(item);
         return true;
     }
+
+
 
     public void itemOne(MenuItem item) {
         System.out.println(" click itemone ");

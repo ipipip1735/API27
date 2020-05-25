@@ -100,6 +100,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPrepareOptionsMenu  *********");
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onOptionsItemSelected  *********");
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");

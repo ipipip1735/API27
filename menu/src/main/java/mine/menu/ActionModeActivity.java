@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -31,7 +32,7 @@ public class ActionModeActivity extends AppCompatActivity {
             mode.setTitle("title");
             mode.setSubtitle("subTitle");
 
-//        ImageView imageView = new ImageView(this);
+//        ImageView imageView = new ImageView(getApplicationContext());
 //        imageView.setImageResource(R.drawable.w1);
 //        mode.setCustomView(imageView);
             return false;

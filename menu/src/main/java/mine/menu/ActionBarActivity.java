@@ -104,8 +104,8 @@ public class ActionBarActivity extends AppCompatActivity {
         };
 
 
-        MenuItem actionMenuItem = menu.findItem(R.id.action_search);
-        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);
+//        MenuItem actionMenuItem = menu.findItem(R.id.action_search);
+//        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);
 
 
         return super.onPrepareOptionsMenu(menu);
@@ -170,11 +170,26 @@ public class ActionBarActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(
                 getResources().getDrawable(R.color.BurlyWood, null));
 
+
         System.out.println("getTitle is " + actionBar.getTitle());
         System.out.println("getSubtitle is " + actionBar.getSubtitle());
 
 
     }
+
+    public void del(View view) {
+        System.out.println("~~button.del~~");
+
+        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher_foreground);
+
+        actionBar.setDisplayShowCustomEnabled(true);
+        View v = View.inflate(this, R.layout.menu_header, null);
+        actionBar.setCustomView(v);
+
+    }
+
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");

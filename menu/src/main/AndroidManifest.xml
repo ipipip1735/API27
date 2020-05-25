@@ -11,20 +11,12 @@
         android:theme="@style/AppTheme">
 
 
-<!--        <activity android:name=".MainActivity" android:parentActivityName=".ActionBarActivity">-->
-<!--        <intent-filter>-->
-<!--        <action android:name="android.intent.action.MAIN" />-->
-<!--        <category android:name="android.intent.category.DEFAULT" />-->
-<!--        </intent-filter>-->
-<!--        </activity>-->
-
-
-        <!--<activity android:name=".ExampleActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name=".ExampleActivity">
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+        </activity>
 
 
         <!--<activity android:name=".OptionMenuActivity">-->
@@ -35,31 +27,38 @@
         <!--</intent-filter>-->
         <!--</activity>-->
 
-        <activity android:name=".ContextMenuActivity">
+<!--        <activity android:name=".ContextMenuActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+<!--        <activity android:name=".PopupMenuActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <action android:name="android.intent.action.VIEW"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
+
+
+
+            <activity android:name=".ActionBarActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+            <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
+            </activity>
+<!--            <activity android:name=".MainActivity" android:parentActivityName=".ActionBarActivity">-->
+<!--            <intent-filter>-->
+<!--            <action android:name="android.intent.action.MAIN" />-->
+<!--            <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--            </activity>-->
 
-        <!--<activity android:name=".PopupMenuActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<action android:name="android.intent.action.VIEW"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
-
-
-<!--    <activity android:name=".ActionBarActivity">-->
-<!--    <intent-filter>-->
-<!--    <action android:name="android.intent.action.MAIN"/>-->
-<!--    <action android:name="android.intent.action.VIEW"/>-->
-<!--    <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--    </intent-filter>-->
-<!--    </activity>-->
 
 <!--    <activity android:name=".ActionProviderActivity">-->
 <!--    <intent-filter>-->
@@ -92,12 +91,12 @@
 <!--        </activity>-->
 
 
-<!--        <activity android:name=".ActionModeActivity">-->
-<!--        <intent-filter>-->
-<!--        <action android:name="android.intent.action.MAIN"/>-->
-<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--        </intent-filter>-->
-<!--        </activity>-->
+<!--&lt;!&ndash;        <activity android:name=".ActionModeActivity">&ndash;&gt;-->
+<!--&lt;!&ndash;        <intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;        <action android:name="android.intent.action.MAIN"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <category android:name="android.intent.category.LAUNCHER"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        </intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;        </activity>&ndash;&gt;-->
 <!--    </application>-->
 
 </manifest>
