@@ -7,13 +7,19 @@
         android:title="actionProvider"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionProviderClass="mine.menu.BasicActionProvider"/>
-
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_provider1"
         android:icon="@drawable/w1"
-        android:title="searchView"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
+        android:title="actionProvider"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionProviderClass="mine.menu.BasicActionProvider"/>
+
+<!--    <item-->
+<!--        android:id="@+id/action_search"-->
+<!--        android:icon="@drawable/w1"-->
+<!--        android:title="searchView"-->
+<!--        app:actionViewClass="android.support.v7.widget.SearchView"-->
+<!--        app:showAsAction="ifRoom|collapseActionView" />-->
 
     <item
         android:id="@+id/itemTwo"

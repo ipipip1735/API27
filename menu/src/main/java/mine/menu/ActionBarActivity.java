@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -22,7 +23,18 @@ public class ActionBarActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  ActionBarActivity  onCreate  ***********");
 
+
+        ActionBar actionBar = getSupportActionBar();
+//        System.out.println(actionBar);
+//        actionBar.setDisplayShowCustomEnabled(true);
+//        View v = View.inflate(this, R.layout.menu_header, null);
+//        actionBar.setCustomView(v);
+
+
+
+
         setContentView(R.layout.activity_main);
+
     }
 
 
@@ -108,7 +120,7 @@ public class ActionBarActivity extends AppCompatActivity {
 //        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);
 
 
-        return super.onPrepareOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
 //        return false;
     }
 
@@ -184,9 +196,23 @@ public class ActionBarActivity extends AppCompatActivity {
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 //        actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher_foreground);
 
-        actionBar.setDisplayShowCustomEnabled(true);
+        //增加自定义View
+        actionBar.setDisplayShowCustomEnabled(true);//启用自定义View
         View v = View.inflate(this, R.layout.menu_header, null);
         actionBar.setCustomView(v);
+
+//        v = actionBar.getCustomView();
+//        System.out.println("v is " + v);
+
+
+//        System.out.println(v.getParent());
+//        System.out.println(v.getParent().getParent());
+//        System.out.println(v.getParent().getParent().getParent());
+
+
+        View view1 = (View) v.getParent();//获取父View
+        walk(view1, "-");//父View
+
 
     }
 

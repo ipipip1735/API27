@@ -87,7 +87,7 @@ public class OptionMenuActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.menu_opts, menu);
 
-        return super.onPrepareOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
 //        return false;
     }
 

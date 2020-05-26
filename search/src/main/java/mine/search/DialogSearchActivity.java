@@ -1,23 +1,20 @@
 package mine.search;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SearchEvent;
 import android.view.View;
 import android.widget.SearchView;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class DialogSearchActivity extends AppCompatActivity {
 
     SearchView searchView;
 
@@ -86,37 +83,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onCreateOptionsMenu  *********");
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search, menu);
-
-        SearchManager searchManager = getSystemService(SearchManager.class);
-        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); //显示输入框，而不是图标
-        searchView.setSubmitButtonEnabled(true); //显示提交按钮
-        searchView.setQueryRefinementEnabled(true); //在每个查询提示的item尾部增加精化按钮
-//        return true;
-        return false;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onPrepareOptionsMenu  *********");
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onOptionsItemSelected  *********");
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
@@ -128,12 +94,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
     }
-
-//    @Override
-//    public boolean onSearchRequested(@Nullable SearchEvent searchEvent) {
-//        System.out.println("*********  " + getClass().getSimpleName() + ".onSearchRequested  *********");
-//        return super.onSearchRequested(searchEvent);
-//    }
 
     @Override
     protected void onDestroy() {

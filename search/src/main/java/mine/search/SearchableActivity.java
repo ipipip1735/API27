@@ -19,6 +19,7 @@ public class SearchableActivity extends AppCompatActivity {
 
         //获取查询数据
         Intent intent = getIntent();
+        System.out.println(intent);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             System.out.println("query is " + query);
@@ -50,11 +51,6 @@ public class SearchableActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onNewIntent  *********");
         super.onNewIntent(intent);
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            System.out.println("query is " + query);
-        }
-
     }
 
     @Override

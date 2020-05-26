@@ -86,6 +86,7 @@ public class ToolbarActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateOptionsMenu  *********");
+        getMenuInflater().inflate(R.menu.menu_opts, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -128,10 +129,12 @@ public class ToolbarActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(myToolbar);
 
+
         getSupportActionBar().setTitle("Title");
         getSupportActionBar().setSubtitle("subTitle");
-        getSupportActionBar().setLogo(R.drawable.w1);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //设置返回按钮
+        getSupportActionBar().setIcon(R.drawable.w1);
+//        getSupportActionBar().setLogo(R.drawable.w2);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //设置返回按钮
 
     }
 

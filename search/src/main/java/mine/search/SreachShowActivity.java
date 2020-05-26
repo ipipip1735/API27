@@ -1,23 +1,20 @@
 package mine.search;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SearchEvent;
 import android.view.View;
 import android.widget.SearchView;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class SreachShowActivity extends AppCompatActivity {
 
     SearchView searchView;
 
@@ -59,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         System.out.println("*********  " + getClass().getSimpleName() + ".onNewIntent  *********");
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            System.out.println("query is " + query);
+        }
     }
 
     @Override
@@ -98,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setIconifiedByDefault(false); //显示输入框，而不是图标
         searchView.setSubmitButtonEnabled(true); //显示提交按钮
         searchView.setQueryRefinementEnabled(true); //在每个查询提示的item尾部增加精化按钮
-//        return true;
-        return false;
+        return true;
     }
 
     @Override
@@ -128,12 +129,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
     }
-
-//    @Override
-//    public boolean onSearchRequested(@Nullable SearchEvent searchEvent) {
-//        System.out.println("*********  " + getClass().getSimpleName() + ".onSearchRequested  *********");
-//        return super.onSearchRequested(searchEvent);
-//    }
 
     @Override
     protected void onDestroy() {
@@ -166,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 
         SearchManager searchManager = getSystemService(SearchManager.class);
-        searchManager.stopSearch(); //结束语言搜索
+        searchManager.stopSearch(); //停止语言搜索
 
 
     }

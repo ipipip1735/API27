@@ -90,25 +90,25 @@ public class ActionProviderActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.menu_opts, menu);
 
-        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                System.out.println("~~onMenuItemActionCollapse~~");
-                return true;
-            }
+//        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
+//            @Override
+//            public boolean onMenuItemActionCollapse(MenuItem item) {
+//                System.out.println("~~onMenuItemActionCollapse~~");
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onMenuItemActionExpand(MenuItem item) {
+//                System.out.println("~~onMenuItemActionExpand~~");
+//                return true;
+//            }
+//        };
 
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                System.out.println("~~onMenuItemActionExpand~~");
-                return true;
-            }
-        };
 
+//        MenuItem actionMenuItem = menu.findItem(R.id.action_search);
+//        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);//增加坍塌/扩展监听器
 
-        MenuItem actionMenuItem = menu.findItem(R.id.action_search);
-        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);//增加坍塌/扩展监听器
-
-        return super.onPrepareOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
 //        return false;
     }
 
