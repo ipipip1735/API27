@@ -1,6 +1,7 @@
 package mine.search;
 
 import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -112,13 +113,6 @@ public class DialogSearchActivity extends AppCompatActivity {
 //        Bundle bundle = new Bundle();
 //        bundle.putInt("one", 1111);
 //        startSearch("AAAAA", true, bundle, false);
-
-        //方法三
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("one", 1111);
-//        triggerSearch("one", bundle);
-
-
     }
 
 
@@ -134,18 +128,45 @@ public class DialogSearchActivity extends AppCompatActivity {
     public void trigger(View view) {
         System.out.println("~~button.trigger~~");
 
-
+        Bundle bundle = new Bundle();
+        bundle.putInt("one", 1111);
+        triggerSearch("one", bundle);
     }
 
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+        SearchManager searchManager = getSystemService(SearchManager.class);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+        System.out.println(searchableInfo);
+
+        System.out.println("getHintId is " + searchableInfo.getHintId() + " | " + getResources().getString(searchableInfo.getHintId()));
+        System.out.println("getImeOptions is " + searchableInfo.getImeOptions());
+        System.out.println("getInputType is " + searchableInfo.getInputType());
+        System.out.println("getSearchActivity is " + searchableInfo.getSearchActivity());
+        System.out.println("getSettingsDescriptionId is " + searchableInfo.getSettingsDescriptionId());
+        System.out.println("getSuggestAuthority is " + searchableInfo.getSuggestAuthority());
+        System.out.println("getSuggestIntentAction is " + searchableInfo.getSuggestIntentAction());
+        System.out.println("getSuggestIntentData is " + searchableInfo.getSuggestIntentData());
+        System.out.println("getSuggestPackage is " + searchableInfo.getSuggestPackage());
+        System.out.println("getSuggestPath is " + searchableInfo.getSuggestPath());
+        System.out.println("getSuggestSelection is " + searchableInfo.getSuggestSelection());
+        System.out.println("getSuggestThreshold is " + searchableInfo.getSuggestThreshold());
+        System.out.println("getVoiceLanguageId is " + searchableInfo.getVoiceLanguageId());
+        System.out.println("getVoiceLanguageModeId is " + searchableInfo.getVoiceLanguageModeId());
+        System.out.println("getVoiceMaxResults is " + searchableInfo.getVoiceMaxResults());
+        System.out.println("getVoicePromptTextId is " + searchableInfo.getVoicePromptTextId());
+        System.out.println("getVoiceSearchEnabled is " + searchableInfo.getVoiceSearchEnabled());
+        System.out.println("getVoiceSearchLaunchRecognizer is " + searchableInfo.getVoiceSearchLaunchRecognizer());
+        System.out.println("getVoiceSearchLaunchWebSearch is " + searchableInfo.getVoiceSearchLaunchWebSearch());
 
     }
 
 
     public void replace(View view) {
         System.out.println("~~button.replace~~");
+
+
 
     }
 

@@ -11,8 +11,25 @@
         android:theme="@style/AppTheme">
 
 
+        <!--使用SearchView-->
+<!--        <activity android:name=".SearchViewActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <action android:name="android.intent.action.SEARCH" />-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+
+<!--            &lt;!&ndash;支持搜索提示的SearchableActivity&ndash;&gt;-->
+<!--            <meta-data-->
+<!--                android:name="android.app.default_searchable"-->
+<!--                android:value=".SuggestionSearchableActivity" />-->
+
+<!--        </activity>-->
 
 
+
+        <!--使用Search Dialog-->
         <activity android:name=".DialogSearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

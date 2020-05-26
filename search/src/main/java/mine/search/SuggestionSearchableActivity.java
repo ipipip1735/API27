@@ -1,6 +1,7 @@
 package mine.search;
 
 import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
@@ -128,8 +129,19 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+        //方法一
         boolean b = onSearchRequested();
         System.out.println(b);
+
+        //方法二
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("one", 1111);
+//        startSearch("AAAAA", true, bundle, false);
+
+        //方法三
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("one", 1111);
+//        triggerSearch("one", bundle);
     }
 
 

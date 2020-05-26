@@ -17,7 +17,7 @@ import android.widget.SearchView;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class SearchViewActivity extends AppCompatActivity {
 
     SearchView searchView;
 
@@ -144,21 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        //方法一
-        boolean b = onSearchRequested();
-        System.out.println(b);
-
-        //方法二
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("one", 1111);
-//        startSearch("AAAAA", true, bundle, false);
-
-        //方法三
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("one", 1111);
-//        triggerSearch("one", bundle);
-
-
     }
 
 
@@ -173,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void trigger(View view) {
         System.out.println("~~button.trigger~~");
-
 
     }
 
