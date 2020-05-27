@@ -89,7 +89,6 @@ public class DialogSearchActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
