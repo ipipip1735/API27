@@ -32,15 +32,7 @@ public class BaseSearchRecentSuggestionsProvider extends SearchRecentSuggestions
 
 
         //方式一：查询数据库
-
-
-        uri = Uri.parse("content://xxx/suggestions/1");
-        selection = "display1 = ?";
-        selectionArgs = new String[]{"52"};
-        Cursor cursor = super.query(uri, null, selection, selectionArgs, null);
-
-
-//        Cursor cursor = super.query(uri, projection, selection, selectionArgs, sortOrder);
+        Cursor cursor = super.query(uri, projection, selection, selectionArgs, sortOrder);
         System.out.println("count is " + cursor.getCount());
         while (cursor.moveToNext()) {
             for (String name : cursor.getColumnNames())

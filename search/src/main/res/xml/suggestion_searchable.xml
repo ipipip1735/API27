@@ -9,6 +9,7 @@
     android:label="@string/app_name"
     android:hint="@string/search_hint"
     android:inputType="text"
+    android:searchSuggestPath="ddd"
     android:searchSuggestAuthority="xxx"
     android:searchSuggestSelection=" _id = ?">
 </searchable>
