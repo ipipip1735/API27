@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    LruCache<String, Integer> cache;
+    Map map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
+    public void init(View view) {
+        System.out.println("~~button.init~~");
 
 
 //        int cacheSize = 4 * 1024 * 1024; // 4MiB
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        };
 
-        LruCache<String, Integer> cache = new LruCache<String, Integer>(5){
+        cache = new LruCache<String, Integer>(5) {
             @Override
             protected Integer create(String key) {
                 System.out.println("~~create~~");
@@ -112,62 +114,61 @@ public class MainActivity extends AppCompatActivity {
         cache.put("two", 2);
         cache.put("three", 3);
         cache.put("four", 4);
-        System.out.println(cache);
 
-//        Integer integer = cache.get("one");
-//        System.out.println(integer);
-//        Integer integer = cache.get("one");
-//        System.out.println(integer);
-
-//        cache.trimToSize(25);
-//        cache.resize(3);
-//        cache.remove("one");
-//        cache.put("five", 12);
-//        System.out.println(cache.get("five"));
-//        cache.put("four", 12);
-//        Map map = cache.snapshot();
-//        System.out.println(map);
-
-
-
-//        cache.entryRemoved();
-
-
-
-        System.out.println(cache);
 
     }
 
 
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
+    public void get(View view) {
+        System.out.println("~~button.get~~");
+
+        Integer integer = cache.get("one");
+        System.out.println(integer);
 
     }
 
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
+
+    public void add(View view) {
+        System.out.println("~~button.add~~");
+
+        cache.put("five", 12);
+        System.out.println(cache.get("five"));
 
     }
-
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
-
-    }
-
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
-
-    }
-
 
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+
+        cache.remove("one");
+
+
+//        cache.entryRemoved();
+
+    }
+
+    public void info(View view) {
+        System.out.println("~~button.info~~");
+
+        System.out.println(cache);
+
+    }
+
+    public void resize(View view) {
+        System.out.println("~~button.resize~~");
+
+        cache.resize(3);
+//        cache.trimToSize(25);
+
     }
 
 
-    public void query(View view) {
-        System.out.println("~~button.query~~");
+    public void snapshot(View view) {
+        System.out.println("~~button.snapshot~~");
+
+        System.out.println(map);
+        map = cache.snapshot();
+        System.out.println(map);
 
     }
 }
