@@ -1,22 +1,28 @@
 package mine.utilities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.LruCache;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-
-    LruCache<String, Integer> cache;
-    Map map;
+public class JSONArrayActivity extends AppCompatActivity {
+    JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_json);
 
     }
 
@@ -81,40 +87,36 @@ public class MainActivity extends AppCompatActivity {
     public void init(View view) {
         System.out.println("~~button.init~~");
 
+        //方式一：创建空JSON对象
+//        jsonArray = new JSONArray();
+//        System.out.println(jsonArray);
 
-//        int cacheSize = 4 * 1024 * 1024; // 4MiB
-//        LruCache<String, Integer> bitmapCache = new LruCache<String, Integer>(cacheSize) {
-//            protected int sizeOf(String key,  Integer value) {
-//                return 4;
-//            }
-//        };
 
-        cache = new LruCache<String, Integer>(5) {
-            @Override
-            protected Integer create(String key) {
-                System.out.println("~~create~~");
-                System.out.println("key is " + key);
-//                return super.create(key);
-                return Integer.valueOf(55);
-            }
+        //方式二：使用字符串创建JSON对象
+////        String json = "{\"one\": 111, \"two\": \"222\"}";
+//        String json = "[{\"one\": 111}, {\"two\": \"222\"}]";
+//        try {
+//            jsonArray = new JSONArray(json);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(jsonArray);
 
-            @Override
-            protected void entryRemoved(boolean evicted, String key, Integer oldValue, Integer newValue) {
-                System.out.println("~~entryRemoved~~");
-                System.out.println("evicted is " + evicted);
-                System.out.println("key is " + key);
-                System.out.println("oldValue is " + oldValue);
-                System.out.println("newValue is " + newValue);
 
-                super.entryRemoved(evicted, key, oldValue, newValue);
-            }
-        };
-        cache.put("zero", 0);
-        cache.put("one", 1);
-        cache.put("two", 2);
-        cache.put("three", 3);
-        cache.put("four", 4);
+        //方式三：使用字符串创建JSON对象
+        List list = new ArrayList<>();
+        list.add("one");
+        list.add(222);
 
+        Map<String, Object> copyFrom = new HashMap<>();
+        copyFrom.put("one", 111);
+        copyFrom.put("two", "222");
+        list.add(new JSONObject(copyFrom));
+
+
+        jsonArray = new JSONArray(list);
+
+        System.out.println(jsonArray);
 
     }
 
@@ -122,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
     public void get(View view) {
         System.out.println("~~button.get~~");
 
-        Integer integer = cache.get("one");
-        System.out.println(integer);
 
     }
 
@@ -131,44 +131,28 @@ public class MainActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("~~button.add~~");
 
-        cache.put("five", 12);
-        System.out.println(cache.get("five"));
 
     }
 
     public void del(View view) {
         System.out.println("~~button.del~~");
 
-
-        cache.remove("one");
-
-
-//        cache.entryRemoved();
-
     }
 
     public void info(View view) {
         System.out.println("~~button.info~~");
 
-        System.out.println(cache);
-
+        System.out.println(jsonArray);
     }
 
     public void resize(View view) {
         System.out.println("~~button.resize~~");
-
-        cache.resize(3);
-//        cache.trimToSize(25);
 
     }
 
 
     public void snapshot(View view) {
         System.out.println("~~button.snapshot~~");
-
-        System.out.println(map);
-        map = cache.snapshot();
-        System.out.println(map);
 
     }
 }
