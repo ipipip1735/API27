@@ -43,18 +43,50 @@ public class MyReceiver extends BroadcastReceiver {
     private void sync() {
 
         //方式一
-        final PendingResult pendingResult = goAsync();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    for (int i = 0; i < 10; i++) {
+//                        Thread.sleep(1000L);
+//                        System.out.println(i + "|" + Thread.currentThread());
+//                        if (i == 3) goAsync().finish();//提前销毁
+//                    }
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+
+
+        //方式二
+        final Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+
+                System.out.println("msg is " + msg.obj);
+                PendingResult pendingResult = (PendingResult) msg.obj;
+                System.out.println(pendingResult.getResultCode());
+
+                pendingResult.finish();  //销毁PendingResult对象
+                return true;
+            }
+        });
 
         new Thread(new Runnable() {
-            int i = 0;
-
             @Override
             public void run() {
                 try {
-                    while (i++ < 10) {
+                    for (int i = 0; i < 10; i++) {
                         Thread.sleep(1000L);
                         System.out.println(i + "|" + Thread.currentThread());
-                        if (i > 3) pendingResult.finish();
+
+                        if (i == 3) {
+                            Message message = new Message();
+                            message.obj = goAsync(); //获取PendingResult对象
+                            handler.sendMessage(message);
+                        }
                     }
 
                 } catch (InterruptedException e) {
@@ -63,26 +95,6 @@ public class MyReceiver extends BroadcastReceiver {
             }
         }).start();
 
-//提前销毁
-        //方式二
-//        Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-//            @Override
-//            public boolean handleMessage(Message msg) {
-//
-//                System.out.println("msg is " + msg.obj);
-//                PendingResult pendingResult = (PendingResult) msg.obj;
-//                System.out.println(pendingResult.getResultCode());
-//                return false;
-//            }
-//        });
-//        Message message = new Message();
-//        message.obj = goAsync(); //获取PendingResult对象
-//
-//        handler.sendMessage(message);
-//
-//
-//        PendingResult pendingResult = this.goAsync();
-//        pendingResult.finish();  //销毁PendingResult对象
     }
 
     private void order() {

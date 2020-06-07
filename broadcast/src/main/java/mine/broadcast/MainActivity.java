@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("**** " + getClass().getSimpleName() + ".onCreate ****");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        setContentView(R.layout.activity_oldmain);
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        System.out.println("****Example**onResume*****");
+        System.out.println("**** " + getClass().getSimpleName() + ".onResume ****");
         super.onResume();
 
 
@@ -32,26 +34,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        System.out.println("**** " + getClass().getSimpleName() + ".onDestroy ****");
         super.onDestroy();
-        System.out.println("****Example**onDestroy*****");
     }
 
     @Override
     protected void onPause() {
-        System.out.println("****Example**onPause*****");
+        System.out.println("**** " + getClass().getSimpleName() + ".onPause ****");
         super.onPause();
 //        unregisterReceiver(broadcastReceiverTrial);
     }
 
     public void sendBC(View view) {
-        System.out.println("*******sendBC*******");
-
+        System.out.println("~~ sendBC ~~");
 
         //显式Intent
 //        Intent intent = new Intent(this, BasicReceiver.class);
 
         //隐式Intent
-        Intent intent = new Intent("r2");
+        Intent intent = new Intent("r1");
         intent.setPackage(getPackageName());
 //        sendBroadcast(intent, "a.b"); //增加权限限制
 //        intent.putExtra("mReceiver", "One");//携带数据
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendOBC(View view) {
-        System.out.println("*******sendOBC*******");
+        System.out.println("~~ sendOBC ~~");
 
         Intent intent = new Intent("BCBC");
         intent.setPackage(getPackageName());
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showInfo(View view) {
-        System.out.println("*******show info*******");
 
     }
 

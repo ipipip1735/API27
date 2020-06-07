@@ -11,16 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".ExampleActivity">
+<!--        <activity android:name=".ExampleActivity">-->
         <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <action android:name="android.intent.action.VIEW" />
@@ -28,22 +21,27 @@
         </intent-filter>
         </activity>
 
-        <receiver android:name=".BasicReceiver" android:exported="false">
+
+
+
+
+        <receiver android:name=".BasicReceiver" android:exported="true">
+<!--        <receiver android:name=".BasicReceiver" android:exported="false">-->
             <intent-filter>
                 <action android:name="BCBC" />
                 <action android:name="r1" />
             </intent-filter>
         </receiver>
 
-        <!--<receiver-->
-            <!--android:name=".MyReceiver"-->
-            <!--android:exported="true">-->
-            <!--&lt;!&ndash;android:enabled="true"&ndash;&gt;-->
-            <!--<intent-filter android:priority="2">-->
-                <!--<action android:name="BCBC" />-->
-                <!--<action android:name="r2" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver
+            android:name=".MyReceiver"
+            android:exported="true">
+            <!--android:enabled="true"-->
+            <intent-filter android:priority="2">
+                <action android:name="BCBC" />
+                <action android:name="r2" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
