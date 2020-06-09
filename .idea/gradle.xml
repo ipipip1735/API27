@@ -11,8 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/contentProvide" />
-            <option value="$PROJECT_DIR$/sqlitedb" />
+            <option value="$PROJECT_DIR$/contactProvider" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

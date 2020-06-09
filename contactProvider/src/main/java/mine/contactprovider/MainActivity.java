@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
     public void insert(View view) {
         System.out.println("~~button.insert~~");
 
-//        insertRawContact();
-        insertData();
+        insertRawContact();
+//        insertData();
 //        insertRawContactBatch(); //批量插入
 
     }
@@ -484,9 +484,9 @@ public class MainActivity extends AppCompatActivity {
 //        queryContact();
 //        queryWithLookupKey();
 //        queryRawContact();
-//        queryData();
+        queryData();
 //        queryWithEtity();
-        queryPhoneLookup();
+//        queryPhoneLookup();
 //        queryQuickContact();
 //        queryPhoto();
 
@@ -645,7 +645,8 @@ public class MainActivity extends AppCompatActivity {
 
         //方法一：返回所有结果集
 //        Uri uri = ContactsContract.Data.CONTENT_URI;
-        Uri uri = Uri.parse("content://com.android.contacts/data/phones");
+//        Uri uri = Uri.parse("content://com.android.contacts/data/phones");
+        Uri uri = Uri.parse("content://com.android.contacts/data/phones/1");
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
 

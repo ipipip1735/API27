@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
         //获取文件内容
         try (ParcelFileDescriptor parcelFileDescriptor =
                      getContentResolver().openFileDescriptor(uri, "r")) {
-            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+            FileDescriptor fd = parcelFileDescriptor.getFileDescriptor();
 
-            try (InputStream inputStream = new FileInputStream(fdp);
+            try (InputStream inputStream = new FileInputStream(fd);
                  InputStreamReader reader = new InputStreamReader(inputStream, UTF_8);
                  BufferedReader bufferedReader = new BufferedReader(reader)) {
 
@@ -147,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
         //写数据到文件
         try (ParcelFileDescriptor parcelFileDescriptor =
                      getContentResolver().openFileDescriptor(uri, "wa")) {
-            FileDescriptor fdp = parcelFileDescriptor.getFileDescriptor();
+            FileDescriptor fd = parcelFileDescriptor.getFileDescriptor();
 
-            try (OutputStream outputStream = new FileOutputStream(fdp);
+            try (OutputStream outputStream = new FileOutputStream(fd);
                  OutputStreamWriter writer = new OutputStreamWriter(outputStream, UTF_8);
                  BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
                 String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
