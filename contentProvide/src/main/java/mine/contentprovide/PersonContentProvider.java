@@ -50,7 +50,7 @@ public class PersonContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         System.out.println("... " + this.getClass().getSimpleName() + ".query ...");
 
-        String limit = "10";
+        String limit = "100";
 
         SQLiteQueryBuilder sqLiteQueryBuilder = new SQLiteQueryBuilder();
         sqLiteQueryBuilder.setTables("person");
@@ -107,6 +107,19 @@ public class PersonContentProvider extends ContentProvider {
     @NonNull
     @Override
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
-        return super.applyBatch(operations);
+        System.out.println("... " + this.getClass().getSimpleName() + ".applyBatch ...");
+
+        if (Objects.isNull(db)) db = personSQLiteOpenHelper.getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            ContentProviderResult[] results = super.applyBatch(operations);
+            db.setTransactionSuccessful();
+            return results;
+
+        } finally {
+            System.out.println("endTransaction");
+            db.endTransaction();
+        }
     }
 }

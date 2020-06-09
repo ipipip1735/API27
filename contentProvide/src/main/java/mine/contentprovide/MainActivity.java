@@ -1,20 +1,30 @@
 package mine.contentprovide;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.cert.CertPathBuilderResult;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
@@ -25,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     PersonSQLiteOpenHelper personSQLiteOpenHelper;
 
     private CursorContentObserver cursorContentObserver;
-    private BaseCursorAdapter baseCursorAdapter;
 
 
     @Override
@@ -37,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         cursorContentObserver = new CursorContentObserver(new Handler(getMainLooper()));
         personSQLiteOpenHelper = new PersonSQLiteOpenHelper(this);
-
     }
 
 
@@ -102,9 +110,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.add~~");
 //        matchURI();
 //        addRecord();
-        addWithCR();
-
+//        addWithCR();
+        addWithBatch();
     }
+
 
     public void del(View view) {
         System.out.println("~~button.del~~");
@@ -120,9 +129,7 @@ public class MainActivity extends AppCompatActivity {
 //        queryWithSelectionArgs();
 
 //        queryProject();
-//        queryWithPCP();
         queryWithCR();
-
 
     }
 
@@ -134,9 +141,45 @@ public class MainActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
     }
 
+    private void addWithBatch() {
+
+        Uri uri = Uri.parse("content://TNT/person");
+        ContentResolver contentResolver = getContentResolver();
+
+        ArrayList<ContentProviderOperation> arrayList = new ArrayList<>();
+
+        arrayList.add(ContentProviderOperation.newInsert(uri)
+                .withValue("person_name", "jack" + new Random().nextInt(256))
+                .withValue("person_gender", new Random().nextInt(2))
+                .withValue("person_age", new Random().nextInt(120))
+                .build());
+
+        arrayList.add(ContentProviderOperation.newInsert(uri)
+                .withValue("person_name", "jack" + new Random().nextInt(256))
+                .withValue("person_gender", new Random().nextInt(2))
+                .withValueBackReference("person_age", 0)//使用后向引用（引用索引为0的操作结果）
+                .build());
+
+
+        try {
+
+            ContentProviderResult[] results = contentResolver.applyBatch("TNT", arrayList);
+            for (int i = 0; i < results.length; i++) {
+                System.out.println("results is " + results[i]);
+
+            }
+
+        } catch (OperationApplicationException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        contentResolver.notifyChange(uri, null);
+
+    }
 
     private void addWithCR() {
 
@@ -197,8 +240,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void queryWithCR() {
 
-        Uri uri = Uri.parse("content://TNT/person");
+        ListView listView = findViewById(R.id.myLV);
+        if (listView.getAdapter() != null) return;
 
+
+        Uri uri = Uri.parse("content://TNT/person");
         String[] projection = {
                 "_id",
                 "name",
@@ -225,20 +271,10 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         cursor.setNotificationUri(contentResolver, uri);
-        baseCursorAdapter = new BaseCursorAdapter(this, cursor, true);
-
-        ListView listView = findViewById(R.id.myLV);
-        listView.setAdapter(baseCursorAdapter);
-
+        listView.setAdapter(new BaseCursorAdapter(this, cursor, true));
 
     }
 
-    private void queryWithPCP() {
-        ContentResolver contentResolver = getContentResolver();
-        Uri uri = Uri.parse("content://AA/BB/1");
-        contentResolver.query(uri, null, null, null, null);
-
-    }
 
     private void queryProject() {
         if (Objects.isNull(sqLiteDatabase))
