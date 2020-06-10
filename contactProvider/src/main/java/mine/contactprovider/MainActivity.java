@@ -645,8 +645,16 @@ public class MainActivity extends AppCompatActivity {
 
         //方法一：返回所有结果集
 //        Uri uri = ContactsContract.Data.CONTENT_URI;
+//        Uri uri = Uri.parse("content://com.android.contacts/data");
+//        Uri uri = Uri.parse("content://com.android.contacts/data/2");
 //        Uri uri = Uri.parse("content://com.android.contacts/data/phones");
-        Uri uri = Uri.parse("content://com.android.contacts/data/phones/1");
+//        Uri uri = Uri.parse("content://com.android.contacts/data/phones/1");
+//        Uri uri = Uri.parse("content://com.android.contacts/data/phones/filter/chris");
+//        Uri uri = Uri.parse("content://com.android.contacts/data/emails");
+//        Uri uri = Uri.parse("content://com.android.contacts/data/emails/lookup/ab@de.com");
+//        Uri uri = Uri.parse("content://com.android.contacts/data/emails/filter/chris");
+//        Uri uri = Uri.parse("content://com.android.contacts/phone_lookup/3011231234");
+        Uri uri = Uri.parse("content://com.android.contacts/phone_lookup/1231234");
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
 
