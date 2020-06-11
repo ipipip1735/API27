@@ -122,13 +122,13 @@ public class VolleyActivity extends AppCompatActivity {
 
 //        volleyBasic();
 //        volleyPostText();
-//        volleyPostFile(); //失败了，Volley不支持multipart/form-data
+        volleyPostFile(); //失败了，Volley不支持multipart/form-data
 //        volleyForJSON();
-//        volleyWithCustomQuest();
+//        volleyWithCustomRequest();
 //        volleyWithCookie();
 
         //加载图片
-        volleyForNetworkImageView();
+//        volleyForNetworkImageView();
 //        volleyForImageView();
 
         //自定义Cache接口和NetWork接口
@@ -277,7 +277,7 @@ public class VolleyActivity extends AppCompatActivity {
         List<HttpCookie> cookies = cookieStore.getCookies();
     }
 
-    private void volleyWithCustomQuest() {
+    private void volleyWithCustomRequest() {
 
         final RequestQueue queue = Volley.newRequestQueue(this);
 

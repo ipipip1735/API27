@@ -145,8 +145,8 @@ public class URLConnectionActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                httpsConnection();
-                httpConnection();
+                httpsConnection();
+//                httpConnection();
             }
 
         }).start();

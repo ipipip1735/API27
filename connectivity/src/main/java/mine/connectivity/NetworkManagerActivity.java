@@ -95,7 +95,7 @@ public class NetworkManagerActivity extends AppCompatActivity {
     public void state(View view) {
         System.out.println("~~button.state~~");
 //        networkInfo(); //老方法
-        iterate(); //遍历查询
+//        iterate(); //遍历查询
 
 
 
@@ -266,10 +266,9 @@ public class NetworkManagerActivity extends AppCompatActivity {
 
 //        oldNetwork(); //已经废弃
 
-//        defaultNetwork(); //获取默认网络
+        defaultNetwork(); //获取默认网络
 //        network(); //获取其他所需网络
 //        networks(); //获取其他所需网络
-
 
     }
 
