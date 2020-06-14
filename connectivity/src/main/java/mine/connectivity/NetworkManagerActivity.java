@@ -1,5 +1,6 @@
 package mine.connectivity;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
@@ -96,9 +97,6 @@ public class NetworkManagerActivity extends AppCompatActivity {
         System.out.println("~~button.state~~");
 //        networkInfo(); //老方法
 //        iterate(); //遍历查询
-
-
-
 
         request(); //新方法
         linkProperties(); //查询连接信息
@@ -266,9 +264,10 @@ public class NetworkManagerActivity extends AppCompatActivity {
 
 //        oldNetwork(); //已经废弃
 
-        defaultNetwork(); //获取默认网络
+//        defaultNetwork(); //获取默认网络
 //        network(); //获取其他所需网络
 //        networks(); //获取其他所需网络
+
 
     }
 
@@ -289,8 +288,8 @@ public class NetworkManagerActivity extends AppCompatActivity {
 
         //定义网络
         NetworkRequest request = new NetworkRequest.Builder()
-                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) //访问互联网
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR) //使用数据流量
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) //访问互联网
                 .build();
 
         //请求网络

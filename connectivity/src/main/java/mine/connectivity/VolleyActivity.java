@@ -554,47 +554,47 @@ public class VolleyActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
     }
-}
 
 
-class CustomRequest extends Request<String> {
-    private final Response.Listener<String> listener;
+    class CustomRequest extends Request<String> {
+        private final Response.Listener<String> listener;
 
-    public CustomRequest(int method, String url,
-                         Response.Listener<String> listener, @Nullable Response.ErrorListener errorListener) {
+        public CustomRequest(int method, String url,
+                             Response.Listener<String> listener, @Nullable Response.ErrorListener errorListener) {
 
-        super(method, url, errorListener);
-        System.out.println("--CustomRequest Constructor--");
-        this.listener = listener;
-    }
+            super(method, url, errorListener);
+            System.out.println("--CustomRequest Constructor--");
+            this.listener = listener;
+        }
 
-    @Override
-    protected Response<String> parseNetworkResponse(NetworkResponse response) {
-        System.out.println("~~parseNetworkResponse~~");
-        System.out.println("allHeaders is " + response.statusCode);
-        System.out.println("allHeaders is " + response.allHeaders);
-        System.out.println("allHeaders is " + response.headers);
-        System.out.println("allHeaders is " + response.notModified);
-        System.out.println("allHeaders is " + response.data);
-
-
-        long date = HttpHeaderParser.parseDateAsEpoch(response.headers.get("Date"));
-        System.out.println("timestamp is " + date);
+        @Override
+        protected Response<String> parseNetworkResponse(NetworkResponse response) {
+            System.out.println("~~parseNetworkResponse~~");
+            System.out.println("allHeaders is " + response.statusCode);
+            System.out.println("allHeaders is " + response.allHeaders);
+            System.out.println("allHeaders is " + response.headers);
+            System.out.println("allHeaders is " + response.notModified);
+            System.out.println("allHeaders is " + response.data);
 
 
-        Charset charset = Charset.forName(HttpHeaderParser.parseCharset(response.headers, "utf8"));
-        System.out.println("charset is " + charset.name());
+            long date = HttpHeaderParser.parseDateAsEpoch(response.headers.get("Date"));
+            System.out.println("timestamp is " + date);
 
-        String result = new String(response.data, charset);
-        System.out.println("result is " + result);
 
-        return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
-    }
+            Charset charset = Charset.forName(HttpHeaderParser.parseCharset(response.headers, "utf8"));
+            System.out.println("charset is " + charset.name());
 
-    @Override
-    protected void deliverResponse(String response) {
-        System.out.println("~~deliverResponse~~");
-        System.out.println("reposne is " + response);
-        listener.onResponse(response);
+            String result = new String(response.data, charset);
+            System.out.println("result is " + result);
+
+            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+        }
+
+        @Override
+        protected void deliverResponse(String response) {
+            System.out.println("~~deliverResponse~~");
+            System.out.println("reposne is " + response);
+            listener.onResponse(response);
+        }
     }
 }

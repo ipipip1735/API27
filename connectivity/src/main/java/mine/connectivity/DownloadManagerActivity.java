@@ -10,6 +10,8 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -114,12 +116,9 @@ public class DownloadManagerActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
 
-//        versionOne();
-
-
-        String url = "http://www.yssp88.com/skin/v2/images/slogo.png";
+//        String url = "http://www.yssp88.com/skin/v2/images/slogo.png";
 //        String url = "http://192.168.0.126:8008/a.jpg";
-//        String url = "http://192.168.0.127/a.jpg";
+        String url = "http://192.168.0.127/big.jpg";
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
         //任务描述
@@ -236,7 +235,6 @@ public class DownloadManagerActivity extends AppCompatActivity {
             }
         }
         cursor.close();
-
     }
 
     public void unbind(View view) {

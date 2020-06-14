@@ -4,7 +4,9 @@ import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 
 import org.chromium.net.CronetEngine;
@@ -112,7 +114,7 @@ public class CronetActivity extends AppCompatActivity {
         super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
 
-        if (Objects.nonNull(cronetEngine)){
+        if (Objects.nonNull(cronetEngine)) {
             cronetEngine.shutdown();
             executorService.shutdown();
         }
@@ -418,8 +420,8 @@ public class CronetActivity extends AppCompatActivity {
         CronetEngine cronetEngine = myBuilder.build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-//        String url = "http://192.168.0.127/post.php";
-        String url = "http://192.168.0.126:8008/post.php";
+        String url = "http://192.168.0.126/post.php";
+//        String url = "http://192.168.0.126:8008/post.php";
 
         //创建请求对象
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
@@ -479,10 +481,6 @@ public class CronetActivity extends AppCompatActivity {
             ParcelFileDescriptor pfd = ParcelFileDescriptor.open(file, MODE_READ_WRITE);
             System.out.println("size is " + pfd.getStatSize());
             requestBuilder.setUploadDataProvider(UploadDataProviders.create(pfd), executorService);
-
-
-
-
 
 
             /*上传资源文件*/
@@ -597,297 +595,295 @@ public class CronetActivity extends AppCompatActivity {
 
 
     }
-}
 
 
-class GetUrlRequestCallback extends UrlRequest.Callback {
-    private static final String TAG = "GetUrlRequestCallback";
+    class GetUrlRequestCallback extends UrlRequest.Callback {
+        private static final String TAG = "GetUrlRequestCallback";
 
-    @Override
-    public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
-        System.out.println("...button.onRedirectReceived...");
+        @Override
+        public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
+            System.out.println("...button.onRedirectReceived...");
+            request.followRedirect();//重新开始
+        }
 
-        request.followRedirect();//重新开始
-    }
+        @Override
+        public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onResponseStarted...");
 
-    @Override
-    public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onResponseStarted...");
-
-        System.out.println("httpStatusCode is " + info.getHttpStatusCode());
-        Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
-        System.out.println(mResponseHeaders);
+            System.out.println("httpStatusCode is " + info.getHttpStatusCode());
+            Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
+            System.out.println(mResponseHeaders);
 
 //        request.cancel(); //取消
 
 
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(100);
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(100);
 
-        System.out.println("position is " + byteBuffer.position());
-        System.out.println("limit is " + byteBuffer.limit());
-        System.out.println("capacity is " + byteBuffer.capacity());
-        System.out.println("hashCode() is " + byteBuffer.hashCode());
-        request.read(byteBuffer);
+            System.out.println("position is " + byteBuffer.position());
+            System.out.println("limit is " + byteBuffer.limit());
+            System.out.println("capacity is " + byteBuffer.capacity());
+            System.out.println("hashCode() is " + byteBuffer.hashCode());
+            request.read(byteBuffer);
 //        try {
 //            Thread.sleep(2000l);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        System.out.println("position is " + byteBuffer.position());
-        System.out.println("limit is " + byteBuffer.limit());
-        System.out.println("capacity is " + byteBuffer.capacity());
-        System.out.println("hashCode() is " + byteBuffer.hashCode());
-    }
+            System.out.println("position is " + byteBuffer.position());
+            System.out.println("limit is " + byteBuffer.limit());
+            System.out.println("capacity is " + byteBuffer.capacity());
+            System.out.println("hashCode() is " + byteBuffer.hashCode());
+        }
 
-    @Override
-    public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
-        System.out.println("...button.onReadCompleted...");
+        @Override
+        public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
+            System.out.println("...button.onReadCompleted...");
 //        request.cancel(); //取消
 
 
-        System.out.println("info is " + info);
+            System.out.println("info is " + info);
 
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+            System.out.println("complete|position is " + byteBuffer.position());
+            System.out.println("complete|limit is " + byteBuffer.limit());
+            System.out.println("complete|capacity is " + byteBuffer.capacity());
+            System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
 
-        byteBuffer.flip();
-        while (byteBuffer.hasRemaining()) {
-            CharBuffer charBuffer = UTF_8.decode(byteBuffer);
-            System.out.println(charBuffer);
+            byteBuffer.flip();
+            while (byteBuffer.hasRemaining()) {
+                CharBuffer charBuffer = UTF_8.decode(byteBuffer);
+                System.out.println(charBuffer);
+            }
+
+            System.out.println("complete|position is " + byteBuffer.position());
+            System.out.println("complete|limit is " + byteBuffer.limit());
+            System.out.println("complete|capacity is " + byteBuffer.capacity());
+            System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+            byteBuffer.clear();
+            System.out.println("complete|position is " + byteBuffer.position());
+            System.out.println("complete|limit is " + byteBuffer.limit());
+            System.out.println("complete|capacity is " + byteBuffer.capacity());
+            System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+            request.read(byteBuffer); //继续读取，等于递归调用，直到读取完毕
+            System.out.println("complete|position is " + byteBuffer.position());
+            System.out.println("complete|limit is " + byteBuffer.limit());
+            System.out.println("complete|capacity is " + byteBuffer.capacity());
+            System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+
         }
 
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
-        byteBuffer.clear();
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
-        request.read(byteBuffer); //继续读取，等于递归调用，直到读取完毕
-        System.out.println("complete|position is " + byteBuffer.position());
-        System.out.println("complete|limit is " + byteBuffer.limit());
-        System.out.println("complete|capacity is " + byteBuffer.capacity());
-        System.out.println("complete|hashCode() is " + byteBuffer.hashCode());
+        @Override
+        public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onSucceeded...");
 
+            System.out.println(info);
+        }
+
+        @Override
+        public void onCanceled(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onCanceled...");
+
+            System.out.println(info);
+
+        }
+
+        @Override
+        public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
+            System.out.println("...button.onFailed...");
+
+            System.out.println("info is " + info);
+            System.out.println(error);
+
+        }
     }
 
-    @Override
-    public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onSucceeded...");
 
-        System.out.println(info);
-    }
+    class CacheUrlRequestCallback extends UrlRequest.Callback {
+        private static final String TAG = "CacheUrlRequestCallback";
 
-    @Override
-    public void onCanceled(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onCanceled...");
+        @Override
+        public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
+            System.out.println("...button.onRedirectReceived...");
 
-        System.out.println(info);
+            request.followRedirect();
+        }
 
-    }
+        @Override
+        public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onResponseStarted...");
 
-    @Override
-    public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
-        System.out.println("...button.onFailed...");
-
-        System.out.println("info is " + info);
-        System.out.println(error);
-
-    }
-}
-
-
-class CacheUrlRequestCallback extends UrlRequest.Callback {
-    private static final String TAG = "CacheUrlRequestCallback";
-
-    @Override
-    public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
-        System.out.println("...button.onRedirectReceived...");
-
-        request.followRedirect();
-    }
-
-    @Override
-    public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onResponseStarted...");
-
-        System.out.println("response|httpStatusCode is " + info.getHttpStatusCode());
-        Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
-        System.out.println("response|" + mResponseHeaders);
-        System.out.println("cache is " + info.wasCached());
+            System.out.println("response|httpStatusCode is " + info.getHttpStatusCode());
+            Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
+            System.out.println("response|" + mResponseHeaders);
+            System.out.println("cache is " + info.wasCached());
 
 //        request.cancel();
 
 
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024);
-        request.read(byteBuffer);
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024);
+            request.read(byteBuffer);
 
-    }
+        }
 
-    @Override
-    public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
-        System.out.println("...button.onReadCompleted...");
+        @Override
+        public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
+            System.out.println("...button.onReadCompleted...");
 //        request.cancel();
 
-        byteBuffer.flip();
-        while (byteBuffer.hasRemaining()) {
-            CharBuffer charBuffer = UTF_8.decode(byteBuffer);
-            System.out.println(charBuffer);
+            byteBuffer.flip();
+            while (byteBuffer.hasRemaining()) {
+                CharBuffer charBuffer = UTF_8.decode(byteBuffer);
+                System.out.println(charBuffer);
+            }
+            byteBuffer.clear();
+            request.read(byteBuffer);
+
         }
-        byteBuffer.clear();
-        request.read(byteBuffer);
 
-    }
+        @Override
+        public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onSucceeded...");
+            System.out.println("cache is " + info.wasCached());
+            System.out.println(info);
 
-    @Override
-    public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onSucceeded...");
-        System.out.println("cache is " + info.wasCached());
-        System.out.println(info);
-
-    }
-
-    @Override
-    public void onCanceled(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onCanceled...");
-
-        System.out.println(info);
-
-    }
-
-    @Override
-    public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
-        System.out.println("...button.onFailed...");
-
-        System.out.println("info is " + info);
-        System.out.println(error);
-
-    }
-}
-
-
-class PostUrlRequestCallback extends UrlRequest.Callback {
-    private static final String TAG = "PostUrlRequestCallback";
-
-    @Override
-    public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
-        System.out.println("...button.onRedirectReceived...");
-
-        request.followRedirect();
-    }
-
-    @Override
-    public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onResponseStarted...");
-
-        System.out.println("response StatusCode is " + info.getHttpStatusCode());
-        Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
-        System.out.println("response header is " + mResponseHeaders);
-        request.read(ByteBuffer.allocateDirect(32 * 1024));
-    }
-
-    @Override
-    public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
-        System.out.println("...button.onReadCompleted...");
-
-
-        byteBuffer.flip();
-        while (byteBuffer.hasRemaining()) {
-            CharBuffer charBuffer = UTF_8.decode(byteBuffer);
-            System.out.println(charBuffer);
         }
-        byteBuffer.clear();
-        request.read(byteBuffer);
+
+        @Override
+        public void onCanceled(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onCanceled...");
+
+            System.out.println(info);
+
+        }
+
+        @Override
+        public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
+            System.out.println("...button.onFailed...");
+
+            System.out.println("info is " + info);
+            System.out.println(error);
+
+        }
     }
 
-    @Override
-    public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onSucceeded...");
 
-        System.out.println(info);
+    class PostUrlRequestCallback extends UrlRequest.Callback {
+        private static final String TAG = "PostUrlRequestCallback";
+
+        @Override
+        public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) {
+            System.out.println("...button.onRedirectReceived...");
+
+            request.followRedirect();
+        }
+
+        @Override
+        public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onResponseStarted...");
+
+            System.out.println("response StatusCode is " + info.getHttpStatusCode());
+            Map<String, List<String>> mResponseHeaders = info.getAllHeaders();
+            System.out.println("response header is " + mResponseHeaders);
+            request.read(ByteBuffer.allocateDirect(32 * 1024));
+        }
+
+        @Override
+        public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) {
+            System.out.println("...button.onReadCompleted...");
+
+
+            byteBuffer.flip();
+            while (byteBuffer.hasRemaining()) {
+                CharBuffer charBuffer = UTF_8.decode(byteBuffer);
+                System.out.println(charBuffer);
+            }
+            byteBuffer.clear();
+            request.read(byteBuffer);
+        }
+
+        @Override
+        public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onSucceeded...");
+
+            System.out.println(info);
+        }
+
+        @Override
+        public void onCanceled(UrlRequest request, UrlResponseInfo info) {
+            System.out.println("...button.onCanceled...");
+            System.out.println(info);
+
+        }
+
+        @Override
+        public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
+            System.out.println("...button.onFailed...");
+
+            System.out.println("info is " + info);
+            System.out.println(error);
+
+        }
     }
 
-    @Override
-    public void onCanceled(UrlRequest request, UrlResponseInfo info) {
-        System.out.println("...button.onCanceled...");
-        System.out.println(info);
+    class MultipleUploadDataProvider extends UploadDataProvider {
 
-    }
+        String boundaryString;
 
-    @Override
-    public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
-        System.out.println("...button.onFailed...");
+        public MultipleUploadDataProvider(String boundaryString) {
+            this.boundaryString = boundaryString;
+        }
 
-        System.out.println("info is " + info);
-        System.out.println(error);
+        @Override
+        public long getLength() throws IOException {
+            System.out.println("...button.getLength...");
 
-    }
-}
-
-class MultipleUploadDataProvider extends UploadDataProvider {
-
-    String boundaryString;
-
-    public MultipleUploadDataProvider(String boundaryString) {
-        this.boundaryString = boundaryString;
-    }
-
-    @Override
-    public long getLength() throws IOException {
-        System.out.println("...button.getLength...");
-
-        //响应主体长度
+            //响应主体长度
+//        long length = 250;
 //        long length = buffer.limit();
 //        System.out.println("length is " + length);
 
-        //分块传送，返回值恒为-1
-//        long length = 250;
-        long length = -1;
+            //分块传送，返回值恒为-1
+            long length = -1;
 
-        return length;
-    }
-
-    @Override
-    public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
-        System.out.println("...button.read...");
-
-
-
-        byte[] bytes = null;
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
-             OutputStreamWriter writer = new OutputStreamWriter(baos);
-             BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            bufferedWriter.write("--" + boundaryString + "\n");
-            bufferedWriter.write("Content-Disposition: form-data; name=\"one\"" + "\n\n");
-            bufferedWriter.write("111" + "\n");
-
-            bufferedWriter.write("--" + boundaryString + "\n");
-            bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
-            bufferedWriter.write("222" + "\n");
-
-            bufferedWriter.write("--" + boundaryString + "--\n");
-            bufferedWriter.flush();
-            bytes = baos.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
+            return length;
         }
 
-        byteBuffer.put(bytes);
-        uploadDataSink.onReadSucceeded(true);
+        @Override
+        public void read(UploadDataSink uploadDataSink, ByteBuffer byteBuffer) throws IOException {
+            System.out.println("...button.read...");
 
-    }
 
-    private void updateUI() {
+            byte[] bytes = null;
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
+                 OutputStreamWriter writer = new OutputStreamWriter(baos);
+                 BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+                bufferedWriter.write("--" + boundaryString + "\n");
+                bufferedWriter.write("Content-Disposition: form-data; name=\"one\"" + "\n\n");
+                bufferedWriter.write("111" + "\n");
 
-    }
+                bufferedWriter.write("--" + boundaryString + "\n");
+                bufferedWriter.write("Content-Disposition: form-data; name=\"two\"" + "\n\n");
+                bufferedWriter.write("222" + "\n");
 
-    @Override
-    public void rewind(UploadDataSink uploadDataSink) throws IOException {
-        System.out.println("...button.rewind...");
+                bufferedWriter.write("--" + boundaryString + "--\n");
+                bufferedWriter.flush();
+                bytes = baos.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            byteBuffer.put(bytes);
+            uploadDataSink.onReadSucceeded(true);
+
+        }
+
+        private void updateUI() {
+
+        }
+
+        @Override
+        public void rewind(UploadDataSink uploadDataSink) throws IOException {
+            System.out.println("...button.rewind...");
+
+        }
     }
 }

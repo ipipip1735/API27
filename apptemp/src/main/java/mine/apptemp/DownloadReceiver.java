@@ -1,4 +1,4 @@
-package mine.connectivity;
+package mine.apptemp;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import static android.app.DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR;
 import static android.app.DownloadManager.COLUMN_DESCRIPTION;
 import static android.app.DownloadManager.COLUMN_ID;
 import static android.app.DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP;
-import static android.app.DownloadManager.COLUMN_LOCAL_FILENAME;
 import static android.app.DownloadManager.COLUMN_LOCAL_URI;
 import static android.app.DownloadManager.COLUMN_MEDIAPROVIDER_URI;
 import static android.app.DownloadManager.COLUMN_MEDIA_TYPE;
