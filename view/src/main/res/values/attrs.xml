@@ -14,4 +14,8 @@
             <enum name="right" value="1" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="CC">
+        <attr name="sss" format="string" />
+    </declare-styleable>
 </resources>
+

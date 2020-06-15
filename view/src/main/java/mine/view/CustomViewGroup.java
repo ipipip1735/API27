@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 public class CustomViewGroup extends ViewGroup {
     public CustomViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
-        System.out.println("... " + this.getClass().getSimpleName() + ".CustomViewGroup ...");
+        System.out.println("... " + this.getClass().getSimpleName() + ".Constructor ...");
 
 
     }
@@ -62,7 +62,7 @@ public class CustomViewGroup extends ViewGroup {
 
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
-        System.out.println("~~ " + this.getClass().getSimpleName() + ".generateLayoutParams ~~");
+        System.out.println("~~ " + this.getClass().getSimpleName() + ".generateLayoutParams1 ~~");
         return new CVGLayoutParams(getContext(), attrs);
     }
 //        return super.generateLayoutParams(attrs);
@@ -80,13 +80,18 @@ public class CustomViewGroup extends ViewGroup {
     }
 
     public class CVGLayoutParams extends ViewGroup.LayoutParams {
-        int align = 0;
+        int align;
+        String s;
 
         public CVGLayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-            System.out.println("~~ " + this.getClass().getSimpleName() + ".CVGLayoutParams ~~");
+            System.out.println("~~ " + this.getClass().getSimpleName() + ".Constructor ~~");
             TypedArray array = c.obtainStyledAttributes(attrs, R.styleable.CustomViewGroup);
             align = array.getInt(R.styleable.CustomViewGroup_align, -1);
+
+            array = c.obtainStyledAttributes(attrs, R.styleable.CC);
+            s = array.getString(R.styleable.CC_sss);
+
             array.recycle();
         }
     }

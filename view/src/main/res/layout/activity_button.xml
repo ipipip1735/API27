@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
                 android:padding="50px"
+                mine:sss="#FFFF00"
                 mine:direction="left"/>
 
         </mine.view.CustomViewGroup>

@@ -45,7 +45,7 @@ public class CustomView extends View {
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        System.out.println("+++ " + this.getClass().getSimpleName() + ".CustomView +++");
+        System.out.println("+++ " + this.getClass().getSimpleName() + ".Constructor +++");
         System.out.println(attrs);
 
 
@@ -73,15 +73,15 @@ public class CustomView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         System.out.println("... " + this.getClass().getSimpleName() + ".onMeasure ...");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//
-//        int width, height, widthMode, heightMode;
-//
-//        widthMode = MeasureSpec.getMode(widthMeasureSpec);
-//        width = MeasureSpec.getSize(widthMeasureSpec);
-//        System.out.println("width is " + width + ", widthMode is " + widthMode);
-//        heightMode = MeasureSpec.getMode(heightMeasureSpec);
-//        height = MeasureSpec.getSize(heightMeasureSpec);
-//        System.out.println("height is " + height + ", heightMode is " + heightMode);
+
+        int width, height, widthMode, heightMode;
+
+        widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        width = MeasureSpec.getSize(widthMeasureSpec);
+        System.out.println("width is " + width + ", widthMode is " + widthMode);
+        heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        height = MeasureSpec.getSize(heightMeasureSpec);
+        System.out.println("height is " + height + ", heightMode is " + heightMode);
 
         setMeasuredDimension(500, 601);
 //        System.out.println("my height is " + getMeasuredHeight());
@@ -97,11 +97,12 @@ public class CustomView extends View {
         System.out.println("... " + this.getClass().getSimpleName() + ".onLayout ...");
         super.onLayout(changed, left, top, right, bottom);
 
-//        int height, width, align;
-//        width = getLayoutParams().width;
-//        height = getLayoutParams().height;
-//        align = ((CustomViewGroup.CVGLayoutParams)getLayoutParams()).align;
-//        System.out.println("align is " + align);
+        int height, width, align;
+        width = getLayoutParams().width;
+        height = getLayoutParams().height;
+        align = ((CustomViewGroup.CVGLayoutParams)getLayoutParams()).align;
+        String s = ((CustomViewGroup.CVGLayoutParams)getLayoutParams()).s;
+        System.out.println("s is " + s);
 
 
 ////        System.out.print("changed=" + changed);
@@ -114,10 +115,10 @@ public class CustomView extends View {
 //        bottom = height >= bottom ? bottom : height;
 
 
-//        setLeft(left);
-//        setTop(top);
-//        setRight(right);
-//        setBottom(bottom);
+        setLeft(left);
+        setTop(top);
+        setRight(right + 50);
+        setBottom(bottom + 50);
 
 
     }
@@ -159,15 +160,15 @@ public class CustomView extends View {
 //        canvas.drawBitmap(bitmap, 0, 0, paint);
 
 
-        canvas.drawColor(getResources().getColor(R.color.MediumOrchid, null));
-
-        canvas.save();
-        canvas.scale(1f, 0.5f);
-        canvas.rotate(degree);
-        canvas.translate(0, 3);
-//        canvas.skew(0, degree);
-        paint.setColor(getResources().getColor(R.color.Ivory, null));
-        canvas.drawCircle(250, 200, 100, paint);
+//        canvas.drawColor(getResources().getColor(R.color.MediumOrchid, null));
+//
+//        canvas.save();
+//        canvas.scale(1f, 0.5f);
+//        canvas.rotate(degree);
+//        canvas.translate(0, 3);
+////        canvas.skew(0, degree);
+//        paint.setColor(getResources().getColor(R.color.Ivory, null));
+//        canvas.drawCircle(250, 200, 100, paint);
 
 
 //        canvas.restore();
