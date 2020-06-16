@@ -15,7 +15,7 @@
         </attr>
     </declare-styleable>
     <declare-styleable name="CC">
-        <attr name="sss" format="string" />
+        <attr name="sss" format="color" />
     </declare-styleable>
 </resources>
 

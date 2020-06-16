@@ -21,9 +21,7 @@ import java.util.Set;
  */
 
 public class ViewActivity extends AppCompatActivity {
-    
-    
-    
+
     public ViewActivity() {
         System.out.println("**********  View.constructor  ***********");
         
@@ -36,10 +34,6 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_button);
 
     }
-    
-
-
-
 
     @Override
     protected void onNewIntent(Intent intent) {

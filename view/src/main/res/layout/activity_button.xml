@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mine="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
 
-    <LinearLayout xmlns:mine="http://schemas.android.com/apk/res-auto"
+    <TextView
+        style="@style/AppTheme"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <LinearLayout
         android:id="@+id/viewContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
 
 
         <mine.view.CustomViewGroup
@@ -24,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/SkyBlue"
-            mine:labelYY="ttt"
-            mine:align="left">
+            mine:align="left"
+            mine:labelYY="ttt">
 
             <mine.view.CustomView
                 android:id="@+id/Custom"
@@ -33,8 +35,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
                 android:padding="50px"
-                mine:sss="#FFFF00"
-                mine:direction="left"/>
+                mine:direction="left" />
 
         </mine.view.CustomViewGroup>
 
