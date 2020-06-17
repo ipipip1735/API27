@@ -152,7 +152,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
     public void recovery(View view) {
         System.out.println("********recovery******");
 
-        TransitionManager.go(threeScene);
+        TransitionManager.go(oneScene);
+//        TransitionManager.go(threeScene);
 //        TransitionManager.go(fiveScene);
 
     }
@@ -166,7 +167,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 //        propagationExplode();
 
 
-//        visibility(); //使用Fade/Explode/Slide
+        visibility(); //使用Fade/Explode/Slide
 
 
 //        changeBounds(); //使用边界变换
@@ -477,32 +478,32 @@ public class SceneTransitionActivity extends AppCompatActivity {
     private void visibility() {
 
         //使用Fade变换
-//        Transition fade = new Fade(OUT) {
-//            @Override
-//            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-//                System.out.println("~~onAppear~~");
-//
-//                System.out.println("startValues is " + startValues);
-//                System.out.println("endValues is " + endValues);
-//
-//                return super.onAppear(sceneRoot, view, startValues, endValues);
-//            }
-//
-//            @Override
-//            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-//                System.out.println("~~onDisappear~~");
-//
-//                System.out.println("startValues is " + startValues);
-//                System.out.println("endValues is " + endValues);
-//
-//                return super.onDisappear(sceneRoot, view, startValues, endValues);
-//            }
-//        };
-//
-//        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画（这个看不出来，因为父View小时，子View也会小时，见下方Explode，爆炸时是子View爆炸）
-//        transitionManager = new TransitionManager();
-//        transitionManager.setTransition(twoScene, fade.setDuration(3000L));//任意源场景
-//        transitionManager.transitionTo(twoScene);
+        Transition fade = new Fade(OUT) {
+            @Override
+            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~onAppear~~");
+
+                System.out.println("startValues is " + startValues);
+                System.out.println("endValues is " + endValues);
+
+                return super.onAppear(sceneRoot, view, startValues, endValues);
+            }
+
+            @Override
+            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+                System.out.println("~~onDisappear~~");
+
+                System.out.println("startValues is " + startValues);
+                System.out.println("endValues is " + endValues);
+
+                return super.onDisappear(sceneRoot, view, startValues, endValues);
+            }
+        };
+
+        findViewById(R.id.cl1).setVisibility(View.INVISIBLE); //修改可见性，迫使子View也能创建动画（这个看不出来，因为父View小时，子View也会小时，见下方Explode，爆炸时是子View爆炸）
+        transitionManager = new TransitionManager();
+        transitionManager.setTransition(twoScene, fade.setDuration(3000L));//任意源场景
+        transitionManager.transitionTo(twoScene);
 
 
         //使用Slide变换
@@ -535,47 +536,47 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
         //使用Explode变换
-        Transition explode = new Explode() {
-            @Override
-            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~onAppear~~");
-
-                System.out.println("view is " + view);
-                System.out.println("startValues is " + startValues);
-                System.out.println("endValues is " + endValues);
-
-                return super.onAppear(sceneRoot, view, startValues, endValues);
-            }
-
-            @Override
-            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-                System.out.println("~~onDisappear~~");
-
-                System.out.println("view is " + view);
-                System.out.println("startValues is " + startValues);
-                System.out.println("endValues is " + endValues);
-
-                return super.onDisappear(sceneRoot, view, startValues, endValues);
-            }
-        };
-
-        final View view = findViewById(R.id.imageView9);
-        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
-            @Override
-            public Rect onGetEpicenter(Transition transition) {
-                System.out.println("~~onGetEpicenter~~");
-
-                Rect rect = new Rect();
-                view.getGlobalVisibleRect(rect); //设置Explode变换的震心为ImageView9的中心
-                System.out.println(rect);
-                return rect;
-            }
-        });
-
-        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使它的所有子View也能创建动画
-        transitionManager = new TransitionManager();
-        transitionManager.setTransition(twoScene, explode.setDuration(3000L));//任意源场景
-        transitionManager.transitionTo(twoScene);
+//        Transition explode = new Explode() {
+//            @Override
+//            public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+//                System.out.println("~~onAppear~~");
+//
+//                System.out.println("view is " + view);
+//                System.out.println("startValues is " + startValues);
+//                System.out.println("endValues is " + endValues);
+//
+//                return super.onAppear(sceneRoot, view, startValues, endValues);
+//            }
+//
+//            @Override
+//            public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
+//                System.out.println("~~onDisappear~~");
+//
+//                System.out.println("view is " + view);
+//                System.out.println("startValues is " + startValues);
+//                System.out.println("endValues is " + endValues);
+//
+//                return super.onDisappear(sceneRoot, view, startValues, endValues);
+//            }
+//        };
+//
+//        final View view = findViewById(R.id.imageView9);
+//        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+//            @Override
+//            public Rect onGetEpicenter(Transition transition) {
+//                System.out.println("~~onGetEpicenter~~");
+//
+//                Rect rect = new Rect();
+//                view.getGlobalVisibleRect(rect); //设置Explode变换的震心为ImageView9的中心
+//                System.out.println(rect);
+//                return rect;
+//            }
+//        });
+//
+//        findViewById(R.id.cl).setVisibility(View.INVISIBLE); //修改可见性，迫使它的所有子View也能创建动画
+//        transitionManager = new TransitionManager();
+//        transitionManager.setTransition(twoScene, explode.setDuration(3000L));//任意源场景
+//        transitionManager.transitionTo(twoScene);
 
 
     }
@@ -617,7 +618,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
         transitionManager = new TransitionManager();
 
-        transitionManager.setTransition(twoScene, fade);//任意源场景
+        transitionManager.setTransition(twoScene, slide);//任意源场景
 //        transitionManager.setTransition(threeScene, twoScene, explode);//精确匹配源场景
 
         transitionManager.transitionTo(twoScene);
