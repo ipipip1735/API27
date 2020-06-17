@@ -111,8 +111,8 @@ public class AnimatorActivity extends AppCompatActivity {
 //        propertyAnimator(); //属性动画
 
 
-//        objectAnimator(); //对象动画
-        animatorSet(); //对象动画集
+        objectAnimator(); //对象动画
+//        animatorSet(); //对象动画集
 //        keyFrameAnimator(); //属性关键帧
 
 //        pathObjectAnimator();//路径动画

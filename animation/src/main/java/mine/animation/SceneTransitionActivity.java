@@ -152,8 +152,8 @@ public class SceneTransitionActivity extends AppCompatActivity {
     public void recovery(View view) {
         System.out.println("********recovery******");
 
-//        TransitionManager.go(oneScene);
-        TransitionManager.go(fiveScene);
+        TransitionManager.go(threeScene);
+//        TransitionManager.go(fiveScene);
 
     }
 
@@ -170,7 +170,7 @@ public class SceneTransitionActivity extends AppCompatActivity {
 
 
 //        changeBounds(); //使用边界变换
-        changeClipBounds(); //使用剪切区域边界变换
+//        changeClipBounds(); //使用剪切区域边界变换
 //        changeTransform(); //使用变形变换
 //        changeScroll(); //使滚动变换
 

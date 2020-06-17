@@ -100,14 +100,23 @@ public class LayoutAnimationActivity extends AppCompatActivity {
     }
 
     private void disappearing() {
+        //布局属性动画
+        PropertyValuesHolder pvhTop = PropertyValuesHolder.ofFloat("top", 0, 250f, 0);//首尾值将被系统替换
+        PropertyValuesHolder pvhBottom = PropertyValuesHolder.ofFloat("bottom", 0, 100f, 0);//首尾值将被系统替换
+        PropertyValuesHolder pvhLeft = PropertyValuesHolder.ofFloat("left", 0, 100f, 0);//首尾值将被系统替换
+
         //非布局属性动画
         PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("x", 0, 100f);//首尾值将被系统替换
         PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("y", 0, 100f);//首尾值将被系统替换
-        PropertyValuesHolder pvhTop = PropertyValuesHolder.ofFloat("top", 0, 100f, 0);//首尾值将被系统替换
-        PropertyValuesHolder pvhBottom = PropertyValuesHolder.ofFloat("bottom", 0, 100f, 0);//首尾值将被系统替换
+        PropertyValuesHolder pvhAlpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);//首尾值将被系统替换
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
-                0, pvhX, pvhY, pvhTop, pvhBottom); //主属性动画pvhTop和pvhBottom无法播放
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(0,
+//                pvhY); //起作用
+//                pvhX); //起作用
+                pvhAlpha); //起作用
+//                pvhLeft); //不起作用
+//                pvhTop); //不起作用
+//                pvhBottom); //不起作用
 
 
         objectAnimator.addListener(new Animator.AnimatorListener() {
@@ -165,17 +174,23 @@ public class LayoutAnimationActivity extends AppCompatActivity {
     private void changeDisappearing() {
         //主属性动画
         PropertyValuesHolder pvhTop = PropertyValuesHolder.ofInt("top", 0,100,0);//首尾值将被系统替换
-//        PropertyValuesHolder pvhRight = PropertyValuesHolder.ofInt("right", 0, 0);
+        PropertyValuesHolder pvhRight = PropertyValuesHolder.ofInt("right", 0, 0);
 //        PropertyValuesHolder pvhBottom = PropertyValuesHolder.ofInt("bottom", 0, 0);
 //        PropertyValuesHolder pvhScaleX = PropertyValuesHolder.ofFloat("scaleX", 1f, 0f, 1f);
 //        PropertyValuesHolder pvhScaleY = PropertyValuesHolder.ofFloat("scaleY", 1f, 1f);
 
+
         //非布局属性动画
         PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("x", 0, 100f, 0);//首尾值将被系统替换
+        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("y", 0, 100f, 0);//首尾值将被系统替换
+        PropertyValuesHolder pvhAlpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);//首尾值将被系统替换
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
-//                0, pvhX, pvhTop, pvhRight, pvhBottom, pvhScaleX);
-                0, pvhTop, pvhX);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(0,
+//                pvhTop);//起作用
+//                pvhRight);//不起作用
+//                pvhY);//起作用
+//                pvhX);//不起作用
+                pvhAlpha);//不起作用
 
 
         objectAnimator.addListener(new Animator.AnimatorListener() {
@@ -238,8 +253,8 @@ public class LayoutAnimationActivity extends AppCompatActivity {
     public void add(View view) {
         System.out.println("********add******");
 //        appearing();
-//        changeAppearing();
-        layoutTransition();
+        changeAppearing();
+//        layoutTransition();
 
     }
 
@@ -247,17 +262,24 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 
         //主属性动画
         PropertyValuesHolder pvhTop = PropertyValuesHolder.ofInt("top", 0,100,0);//首尾值将被系统替换
-//        PropertyValuesHolder pvhRight = PropertyValuesHolder.ofInt("right", 0, 0);
-//        PropertyValuesHolder pvhBottom = PropertyValuesHolder.ofInt("bottom", 0, 0);
-//        PropertyValuesHolder pvhScaleX = PropertyValuesHolder.ofFloat("scaleX", 1f, 0f, 1f);
-//        PropertyValuesHolder pvhScaleY = PropertyValuesHolder.ofFloat("scaleY", 1f, 1f);
+        PropertyValuesHolder pvhLeft = PropertyValuesHolder.ofInt("left", 0,100,0);//首尾值将被系统替换
+        PropertyValuesHolder pvhRight = PropertyValuesHolder.ofInt("right", 0, 0);
+        PropertyValuesHolder pvhBottom = PropertyValuesHolder.ofInt("bottom", 0, 0);
+        PropertyValuesHolder pvhScaleX = PropertyValuesHolder.ofFloat("scaleX", 1f, 0f, 1f);
+        PropertyValuesHolder pvhScaleY = PropertyValuesHolder.ofFloat("scaleY", 1f, 1f);
 
         //非布局属性动画
         PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("x", 0, 100f, 0);//首尾值将被系统替换
+        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("y", 0, 100f, 0);//首尾值将被系统替换
+        PropertyValuesHolder pvhAlpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);//首尾值将被系统替换
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
-//                0, pvhX, pvhTop, pvhRight, pvhBottom, pvhScaleX);
-        0, pvhTop, pvhX);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(0,
+//                pvhX);//不起作用
+//                pvhLeft);//不起作用
+                pvhAlpha);//不起作用
+//                pvhY);//起作用
+//                pvhTop);//起作用
+//                pvhBottom);//起作用
 
 
         objectAnimator.addListener(new Animator.AnimatorListener() {
@@ -330,11 +352,21 @@ public class LayoutAnimationActivity extends AppCompatActivity {
 
         //定义动画
         //方式一
-        ObjectAnimator xOA = ObjectAnimator.ofFloat(null, "x", 155f, 0f);
+//        ObjectAnimator xOA = ObjectAnimator.ofFloat(null, "x", 155f, 0f);
+
 
         //方式二：使用属性持有器，与方式一等价
-//        PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", 145f);
-//        ObjectAnimator xOA = ObjectAnimator.ofPropertyValuesHolder(0, x);//target随便指定，后面系统架构自动设置为ViewGroup的child
+        PropertyValuesHolder top = PropertyValuesHolder.ofFloat("top", -145f, 0);
+        PropertyValuesHolder left = PropertyValuesHolder.ofFloat("left", -140f, 0f);
+        PropertyValuesHolder x = PropertyValuesHolder.ofFloat("x", -145f, 0);
+        PropertyValuesHolder y = PropertyValuesHolder.ofFloat("y", -145f, 0);
+        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha",  0, 1f);
+        ObjectAnimator xOA = ObjectAnimator.ofPropertyValuesHolder(0, //target随便指定，后面系统架构自动设置为ViewGroup的child
+//                x);//起作用
+//                y);//起作用
+                alpha);//起作用
+//                top);//不起作用
+//                left);//不起作用
 
 
         //绑定监听器
