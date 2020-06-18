@@ -28,17 +28,16 @@ public class VisibilityTransition extends Visibility {
 
     @Override
     public String[] getTransitionProperties() {
-        String[] strings = {X, Y, ALPHA};
-        return strings;
+        return sTransitionProperties;
     }
 
 
     @Override
     public void captureStartValues(TransitionValues transitionValues) {
         System.out.println("~~captureStartValues~~");
+        super.captureStartValues(transitionValues); //获取父类的动画值
 
         System.out.println(transitionValues);
-        super.captureStartValues(transitionValues); //获取父类的动画值
 
         //出场动画值
         transitionValues.values.put(X, transitionValues.view.getX());

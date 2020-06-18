@@ -57,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
-        <include layout="@layout/one_scene" />
+<!--        <include layout="@layout/one_scene" />-->
 <!--        <include layout="@layout/three_scene" />-->
 <!--        <include layout="@layout/five_scene" />-->
     </FrameLayout>
