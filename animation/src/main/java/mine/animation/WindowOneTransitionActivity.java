@@ -141,7 +141,7 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 
 
         //设置共享组件转换对象（一般不会使用SharedElementExitTransition/SharedElementReenterTransition）
-        window.setSharedElementExitTransition(changesBounds); //共享组件退出变换
+//        window.setSharedElementExitTransition(changesBounds); //共享组件退出变换
 //        window.setSharedElementReenterTransition(changesBounds); //共享组件重进入变换
 //        window.setSharedElementReturnTransition(fade);
 //        window.setSharedElementsUseOverlay(true); //共享转换禁用遮罩层
