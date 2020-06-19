@@ -35,18 +35,19 @@
             android:text="stop" />
     </LinearLayout>
 
+    <!--        app:srcCompat="@drawable/b" />-->
+
     <ImageView
         android:id="@+id/ivTwo"
         android:layout_width="128dp"
         android:layout_height="110dp"
-        android:layout_marginTop="240dp"
-        android:layout_marginEnd="164dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="264dp"
         android:background="@color/DEEPSKYBLUE"
         android:transitionName="shared"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
         app:srcCompat="@drawable/a" />
-<!--        app:srcCompat="@drawable/b" />-->
 
     <ImageView
         android:id="@+id/ivThree"

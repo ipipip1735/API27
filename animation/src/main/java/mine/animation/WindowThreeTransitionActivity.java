@@ -1,10 +1,5 @@
 package mine.animation;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,32 +9,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
 import android.transition.Explode;
 import android.transition.Fade;
-import android.transition.Scene;
 import android.transition.Slide;
 import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.transition.TransitionListenerAdapter;
-import android.transition.TransitionManager;
-import android.transition.TransitionSet;
-import android.transition.TransitionValues;
-import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import static android.transition.TransitionSet.ORDERING_SEQUENTIAL;
 import static android.view.Gravity.LEFT;
-import static android.view.Gravity.RIGHT;
-import static android.view.Gravity.TOP;
 
 /**
  * Created by Administrator on 2019/3/20.
  */
-public class WindowOneTransitionActivity extends AppCompatActivity {
+public class WindowThreeTransitionActivity extends AppCompatActivity {
 
 
     @Override
@@ -47,7 +29,7 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        setContentView(R.layout.activity_window_one);
+        setContentView(R.layout.activity_window_three);
 
         long duration = 5000L;
 
@@ -226,55 +208,30 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("********start******");
 
-        Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
+        ImageView imageView = findViewById(R.id.ivTwo);
+
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+
+        Intent intent = new Intent(this, WindowFourTransitionActivity.class);
+
+//        Bundle options = ActivityOptions.makeScaleUpAnimation(imageView, 0,0, imageView.getWidth(), imageView.getHeight()).toBundle();
+//        Bundle options = ActivityOptions.makeThumbnailScaleUpAnimation(imageView, bitmap, 0, 0).toBundle();
+//        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(imageView, 0, 0, imageView.getWidth(), imageView.getHeight());
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.animator.enter, R.animator.exit);
+
+
         startActivity(intent, options.toBundle());
-
-
-        //打印变换信息
-        Window window = getWindow();
-        System.out.println(getClass().getSimpleName() + " is " + window);
-        System.out.println("getEnterTransition is " + window.getEnterTransition());
-        System.out.println("getExitTransition is " + window.getExitTransition());
-        System.out.println("getReturnTransition is " + window.getReturnTransition());
-        System.out.println("getReenterTransition is " + window.getReenterTransition());
 
 
     }
 
     public void sharedStart(View view) {
         System.out.println("********sharedStart******");
-
-        ImageView imageView = findViewById(R.id.ivOne);
-        ImageView imageViewST = findViewById(R.id.st);
-
-
-
-
-        Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
-
-//        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,//多共享对象
-                Pair.<View, String>create(imageView, "shared"),
-                Pair.<View, String>create(imageViewST, "sharedOne"));
-        startActivity(intent, options.toBundle());
-
-
-        //如果SharedElementExitTransition使用ChangeBounds就需要调整View的布局参数，否则不会有任何动画
-        imageView.setTop(450);
-        imageView.setLeft(150);
-        imageViewST.setTop(250);
-        imageViewST.setLeft(350);
-
-
-        //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
-//        View parent = (View) imageView.getParent();
-//        parent.setVisibility(View.INVISIBLE);
-
     }
 
     public void sharedStop(View view) {
         System.out.println("********sharedStop******");
+
     }
 
 

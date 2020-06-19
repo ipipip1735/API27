@@ -1,6 +1,7 @@
 package mine.animation;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
@@ -96,17 +97,16 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
 
 
         //设置转换对象
-//        window.setEnterTransition(slide); //进入变换
+//        window.setEnterTransition(changesBounds); //进入变换
 //        window.setReturnTransition(explode); //返回变换
 //        window.setAllowEnterTransitionOverlap(false); //返回播放模式，false为顺序播放，默认值true为同时播放
-        window.setTransitionBackgroundFadeDuration(duration);
+//        window.setTransitionBackgroundFadeDuration(duration);
 
 
         //设置共享组件转换对象
-//        window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
+        window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
 //        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-//        window.setSharedElementsUseOverlay(true); //共享组件转换禁用遮罩层
-
+//        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
 
 
 
@@ -116,7 +116,6 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
 //        System.out.println("getExitTransition is "  + window.getExitTransition());
 //        System.out.println("getReturnTransition is "  + window.getReturnTransition());
 //        System.out.println("getReenterTransition is "  + window.getReenterTransition());
-
 
     }
 
@@ -204,6 +203,8 @@ public class WindowTwoTransitionActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("********start******");
+
+        System.out.println(getIntent().getSourceBounds());
 
     }
 
