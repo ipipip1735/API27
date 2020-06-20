@@ -30,107 +30,6 @@ public class WindowThreeTransitionActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         setContentView(R.layout.activity_window_three);
-
-        long duration = 5000L;
-
-        Window window = getWindow();
-//        window.requestFeature(Window.FEATURE_NO_TITLE);
-//        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
-
-
-        //创建转换对象(4个，任选其一)
-        Transition fade = new Fade().setDuration(duration);
-        fade.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Fade.onTransitionStart~~");
-                System.out.println(transition.getTransitionValues(findViewById(R.id.imageViewShared), true));
-                System.out.println("getDuration is " + transition.getDuration());
-            }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-                System.out.println("~~Fade.onTransitionCancel~~");
-                super.onTransitionCancel(transition);
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-                System.out.println("~~Fade.onTransitionPause~~");
-                super.onTransitionPause(transition);
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-                System.out.println("~~Fade.onTransitionResume~~");
-                super.onTransitionResume(transition);
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Fade.onTransitionEnd~~");
-                System.out.println(transition.getTransitionValues(findViewById(R.id.imageViewShared), true));
-                System.out.println("getDuration is " + transition.getDuration());
-            }
-        });
-        Transition explode = new Explode().setDuration(duration);
-        explode.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Explode.onTransitionStart~~");
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Explode.onTransitionEnd~~");
-            }
-        });
-        Transition slide = new Slide(LEFT).setDuration(duration);
-        slide.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Slide.onTransitionStart~~");
-                System.out.println("getDuration is " + transition.getDuration());
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Slide.onTransitionEnd~~");
-                System.out.println("getDuration is " + transition.getDuration());
-            }
-        });
-        Transition changesBounds = new ChangeBounds().setDuration(duration);
-        changesBounds.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~ChangeBounds.onTransitionEnd~~");
-            }
-
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~ChangeBounds.onTransitionStart~~");
-            }
-        });
-
-
-        //排除状态条和导航条
-//        slide.excludeTarget(R.id.action_bar_container, true);
-//        slide.excludeTarget(android.R.id.statusBarBackground, true);
-//        slide.excludeTarget(android.R.id.navigationBarBackground, true);
-
-
-        //设置转换对象
-//        window.setExitTransition(slide); //退出变换
-//        window.setReenterTransition(fade); //重进入变换
-//        window.setAllowReturnTransitionOverlap(false); //返回播放模式，false为顺序播放，默认值true为同时播放
-//        window.setTransitionBackgroundFadeDuration(duration);
-
-
-        //设置共享组件转换对象（一般不会使用SharedElementExitTransition/SharedElementReenterTransition）
-//        window.setSharedElementExitTransition(changesBounds); //共享组件退出变换
-//        window.setSharedElementReenterTransition(changesBounds); //共享组件重进入变换
-//        window.setSharedElementsUseOverlay(false); //共享转换禁用遮罩层
-
     }
 
     @Override
@@ -210,14 +109,24 @@ public class WindowThreeTransitionActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.ivTwo);
 
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        Bitmap bitmap = ((BitmapDrawable) getDrawable(R.drawable.w2)).getBitmap();
+        System.out.println(bitmap.getWidth());
+        System.out.println(bitmap.getHeight());
 
         Intent intent = new Intent(this, WindowFourTransitionActivity.class);
 
-//        Bundle options = ActivityOptions.makeScaleUpAnimation(imageView, 0,0, imageView.getWidth(), imageView.getHeight()).toBundle();
-//        Bundle options = ActivityOptions.makeThumbnailScaleUpAnimation(imageView, bitmap, 0, 0).toBundle();
-//        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(imageView, 0, 0, imageView.getWidth(), imageView.getHeight());
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.animator.enter, R.animator.exit);
+        //使用放大动画
+
+//        ActivityOptions options = ActivityOptions.makeScaleUpAnimation(imageView, 0,0, imageView.getWidth(), imageView.getHeight());
+        //使用缩略图放大动画
+
+//        ActivityOptions options = ActivityOptions.makeThumbnailScaleUpAnimation(imageView, bitmap, 10, 100);
+        //使用逐步显现动画
+
+        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(imageView, 0, 0, imageView.getWidth(), imageView.getHeight());
+        //使用自定义动画
+//        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter, R.anim.exit);//仅使用进场动画（出场动画的起始值和结束值一样，所以不播放）
+//        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter, 0);//仅使用进场动画
 
 
         startActivity(intent, options.toBundle());

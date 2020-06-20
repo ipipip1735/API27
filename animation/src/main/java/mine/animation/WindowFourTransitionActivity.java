@@ -25,94 +25,8 @@ public class WindowFourTransitionActivity extends AppCompatActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
+//        setContentView(R.layout.activity_window_three);
         setContentView(R.layout.activity_window_four);
-
-        long duration = 5000L;
-
-
-        Window window = getWindow();
-//        window.requestFeature(Window.FEATURE_NO_TITLE);
-//        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
-
-        //创建转换对象
-        Transition fade = new Fade().setDuration(duration);
-        fade.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Fade.onTransitionStart~~");
-            }
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Fade.onTransitionEnd~~");
-            }
-
-        });
-        Transition explode = new Explode().setDuration(duration);
-        explode.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Explode.onTransitionStart~~");
-            }
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Explode.onTransitionEnd~~");
-            }
-        });
-        Transition slide = new Slide(TOP).setDuration(duration);
-        slide.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Slide.onTransitionStart~~");
-            }
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Slide.onTransitionEnd~~");
-            }
-        });
-        Transition changesBounds = new ChangeBounds().setDuration(duration);
-        changesBounds.addListener(new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~ChangeBounds.onTransitionEnd~~");
-            }
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~ChangeBounds.onTransitionStart~~");
-            }
-        });
-
-
-
-//        slide.excludeTarget(R.id.action_bar_container, true);
-//        slide.excludeTarget(android.R.id.statusBarBackground, true);
-//        slide.excludeTarget(android.R.id.navigationBarBackground, true);
-//        explode.excludeTarget(R.id.action_bar_container, true);
-//        explode.excludeTarget(android.R.id.statusBarBackground, true);
-//        explode.excludeTarget(android.R.id.navigationBarBackground, true);
-
-
-
-        //设置转换对象
-        window.setEnterTransition(changesBounds); //进入变换
-//        window.setReturnTransition(explode); //返回变换
-//        window.setAllowEnterTransitionOverlap(false); //返回播放模式，false为顺序播放，默认值true为同时播放
-//        window.setTransitionBackgroundFadeDuration(duration);
-
-
-        //设置共享组件转换对象
-//        window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
-//        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-//        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
-
-
-
-
-        System.out.println(getClass().getSimpleName() + " is " + window);
-        System.out.println("getEnterTransition is "  + window.getEnterTransition());
-        System.out.println("getExitTransition is "  + window.getExitTransition());
-        System.out.println("getReturnTransition is "  + window.getReturnTransition());
-        System.out.println("getReenterTransition is "  + window.getReenterTransition());
-
     }
 
     @Override
@@ -184,16 +98,11 @@ public class WindowFourTransitionActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("********stop******");
 
-        finishAfterTransition();
-        System.out.println("--------------");
+//        finishAfterTransition();
 
-        //打印变换信息
-        Window window = getWindow();
-        System.out.println(getClass().getSimpleName() + " is " + window);
-        System.out.println("getEnterTransition is "  + window.getEnterTransition());
-        System.out.println("getExitTransition is "  + window.getExitTransition());
-        System.out.println("getReturnTransition is "  + window.getReturnTransition());
-        System.out.println("getReenterTransition is "  + window.getReenterTransition());
+        finish();
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+//        overridePendingTransition(R.anim.enter, R.anim.exit);
 
     }
 

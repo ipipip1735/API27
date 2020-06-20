@@ -39,10 +39,10 @@
 
     <ImageView
         android:id="@+id/ivTwo"
-        android:layout_width="128dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="264dp"
+        android:layout_width="131dp"
+        android:layout_height="122dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="28dp"
         android:background="@color/DEEPSKYBLUE"
         android:transitionName="shared"
         app:layout_constraintEnd_toEndOf="parent"
