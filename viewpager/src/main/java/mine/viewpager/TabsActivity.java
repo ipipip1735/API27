@@ -28,36 +28,8 @@ public class TabsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-        setContentView(R.layout.activity_tabs);
-//        setContentView(R.layout.activity_tabs_only);
-
-        mTabLayout = findViewById(R.id.tabLayout);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println("~~ onTabSelected ~~");
-                tabInfo(tab);
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                System.out.println("~~ onTabUnselected ~~");
-                tabInfo(tab);
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                System.out.println("~~ onTabReselected ~~");
-                tabInfo(tab);
-
-            }
-        });
-
-
-
-
+//        setContentView(R.layout.activity_tabs);
+        setContentView(R.layout.activity_tabs_with_pageview2);
 
         mPager = findViewById(R.id.vp);
         mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -89,6 +61,26 @@ public class TabsActivity extends AppCompatActivity {
 
 
 
+        mTabLayout = findViewById(R.id.tabLayout);
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                System.out.println("~~ onTabSelected ~~");
+                tabInfo(tab);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                System.out.println("~~ onTabUnselected ~~");
+                tabInfo(tab);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                System.out.println("~~ onTabReselected ~~");
+                tabInfo(tab);
+            }
+        });
 
     }
 
