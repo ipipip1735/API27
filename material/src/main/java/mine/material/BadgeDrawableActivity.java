@@ -1,34 +1,34 @@
 package mine.material;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
-public class ButtonActivity extends AppCompatActivity {
-    MaterialButtonToggleGroup toggleButton;
+import static com.google.android.material.badge.BadgeDrawable.BOTTOM_START;
+
+public class BadgeDrawableActivity extends AppCompatActivity {
+    BadgeDrawable badgeDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_button);
+        setContentView(R.layout.activity_main);
 
-//        toggleButton = findViewById(R.id.toggleButton);
-//        toggleButton = findViewById(R.id.toggleButton1);
 
-//        toggleButton.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-//            @Override
-//            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-//                System.out.println("~~onButtonChecked~~");
-//                System.out.println("group is " + group);
-//                System.out.println("checkedId is " + checkedId);
-//                System.out.println("isChecked is " + isChecked);
-//                System.out.println(group.getCheckedButtonIds());
-//            }
-//        });
+        badgeDrawable = BadgeDrawable.create(this);
+        badgeDrawable.setNumber(11);
+        badgeDrawable.setAlpha(1);
+        badgeDrawable.setBadgeGravity(BOTTOM_START);
+        badgeDrawable.setVisible(true);
+        BadgeUtils.attachBadgeDrawable(badgeDrawable, findViewById(R.id.button10), null);
+
     }
 
     @Override
@@ -97,12 +97,15 @@ public class ButtonActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        badgeDrawable.setNumber(11);
+
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
+        System.out.println(badgeDrawable.getNumber());
     }
 
     public void bind(View view) {

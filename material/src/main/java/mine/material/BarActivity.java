@@ -5,30 +5,16 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButtonToggleGroup;
+public class BarActivity extends AppCompatActivity {
 
-public class ButtonActivity extends AppCompatActivity {
-    MaterialButtonToggleGroup toggleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_button);
+        setContentView(R.layout.activity_main);
 
-//        toggleButton = findViewById(R.id.toggleButton);
-//        toggleButton = findViewById(R.id.toggleButton1);
 
-//        toggleButton.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-//            @Override
-//            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-//                System.out.println("~~onButtonChecked~~");
-//                System.out.println("group is " + group);
-//                System.out.println("checkedId is " + checkedId);
-//                System.out.println("isChecked is " + isChecked);
-//                System.out.println(group.getCheckedButtonIds());
-//            }
-//        });
     }
 
     @Override

@@ -1,34 +1,34 @@
 package mine.material;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.google.android.material.button.MaterialButtonToggleGroup;
-
-public class ButtonActivity extends AppCompatActivity {
-    MaterialButtonToggleGroup toggleButton;
+public class CoordinatorLayoutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_button);
+        setContentView(R.layout.activity_coordinatorlayout);
 
-//        toggleButton = findViewById(R.id.toggleButton);
-//        toggleButton = findViewById(R.id.toggleButton1);
+        findViewById(R.id.button2).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE){
+                    view.setX(motionEvent.getRawX()- view.getWidth()/2);
+                    view.setY(motionEvent.getRawY()- view.getHeight()/2);
+                }
+                return true;
+            }
+        });
 
-//        toggleButton.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-//            @Override
-//            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-//                System.out.println("~~onButtonChecked~~");
-//                System.out.println("group is " + group);
-//                System.out.println("checkedId is " + checkedId);
-//                System.out.println("isChecked is " + isChecked);
-//                System.out.println(group.getCheckedButtonIds());
-//            }
-//        });
+        
     }
 
     @Override
