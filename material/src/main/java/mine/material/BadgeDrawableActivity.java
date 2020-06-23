@@ -15,6 +15,7 @@ import static com.google.android.material.badge.BadgeDrawable.BOTTOM_START;
 public class BadgeDrawableActivity extends AppCompatActivity {
     BadgeDrawable badgeDrawable;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

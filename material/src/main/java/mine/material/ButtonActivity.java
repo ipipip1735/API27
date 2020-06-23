@@ -96,7 +96,7 @@ public class ButtonActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
+        System.out.println(view);
     }
 
 

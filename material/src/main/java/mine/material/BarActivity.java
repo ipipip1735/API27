@@ -12,7 +12,7 @@ public class BarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bar);
 
 
     }
