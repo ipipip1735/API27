@@ -29,9 +29,12 @@ class OneBehavior extends CoordinatorLayout.Behavior<Button> {
         System.out.println("parent is " + parent);
         System.out.println("child is " + child);
         System.out.println("dependency is " + dependency);
-        boolean r = super.layoutDependsOn(parent, child, dependency);
-        System.out.println(r);
-//        return r;
+
+        System.out.println("dependency|X=" + dependency.getX() + ", Y=" + dependency.getY());
+        System.out.println("child|X=" + child.getX() + ", Y=" + child.getY());
+
+
+//        return super.layoutDependsOn(parent, child, dependency);
         return true;
     }
 
@@ -42,9 +45,13 @@ class OneBehavior extends CoordinatorLayout.Behavior<Button> {
         System.out.println("child is " + child);
         System.out.println("dependency is " + dependency);
 
+        System.out.println("dependency|X=" + dependency.getX() + ", Y=" + dependency.getY());
+        System.out.println("child|X=" + child.getX() + ", Y=" + child.getY());
 
-        boolean r = super.onDependentViewChanged(parent, child, dependency);
-//        return r;
+        child.setX(dependency.getX() + child.getWidth());
+        child.setY(dependency.getY() + child.getHeight());
+
+//        return super.onDependentViewChanged(parent, child, dependency);
         return true;
     }
 }

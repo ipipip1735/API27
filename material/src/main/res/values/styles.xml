@@ -1,27 +1,32 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-<!--    <style name="AppTheme" parent="Theme.MaterialComponents.Light">-->
-        <!-- Customize your theme here. -->
+
+<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <!-- 全局样式 -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnSurface">@color/colorSurface</item>
-<!--        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>-->
-        <item name="buttonStyle">@style/Widget.App.ButtonStyle</item>
-<!--        <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>-->
-<!--        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>-->
-
 <!--        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>-->
+
+        <!-- 组件样式-->
+<!--        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>-->
+<!--        <item name="buttonStyle">@style/Widget.App.ButtonStyle</item>-->
+        <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
     </style>
 
-    <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar.Colored">
-        <item name="materialThemeOverlay">@style/ThemeOverlayg.App.BottomAppBar</item>
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerFamilyBottomRight">cut</item>
+        <item name="cornerFamilyBottomLeft">cut</item>
+        <item name="cornerSize">12dp</item>
     </style>
-    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
-    </style>
+
 
     <style name="Widget.App.ButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:textColor">@color/yellow</item>
+        <item name="strokeColor">@color/red</item>
+        <item name="strokeWidth">1dp</item>
         <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
     </style>
 
@@ -29,23 +34,23 @@
         <item name="android:layout_margin">50dp</item>
     </style>
 
-    <style name="ThemeOverlayg.App.BottomAppBar" parent="">
-        <item name="colorPrimary">@color/Pink</item>
-        <item name="colorOnPrimary">@color/yellow</item>
-    </style>
-    ​
-    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
-        <item name="colorSecondary">@color/Aquamarine</item>
-        <item name="colorOnSecondary">@color/Chocolate</item>
-<!--        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>-->
-    </style>
+
+
+<!--    <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar" />-->
+<!--    <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar.Colored" />-->
+    <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar.PrimarySurface" />
+
+
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton" />
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton" />
 
 
 
 
-    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">12dp</item>
-    </style>
+
+
+
+
 
 </resources>

@@ -5,14 +5,14 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class BarActivity extends AppCompatActivity {
+public class BottomAppBarActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_bar);
+        setContentView(R.layout.activity_bottom_bar);
 
 
     }

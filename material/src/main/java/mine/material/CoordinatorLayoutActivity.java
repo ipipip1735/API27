@@ -9,6 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_MOVE;
+import static android.view.MotionEvent.ACTION_UP;
+
 public class CoordinatorLayoutActivity extends AppCompatActivity {
 
     @Override
@@ -17,18 +21,37 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_coordinatorlayout);
 
-        findViewById(R.id.button2).setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.button).setOnTouchListener(new View.OnTouchListener() {
+            float offsetX = 0;
+            float offsetY = 0;
+
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE){
-                    view.setX(motionEvent.getRawX()- view.getWidth()/2);
-                    view.setY(motionEvent.getRawY()- view.getHeight()/2);
+            public boolean onTouch(final View v, MotionEvent event) {
+//                System.out.println("event is " + event.actionToString(event.getAction()));
+
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        int[] location = new int[2];
+                        View p = (View) v.getParent();
+                        p.getLocationOnScreen(location);
+
+                        offsetX = location[0] + event.getX();
+                        offsetY = location[1] + event.getY();
+
+                        break;
+                    case ACTION_MOVE:
+                        v.setX(event.getRawX() - offsetX);
+                        v.setY(event.getRawY() - offsetY);
+                        break;
+
+                    case ACTION_UP:
+
                 }
                 return true;
             }
         });
 
-        
+
     }
 
     @Override

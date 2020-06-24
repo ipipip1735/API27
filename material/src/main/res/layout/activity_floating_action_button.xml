@@ -119,15 +119,31 @@
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="?attr/floatingActionButtonStyle"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="28dp"
         android:contentDescription="GO"
-        android:src="@drawable/abc_vector_test"
+        app:srcCompat="@drawable/abc_vector_test"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        style="?attr/extendedFloatingActionButtonStyle"
+        android:id="@+id/efab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginStart="44dp"
+        android:layout_marginBottom="28dp"
+        app:icon="@drawable/abc_vector_test"
+        android:contentDescription="GO"
+        android:src="@drawable/abc_vector_test"
+        android:text="AAA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

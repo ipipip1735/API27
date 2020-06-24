@@ -29,6 +29,7 @@
 <!--        app:strokeWidth="1dp" />-->
 
     <Button
+        style="?attr/buttonStyle"
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,8 +40,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="48dp" />
 
-<!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
+
+    <!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
 <!--        android:id="@+id/toggleButton"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
