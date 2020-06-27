@@ -1,3 +1,5 @@
+include ':coordinatorlayout'
+include ':nestedscrollview'
 include ':apptemp'
 include ':material'
 //include ':cardview'

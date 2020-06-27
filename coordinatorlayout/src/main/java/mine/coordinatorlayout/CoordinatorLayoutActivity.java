@@ -1,27 +1,53 @@
-package mine.material;
+package mine.coordinatorlayout;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.badge.BadgeUtils;
-import com.google.android.material.button.MaterialButtonToggleGroup;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_MOVE;
+import static android.view.MotionEvent.ACTION_UP;
 
-import static com.google.android.material.badge.BadgeDrawable.BOTTOM_START;
+public class CoordinatorLayoutActivity extends AppCompatActivity {
 
-public class BadgeDrawableActivity extends AppCompatActivity {
-    BadgeDrawable badgeDrawable;
-
-    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_coordinatorlayout);
+
+        findViewById(R.id.button).setOnTouchListener(new View.OnTouchListener() {
+            float offsetX = 0;
+            float offsetY = 0;
+
+            @Override
+            public boolean onTouch(final View v, MotionEvent event) {
+//                System.out.println("event is " + event.actionToString(event.getAction()));
+
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        int[] location = new int[2];
+                        View p = (View) v.getParent();
+                        p.getLocationOnScreen(location);
+
+                        offsetX = location[0] + event.getX();
+                        offsetY = location[1] + event.getY();
+
+                        break;
+                    case ACTION_MOVE:
+                        v.setX(event.getRawX() - offsetX);
+                        v.setY(event.getRawY() - offsetY);
+                        break;
+
+                    case ACTION_UP:
+
+                }
+                return true;
+            }
+        });
+
 
     }
 
@@ -91,44 +117,16 @@ public class BadgeDrawableActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        badgeDrawable = BadgeDrawable.create(this);
-        badgeDrawable.setNumber(88);
-        badgeDrawable.setAlpha(255);
-        badgeDrawable.setMaxCharacterCount(2);
-        badgeDrawable.setBadgeGravity(BadgeDrawable.BOTTOM_END);
-        badgeDrawable.setBackgroundColor(getResources().getColor(R.color.Black, null));
-        badgeDrawable.setBadgeTextColor(getResources().getColor(R.color.Yellow, null));
-
-
-        ViewGroup viewGroup = (ViewGroup) view.getParent();
-        System.out.println(viewGroup);
-        viewGroup.setClipChildren(false);
-        BadgeUtils.attachBadgeDrawable(badgeDrawable, view, null);
-
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
-        badgeDrawable.setNumber(badgeDrawable.getNumber()+1);
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
-
-        badgeDrawable = BadgeDrawable.create(this);
-        badgeDrawable.setNumber(1);
-        badgeDrawable.setBadgeGravity(BOTTOM_START);
-
-        View v = findViewById(R.id.button14);
-        System.out.println(v);
-
-        ViewGroup viewGroup = (ViewGroup) v.getParent();
-        System.out.println(viewGroup);
-
-        viewGroup.setClipChildren(false);
-        BadgeUtils.attachBadgeDrawable(badgeDrawable, v, null);
 
     }
 

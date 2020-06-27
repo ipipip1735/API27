@@ -1,27 +1,58 @@
 package mine.material;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
-import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static com.google.android.material.badge.BadgeDrawable.BOTTOM_START;
+public class BottomNavigationViewActivity extends AppCompatActivity {
 
-public class BadgeDrawableActivity extends AppCompatActivity {
-    BadgeDrawable badgeDrawable;
+    BottomNavigationView bottomNavigationView;
 
-    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bottom_navigation_view);
+
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        System.out.println("~~onNavigationItemSelected~~");
+                        System.out.println("item is " + item);
+                        System.out.println("itemID is " + item.getItemId());
+
+                        return true;
+                    }
+                });
+        bottomNavigationView.setOnNavigationItemReselectedListener(
+                new BottomNavigationView.OnNavigationItemReselectedListener() {
+                    @Override
+                    public void onNavigationItemReselected(@NonNull MenuItem item) {
+                        System.out.println("~~onNavigationItemReselected~~");
+                        System.out.println("item is " + item);
+                        System.out.println("itemID is " + item.getItemId());
+                    }
+                });
+
+        System.out.println("size is " + bottomNavigationView.getMenu().size());
+
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            System.out.println("size is " + bottomNavigationView.getMenu().getItem(i));
+        }
+
 
     }
 
@@ -91,54 +122,29 @@ public class BadgeDrawableActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        badgeDrawable = BadgeDrawable.create(this);
-        badgeDrawable.setNumber(88);
-        badgeDrawable.setAlpha(255);
-        badgeDrawable.setMaxCharacterCount(2);
-        badgeDrawable.setBadgeGravity(BadgeDrawable.BOTTOM_END);
-        badgeDrawable.setBackgroundColor(getResources().getColor(R.color.Black, null));
-        badgeDrawable.setBadgeTextColor(getResources().getColor(R.color.Yellow, null));
+        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(bottomNavigationView.getSelectedItemId());
+        System.out.println("badgeDrawable is " + badgeDrawable);
+        System.out.println("number is " + badgeDrawable.getNumber());
+        badgeDrawable.setNumber(badgeDrawable.getNumber() + 1);
 
-
-        ViewGroup viewGroup = (ViewGroup) view.getParent();
-        System.out.println(viewGroup);
-        viewGroup.setClipChildren(false);
-        BadgeUtils.attachBadgeDrawable(badgeDrawable, view, null);
 
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
-        badgeDrawable.setNumber(badgeDrawable.getNumber()+1);
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
-
-        badgeDrawable = BadgeDrawable.create(this);
-        badgeDrawable.setNumber(1);
-        badgeDrawable.setBadgeGravity(BOTTOM_START);
-
-        View v = findViewById(R.id.button14);
-        System.out.println(v);
-
-        ViewGroup viewGroup = (ViewGroup) v.getParent();
-        System.out.println(viewGroup);
-
-        viewGroup.setClipChildren(false);
-        BadgeUtils.attachBadgeDrawable(badgeDrawable, v, null);
-
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
-
     }
 
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
+    public void modify(View view) {
+        System.out.println("~~button.modify~~");
 
     }
 

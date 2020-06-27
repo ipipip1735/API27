@@ -11,8 +11,8 @@
 <!--        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>-->
 <!--        <item name="buttonStyle">@style/Widget.App.ButtonStyle</item>-->
         <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
-        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
-        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+<!--        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>-->
+<!--        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>-->
     </style>
 
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
@@ -20,7 +20,7 @@
         <item name="cornerFamilyTopRight">cut</item>
         <item name="cornerFamilyBottomRight">cut</item>
         <item name="cornerFamilyBottomLeft">cut</item>
-        <item name="cornerSize">12dp</item>
+<!--        <item name="cornerFamily">rounded</item>-->
     </style>
 
 
@@ -42,7 +42,9 @@
 
 
 
-    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton" />
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
     <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton" />
 
 

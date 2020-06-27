@@ -1,21 +1,47 @@
-package mine.material;
+package mine.nestedscrollview;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.Random;
 
-public class FloatingActionButtonActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_floating_action_button);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        setContentView(R.layout.activity_main);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+
+        LinearLayout linearLayout = findViewById(R.id.ll);
+        for (int i = 0; i < 100; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("TV - " + i);
+            linearLayout.addView(textView);
+        }
+
+        ListView listView = findViewById(R.id.lv);
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        for (int i = 0; i < 100; i++) {
+            arrayAdapter.add("ListView TV - " + i);
+        }
+        listView.setAdapter(arrayAdapter);
+
+//        listView.setNestedScrollingEnabled(true);
+
+
 
 
     }
@@ -28,58 +54,54 @@ public class FloatingActionButtonActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
-
         super.onRestoreInstanceState(savedInstanceState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+
     }
 
     @Override
     protected void onPause() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-
         super.onPause();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
     }
 
     @Override
     public void onBackPressed() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
-
         super.onBackPressed();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
 
     @Override
     protected void onStop() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
-
         super.onStop();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
-
         super.onSaveInstanceState(outState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
     }
 
     @Override
     protected void onDestroy() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
-
         super.onDestroy();
+        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
 
@@ -121,4 +143,5 @@ public class FloatingActionButtonActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
     }
+
 }
