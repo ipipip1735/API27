@@ -1,10 +1,15 @@
 package mine.material;
 
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ChipsActivity extends AppCompatActivity {
@@ -14,6 +19,32 @@ public class ChipsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_chips);
+
+
+//        Chip chip = (Chip) findViewById(R.id.chip3);
+//        chip.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+//        System.out.println(chip);
+
+
+        //使用Chip组
+        ChipGroup chipGroup = (ChipGroup) findViewById(R.id.gc);
+//        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(ChipGroup group, int checkedId) {
+//                System.out.println("~~onCheckedChanged~~");
+//                System.out.println("group is " + group);
+//                System.out.println("checkedId is " + checkedId);
+//                System.out.println(group.findViewById(checkedId));
+//            }
+//        });
+
+        for (int i = 0; i < 20; i++) {
+            Chip chip = new Chip(this);
+            chip.setText("C - " + i);
+//            chip.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+            chipGroup.addView(chip);
+        }
+
 
 
     }

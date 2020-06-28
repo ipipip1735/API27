@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Ivory"
     tools:context=".MainActivity">
 
     <Button
@@ -103,18 +104,84 @@
         app:constraint_referenced_ids="button9,button11,button12,button8,button7,button10,button14,button13"
         tools:layout_editor_absoluteY="731dp" />
 
-    <FrameLayout
-        android:id="@+id/fl"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+<!--    <com.google.android.material.chip.Chip-->
+<!--        android:id="@+id/chip3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hello_world"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+
+<!--    <com.google.android.material.chip.Chip-->
+<!--        android:id="@+id/chip5"-->
+<!--        style="@style/Widget.MaterialComponents.Chip.Entry"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hello_world"-->
+<!--        app:chipIcon="@drawable/ic_baseline_add_24"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/chip3" />-->
+
+<!--    <com.google.android.material.chip.Chip-->
+<!--        android:id="@+id/chip2"-->
+<!--        style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hello_world"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/chip5" />-->
+
+<!--    <com.google.android.material.chip.Chip-->
+<!--        android:id="@+id/chip4"-->
+<!--        style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hello_world"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/chip2" />-->
+
+<!--    <com.google.android.material.chip.Chip-->
+<!--        android:id="@+id/chip6"-->
+<!--        style="@style/Widget.MaterialComponents.Chip.Action"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hello_world"-->
+<!--        app:chipIcon="@drawable/ic_baseline_add_24"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/chip4" />-->
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/gc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/barrier3">
-    </FrameLayout>
+        app:singleLine="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/gchip1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AAA"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/gchip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BBB"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/gchip3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CCC"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -143,10 +143,8 @@ public class BottomSheetsActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinatorLayout);
-
-//        coordinatorLayout
-
+//        behavior.setState(STATE_HALF_EXPANDED);
+        behavior.setState(STATE_HIDDEN);
     }
 
 
