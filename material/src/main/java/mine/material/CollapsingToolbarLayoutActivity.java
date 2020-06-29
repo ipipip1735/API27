@@ -6,6 +6,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
@@ -16,6 +19,14 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_collapsing_toolbar);
 
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitleEnabled(true);
+        collapsingToolbarLayout.setTitle("TTTTTT");
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("SSSSSSSSSSS");
+        setSupportActionBar(toolbar);
 
         LinearLayout linearLayout = findViewById(R.id.ll);
 
