@@ -3,6 +3,8 @@ package mine.coordinatorlayout;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,16 +12,27 @@ import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
 
-public class CoordinatorLayoutActivity extends AppCompatActivity {
+public class CoordinatorLayoutTwoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-//        setContentView(R.layout.activity_coordinatorlayout);
-        setContentView(R.layout.activity_coordinatorlayout_one);
 
-        findViewById(R.id.button1).setOnTouchListener(new View.OnTouchListener() {
+        setContentView(R.layout.activity_coordinatorlayout_two);
+
+        ListView listView = findViewById(R.id.lv);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        for (int i = 0; i < 100; i++) {
+            arrayAdapter.add("NN - " + i);
+        }
+
+        listView.setAdapter(arrayAdapter);
+
+
+
+        findViewById(R.id.button).setOnTouchListener(new View.OnTouchListener() {
             float offsetX = 0;
             float offsetY = 0;
 
@@ -48,6 +61,7 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
                 return true;
             }
         });
+
 
 
     }

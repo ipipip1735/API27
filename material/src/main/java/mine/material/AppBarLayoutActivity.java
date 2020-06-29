@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 public class AppBarLayoutActivity extends AppCompatActivity {
 
 
@@ -24,6 +26,13 @@ public class AppBarLayoutActivity extends AppCompatActivity {
             textView.setText("TV" + i);
             linearLayout.addView(textView);
         }
+
+
+
+
+
+
+
 
 
     }

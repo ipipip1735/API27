@@ -25,19 +25,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/avltv"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TTTTTTT"
-            android:textSize="26dp"
-            android:textColor="@color/White"
-            android:layout_marginTop="350dp" app:layout_scrollFlags="scroll|snap|snapMargins"/>
-<!--            app:layout_scrollFlags="scroll|snap"/>-->
-<!--            android:minHeight="20dp" app:layout_scrollFlags="scroll|exitUntilCollapsed"/>-->
-<!--            android:minHeight="20dp"app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"/>-->
-<!--            app:layout_scrollFlags="scroll|enterAlways"/>-->
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="top"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap" />
 
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin" />
 
 
 

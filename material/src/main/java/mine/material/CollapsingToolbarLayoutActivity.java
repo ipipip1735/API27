@@ -1,53 +1,36 @@
-package mine.coordinatorlayout;
+package mine.material;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_MOVE;
-import static android.view.MotionEvent.ACTION_UP;
+public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
-public class CoordinatorLayoutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-//        setContentView(R.layout.activity_coordinatorlayout);
-        setContentView(R.layout.activity_coordinatorlayout_one);
+        setContentView(R.layout.activity_collapsing_toolbar);
 
-        findViewById(R.id.button1).setOnTouchListener(new View.OnTouchListener() {
-            float offsetX = 0;
-            float offsetY = 0;
 
-            @Override
-            public boolean onTouch(final View v, MotionEvent event) {
-//                System.out.println("event is " + event.actionToString(event.getAction()));
+        LinearLayout linearLayout = findViewById(R.id.ll);
 
-                switch (event.getAction()) {
-                    case ACTION_DOWN:
-                        int[] location = new int[2];
-                        View p = (View) v.getParent();
-                        p.getLocationOnScreen(location);
+        for (int i = 0; i < 100; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("TV" + i);
+            linearLayout.addView(textView);
+        }
 
-                        offsetX = location[0] + event.getX();
-                        offsetY = location[1] + event.getY();
 
-                        break;
-                    case ACTION_MOVE:
-                        v.setX(event.getRawX() - offsetX);
-                        v.setY(event.getRawY() - offsetY);
-                        break;
 
-                    case ACTION_UP:
 
-                }
-                return true;
-            }
-        });
+
+
+
 
 
     }
