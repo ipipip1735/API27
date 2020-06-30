@@ -1,48 +1,22 @@
 package mine.material;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ActionProvider;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
-
+public class DialogActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_collapsing_toolbar);
-
-//        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-//        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.silver, null));//设置展开后标题颜色
-//        collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.blue, null));//设置折叠时标题颜色
-//        collapsingToolbarLayout.setTitleEnabled(true);
-//        collapsingToolbarLayout.setTitle("TTTTTT");
-
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        toolbar.setTitle("SSSSSSSSSSS");
-//        setSupportActionBar(toolbar);
-
-
-        LinearLayout linearLayout = findViewById(R.id.ll);
-
-        for (int i = 0; i < 100; i++) {
-            TextView textView = new TextView(this);
-            textView.setText("TV" + i);
-            linearLayout.addView(textView);
-        }
-
-
+        setContentView(R.layout.activity_dialog);
     }
 
     @Override
@@ -111,6 +85,41 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        alertDialog();
+
+    }
+
+    private void alertDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("OOO")
+                .setMessage("ZZZZZZZZZZZZZZZZZZZZZZZzzzzzzzzzzzz")
+                .setNeutralButton("go", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("~~onClick~~");
+                        System.out.println("dialog is " + dialog);
+                        System.out.println("which is " + which);
+                    }
+                })
+
+
+                .setNegativeButton("XX", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("~~onClick~~");
+                        System.out.println("dialog is " + dialog);
+                        System.out.println("which is " + which);
+                    }
+                })
+                .setPositiveButton("CCC", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("~~onClick~~");
+                        System.out.println("dialog is " + dialog);
+                        System.out.println("which is " + which);
+                    }
+                })
+                .show();
     }
 
 
@@ -144,32 +153,5 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
-    }
-
-
-    static class BasicActionProvider extends ActionProvider {
-
-        public BasicActionProvider(Context context) {
-            super(context);
-            System.out.println("+++ " + getClass().getSimpleName() + ".Constructor +++");
-        }
-
-        @Override
-        public View onCreateActionView() {
-            System.out.println("*********  " + getClass().getSimpleName() + ".onCreateActionView  *********");
-
-            //方式一：代码方式
-            Button button = new Button(getContext());
-            button.setText("btn1");
-            return button;
-
-        }
-
-        @Override
-        public boolean onPerformDefaultAction() {
-            System.out.println("*********  " + getClass().getSimpleName() + ".onPerformDefaultAction  *********");
-
-            return super.onPerformDefaultAction();
-        }
     }
 }

@@ -54,6 +54,9 @@
 
 
 
+    <style name="CollapsingToolbarLayout.Collapsed" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/White</item>
+    </style>
 
 
 
