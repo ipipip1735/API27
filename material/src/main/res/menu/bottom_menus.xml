@@ -3,10 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/more" android:title="GO" />
     <item
-        android:id="@+id/search"
+        android:id="@+id/ione"
         android:icon="@drawable/ic_baseline_search_24"
-        android:title="SSS"
-        app:showAsAction="ifRoom"
-        />
+        android:title="ione"/>
+<!--    <item-->
+<!--        android:id="@+id/search"-->
+<!--        android:icon="@drawable/ic_baseline_search_24"-->
+<!--        android:title="SSS"-->
+<!--        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"-->
+<!--        app:showAsAction="ifRoom|collapseActionView"/>-->
 </menu>
 

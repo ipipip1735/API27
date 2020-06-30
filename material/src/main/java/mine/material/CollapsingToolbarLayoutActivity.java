@@ -1,12 +1,15 @@
 package mine.material;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ActionProvider;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -19,14 +22,15 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_collapsing_toolbar);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitleEnabled(true);
-        collapsingToolbarLayout.setTitle("TTTTTT");
+//        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+//        collapsingToolbarLayout.setTitleEnabled(true);
+//        collapsingToolbarLayout.setTitle("TTTTTT");
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("SSSSSSSSSSS");
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        toolbar.setTitle("SSSSSSSSSSS");
+//        setSupportActionBar(toolbar);
+
 
         LinearLayout linearLayout = findViewById(R.id.ll);
 
@@ -35,13 +39,6 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
             textView.setText("TV" + i);
             linearLayout.addView(textView);
         }
-
-
-
-
-
-
-
 
 
     }
@@ -145,5 +142,32 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
+    }
+
+
+    static class BasicActionProvider extends ActionProvider {
+
+        public BasicActionProvider(Context context) {
+            super(context);
+            System.out.println("+++ " + getClass().getSimpleName() + ".Constructor +++");
+        }
+
+        @Override
+        public View onCreateActionView() {
+            System.out.println("*********  " + getClass().getSimpleName() + ".onCreateActionView  *********");
+
+            //方式一：代码方式
+            Button button = new Button(getContext());
+            button.setText("btn1");
+            return button;
+
+        }
+
+        @Override
+        public boolean onPerformDefaultAction() {
+            System.out.println("*********  " + getClass().getSimpleName() + ".onPerformDefaultAction  *********");
+
+            return super.onPerformDefaultAction();
+        }
     }
 }
