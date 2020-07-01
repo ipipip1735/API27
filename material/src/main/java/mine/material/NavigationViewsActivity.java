@@ -6,6 +6,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class NavigationViewsActivity extends AppCompatActivity {
 
@@ -14,6 +21,13 @@ public class NavigationViewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_navigation_views);
+
+
+//        NavigationView navigationView = findViewById(R.id.nav);
+//        NavController navController = Navigation.findNavController(this, R.id.imageView);
+//        NavigationUI.setupWithNavController(navigationView, navController);
+
+
 
     }
 
@@ -82,6 +96,10 @@ public class NavigationViewsActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+        drawerLayout.openDrawer(GravityCompat.START);
+
     }
 
     public void stop(View view) {
