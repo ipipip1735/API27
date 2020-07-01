@@ -3,20 +3,37 @@ package mine.material;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class DialogActivity extends AppCompatActivity {
+public class SelectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_dialog);
+        setContentView(R.layout.activity_select);
+
+
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+        RadioGroup.OnCheckedChangeListener listener =
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        System.out.println("~~onCheckedChanged~~");
+                        System.out.println("group is " + group);
+                        System.out.println("checkedId is " + checkedId);
+                        System.out.println(group.findViewById(checkedId));
+
+                    }
+                };
+        radioGroup.setOnCheckedChangeListener(listener);
+
+
     }
 
     @Override
@@ -85,78 +102,9 @@ public class DialogActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-//        alertDialog();//警告对话框
-//        simpleDialog();//简单对话框
-        confirmationDialog();//确认对话框
-
+        RadioButton radioButton = findViewById(R.id.radio_button_4);
+        radioButton.toggle();
     }
-
-    private void confirmationDialog() {
-
-        DialogInterface.OnClickListener clickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        System.out.println("~~onClick~~");
-                        System.out.println("dialog is " + dialog);
-                        System.out.println("which is " + which);
-                    }
-                };
-
-        String[] items = {"Item 1", "Item 2", "Item 3"};
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("OOOOOOOO")
-                .setNeutralButton("C", clickListener)
-                .setPositiveButton("Y", clickListener)
-                .setSingleChoiceItems(items, 1, clickListener)
-                .show();
-
-
-    }
-
-    private void simpleDialog() {
-
-        DialogInterface.OnClickListener clickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        System.out.println("~~onClick~~");
-                        System.out.println("dialog is " + dialog);
-                        System.out.println("which is " + which);
-                    }
-                };
-
-        String[] items = {"Item 1", "Item 2", "Item 3"};
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("OOOO")
-                .setItems(items, clickListener)
-                .show();
-
-
-    }
-
-    private void alertDialog() {
-
-        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                System.out.println("~~onClick~~");
-                System.out.println("dialog is " + dialog);
-                System.out.println("which is " + which);
-            }
-        };
-
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("OOO")
-                .setMessage("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZzzzzzzzzzzzzzzzzzzzzzz")
-                .setNeutralButton("C", clickListener)
-                .setNegativeButton("N", clickListener)
-                .setPositiveButton("Y", clickListener)
-                .show();
-    }
-
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");

@@ -103,4 +103,68 @@
         app:constraint_referenced_ids="button9,button11,button12,button8,button7,button10,button14,button13"
         tools:layout_editor_absoluteY="731dp" />
 
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/radio_button_1"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <RadioButton
+            android:id="@+id/radio_button_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="111" />
+
+        <RadioButton
+            android:id="@+id/radio_button_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="true"
+            android:text="222" />
+
+        <RadioButton
+            android:id="@+id/radio_button_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="333" />
+
+        <RadioButton
+            android:id="@+id/radio_button_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="444" />
+
+        <RadioButton
+            android:id="@+id/radio_button_5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:text="555" />
+    </RadioGroup>
+
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchMaterial2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:checked="true"
+        android:text="AAA"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrier3" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchMaterial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="BBB"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchMaterial2" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
