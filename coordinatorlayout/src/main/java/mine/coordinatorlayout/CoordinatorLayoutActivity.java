@@ -10,6 +10,9 @@ import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
 
+/**
+ * Created by Administrator on 2020/6/28.
+ */
 public class CoordinatorLayoutActivity extends AppCompatActivity {
 
     @Override

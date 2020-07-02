@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+/**
+ * Created by Administrator on 2020/6/28.
+ */
 public class AppBarLayoutActivity extends AppCompatActivity {
 
 

@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+/**
+ * Created by Administrator on 2020/6/22.
+ */
 public class SnackbarsActivity extends AppCompatActivity {
 
 

@@ -14,6 +14,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
+/**
+ * Created by Administrator on 2020/7/2.
+ */
 public class NavigationViewsActivity extends AppCompatActivity {
 
     @Override

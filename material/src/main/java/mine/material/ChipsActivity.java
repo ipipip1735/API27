@@ -12,6 +12,9 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * Created by Administrator on 2020/7/1.
+ */
 public class ChipsActivity extends AppCompatActivity {
 
     @Override

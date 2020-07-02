@@ -14,6 +14,9 @@ import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * Created by Administrator on 2020/6/27.
+ */
 public class BottomNavigationViewActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;

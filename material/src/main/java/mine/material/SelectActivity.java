@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+/**
+ * Created by Administrator on 2020/7/1.
+ */
 public class SelectActivity extends AppCompatActivity {
 
     @Override

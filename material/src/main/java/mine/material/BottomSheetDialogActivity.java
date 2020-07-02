@@ -20,6 +20,9 @@ import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_SETTLING;
 
+/**
+ * Created by Administrator on 2020/7/1.
+ */
 public class BottomSheetDialogActivity extends AppCompatActivity {
 
     @Override

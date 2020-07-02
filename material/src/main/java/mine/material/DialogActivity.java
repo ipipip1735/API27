@@ -10,6 +10,9 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+/**
+ * Created by Administrator on 2020/7/1.
+ */
 public class DialogActivity extends AppCompatActivity {
 
     @Override

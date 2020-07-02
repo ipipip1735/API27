@@ -13,6 +13,9 @@ import androidx.core.view.ActionProvider;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+/**
+ * Created by Administrator on 2020/7/1.
+ */
 public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
 

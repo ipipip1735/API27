@@ -14,6 +14,9 @@ import androidx.core.widget.NestedScrollView;
 
 import java.util.Random;
 
+/**
+ * Created by Administrator on 2020/6/28.
+ */
 public class MainActivity extends AppCompatActivity {
 
 

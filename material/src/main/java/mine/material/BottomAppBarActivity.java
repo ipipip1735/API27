@@ -5,6 +5,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Created by Administrator on 2020/6/27.
+ */
 public class BottomAppBarActivity extends AppCompatActivity {
 
 

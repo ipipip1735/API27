@@ -13,6 +13,9 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import static com.google.android.material.badge.BadgeDrawable.BOTTOM_START;
 
+/**
+ * Created by Administrator on 2020/6/27.
+ */
 public class BadgeDrawableActivity extends AppCompatActivity {
     BadgeDrawable badgeDrawable;
 
