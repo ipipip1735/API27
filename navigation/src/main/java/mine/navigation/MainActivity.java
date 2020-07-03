@@ -1,6 +1,8 @@
 package mine.navigation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.os.Bundle;
 import android.view.View;
@@ -88,9 +90,13 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-//        View v = findViewById(R.id.nav_graph);
-//        System.out.println(v);
-//        Navigation.findNavController();
+        NavController navController = Navigation.findNavController(this, R.id.fragment);
+        System.out.println(navController);
+        navController.navigate(R.id.action_oneFragment_to_twoFragment2);
+//        navController.navigate(R.id.action_twoFragment_to_oneFragment2);//错误，使用Activity跳转时源Destination，此Action不属于此Fragment
+
+//        navController.navigate(R.id.action_2_1);
+
 
     }
 
