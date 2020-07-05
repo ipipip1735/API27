@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,14 +26,21 @@ public class CoordinatorLayoutTwoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_coordinatorlayout_two);
 
-        ListView listView = findViewById(R.id.lv);
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+//        for (int i = 0; i < 100; i++) {
+//            arrayAdapter.add("NN - " + i);
+//        }
+//        ListView listView = findViewById(R.id.lv);
+//        listView.setAdapter(arrayAdapter);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+
+
+        LinearLayout linearLayout = findViewById(R.id.ll);
         for (int i = 0; i < 100; i++) {
-            arrayAdapter.add("NN - " + i);
+            TextView textView = new TextView(this);
+            textView.setText("TV" + i);
+            linearLayout.addView(textView);
         }
-
-        listView.setAdapter(arrayAdapter);
 
 
 
