@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Azure"
+    android:background="@color/Indigo"
     tools:context=".OneFragment">
-
 
     <Button
         android:id="@+id/button"
+        android:transitionName="ftwo_sn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="250dp"
-        android:text="three" />
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="150dp"
+        android:text="one" />
 </FrameLayout>
