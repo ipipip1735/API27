@@ -8,22 +8,13 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="35dp"
-        android:text="AAA"
-        android:minHeight="20dp"
-        app:layout_scrollFlags="scroll|enterAlways"/>
-
-    <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
-        android:text="One"/>
+        android:text="One"
+        app:layout_behavior=".TwoBehavior" />
 
     <Button
         android:id="@+id/button2"
@@ -31,13 +22,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="166dp"
-        android:text="Two" />
+        android:text="Two"
+        app:layout_behavior=".TwoBehavior" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="35dp"
+        android:text="AAA"
+        android:minHeight="20dp"
+        app:layout_behavior=".TwoBehavior" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/ll"

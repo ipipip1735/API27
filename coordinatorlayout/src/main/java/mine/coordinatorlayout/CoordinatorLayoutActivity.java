@@ -22,7 +22,7 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_coordinatorlayout);
         setContentView(R.layout.activity_coordinatorlayout_one);
 
-        findViewById(R.id.button1).setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.button).setOnTouchListener(new View.OnTouchListener() {
             float offsetX = 0;
             float offsetY = 0;
 

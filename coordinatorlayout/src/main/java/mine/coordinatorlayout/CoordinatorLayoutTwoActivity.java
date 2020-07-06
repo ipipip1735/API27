@@ -26,14 +26,6 @@ public class CoordinatorLayoutTwoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_coordinatorlayout_two);
 
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-//        for (int i = 0; i < 100; i++) {
-//            arrayAdapter.add("NN - " + i);
-//        }
-//        ListView listView = findViewById(R.id.lv);
-//        listView.setAdapter(arrayAdapter);
-
-
 
         LinearLayout linearLayout = findViewById(R.id.ll);
         for (int i = 0; i < 100; i++) {
@@ -41,41 +33,6 @@ public class CoordinatorLayoutTwoActivity extends AppCompatActivity {
             textView.setText("TV" + i);
             linearLayout.addView(textView);
         }
-
-
-
-        findViewById(R.id.button).setOnTouchListener(new View.OnTouchListener() {
-            float offsetX = 0;
-            float offsetY = 0;
-
-            @Override
-            public boolean onTouch(final View v, MotionEvent event) {
-//                System.out.println("event is " + event.actionToString(event.getAction()));
-
-                switch (event.getAction()) {
-                    case ACTION_DOWN:
-                        int[] location = new int[2];
-                        View p = (View) v.getParent();
-                        p.getLocationOnScreen(location);
-
-                        offsetX = location[0] + event.getX();
-                        offsetY = location[1] + event.getY();
-
-                        break;
-                    case ACTION_MOVE:
-                        v.setX(event.getRawX() - offsetX);
-                        v.setY(event.getRawY() - offsetY);
-                        break;
-
-                    case ACTION_UP:
-
-                }
-                return true;
-            }
-        });
-
-
-
     }
 
     @Override
