@@ -3,8 +3,10 @@ package mine.coordinatorlayout;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_MOVE;
@@ -19,8 +21,8 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-//        setContentView(R.layout.activity_coordinatorlayout);
-        setContentView(R.layout.activity_coordinatorlayout_one);
+        setContentView(R.layout.activity_coordinatorlayout);
+//        setContentView(R.layout.activity_coordinatorlayout_one);
 
         findViewById(R.id.button).setOnTouchListener(new View.OnTouchListener() {
             float offsetX = 0;
@@ -51,6 +53,8 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
 
 
     }

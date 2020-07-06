@@ -23,7 +23,8 @@ class OneBehavior extends CoordinatorLayout.Behavior<Button> {
     }
 
     @Override
-    public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull Button child, @NonNull View dependency) {
+    public boolean layoutDependsOn(@NonNull CoordinatorLayout parent,
+                                   @NonNull Button child, @NonNull View dependency) {
         System.out.println("~~" + getClass().getSimpleName() + ".layoutDependsOn~~");
 
         System.out.println("parent is " + parent);
@@ -39,7 +40,8 @@ class OneBehavior extends CoordinatorLayout.Behavior<Button> {
     }
 
     @Override
-    public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull Button child, @NonNull View dependency) {
+    public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent,
+                                          @NonNull Button child, @NonNull View dependency) {
         System.out.println("~~" + getClass().getSimpleName() + ".onDependentViewChanged~~");
         System.out.println("parent is " + parent);
         System.out.println("child is " + child);
@@ -49,8 +51,8 @@ class OneBehavior extends CoordinatorLayout.Behavior<Button> {
 //        System.out.println("child|X=" + child.getX() + ", Y=" + child.getY());
 
 
-        child.setX(dependency.getX() + child.getWidth());
-        child.setY(dependency.getY() + child.getHeight());
+        if(child.getId() == R.id.button1) child.setX(dependency.getX() + child.getWidth());
+        if(child.getId() == R.id.button2) child.setY(dependency.getY() + child.getHeight());
 
 //        return super.onDependentViewChanged(parent, child, dependency);
         return true;
