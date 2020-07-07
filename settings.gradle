@@ -1,3 +1,4 @@
+include ':drawerlayout'
 include ':apptemp'
 //include ':navigation'
 include ':coordinatorlayout'
