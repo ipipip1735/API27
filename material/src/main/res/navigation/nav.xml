@@ -3,9 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav"
-    app:startDestination="@layout/frgment_nav_one">
+    app:startDestination="@id/oneFragment">
 
-    <fragment android:id="@+id/nfone"
-        tools:layout="@layout/fragment_blank"/>
+    <fragment android:id="@+id/oneFragment"
+        android:name="mine.material.OneFragment"
+        tools:layout="@layout/frgment_nav_one">
+        <action
+            android:id="@+id/action_oneFragment_to_twoFragment"
+            app:destination="@id/twoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/twoFragment"
+        android:name="mine.material.TwoFragment"
+        android:label="TwoFragment"
+        tools:layout="@layout/frgment_nav_two"/>
 
 </navigation>

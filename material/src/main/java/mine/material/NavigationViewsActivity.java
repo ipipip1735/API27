@@ -1,10 +1,12 @@
 package mine.material;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -26,9 +28,23 @@ public class NavigationViewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_views);
 
 
-//        NavigationView navigationView = findViewById(R.id.nav);
-//        NavController navController = Navigation.findNavController(this, R.id.imageView);
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                System.out.println("~~onNavigationItemSelected~~");
+                System.out.println("item is " + item);
+
+                NavController navController = Navigation.findNavController(NavigationViewsActivity.this, R.id.fragmentNav);
+                navController.navigate(R.id.action_oneFragment_to_twoFragment);
+
+                return true;
+            }
+        });
+
+//
 //        NavigationUI.setupWithNavController(navigationView, navController);
+
 
 
 
