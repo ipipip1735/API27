@@ -1,8 +1,11 @@
 package mine.drawerlayout;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
@@ -19,10 +22,33 @@ public class NavigationUIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+
+
+        //方式一：使用ActionBar
+        setContentView(R.layout.activity_actionbar);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        //方式二：使用toolbar
+//        setContentView(R.layout.activity_only_toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+
+
+        //方式三：使用CollapsingToolbarLayout
+//        setContentView(R.layout.activity_collapsing_toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//        CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar_layout);
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
+
+
+        //方式四
 //        setContentView(R.layout.activity_navigation_views);
-
-
-
 //        NavigationView navigationView = findViewById(R.id.navigation_view);
 //        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 //            @Override
@@ -37,39 +63,22 @@ public class NavigationUIActivity extends AppCompatActivity {
 //            }
 //        });
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        toolbar.setTitle("OOOOOO");
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                System.out.println("~~onClick~~");
-//            }
-//        });
-////        setSupportActionBar(toolbar);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreateOptionsMenu  *********");
+        getMenuInflater().inflate(R.menu.menu_one, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
 
-
-        //方式二
-//        setContentView(R.layout.activity_only_toolbar);
-//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-
-
-        //方式二
-//        setContentView(R.layout.activity_collapsing_toolbar);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-//        CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar_layout);
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
-
-
-        //方式三
-//        setContentView(R.layout.activity_actionbar);
-//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreateOptionsMenu  *********");
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

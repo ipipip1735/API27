@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         DrawerLayout drawerLayout = findViewById(R.id.dl);
-
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
