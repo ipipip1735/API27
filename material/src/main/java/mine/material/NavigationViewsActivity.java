@@ -27,7 +27,6 @@ public class NavigationViewsActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_navigation_views);
 
-
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -41,12 +40,6 @@ public class NavigationViewsActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-//
-//        NavigationUI.setupWithNavController(navigationView, navController);
-
-
-
 
     }
 
