@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
@@ -16,6 +18,24 @@ import androidx.navigation.fragment.FragmentNavigator;
  * Created by Administrator on 2020/7/2.
  */
 public class TwoFragment extends Fragment {
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onAttach  *********");
+        super.onCreate(savedInstanceState);
+
+        //拦截back按钮事件
+//        requireActivity().getOnBackPressedDispatcher()
+//                .addCallback(this, new OnBackPressedCallback(true) {
+//                    @Override
+//                    public void handleOnBackPressed() {
+//                        System.out.println("~~OneFragment.handleOnBackPressed~~");
+//                    }
+//                });
+
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");

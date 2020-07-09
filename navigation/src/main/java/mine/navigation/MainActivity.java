@@ -25,14 +25,20 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        //拦截back按钮事件
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 System.out.println("~~Activity.handleOnBackPressed~~");
-
 //                finish();
             }
-        });
+        };
+        System.out.println(callback.isEnabled());
+        callback.setEnabled(false);
+        System.out.println(callback.isEnabled());
+
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 
 

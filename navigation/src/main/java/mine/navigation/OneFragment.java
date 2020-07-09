@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.ActionOnlyNavDirections;
 import androidx.navigation.NavOptions;
@@ -26,14 +27,14 @@ public class OneFragment extends Fragment {
         System.out.println("*********  " + getClass().getSimpleName() + ".onAttach  *********");
         super.onAttach(context);
 
-
-        requireActivity().getOnBackPressedDispatcher()
-                .addCallback(this, new OnBackPressedCallback(true) {
-                    @Override
-                    public void handleOnBackPressed() {
-                        System.out.println("~~OneFragment.handleOnBackPressed~~");
-                    }
-                });
+        //拦截back按钮事件
+//        requireActivity().getOnBackPressedDispatcher()
+//                .addCallback(this, new OnBackPressedCallback(true) {
+//                    @Override
+//                    public void handleOnBackPressed() {
+//                        System.out.println("~~OneFragment.handleOnBackPressed~~");
+//                    }
+//                });
 
     }
 
