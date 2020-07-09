@@ -8,12 +8,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class NavigationUIActivity extends AppCompatActivity {
 
@@ -25,10 +28,10 @@ public class NavigationUIActivity extends AppCompatActivity {
 
 
         //方式一：使用ActionBar
-        setContentView(R.layout.activity_actionbar);
-        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        setContentView(R.layout.activity_actionbar);
+//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         //方式二：使用toolbar
 //        setContentView(R.layout.activity_only_toolbar);
@@ -47,9 +50,30 @@ public class NavigationUIActivity extends AppCompatActivity {
 //        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
 
 
-        //方式四
+        //方式四：使用NavigationView
 //        setContentView(R.layout.activity_navigation_views);
 //        NavigationView navigationView = findViewById(R.id.navigation_view);
+//        DrawerLayout drawerLayout = findViewById(R.id.dl);
+//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//        NavigationUI.setupWithNavController(navigationView, navController);
+
+
+        //方式五：使用BottomNavigationView
+        setContentView(R.layout.activity_bottom_navigation_views);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+
+
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
+//                .setOpenableLayout(drawerLayout)
+//                .build();
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+
+
+
 //        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 //            @Override
 //            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -57,9 +81,8 @@ public class NavigationUIActivity extends AppCompatActivity {
 //                System.out.println("item is " + item);
 //
 //                NavController navController = Navigation.findNavController(NavigationUIActivity.this, R.id.fragmentNav);
-//                navController.navigate(R.id.action_oneFragment_to_twoFragment);
 //
-//                return true;
+//                return NavigationUI.onNavDestinationSelected(item, navController);
 //            }
 //        });
 
@@ -78,7 +101,10 @@ public class NavigationUIActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateOptionsMenu  *********");
-        return super.onOptionsItemSelected(item);
+
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
     }
 
     @Override

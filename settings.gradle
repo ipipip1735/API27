@@ -1,6 +1,6 @@
 include ':drawerlayout'
 include ':apptemp'
-//include ':navigation'
+include ':navigation'
 include ':coordinatorlayout'
 //include ':nestedscrollview'
 include ':material'

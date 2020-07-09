@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/coordinatorlayout" />
             <option value="$PROJECT_DIR$/drawerlayout" />
             <option value="$PROJECT_DIR$/material" />
+            <option value="$PROJECT_DIR$/navigation" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

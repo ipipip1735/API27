@@ -1,5 +1,6 @@
 package mine.navigation;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
 import android.view.LayoutInflater;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.ActionOnlyNavDirections;
 import androidx.navigation.NavOptions;
@@ -17,6 +20,22 @@ import androidx.navigation.fragment.FragmentNavigator;
  * Created by Administrator on 2020/7/2.
  */
 public class OneFragment extends Fragment {
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onAttach  *********");
+        super.onAttach(context);
+
+
+        requireActivity().getOnBackPressedDispatcher()
+                .addCallback(this, new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        System.out.println("~~OneFragment.handleOnBackPressed~~");
+                    }
+                });
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +60,6 @@ public class OneFragment extends Fragment {
 //                Navigation.findNavController(v)
 //                        .navigate(OneFragmentDirections.actionOneFragmentToTwoFragment()
 //                                .setOne(111).setTwo(222));
-
 
 
                 FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()

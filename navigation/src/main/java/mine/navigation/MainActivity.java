@@ -1,5 +1,6 @@
 package mine.navigation;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ActionOnlyNavDirections;
 import androidx.navigation.NavController;
@@ -23,6 +24,15 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         setContentView(R.layout.activity_main);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                System.out.println("~~Activity.handleOnBackPressed~~");
+
+//                finish();
+            }
+        });
     }
 
 
@@ -101,13 +111,11 @@ public class MainActivity extends AppCompatActivity {
 //        navController.navigate(R.id.action_twoFragment_to_oneFragment);//错误，使用Activity跳转时源Destination，此Action不属于此Fragment
 
 
-
         //使用安全插件传递参数
 //        NavController navController = Navigation.findNavController(this, R.id.fragment);
 //        navController.navigate(OneFragmentDirections.actionOneFragmentToTwoFragment2()
 //                .setOne(111)
 //                .setTwo(222));
-
 
 
         //使用全局Action
