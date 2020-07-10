@@ -16,6 +16,8 @@ import android.view.View;
  * Created by Administrator on 2020/7/2.
  */
 public class MainActivity extends AppCompatActivity {
+    OnBackPressedCallback callback1;
+    OnBackPressedCallback callback2;
 
 
     @Override
@@ -26,18 +28,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //拦截back按钮事件
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        callback1 = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                System.out.println("~~Activity.handleOnBackPressed~~");
+                System.out.println("~~Activity.handleOnBackPressed1~~");
 //                finish();
             }
         };
-        System.out.println(callback.isEnabled());
-        callback.setEnabled(false);
-        System.out.println(callback.isEnabled());
+        callback2 = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                System.out.println("~~Activity.handleOnBackPressed2~~");
+            }
+        };
 
-        getOnBackPressedDispatcher().addCallback(this, callback);
+
+
+
+
+//        System.out.println(callback1.isEnabled());
+//        callback1.setEnabled(false);
+//        System.out.println(callback1.isEnabled());
+
+        getOnBackPressedDispatcher().addCallback(this, callback1);
+        getOnBackPressedDispatcher().addCallback(this, callback2);
 
     }
 
@@ -107,7 +121,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        navigation();
+//        navigation();
+
+//        callback2.remove();
+        callback2.setEnabled(false);
+
     }
 
     private void navigation() {

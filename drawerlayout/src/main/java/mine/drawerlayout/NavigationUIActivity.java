@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -42,12 +43,20 @@ public class NavigationUIActivity extends AppCompatActivity {
 
 
         //方式三：使用CollapsingToolbarLayout
-//        setContentView(R.layout.activity_collapsing_toolbar);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-//        CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar_layout);
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
+        setContentView(R.layout.activity_collapsing_toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar_layout);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
+
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        System.out.println(toggle);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
 
         //方式四：使用NavigationView
@@ -59,19 +68,16 @@ public class NavigationUIActivity extends AppCompatActivity {
 
 
         //方式五：使用BottomNavigationView
-        setContentView(R.layout.activity_bottom_navigation_views);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
+//        setContentView(R.layout.activity_bottom_navigation_views);
+//        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
 
 //        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
 //                .setOpenableLayout(drawerLayout)
 //                .build();
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-
 
 
 //        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -181,6 +187,14 @@ public class NavigationUIActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
         NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
         navController.navigate(R.id.action_oneFragment_to_twoFragment);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            System.out.println("c" + i + toolbar.getChildAt(i));
+
+        }
+
     }
 
 
