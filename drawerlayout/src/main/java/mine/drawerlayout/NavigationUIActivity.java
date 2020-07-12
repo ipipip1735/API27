@@ -34,6 +34,7 @@ public class NavigationUIActivity extends AppCompatActivity {
 //        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+
         //方式二：使用toolbar
 //        setContentView(R.layout.activity_only_toolbar);
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -43,20 +44,19 @@ public class NavigationUIActivity extends AppCompatActivity {
 
 
         //方式三：使用CollapsingToolbarLayout
-        setContentView(R.layout.activity_collapsing_toolbar);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+//        setContentView(R.layout.activity_collapsing_toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//        CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar_layout);
+////        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
+//                .setOpenableLayout(drawerLayout)//设置DrawerLayout对象（系统将自动增加ActionBarDrawerToggle）
+//                .build();
+//        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
 
-        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-        CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar_layout);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
 
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        System.out.println(toggle);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
 
 
         //方式四：使用NavigationView
@@ -65,6 +65,15 @@ public class NavigationUIActivity extends AppCompatActivity {
 //        DrawerLayout drawerLayout = findViewById(R.id.dl);
 //        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
 //        NavigationUI.setupWithNavController(navigationView, navController);
+//                navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                System.out.println("~~onNavigationItemSelected~~");
+//                System.out.println("item is " + item);
+//                NavController navController = Navigation.findNavController(NavigationUIActivity.this, R.id.fragmentNav);
+//                return NavigationUI.onNavDestinationSelected(item, navController);
+//            }
+//        });
 
 
         //方式五：使用BottomNavigationView
@@ -74,23 +83,15 @@ public class NavigationUIActivity extends AppCompatActivity {
 //        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
 
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
-//                .setOpenableLayout(drawerLayout)
-//                .build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                System.out.println("~~onNavigationItemSelected~~");
-//                System.out.println("item is " + item);
-//
-//                NavController navController = Navigation.findNavController(NavigationUIActivity.this, R.id.fragmentNav);
-//
-//                return NavigationUI.onNavDestinationSelected(item, navController);
-//            }
-//        });
+        //方式六：使用ActionBarDrawerToggle
+        setContentView(R.layout.activity_action_bar_drawer_toggle);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
 
     }
@@ -187,14 +188,6 @@ public class NavigationUIActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
         NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
         navController.navigate(R.id.action_oneFragment_to_twoFragment);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            System.out.println("c" + i + toolbar.getChildAt(i));
-
-        }
-
     }
 
 

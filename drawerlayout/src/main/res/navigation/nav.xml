@@ -15,8 +15,8 @@
     </fragment>
     <fragment
         android:id="@+id/twoFragment"
-        android:name=".TwoFragment"
         android:label="TwoFragment"
+        android:name=".TwoFragment"
         tools:layout="@layout/frgment_nav_two">
         <action
             android:id="@+id/action_twoFragment_to_oneFragment"
