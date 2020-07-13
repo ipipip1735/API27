@@ -43,14 +43,14 @@ public class TwoFragment extends Fragment {
 
 //        System.out.println("one is " + getArguments().getInt("one"));//直接获取Bundle中的参数
 
-//        Bundle b = getArguments();
-//        TwoFragmentArgs args = TwoFragmentArgs.fromBundle(b);
-//        System.out.println("one is " + args.getOne());
+        Bundle b = getArguments();
+        TwoFragmentArgs args = TwoFragmentArgs.fromBundle(b);
+        System.out.println("one is " + args.getOne());
 //        System.out.println("two is " + args.getTwo());
 
 
-//        setSharedElementEnterTransition(new Slide().setDuration(5000L));
-        setSharedElementEnterTransition(new ChangeBounds().setDuration(5000L));
+////        setSharedElementEnterTransition(new Slide().setDuration(5000L));
+//        setSharedElementEnterTransition(new ChangeBounds().setDuration(5000L));
 
 
 

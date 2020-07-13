@@ -23,8 +23,8 @@ public class DeepLinkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-//        setContentView(R.layout.activity_main);
-        setContentView(R.layout.activity_nested);
+        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_nested);
     }
 
 
