@@ -21,6 +21,13 @@ public class ThreeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
 
+        Bundle b = getArguments();
+        ThreeFragmentArgs args = ThreeFragmentArgs.fromBundle(b);
+        System.out.println("one is " + args.getOne());
+        System.out.println("two is " + args.getTwo());
+
+
+
         View view = inflater.inflate(R.layout.fragment_three, container, false);
 
         return view;

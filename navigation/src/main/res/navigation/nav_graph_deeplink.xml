@@ -17,21 +17,20 @@
         android:label="TwoFragment"
         tools:layout="@layout/fragment_two">
         <!--配置Action-->
-        <action
-            android:id="@+id/action_twoFragment_to_oneFragment"
-            app:destination="@id/oneFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_twoFragment_to_oneFragment"-->
+<!--            app:destination="@id/oneFragment" />-->
 
         <!--配置参数-->
-        <argument
-            android:name="one"
-            android:defaultValue="-1"
-            app:argType="integer" />
+<!--        <argument-->
+<!--            android:name="one"-->
+<!--            android:defaultValue="-1"-->
+<!--            app:argType="integer" />-->
 <!--        <argument-->
 <!--            android:name="two"-->
-<!--            android:defaultVaue="-1"-->
+<!--            android:defaultValue="-1"-->
 <!--            app:argType="integer" />-->
-<!--        <deepLink android:id="@+id/deepLink" app:uri="http://a.b" />-->
-        <deepLink android:id="@+id/deepLink" app:uri="http://a.b/?one={one}" />
+<!--        <deepLink android:id="@+id/deepLink" app:uri="http://a.b/?one={one}&amp;two={two}" />-->
     </fragment>
     <fragment
         android:id="@+id/oneFragment"
@@ -39,23 +38,33 @@
         android:label="fragment_one"
         tools:layout="@layout/fragment_one">
     </fragment>
-<!--    <navigation-->
-<!--        android:id="@+id/navigation"-->
-<!--        app:startDestination="@id/fourFragment">-->
-<!--        <deepLink-->
-<!--            android:id="@+id/deepLink6"-->
-<!--            app:uri="mine://a.b" />-->
-<!--        <fragment-->
-<!--            android:id="@+id/threeFragment"-->
-<!--            android:name="mine.navigation.ThreeFragment"-->
-<!--            android:label="ThreeFragment"-->
-<!--            tools:layout="@layout/fragment_three"></fragment>-->
-<!--        <fragment-->
-<!--            android:id="@+id/fourFragment"-->
-<!--            android:name="mine.navigation.FourFragment"-->
-<!--            android:label="FourFragment"-->
-<!--            tools:layout="@layout/fragment_four" />-->
-<!--    </navigation>-->
+    <navigation
+        android:id="@+id/navigation"
+        app:startDestination="@id/fourFragment">
+        <fragment
+            android:id="@+id/threeFragment"
+            android:name="mine.navigation.ThreeFragment"
+            android:label="ThreeFragment"
+            tools:layout="@layout/fragment_three">
+            <!--配置参数-->
+            <argument
+                android:name="one"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <argument
+                android:name="two"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <deepLink android:id="@+id/deepLink" app:uri="http://a.b/?one={one}&amp;two={two}" />
+
+
+        </fragment>
+        <fragment
+            android:id="@+id/fourFragment"
+            android:name="mine.navigation.FourFragment"
+            android:label="FourFragment"
+            tools:layout="@layout/fragment_four" />
+    </navigation>
 
 
 </navigation>

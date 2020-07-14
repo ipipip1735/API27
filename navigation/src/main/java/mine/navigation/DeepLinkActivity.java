@@ -3,6 +3,8 @@ package mine.navigation;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -25,6 +27,14 @@ public class DeepLinkActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 //        setContentView(R.layout.activity_nested);
+
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData();
+        System.out.println(data);
+
+        System.out.println("id is " + data.getQueryParameter("id"));
     }
 
 
