@@ -33,8 +33,10 @@ public class DeepLinkActivity extends AppCompatActivity {
         String action = intent.getAction();
         Uri data = intent.getData();
         System.out.println(data);
-
-        System.out.println("id is " + data.getQueryParameter("id"));
+        if (data != null) {
+            System.out.println("one is " + data.getQueryParameter("one"));
+            System.out.println("two is " + data.getQueryParameter("two"));
+        }
     }
 
 

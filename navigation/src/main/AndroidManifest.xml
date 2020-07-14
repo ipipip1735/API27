@@ -25,9 +25,9 @@
                         <category android:name="android.intent.category.LAUNCHER" />
                         <category android:name="android.intent.category.DEFAULT" />
                         <category android:name="android.intent.category.BROWSABLE" />
-                        <data android:scheme="mine"
-                            android:host="a.b"
-                            android:pathPrefix="/\\?id=11"/>
+                        <data android:scheme="tnt"
+                            android:host="*"
+                            android:pathPattern="/c" />
                     </intent-filter>
                 </activity>
 
