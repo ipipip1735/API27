@@ -6,7 +6,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 
 import java.util.Random;
@@ -14,13 +13,13 @@ import java.util.Random;
 /**
  * Created by Administrator on 2020/7/15.
  */
-public class SliderActivity extends AppCompatActivity {
+public class ContainerTransformActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_sliders);
+        setContentView(R.layout.activity_container_transform);
     }
 
     @Override
