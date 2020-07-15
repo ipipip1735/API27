@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 <!--        <activity android:name=".TextfieldActivity">-->
-        <activity android:name=".NavigationViewsActivity">
+        <activity android:name=".SliderActivity">
+<!--        <activity android:name=".NavigationViewsActivity">-->
 <!--        <activity android:name=".SelectActivity">-->
 <!--        <activity android:name=".DialogActivity">-->
 <!--        <activity android:name=".CollapsingToolbarLayoutActivity">-->
