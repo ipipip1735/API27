@@ -29,15 +29,19 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
 
         long duration = 3000L;
 
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+//        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
         setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
         MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
-        materialContainerTransform.addTarget(android.R.id.content)
-                .setDuration(3000L);
+        materialContainerTransform
+                .addTarget(android.R.id.content)
+                .setDuration(duration);
 
-        getWindow().setEnterTransition(materialContainerTransform);
-        getWindow().setReturnTransition(materialContainerTransform);
+        getWindow().setSharedElementEnterTransition(materialContainerTransform);
+        getWindow().setSharedElementReturnTransition(materialContainerTransform);
+
+
+//        getWindow().setSharedElementsUseOverlay(false);
 
 
         View v = findViewById(android.R.id.content);
@@ -46,7 +50,6 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container_transform_one);
-
     }
 
     @Override

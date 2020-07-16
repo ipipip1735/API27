@@ -25,10 +25,11 @@ public class ContainerTransformActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
 
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+//        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+
         setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setAllowEnterTransitionOverlap(false);
-        getWindow().setAllowReturnTransitionOverlap(false);
+//        getWindow().setAllowEnterTransitionOverlap(false);
+//        getWindow().setAllowReturnTransitionOverlap(false);
         getWindow().setSharedElementsUseOverlay(false);
 
 
@@ -106,9 +107,6 @@ public class ContainerTransformActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ContainerTransformOneActivity.class);
 
         ImageView imageView = findViewById(R.id.imageView);
-        View v = findViewById(android.R.id.content);
-//        v.setTransitionName("shared");
-//        System.out.println(v);
 
 
 

@@ -109,6 +109,7 @@
         android:layout_width="150dp"
         android:layout_height="80dp"
         android:background="@color/Chocolate"
+        android:transitionName="shared"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
