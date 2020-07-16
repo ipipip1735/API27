@@ -3,14 +3,17 @@ package mine.material;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.transition.Transition;
 
 import com.google.android.material.slider.Slider;
+import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 
 import java.util.Random;
@@ -18,22 +21,31 @@ import java.util.Random;
 /**
  * Created by Administrator on 2020/7/15.
  */
-public class ContainerTransformActivity extends AppCompatActivity {
+public class ContainerTransformOneActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
+        long duration = 3000L;
 
         getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setAllowEnterTransitionOverlap(false);
-        getWindow().setAllowReturnTransitionOverlap(false);
-        getWindow().setSharedElementsUseOverlay(false);
+
+        setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
+        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
+        materialContainerTransform.addTarget(android.R.id.content)
+                .setDuration(3000L);
+
+        getWindow().setEnterTransition(materialContainerTransform);
+        getWindow().setReturnTransition(materialContainerTransform);
+
+
+        View v = findViewById(android.R.id.content);
+        v.setTransitionName("shared");
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_container_transform);
+        setContentView(R.layout.activity_container_transform_one);
 
     }
 
@@ -103,28 +115,11 @@ public class ContainerTransformActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        Intent intent = new Intent(this, ContainerTransformOneActivity.class);
-
-        ImageView imageView = findViewById(R.id.imageView);
-        View v = findViewById(android.R.id.content);
-//        v.setTransitionName("shared");
-//        System.out.println(v);
-
-
-
-
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
-//        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,//多共享对象
-//                Pair.<View, String>create(imageView, "shared"),
-//                Pair.<View, String>create(imageViewST, "sharedOne"));
-        startActivity(intent, options.toBundle());
-
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
     }
 
     public void bind(View view) {

@@ -105,12 +105,14 @@
         tools:layout_editor_absoluteY="731dp" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="80dp"
-        android:background="@color/Chocolate"
+        android:id="@+id/imageView2"
+        android:layout_width="80dp"
+        android:layout_height="150dp"
+        android:background="@color/Indigo"
+        android:layout_marginBottom="248dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
