@@ -107,20 +107,42 @@
 <!--        </intent-filter>-->
 <!--        </activity>-->
 
-        <activity android:name=".WindowThreeTransitionActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-        </activity>
-        <activity android:name=".WindowFourTransitionActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        </intent-filter>
-        </activity>
+<!--        <activity android:name=".WindowThreeTransitionActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <action android:name="android.intent.action.VIEW"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
+<!--        <activity android:name=".WindowFourTransitionActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <action android:name="android.intent.action.VIEW"/>-->
+<!--        <category android:name="android.intent.category.DEFAULT"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
+
+            <activity android:name=".WindowShareTransitionActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            </activity>
+            <activity android:name=".WindowShareTransitionOneActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            </activity>
+
+
+
+
+
+
+
 
     </application>
 

@@ -147,7 +147,7 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
         //设置共享组件转换对象（一般不会使用SharedElementExitTransition/SharedElementReenterTransition）
 //        window.setSharedElementExitTransition(changesBounds); //共享组件退出变换
 //        window.setSharedElementReenterTransition(changesBounds); //共享组件重进入变换
-//        window.setSharedElementsUseOverlay(false); //共享转换禁用遮罩层
+        window.setSharedElementsUseOverlay(false); //共享转换禁用遮罩层
 
     }
 
@@ -275,7 +275,13 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 
     public void sharedStop(View view) {
         System.out.println("********sharedStop******");
-    }
 
+        Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
+
+        ImageView imageView = findViewById(R.id.ivOne);
+        imageView.setTransitionName("content");
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
+        startActivity(intent, options.toBundle());
+    }
 
 }

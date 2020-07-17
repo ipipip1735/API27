@@ -28,8 +28,6 @@ public class ContainerTransformActivity extends AppCompatActivity {
 //        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
         setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-//        getWindow().setAllowEnterTransitionOverlap(false);
-//        getWindow().setAllowReturnTransitionOverlap(false);
         getWindow().setSharedElementsUseOverlay(false);
 
 
