@@ -94,9 +94,10 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
 
         //设置共享组件转换对象
-        window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
-//        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-//        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
+        window.setSharedElementEnterTransition(fade); //共享组件进入变换
+        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
+//        window.setSharedElementReenterTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
+        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
 
         super.onCreate(bundle);
         setContentView(R.layout.activity_window_share_one);
@@ -171,6 +172,13 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("********stop******");
+
+        finishAfterTransition();
+
+        //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
+//        ImageView imageView = findViewById(R.id.siv);
+//        View parent = (View) imageView.getParent();
+//        parent.setVisibility(View.INVISIBLE);
     }
 
     public void start(View view) {
@@ -182,25 +190,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
     public void sharedStart(View view) {
         System.out.println("********sharedStart******");
-
-        ImageView imageView = findViewById(R.id.siv);
-
-
-        Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
-        startActivity(intent, options.toBundle());
-
-
-        //如果SharedElementExitTransition使用ChangeBounds就需要调整View的布局参数，否则不会有任何动画
-        imageView.setTop(450);
-        imageView.setLeft(150);
-
-
-
-        //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
-//        View parent = (View) imageView.getParent();
-//        parent.setVisibility(View.INVISIBLE);
-
     }
 
     public void sharedStop(View view) {

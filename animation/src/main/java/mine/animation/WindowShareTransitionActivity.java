@@ -32,8 +32,8 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
         Window window = getWindow();
-        window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
+//        window.requestFeature(Window.FEATURE_NO_TITLE);
+//        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
 
 
 
@@ -92,9 +92,9 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
         //设置共享组件转换对象
-        window.setSharedElementExitTransition(changesBounds); //共享组件进入变换
+//        window.setSharedElementExitTransition(fade); //共享组件进入变换
 //        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
+//        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
 
         super.onCreate(bundle);
         setContentView(R.layout.activity_window_share);
@@ -190,14 +190,14 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
         //如果SharedElementExitTransition使用ChangeBounds就需要调整View的布局参数，否则不会有任何动画
-        imageView.setTop(450);
-        imageView.setLeft(150);
+//        imageView.setTop(450);
+//        imageView.setLeft(150);
 
 
 
         //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
-        View parent = (View) imageView.getParent();
-        parent.setVisibility(View.INVISIBLE);
+//        View parent = (View) imageView.getParent();
+//        parent.setVisibility(View.INVISIBLE);
 
     }
 
