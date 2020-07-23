@@ -94,10 +94,10 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
 
         //设置共享组件转换对象
-        window.setSharedElementEnterTransition(fade); //共享组件进入变换
-        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
+        window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
+//        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
 //        window.setSharedElementReenterTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
+//        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
 
         super.onCreate(bundle);
         setContentView(R.layout.activity_window_share_one);
