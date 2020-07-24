@@ -93,15 +93,16 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
         //设置共享组件转换对象
-        window.setSharedElementExitTransition(fade); //共享组件进入变换
-//        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-        window.setSharedElementsUseOverlay(false); //禁用遮罩层，让共享元素也能参与动画
+        window.setSharedElementExitTransition(fade); //共享组件出场变换
+//        window.setSharedElementReenterTransition(changesBounds);  //（按Back后返回时，本Activity入场动画，测试失败了）
+//        window.setSharedElementsUseOverlay(false); //禁用遮罩层，让共享元素也能参与动画（Exit仅作用非遮罩层的View）
+
 
         super.onCreate(bundle);
         setContentView(R.layout.activity_window_share);
 
-        findViewById(R.id.siv).setVisibility(View.INVISIBLE);//设置共享可见性（fade需要可见性发生改变才能应用动画）
-        findViewById(R.id.button19).setVisibility(View.INVISIBLE);//设置非共享可见性
+//        findViewById(R.id.siv).setVisibility(View.INVISIBLE);//设置共享元素可见性（fade需要可见性发生改变才能应用动画）
+//        findViewById(R.id.button19).setVisibility(View.INVISIBLE);//设置非共享元素可见性
 
     }
 
@@ -201,8 +202,8 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
         //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
         //方式一：修改可见性
-        imageView.setVisibility(View.VISIBLE);
-        findViewById(R.id.button19).setVisibility(View.VISIBLE);
+//        imageView.setVisibility(View.VISIBLE);
+//        findViewById(R.id.button19).setVisibility(View.VISIBLE);
 
         //方式二：fade动画也适用于增/删元素（因为增删元素也会改变可见性）
 //        ViewGroup viewGroup = findViewById(R.id.linearLayout5);

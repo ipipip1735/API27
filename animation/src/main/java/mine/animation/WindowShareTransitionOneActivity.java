@@ -12,6 +12,7 @@ import android.transition.Transition;
 import android.transition.TransitionListenerAdapter;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import static android.view.Gravity.TOP;
@@ -33,8 +34,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
         Window window = getWindow();
 //        window.requestFeature(Window.FEATURE_NO_TITLE);
 //        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
-
-
 
 
         //创建转换对象
@@ -95,13 +94,16 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
         //设置共享组件转换对象
         window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
-//        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-//        window.setSharedElementReenterTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-//        window.setSharedElementsUseOverlay(false); //共享组件转换禁用遮罩层
+        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
+        window.setTransitionBackgroundFadeDuration(1000L);
+
+
 
         super.onCreate(bundle);
         setContentView(R.layout.activity_window_share_one);
-//        findViewById(android.R.id.content).setTransitionName("content");
+//        findViewById(R.id.siv).setTransitionName("shared");
+        findViewById(android.R.id.content).setTransitionName("content");
+
     }
 
     @Override
@@ -175,10 +177,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
         finishAfterTransition();
 
-        //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
-//        ImageView imageView = findViewById(R.id.siv);
-//        View parent = (View) imageView.getParent();
-//        parent.setVisibility(View.INVISIBLE);
     }
 
     public void start(View view) {
