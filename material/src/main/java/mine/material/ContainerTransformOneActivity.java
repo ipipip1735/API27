@@ -3,6 +3,8 @@ package mine.material;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
 import android.util.Pair;
 import android.view.View;
 import android.view.Window;
@@ -10,7 +12,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.transition.Transition;
 
 import com.google.android.material.slider.Slider;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
@@ -27,29 +28,60 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        long duration = 3000L;
 
-//        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        long duration = 2000L;
+
 
         setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
-        materialContainerTransform
+
+
+        Transition materialContainerTransform = new MaterialContainerTransform()
                 .addTarget(android.R.id.content)
                 .setDuration(duration);
 
+        Transition changesBounds = new ChangeBounds()
+                .setDuration(duration)
+                .addListener(new Transition.TransitionListener() {
+                    @Override
+                    public void onTransitionStart(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionStart~~");
+                    }
+
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionEnd~~");
+                    }
+
+                    @Override
+                    public void onTransitionCancel(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionCancel~~");
+                    }
+
+                    @Override
+                    public void onTransitionPause(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionPause~~");
+                    }
+
+                    @Override
+                    public void onTransitionResume(Transition transition) {
+                        System.out.println("~~ChangeBounds.onTransitionResume~~");
+                    }
+                });
+
+
+
         getWindow().setSharedElementEnterTransition(materialContainerTransform);
-        getWindow().setSharedElementReturnTransition(materialContainerTransform);
+//        getWindow().setSharedElementReturnTransition(materialContainerTransform);
+//        getWindow().setSharedElementReturnTransition(changesBounds);
+//        getWindow().setTransitionBackgroundFadeDuration(20000L);
 
 
-//        getWindow().setSharedElementsUseOverlay(false);
-
-
-        View v = findViewById(android.R.id.content);
-        v.setTransitionName("shared");
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container_transform_one);
+        findViewById(android.R.id.content).setTransitionName("shared");
     }
 
     @Override
