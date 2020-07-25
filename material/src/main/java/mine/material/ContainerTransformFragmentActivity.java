@@ -3,38 +3,29 @@ package mine.material;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Transition;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 
-import com.google.android.material.slider.Slider;
-import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 
-import java.util.Random;
-
 /**
- * Created by Administrator on 2020/7/15.
+ * Created by Administrator on 2020/7/25.
  */
-public class ContainerTransformActivity extends AppCompatActivity {
+public class ContainerTransformFragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
-        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setSharedElementsUseOverlay(false);
-
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_container_transform);
+        setContentView(R.layout.activiy_transition);
 
     }
 
@@ -104,18 +95,16 @@ public class ContainerTransformActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        Intent intent = new Intent(this, ContainerTransformOneActivity.class);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
 
-        ImageView imageView = findViewById(R.id.imageView);
+        TextView textView = findViewById(R.id.textView);
+        System.out.println(textView.getText());
 
+        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                .addSharedElement(textView, "shared")
+                .build();
 
-
-
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
-//        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,//多共享对象
-//                Pair.<View, String>create(imageView, "shared"),
-//                Pair.<View, String>create(imageViewST, "sharedOne"));
-        startActivity(intent, options.toBundle());
+        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
 
     }
 
