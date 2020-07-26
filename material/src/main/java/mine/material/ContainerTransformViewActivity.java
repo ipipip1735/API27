@@ -2,38 +2,37 @@ package mine.material;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.slider.Slider;
+import com.google.android.material.transition.platform.MaterialArcMotion;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 
-import java.util.Random;
-
 /**
- * Created by Administrator on 2020/7/15.
+ * Created by Administrator on 2020/7/26.
  */
-public class ContainerTransformActivity extends AppCompatActivity {
+public class ContainerTransformViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
-
-        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setSharedElementsUseOverlay(false);
-
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_container_transform);
+        setContentView(R.layout.activiy_transition_view);
+
+
+        findViewById(R.id.button2).setVisibility(View.GONE);
+
 
     }
 
@@ -102,16 +101,18 @@ public class ContainerTransformActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+        
+        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
+        materialContainerTransform.setDuration(5000L);
+        materialContainerTransform.setStartView(view);
+        materialContainerTransform.setEndView(findViewById(R.id.button2));
+        materialContainerTransform.setPathMotion(new MaterialArcMotion());
+        materialContainerTransform.setScrimColor(Color.TRANSPARENT);
 
-        Intent intent = new Intent(this, ContainerTransformOneActivity.class);
+        TransitionManager.beginDelayedTransition((ViewGroup) view.getParent(), materialContainerTransform);
 
-        ImageView imageView = findViewById(R.id.imageView);
-
-
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
-
-        startActivity(intent, options.toBundle());
-
+        view.setVisibility(View.GONE);
+        findViewById(R.id.button2).setVisibility(View.VISIBLE);
     }
 
 

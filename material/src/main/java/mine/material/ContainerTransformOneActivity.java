@@ -29,16 +29,25 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
 
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-        long duration = 2000L;
+//        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+
+        findViewById(android.R.id.content).setTransitionName("shared");
+
+
+        long duration = 3000L;
 
 
         setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
 
 
+
         Transition materialContainerTransform = new MaterialContainerTransform()
                 .addTarget(android.R.id.content)
                 .setDuration(duration);
+
+        Transition materialContainerTransform1 = new MaterialContainerTransform()
+                .addTarget(android.R.id.content)
+                .setDuration(3000L);
 
         Transition changesBounds = new ChangeBounds()
                 .setDuration(duration)
@@ -72,7 +81,7 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
 
 
         getWindow().setSharedElementEnterTransition(materialContainerTransform);
-//        getWindow().setSharedElementReturnTransition(materialContainerTransform);
+        getWindow().setSharedElementReturnTransition(materialContainerTransform1);
 //        getWindow().setSharedElementReturnTransition(changesBounds);
 //        getWindow().setTransitionBackgroundFadeDuration(20000L);
 
@@ -81,7 +90,6 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container_transform_one);
-        findViewById(android.R.id.content).setTransitionName("shared");
     }
 
     @Override

@@ -97,15 +97,11 @@ public class ContainerTransformFragmentActivity extends AppCompatActivity {
 
         NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
 
-        TextView textView = findViewById(R.id.textView);
-        System.out.println(textView.getText());
-
         FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-                .addSharedElement(textView, "shared")
+                .addSharedElement(findViewById(R.id.ll), "shared")
                 .build();
 
         navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
-
     }
 
 
