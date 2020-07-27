@@ -25,11 +25,9 @@ public class ContainerTransformActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
-
-        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setSharedElementsUseOverlay(false);
+        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());//绑定共享元素出场回调
+        getWindow().setSharedElementsUseOverlay(false);//禁用遮罩
 
 
         super.onCreate(savedInstanceState);

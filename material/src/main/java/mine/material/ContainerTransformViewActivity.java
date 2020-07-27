@@ -30,10 +30,7 @@ public class ContainerTransformViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiy_transition_view);
 
-
         findViewById(R.id.button2).setVisibility(View.GONE);
-
-
     }
 
     @Override
@@ -109,10 +106,11 @@ public class ContainerTransformViewActivity extends AppCompatActivity {
         materialContainerTransform.setPathMotion(new MaterialArcMotion());
         materialContainerTransform.setScrimColor(Color.TRANSPARENT);
 
-        TransitionManager.beginDelayedTransition((ViewGroup) view.getParent(), materialContainerTransform);
 
         view.setVisibility(View.GONE);
         findViewById(R.id.button2).setVisibility(View.VISIBLE);
+        TransitionManager.beginDelayedTransition((ViewGroup) view.getParent(), materialContainerTransform);
+
     }
 
 

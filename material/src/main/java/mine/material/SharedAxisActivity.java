@@ -1,40 +1,29 @@
 package mine.material;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
-import android.transition.ChangeBounds;
-import android.transition.Transition;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
+import com.google.android.material.transition.platform.MaterialSharedAxis;
 
 /**
- * Created by Administrator on 2020/7/15.
+ * Created by Administrator on 2020/7/27.
  */
-public class ContainerTransformOneActivity extends AppCompatActivity {
+public class SharedAxisActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        findViewById(android.R.id.content).setTransitionName("shared");//根元素指定转换名
-
-        long duration = 3000L;
-
-        setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());//绑定共享元素入场回调
-
-        getWindow().setSharedElementEnterTransition(new MaterialContainerTransform()//绑定共享元素入场动画
-                .addTarget(android.R.id.content)
-                .setDuration(duration));
-        getWindow().setSharedElementReturnTransition(new MaterialContainerTransform()//绑定共享元素出场动画
-                .addTarget(android.R.id.content)
-                .setDuration(duration));
-
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_container_transform_one);
+        setContentView(R.layout.activity_container_transform);
+
     }
 
     @Override
@@ -103,11 +92,21 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        Intent intent = new Intent(this, ContainerTransformOneActivity.class);
+
+        ImageView imageView = findViewById(R.id.imageView);
+
+
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
+
+        startActivity(intent, options.toBundle());
+
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+
     }
 
     public void bind(View view) {
