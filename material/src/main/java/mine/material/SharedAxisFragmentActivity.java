@@ -7,34 +7,21 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
-import com.google.android.material.transition.platform.MaterialSharedAxis;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 
 /**
  * Created by Administrator on 2020/7/27.
  */
-public class SharedAxisActivity extends AppCompatActivity {
+public class SharedAxisFragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-
-        MaterialSharedAxis transition = new MaterialSharedAxis(MaterialSharedAxis.X, true);
-        transition.addTarget(android.R.id.content);
-        transition.setDuration(5000L);
-
-
-        getWindow().setExitTransition(transition);
-        getWindow().setTransitionBackgroundFadeDuration(5000L);
-
-//                .excludeTarget(android.R.id.navigationBarBackground, true));
-//                .excludeTarget(android.R.id.statusBarBackground, true)
-
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_axis_one);
+        setContentView(R.layout.activity_axis);
     }
 
     @Override
@@ -76,14 +63,12 @@ public class SharedAxisActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
     @Override
     protected void onStop() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
 
         super.onStop();
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -103,7 +88,8 @@ public class SharedAxisActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        startActivity(new Intent(this, SharedAxisOneActivity.class));
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        navController.navigate(R.id.action_oneFragment_to_twoFragment);
 
     }
 

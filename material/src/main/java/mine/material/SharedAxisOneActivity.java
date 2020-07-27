@@ -8,17 +8,17 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.android.material.transition.platform.MaterialSharedAxis;
 
 /**
  * Created by Administrator on 2020/7/27.
  */
-public class SharedAxisActivity extends AppCompatActivity {
+public class SharedAxisOneActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
+
 
 
         MaterialSharedAxis transition = new MaterialSharedAxis(MaterialSharedAxis.X, true);
@@ -26,15 +26,15 @@ public class SharedAxisActivity extends AppCompatActivity {
         transition.setDuration(5000L);
 
 
-        getWindow().setExitTransition(transition);
-        getWindow().setTransitionBackgroundFadeDuration(5000L);
 
-//                .excludeTarget(android.R.id.navigationBarBackground, true));
-//                .excludeTarget(android.R.id.statusBarBackground, true)
+        getWindow().setEnterTransition(transition);
+
+        getWindow().setAllowEnterTransitionOverlap(true);
+        getWindow().setTransitionBackgroundFadeDuration(5000L);
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_axis_one);
+        setContentView(R.layout.activity_axis_two);
     }
 
     @Override
@@ -102,9 +102,6 @@ public class SharedAxisActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
-        startActivity(new Intent(this, SharedAxisOneActivity.class));
-
     }
 
 

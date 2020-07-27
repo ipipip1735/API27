@@ -39,7 +39,7 @@
 
 
 
-        <!--物料转换库之Activity切换-->
+        <!--容器转换之Activity切换-->
 <!--        <activity android:name=".ContainerTransformActivity">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -54,7 +54,7 @@
 <!--        </activity>-->
 
 
-        <!--物料转换库之Fragment切换-->
+        <!--容器转换之Fragment切换-->
 <!--        <activity android:name=".ContainerTransformFragmentActivity">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -62,7 +62,7 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
 
-        <!--物料转换库之View切换-->
+        <!--容器转换之View切换-->
 <!--        <activity android:name=".ContainerTransformViewActivity">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -71,11 +71,26 @@
 <!--        </activity>-->
 
 
-        <!--物料转换库之Fragment切换-->
-        <activity android:name=".ContainerTransformFragmentActivity">
+        <!--共享轴之Fragment切换-->
+<!--        <activity android:name=".SharedAxisFragmentActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+
+        <!--共享轴之Activity切换-->
+        <activity android:name=".SharedAxisActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SharedAxisOneActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
