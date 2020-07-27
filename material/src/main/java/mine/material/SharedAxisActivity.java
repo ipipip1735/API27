@@ -3,6 +3,7 @@ package mine.material;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.android.material.transition.platform.MaterialSharedAxis;
+
+import static android.view.Gravity.LEFT;
+import static android.view.Gravity.RIGHT;
 
 /**
  * Created by Administrator on 2020/7/27.
@@ -21,20 +25,23 @@ public class SharedAxisActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
 
-        MaterialSharedAxis transition = new MaterialSharedAxis(MaterialSharedAxis.X, true);
-        transition.addTarget(android.R.id.content);
-        transition.setDuration(5000L);
-
-
-        getWindow().setExitTransition(transition);
-        getWindow().setTransitionBackgroundFadeDuration(5000L);
-
-//                .excludeTarget(android.R.id.navigationBarBackground, true));
+        getWindow().setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true)
 //                .excludeTarget(android.R.id.statusBarBackground, true)
+//                .excludeTarget(android.R.id.navigationBarBackground, true)
+                .setDuration(500L));
+        getWindow().setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false)
+                .setDuration(5000L));
+//        getWindow().setAllowReturnTransitionOverlap(false);
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_axis_one);
+
+
+//        getWindow().setExitTransition(new Slide(LEFT).setDuration(5000L));
+//        getWindow().setReenterTransition(new Slide(RIGHT).setDuration(5000L));
+//        getWindow().setAllowReturnTransitionOverlap(false);
+
     }
 
     @Override
@@ -103,7 +110,13 @@ public class SharedAxisActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        startActivity(new Intent(this, SharedAxisOneActivity.class));
+
+        Intent intent = new Intent(this, SharedAxisOneActivity.class);
+
+
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
+
+        startActivity(intent, options.toBundle());
 
     }
 
