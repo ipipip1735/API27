@@ -1,51 +1,23 @@
 package mine.material;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
-import com.google.android.material.transition.platform.MaterialSharedAxis;
-
-import static android.view.Gravity.LEFT;
-import static android.view.Gravity.RIGHT;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 /**
  * Created by Administrator on 2020/7/28.
  */
-public class SharedAxisActivity extends AppCompatActivity {
+public class FadeThroughFragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_axis_one);
-
-
-        int direction = MaterialSharedAxis.X;
-
-
-        //设置出场动画
-        getWindow().setExitTransition(new MaterialSharedAxis(direction, true)
-                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
-//                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
-//                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
-                .setDuration(1500L));
-
-        //设置重进入动画
-//        getWindow().setReenterTransition(new MaterialSharedAxis(direction, false)
-////                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
-////                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
-////                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
-//                .setDuration(1000L));
-//        getWindow().setAllowReturnTransitionOverlap(false);//返回动画使用顺序播放模式
-
+        setContentView(R.layout.activity_fade);
 
 
     }
@@ -89,14 +61,12 @@ public class SharedAxisActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
     @Override
     protected void onStop() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
 
         super.onStop();
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -116,13 +86,17 @@ public class SharedAxisActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        navController.navigate(R.id.action_oneFragment_to_twoFragment);
 
-        Intent intent = new Intent(this, SharedAxisOneActivity.class);
 
 
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
 
-        startActivity(intent, options.toBundle());
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment, new FadeTwoFragment())
+//                .addToBackStack("two")
+//                .commit();
 
     }
 

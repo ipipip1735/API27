@@ -3,51 +3,25 @@ package mine.material;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Slide;
+import android.transition.TransitionManager;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.android.material.transition.platform.MaterialSharedAxis;
-
-import static android.view.Gravity.LEFT;
-import static android.view.Gravity.RIGHT;
 
 /**
  * Created by Administrator on 2020/7/28.
  */
-public class SharedAxisActivity extends AppCompatActivity {
+public class SharedAxisViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_axis_one);
-
-
-        int direction = MaterialSharedAxis.X;
-
-
-        //设置出场动画
-        getWindow().setExitTransition(new MaterialSharedAxis(direction, true)
-                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
-//                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
-//                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
-                .setDuration(1500L));
-
-        //设置重进入动画
-//        getWindow().setReenterTransition(new MaterialSharedAxis(direction, false)
-////                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
-////                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
-////                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
-//                .setDuration(1000L));
-//        getWindow().setAllowReturnTransitionOverlap(false);//返回动画使用顺序播放模式
-
-
-
+        setContentView(R.layout.activity_axis_view);
     }
 
     @Override
@@ -116,20 +90,24 @@ public class SharedAxisActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.cl),
+                new MaterialSharedAxis(MaterialSharedAxis.X, true)
+                        .setDuration(1500L));
 
-        Intent intent = new Intent(this, SharedAxisOneActivity.class);
-
-
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
-
-        startActivity(intent, options.toBundle());
-
+        findViewById(R.id.imageView1).setVisibility(View.GONE);
+        findViewById(R.id.imageView2).setVisibility(View.VISIBLE);
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
+        TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.cl),
+                new MaterialSharedAxis(MaterialSharedAxis.X, true)
+                        .setDuration(1500L));
+
+        findViewById(R.id.imageView2).setVisibility(View.GONE);
+        findViewById(R.id.imageView1).setVisibility(View.VISIBLE);
     }
 
     public void bind(View view) {

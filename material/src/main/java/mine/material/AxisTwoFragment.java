@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.transition.platform.MaterialSharedAxis;
 
 /**
- * Created by Administrator on 2020/7/8.
+ * Created by Administrator on 2020/7/28.
  */
 public class AxisTwoFragment extends Fragment {
 
@@ -19,8 +19,8 @@ public class AxisTwoFragment extends Fragment {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
 
         long duration = 5000L;
-        setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.Z, true).setDuration(duration));
-        setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.Z, false).setDuration(duration));
+        setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.Y, true).setDuration(duration));
+        setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.Y, false).setDuration(duration));
 
         return inflater.inflate(R.layout.frgment_axis_two, container, false);
     }

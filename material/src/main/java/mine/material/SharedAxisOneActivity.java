@@ -15,7 +15,7 @@ import static android.view.Gravity.LEFT;
 import static android.view.Gravity.RIGHT;
 
 /**
- * Created by Administrator on 2020/7/27.
+ * Created by Administrator on 2020/7/28.
  */
 public class SharedAxisOneActivity extends AppCompatActivity {
 
@@ -23,27 +23,30 @@ public class SharedAxisOneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-
-//        MaterialSharedAxis transition = new MaterialSharedAxis(MaterialSharedAxis.X, true);
-////        transition.addTarget(android.R.id.content);
-////        transition.setDuration(5000L);
-
-        getWindow().setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true)
-//                .excludeTarget(android.R.id.statusBarBackground, true)
-//                .excludeTarget(android.R.id.navigationBarBackground, true)
-                .setDuration(5000L));
-        getWindow().setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false)
-                .setDuration(5000L));
-//        getWindow().setAllowEnterTransitionOverlap(false);
-
-
-//        getWindow().setEnterTransition(new Slide(RIGHT).setDuration(5000L));
-//        getWindow().setReturnTransition(new Slide(LEFT).setDuration(5000L));
-//        getWindow().setAllowEnterTransitionOverlap(false);
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_axis_two);
+
+
+        int direction = MaterialSharedAxis.X;
+
+        //设置入场动画
+        getWindow().setEnterTransition(new MaterialSharedAxis(direction, true)
+                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
+//                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
+//                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
+                .setDuration(1000L));
+
+
+        //设置返回动画
+//        getWindow().setReturnTransition(new MaterialSharedAxis(direction, false)
+////                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
+////                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
+////                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
+//                .setDuration(1000L));
+//        getWindow().setAllowEnterTransitionOverlap(false);//入场动画使用顺序播放模式
+
+
+
     }
 
     @Override

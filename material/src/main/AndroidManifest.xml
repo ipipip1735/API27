@@ -79,20 +79,52 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
 
+        <!--共享轴之Activity切换-->
+<!--        <activity android:name=".SharedAxisActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+<!--        <activity android:name=".SharedAxisOneActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <!--共享轴之Activity切换-->
-        <activity android:name=".SharedAxisActivity">
+<!--        <activity android:name=".SharedAxisViewActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+
+
+        <!--渐退之Fragment切换-->
+<!--        <activity android:name=".FadeThroughFragmentActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <!--渐退之Activity切换-->
+        <activity android:name=".FadeThroughActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SharedAxisOneActivity">
+        <activity android:name=".FadeThroughOneActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
 
 
 

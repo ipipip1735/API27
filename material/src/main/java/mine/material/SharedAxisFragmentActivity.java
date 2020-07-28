@@ -12,7 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
 /**
- * Created by Administrator on 2020/7/27.
+ * Created by Administrator on 2020/7/28.
  */
 public class SharedAxisFragmentActivity extends AppCompatActivity {
 

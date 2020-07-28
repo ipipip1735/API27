@@ -7,22 +7,24 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.transition.platform.Hold;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.platform.MaterialSharedAxis;
 
 /**
  * Created by Administrator on 2020/7/28.
  */
-public class AxisOneFragment extends Fragment {
+public class FadeOneFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
 
         long duration = 5000L;
-        setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.Y, true).setDuration(duration));
-        setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.Y, false).setDuration(duration));
+        setExitTransition(new MaterialFadeThrough()
+                .setDuration(duration));
+//        setReenterTransition(new MaterialFadeThrough()
+//                .setDuration(duration));
 
-        return inflater.inflate(R.layout.frgment_axis_one, container, false);
+        return inflater.inflate(R.layout.frgment_fade_one, container, false);
     }
 }
