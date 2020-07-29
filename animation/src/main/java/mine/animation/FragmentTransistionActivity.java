@@ -1,140 +1,120 @@
-package mine.material;
+package mine.animation;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import java.util.Objects;
+
+import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
 /**
- * Created by Administrator on 2020/7/28.
+ * Created by Administrator on 2020/7/29.
  */
-public class FadeThroughFragmentActivity extends AppCompatActivity {
+public class FragmentTransistionActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
+        setContentView(R.layout.activity_fragment_transistion);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fade);
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onNewIntent  *********");
+        super.onNewIntent(intent);
+    }
+
+
+    @Override
     protected void onStart() {
-        super.onStart();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        super.onStart();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
-
         super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
     protected void onRestart() {
-        super.onRestart();
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
+        super.onRestart();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
+        super.onResume();
     }
 
     @Override
     protected void onPause() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
-
         super.onPause();
     }
 
     @Override
     public void onBackPressed() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
-
         super.onBackPressed();
     }
+
 
     @Override
     protected void onStop() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
-
         super.onStop();
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
-
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
-
         super.onDestroy();
     }
 
+    public void swap(View view) {
+        System.out.println("********swap******");
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
-
-        //切换为FadeTwoFragment
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentNav, new FadeTwoFragment())
-                .addToBackStack("two")
+                .replace(R.id.fragment, new OneFragment(), "one")
+                .addToBackStack("one")
                 .commit();
     }
-
 
     public void stop(View view) {
-        System.out.println("~~button.stop~~");
+        System.out.println("********stop******");
 
-        //切换为FadeOneFragment
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment, new TwoFragment(), "two")
+//                .addToBackStack("two")
+//                .commit();
+
+
+        //使用异步切换
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentNav, new FadeOneFragment())
+                .replace(R.id.fragment, new TwoFragment(), "two")
+                .setReorderingAllowed(true)//启用重排序操作
                 .commit();
-    }
 
-    public void nav(View view) {
-        System.out.println("~~button.nav~~");
-
-        //使用导航器
-        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-        navController.navigate(R.id.action_oneFragment_to_twoFragment);
-
-    }
-
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
-
-    }
-
-    public void unbind(View view) {
-        System.out.println("~~button.unbind~~");
-
-    }
-
-    public void reloading(View view) {
-        System.out.println("~~button.reloading~~");
-
-    }
-
-
-    public void del(View view) {
-        System.out.println("~~button.del~~");
-
-    }
-
-    public void query(View view) {
-        System.out.println("~~button.query~~");
 
     }
 }

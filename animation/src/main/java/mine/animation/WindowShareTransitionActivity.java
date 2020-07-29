@@ -33,8 +33,6 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
         Window window = getWindow();
-//        window.requestFeature(Window.FEATURE_NO_TITLE);
-//        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
 
 
 
