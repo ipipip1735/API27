@@ -15,6 +15,8 @@ import androidx.navigation.fragment.FragmentNavigator;
 
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 
+import static androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;
+
 /**
  * Created by Administrator on 2020/7/25.
  */
@@ -95,13 +97,24 @@ public class ContainerTransformFragmentActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+//
+//        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+//                .addSharedElement(findViewById(R.id.ll), "shared")
+//                .build();
+//        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
 
-        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-                .addSharedElement(findViewById(R.id.ll), "shared")
-                .build();
 
-        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
+        getSupportFragmentManager()
+                .beginTransaction()
+//                .setReorderingAllowed(true)
+//                .addSharedElement(findViewById(R.id.ll), "shared")
+                .setTransition(TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fragmentNav, new TransitionTwoFragment(), "two")
+                .addToBackStack("two")
+                .commit();
+
+
     }
 
 

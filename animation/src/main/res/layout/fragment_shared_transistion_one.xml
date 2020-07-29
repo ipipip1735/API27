@@ -7,6 +7,7 @@
 
     <ImageView
         android:id="@+id/imageView"
+        android:transitionName="shared"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/a" />

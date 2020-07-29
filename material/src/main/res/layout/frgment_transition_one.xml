@@ -24,7 +24,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
         android:orientation="vertical"
-        android:transitionName=""
+        android:transitionName="shared"
         android:background="@color/Lavender"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

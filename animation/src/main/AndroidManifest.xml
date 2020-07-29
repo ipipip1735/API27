@@ -62,6 +62,15 @@
 <!--        </activity>-->
 
         <!--Fragment延迟动画-->
+<!--        <activity android:name=".FragmentTransistionActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <!--Fragment共享元素动画-->
         <activity android:name=".FragmentTransistionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -147,13 +156,6 @@
 <!--            <category android:name="android.intent.category.DEFAULT"/>-->
 <!--            </intent-filter>-->
 <!--            </activity>-->
-
-
-
-
-
-
-
 
     </application>
 

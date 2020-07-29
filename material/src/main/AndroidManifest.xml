@@ -55,12 +55,12 @@
 
 
         <!--容器转换之Fragment切换-->
-<!--        <activity android:name=".ContainerTransformFragmentActivity">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <activity android:name=".ContainerTransformFragmentActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!--容器转换之View切换-->
 <!--        <activity android:name=".ContainerTransformViewActivity">-->
@@ -104,12 +104,12 @@
 
 
         <!--渐退之Fragment切换-->
-        <activity android:name=".FadeThroughFragmentActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--        <activity android:name=".FadeThroughFragmentActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <!--渐退之Activity切换-->
 <!--        <activity android:name=".FadeThroughActivity">-->

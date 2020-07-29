@@ -2,24 +2,13 @@ package mine.animation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Fade;
-import android.transition.Transition;
 import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.FragmentNavigator;
-
-import java.util.Objects;
-
-import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
 /**
  * Created by Administrator on 2020/7/29.
  */
-public class FragmentTransistionActivity extends AppCompatActivity {
+public class FragmentSharedTransistionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -97,10 +86,11 @@ public class FragmentTransistionActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .addSharedElement(findViewById(R.id.imageView), "shared")
-                .replace(R.id.fragment, new SharedTwoFragment(), "two")
-                .addToBackStack("two")
+                .replace(R.id.fragment, new OneFragment(), "one")
+                .addSharedElement(findViewById(R.id.imageView3),"imageview")
+                .addToBackStack("one")
                 .commit();
+
 
 
 
@@ -110,11 +100,21 @@ public class FragmentTransistionActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("********stop******");
 
+        //使用异步切换（普通切换就是异步切换）
 //        getSupportFragmentManager()
 //                .beginTransaction()
 //                .replace(R.id.fragment, new TwoFragment(), "two")
 //                .addToBackStack("two")
 //                .commit();
+
+
+        //使用异步切换
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, new TwoFragment(), "two")
+                .setReorderingAllowed(true)//启用重排序操作
+                .commit();
+
 
     }
 }

@@ -18,15 +18,27 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
  * Created by Administrator on 2020/7/25.
  */
 public class TransitionTwoFragment extends Fragment {
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
+//        materialContainerTransform.setDuration(3000L);
+//        materialContainerTransform.setScrimColor(Color.TRANSPARENT);//禁用纱布（透明纱布）
+//        setSharedElementEnterTransition(materialContainerTransform);//设置共享元素入场动画
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
 
 
-        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
-        materialContainerTransform.setDuration(5000L);
-        materialContainerTransform.setScrimColor(Color.TRANSPARENT);//禁用纱布（透明纱布）
-        setSharedElementEnterTransition(materialContainerTransform);//设置共享元素入场动画
+//        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
+//        materialContainerTransform.setDuration(3000L);
+//        materialContainerTransform.setScrimColor(Color.TRANSPARENT);//禁用纱布（透明纱布）
+//        setSharedElementEnterTransition(materialContainerTransform);//设置共享元素入场动画
 
         return inflater.inflate(R.layout.frgment_transition_two, container, false);
     }
