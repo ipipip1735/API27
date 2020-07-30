@@ -94,32 +94,38 @@ public class ContainerTransformFragmentActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
+    public void swap(View view) {
+        System.out.println("~~button.swap~~");
 
-//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-//
-//        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+        //方式一：使用导航器
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                .addSharedElement(findViewById(R.id.ll), "shared")
+                .build();
+        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
+
+
+
+        //方式二：手动调用FragmentManager
+//        getSupportFragmentManager()
+//                .beginTransaction()
+////                .setReorderingAllowed(true)
 //                .addSharedElement(findViewById(R.id.ll), "shared")
-//                .build();
-//        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
-
-
-        getSupportFragmentManager()
-                .beginTransaction()
-//                .setReorderingAllowed(true)
-//                .addSharedElement(findViewById(R.id.ll), "shared")
-                .setTransition(TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragmentNav, new TransitionTwoFragment(), "two")
-                .addToBackStack("two")
-                .commit();
+//                .replace(R.id.fragmentNav, new TransitionTwoFragment())
+//                .addToBackStack(null)
+//                .commit();
 
 
     }
 
 
-    public void stop(View view) {
-        System.out.println("~~button.stop~~");
+    public void init(View view) {
+        System.out.println("~~button.init~~");
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragmentNav, new TransitionOneFragment())
+                .commit();
 
     }
 

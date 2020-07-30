@@ -24,10 +24,10 @@ public class TransitionTwoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
-//        materialContainerTransform.setDuration(3000L);
-//        materialContainerTransform.setScrimColor(Color.TRANSPARENT);//禁用纱布（透明纱布）
-//        setSharedElementEnterTransition(materialContainerTransform);//设置共享元素入场动画
+        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
+        materialContainerTransform.setDuration(3000L);
+        materialContainerTransform.setScrimColor(Color.TRANSPARENT);//禁用纱布（透明纱布）
+        setSharedElementEnterTransition(materialContainerTransform);//设置共享元素入场动画
     }
 
     @Override

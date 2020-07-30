@@ -23,9 +23,9 @@ public class TransitionOneFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        setExitTransition(new Hold().setDuration(3000L));//设置非共享元素出场动画（Hold转换用于保持非共享元素让其不要消失）
+        setExitTransition(new Hold().setDuration(3000L));//设置非共享元素出场动画（Hold转换用于保持非共享元素让其不要消失）
 
-        setExitTransition(new Fade().setDuration(2000L));
+//        setExitTransition(new Fade().setDuration(2000L));
 
     }
     @Override
