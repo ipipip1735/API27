@@ -22,16 +22,20 @@ public class TransitionOneFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         setExitTransition(new Hold().setDuration(3000L));//设置非共享元素出场动画（Hold转换用于保持非共享元素让其不要消失）
 
-//        setExitTransition(new Fade().setDuration(2000L));
 
+        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
+        materialContainerTransform.setDuration(3000L);
+        materialContainerTransform.setScrimColor(Color.TRANSPARENT);//禁用纱布（透明纱布）
+        setSharedElementEnterTransition(materialContainerTransform);//设置共享元素入场动画
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
-//        setExitTransition(new Hold().setDuration(3000L));//设置非共享元素出场动画（Hold转换用于保持非共享元素让其不要消失）
         return inflater.inflate(R.layout.frgment_transition_one, container, false);
     }
 }

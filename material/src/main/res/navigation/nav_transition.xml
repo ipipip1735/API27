@@ -16,6 +16,10 @@
         android:id="@+id/twoFragment"
         android:name="mine.material.TransitionTwoFragment"
         android:label="TwoFragment"
-        tools:layout="@layout/frgment_transition_two"/>
+        tools:layout="@layout/frgment_transition_two">
+        <action
+            android:id="@+id/action_twoFragment_to_oneFragment"
+            app:destination="@id/oneFragment" />
+    </fragment>
 
 </navigation>
