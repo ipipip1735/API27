@@ -2,19 +2,8 @@ package mine.animation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Fade;
-import android.transition.Transition;
 import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.FragmentNavigator;
-
-import java.util.Objects;
-
-import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
 /**
  * Created by Administrator on 2020/7/29.
@@ -27,6 +16,10 @@ public class FragmentTransistionActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_fragment_transistion);
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.nav, new SharedOneFragment())
+                .commit();
     }
 
     @Override
@@ -97,12 +90,10 @@ public class FragmentTransistionActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .addSharedElement(findViewById(R.id.imageView), "shared")
-                .replace(R.id.fragment, new SharedTwoFragment(), "two")
+                .addSharedElement(findViewById(R.id.imageView), "sharedx")
+                .replace(R.id.nav, new SharedTwoFragment(), "two")
                 .addToBackStack("two")
                 .commit();
-
-
 
 
     }
@@ -110,11 +101,12 @@ public class FragmentTransistionActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("********stop******");
 
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.fragment, new TwoFragment(), "two")
-//                .addToBackStack("two")
-//                .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addSharedElement(findViewById(R.id.cl), "shared")
+                .replace(R.id.nav, new SharedOneFragment(), "one")
+                .addToBackStack("one")
+                .commit();
 
     }
 }

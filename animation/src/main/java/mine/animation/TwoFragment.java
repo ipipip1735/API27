@@ -18,6 +18,7 @@ public class TwoFragment extends Fragment {
     public TwoFragment() {
         System.out.println("+++  " + getClass().getSimpleName() + ".Constructor  +++");
 
+
         Transition transition = new Fade().setDuration(1000L);
         setEnterTransition(transition);
         setExitTransition(transition);
@@ -30,18 +31,15 @@ public class TwoFragment extends Fragment {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
 
         postponeEnterTransition();//开启转换延迟
-
-
         View view = inflater.inflate(R.layout.fragment_transistion_two, container, false);
 
-        view.findViewById(R.id.imageView3).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.imageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("~~onClick~~");
                 startPostponedEnterTransition();
             }
         });
-
 
         return view;
     }

@@ -86,7 +86,7 @@ public class FragmentSharedTransistionActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment, new OneFragment(), "one")
+                .replace(R.id.nav, new OneFragment(), "one")
                 .addSharedElement(findViewById(R.id.imageView3),"imageview")
                 .addToBackStack("one")
                 .commit();
@@ -111,7 +111,7 @@ public class FragmentSharedTransistionActivity extends AppCompatActivity {
         //使用异步切换
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment, new TwoFragment(), "two")
+                .replace(R.id.nav, new TwoFragment(), "two")
                 .setReorderingAllowed(true)//启用重排序操作
                 .commit();
 
