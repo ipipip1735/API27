@@ -138,16 +138,19 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 
 
         //设置转换对象
-//        window.setExitTransition(slide); //退出变换
+        window.setExitTransition(slide); //退出变换
 //        window.setReenterTransition(fade); //重进入变换
 //        window.setAllowReturnTransitionOverlap(false); //返回播放模式，false为顺序播放，默认值true为同时播放
-//        window.setTransitionBackgroundFadeDuration(duration);
+//        window.setTransitionBackgroundFadeDuration(duration);//不按back键或finishAfterTransition()，而是在其他Activity中启动此Activity，才会应用本方法
 
 
         //设置共享组件转换对象（一般不会使用SharedElementExitTransition/SharedElementReenterTransition）
-//        window.setSharedElementExitTransition(changesBounds); //共享组件退出变换
+        window.setSharedElementExitTransition(fade); //共享组件退出变换
 //        window.setSharedElementReenterTransition(changesBounds); //共享组件重进入变换
-        window.setSharedElementsUseOverlay(false); //共享转换禁用遮罩层
+//        window.setSharedElementsUseOverlay(false); //共享转换禁用遮罩层
+
+
+
 
     }
 
@@ -238,6 +241,10 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
         System.out.println("getExitTransition is " + window.getExitTransition());
         System.out.println("getReturnTransition is " + window.getReturnTransition());
         System.out.println("getReenterTransition is " + window.getReenterTransition());
+        System.out.println("getSharedElementEnterTransition is " + window.getSharedElementEnterTransition());
+        System.out.println("getSharedElementExitTransition is " + window.getSharedElementExitTransition());
+        System.out.println("getSharedElementReturnTransition is " + window.getSharedElementReturnTransition());
+        System.out.println("getSharedElementReenterTransition is " + window.getSharedElementReenterTransition());
 
 
     }
@@ -250,26 +257,41 @@ public class WindowOneTransitionActivity extends AppCompatActivity {
 
 
 
-
         Intent intent = new Intent(this, WindowTwoTransitionActivity.class);
 
-//        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,//多共享对象
-                Pair.<View, String>create(imageView, "shared"),
-                Pair.<View, String>create(imageViewST, "sharedOne"));
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
+//        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,//多共享对象
+//                Pair.<View, String>create(imageView, "shared"),
+//                Pair.<View, String>create(imageViewST, "sharedOne"));
         startActivity(intent, options.toBundle());
 
 
         //如果SharedElementExitTransition使用ChangeBounds就需要调整View的布局参数，否则不会有任何动画
-        imageView.setTop(450);
-        imageView.setLeft(150);
-        imageViewST.setTop(250);
-        imageViewST.setLeft(350);
+//        imageView.setTop(450);
+//        imageView.setLeft(150);
+//        imageViewST.setTop(250);
+//        imageViewST.setLeft(350);
 
 
         //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
-//        View parent = (View) imageView.getParent();
-//        parent.setVisibility(View.INVISIBLE);
+        imageView.setVisibility(View.INVISIBLE);
+        imageViewST.setVisibility(View.INVISIBLE);
+
+
+
+
+
+        //打印变换信息
+        Window window = getWindow();
+        System.out.println(getClass().getSimpleName() + " is " + window);
+        System.out.println("getEnterTransition is " + window.getEnterTransition());
+        System.out.println("getExitTransition is " + window.getExitTransition());
+        System.out.println("getReturnTransition is " + window.getReturnTransition());
+        System.out.println("getReenterTransition is " + window.getReenterTransition());
+        System.out.println("getSharedElementEnterTransition is " + window.getSharedElementEnterTransition());
+        System.out.println("getSharedElementExitTransition is " + window.getSharedElementExitTransition());
+        System.out.println("getSharedElementReturnTransition is " + window.getSharedElementReturnTransition());
+        System.out.println("getSharedElementReenterTransition is " + window.getSharedElementReenterTransition());
 
     }
 

@@ -46,15 +46,27 @@
             android:text="sharedStop" />
     </LinearLayout>
 
+
     <ImageView
-        android:id="@+id/siv"
+        android:id="@+id/oneIV"
         android:layout_width="38dp"
         android:layout_height="122dp"
-        android:layout_marginStart="260dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
         android:background="@color/DEEPSKYBLUE"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
         app:srcCompat="@drawable/a" />
+
+    <ImageView
+        android:id="@+id/twoIV"
+        android:layout_width="38dp"
+        android:layout_height="122dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/GOLD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/b" />
 
 </android.support.constraint.ConstraintLayout>

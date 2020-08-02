@@ -71,13 +71,13 @@
 <!--        </activity>-->
 
         <!--Fragment共享元素动画-->
-        <activity android:name=".FragmentTransistionActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+<!--        <activity android:name=".FragmentTransistionActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 
 
@@ -110,6 +110,7 @@
 <!--        </activity>-->
 
 
+        <!--Activity转换动画-->
 <!--        <activity android:name=".WindowOneTransitionActivity">-->
 <!--        <intent-filter>-->
 <!--        <action android:name="android.intent.action.MAIN"/>-->
@@ -125,37 +126,40 @@
 <!--        </intent-filter>-->
 <!--        </activity>-->
 
-<!--        <activity android:name=".WindowThreeTransitionActivity">-->
-<!--        <intent-filter>-->
-<!--        <action android:name="android.intent.action.MAIN"/>-->
-<!--        <action android:name="android.intent.action.VIEW"/>-->
-<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--        </intent-filter>-->
-<!--        </activity>-->
-<!--        <activity android:name=".WindowFourTransitionActivity">-->
-<!--        <intent-filter>-->
-<!--        <action android:name="android.intent.action.MAIN"/>-->
-<!--        <action android:name="android.intent.action.VIEW"/>-->
-<!--        <category android:name="android.intent.category.DEFAULT"/>-->
-<!--        </intent-filter>-->
-<!--        </activity>-->
+        <!--Activity共享元素回调-->
+            <activity android:name=".WindowShareTransitionActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            </activity>
+            <activity android:name=".WindowShareTransitionOneActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            </activity>
 
 
-        <!--共享元素动画-->
-<!--            <activity android:name=".WindowShareTransitionActivity">-->
-<!--            <intent-filter>-->
-<!--            <action android:name="android.intent.action.MAIN"/>-->
-<!--            <action android:name="android.intent.action.VIEW"/>-->
-<!--            <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--            </intent-filter>-->
-<!--            </activity>-->
-<!--            <activity android:name=".WindowShareTransitionOneActivity">-->
-<!--            <intent-filter>-->
-<!--            <action android:name="android.intent.action.MAIN"/>-->
-<!--            <action android:name="android.intent.action.VIEW"/>-->
-<!--            <category android:name="android.intent.category.DEFAULT"/>-->
-<!--            </intent-filter>-->
-<!--            </activity>-->
+
+        <!--各种Activity动画-->
+        <!--        <activity android:name=".WindowThreeTransitionActivity">-->
+        <!--        <intent-filter>-->
+        <!--        <action android:name="android.intent.action.MAIN"/>-->
+        <!--        <action android:name="android.intent.action.VIEW"/>-->
+        <!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+        <!--        </intent-filter>-->
+        <!--        </activity>-->
+        <!--        <activity android:name=".WindowFourTransitionActivity">-->
+        <!--        <intent-filter>-->
+        <!--        <action android:name="android.intent.action.MAIN"/>-->
+        <!--        <action android:name="android.intent.action.VIEW"/>-->
+        <!--        <category android:name="android.intent.category.DEFAULT"/>-->
+        <!--        </intent-filter>-->
+        <!--        </activity>-->
+
 
     </application>
 

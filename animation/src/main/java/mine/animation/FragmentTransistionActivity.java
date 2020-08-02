@@ -90,7 +90,7 @@ public class FragmentTransistionActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .addSharedElement(findViewById(R.id.imageView), "sharedx")
+                .addSharedElement(findViewById(R.id.imageView), "shared")
                 .replace(R.id.nav, new SharedTwoFragment(), "two")
                 .addToBackStack("two")
                 .commit();

@@ -1,8 +1,16 @@
 package mine.animation;
 
 import android.app.ActivityOptions;
+import android.app.SharedElementCallback;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
 import android.transition.Explode;
@@ -14,6 +22,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import java.util.List;
+import java.util.Map;
 
 import static android.view.Gravity.TOP;
 
@@ -29,15 +40,13 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
 
         long duration = 5000L;
-
-
         Window window = getWindow();
 //        window.requestFeature(Window.FEATURE_NO_TITLE);
 //        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); //启用变换
 
 
         //创建转换对象
-        Transition fade = new Fade().setDuration(duration);
+        Transition fade = new Fade().setDuration(duration * 2);
         fade.addListener(new TransitionListenerAdapter() {
             @Override
             public void onTransitionStart(Transition transition) {
@@ -89,20 +98,101 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
                     }
                 });
 
+        SharedElementCallback sharedElementCallback = new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                System.out.println("...EnterSharedElementCallback.onMapSharedElements...");
+                System.out.println("names is " + names);
+                System.out.println("sharedElements is " + sharedElements);
 
+//                names.remove(0);
+//                sharedElements.remove(names.get(0));
+            }
+
+            @Override
+            public void onSharedElementsArrived(List<String> sharedElementNames, List<View> sharedElements, OnSharedElementsReadyListener listener) {
+                System.out.println("...EnterSharedElementCallback.onSharedElementsArrived...");
+                System.out.println("sharedElementNames is " + sharedElementNames);
+                System.out.println("sharedElements is " + sharedElements);
+                System.out.println("listener is " + listener);
+
+
+                super.onSharedElementsArrived(sharedElementNames, sharedElements, listener);
+            }
+
+            @Override
+            public void onRejectSharedElements(List<View> rejectedSharedElements) {
+                System.out.println("...EnterSharedElementCallback.onRejectSharedElements...");
+//                System.out.println("rejectedSharedElements is " + rejectedSharedElements);
+//                rejectedSharedElements.remove(0);
+            }
+
+            @Override
+            public View onCreateSnapshotView(Context context, Parcelable snapshot) {
+                System.out.println("...EnterSharedElementCallback.onCreateSnapshotView...");
+//                System.out.println("context is " + context);
+//                System.out.println("snapshot is " + snapshot);
+
+//                Bitmap bitmap = (Bitmap) snapshot;
+//                System.out.println(bitmap.getByteCount());
+
+                return super.onCreateSnapshotView(context, snapshot);
+//                return null;
+            }
+
+            @Override
+            public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                System.out.println("...EnterSharedElementCallback.onSharedElementStart...");
+                System.out.println("sharedElementNames is " + sharedElementNames);
+                System.out.println("sharedElements is " + sharedElements);
+                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+
+//                sharedElementSnapshots.clear();
+//                sharedElementSnapshots.get(0).setX(0);
+
+//                sharedElements.get(0).setX(900);
+
+
+            }
+
+            @Override
+            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                System.out.println("...EnterSharedElementCallback.onSharedElementEnd...");
+                System.out.println("sharedElementNames is " + sharedElementNames);
+                System.out.println("sharedElements is " + sharedElements);
+                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+
+                //                sharedElementSnapshots.clear();
+//                sharedElementSnapshots.get(0).getX();
+
+//                sharedElements.get(0).setX(900);
+
+            }
+
+            @Override
+            public Parcelable onCaptureSharedElementSnapshot(View sharedElement, Matrix viewToGlobalMatrix, RectF screenBounds) {
+                System.out.println("...EnterSharedElementCallback.onCaptureSharedElementSnapshot...");
+                return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+            }
+
+        };
 
 
         //设置共享组件转换对象
         window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
-        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementEnterTransition
-        window.setTransitionBackgroundFadeDuration(1000L);
+        window.setEnterTransition(fade);
+//        window.setReturnTransition(fade);
+//        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementReenterTransition
+//        window.setTransitionBackgroundFadeDuration(5000L);
 
+        setEnterSharedElementCallback(sharedElementCallback);//绑定进入共享元素回调
 
 
         super.onCreate(bundle);
         setContentView(R.layout.activity_window_share_one);
-//        findViewById(R.id.siv).setTransitionName("shared");
-        findViewById(android.R.id.content).setTransitionName("content");
+        findViewById(R.id.siv).setTransitionName("sharedOne");
+        findViewById(R.id.sivo).setTransitionName("sharedTwo");
+//        findViewById(android.R.id.content).setTransitionName("content");
 
     }
 
@@ -183,7 +273,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
         System.out.println("********start******");
 
     }
-
 
 
     public void sharedStart(View view) {

@@ -1,8 +1,13 @@
 package mine.animation;
 
 import android.app.ActivityOptions;
+import android.app.SharedElementCallback;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
 import android.transition.Explode;
@@ -15,6 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+
+import java.util.List;
+import java.util.Map;
 
 import static android.view.Gravity.LEFT;
 import static android.view.Gravity.TOP;
@@ -35,9 +43,8 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
         Window window = getWindow();
 
 
-
         //创建转换对象
-        Transition fade = new Fade().setDuration(duration);
+        final Transition fade = new Fade().setDuration(duration);
         fade.addListener(new TransitionListenerAdapter() {
             @Override
             public void onTransitionStart(Transition transition) {
@@ -88,19 +95,110 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
                     }
                 });
 
+        SharedElementCallback sharedElementCallback = new SharedElementCallback() {
+            boolean first = true;
+
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                System.out.println("--ExitSharedElementCallback.onMapSharedElements--");
+                System.out.println("names is " + names);
+                System.out.println("sharedElements is " + sharedElements);
+
+                if (first) {
+
+
+                    //删除共享元素
+//                    sharedElements.remove(names.get(0));
+//                    names.remove(0);
+
+
+                    //增加共享元素
+//                    sharedElements.put("sharedTwo", findViewById(R.id.twoIV));
+//                    names.add("sharedTwo");
+
+
+                    //替换共享元素
+//                    sharedElements.put("sharedTwo", findViewById(R.id.twoIV));
+
+
+                    first = false;
+                } else {
+                    first = true;
+                }
+            }
+
+            @Override
+            public Parcelable onCaptureSharedElementSnapshot(View sharedElement, Matrix viewToGlobalMatrix, RectF screenBounds) {
+                System.out.println("--ExitSharedElementCallback.onCaptureSharedElementSnapshot--");
+                System.out.println("sharedElement is " + sharedElement);
+                System.out.println("viewToGlobalMatrix is " + viewToGlobalMatrix);
+                System.out.println("screenBounds is " + screenBounds);
+
+                System.out.println(sharedElement.getWidth() + ", " + sharedElement.getHeight() + "|" + sharedElement.getLeft() + ", " + sharedElement.getTop() + ", " + sharedElement.getRight() + ", " + sharedElement.getBottom());
+
+//                Matrix matrix = new Matrix();
+//                matrix.setRotate(80.6f);
+//                viewToGlobalMatrix = matrix;
+//                viewToGlobalMatrix.postConcat(matrix);
+
+                return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+//                return null;
+            }
+
+            @Override
+            public void onRejectSharedElements(List<View> rejectedSharedElements) {
+                System.out.println("--ExitSharedElementCallback.onRejectSharedElements--");
+//                System.out.println("rejectedSharedElements is " + rejectedSharedElements);
+//                rejectedSharedElements.add(findViewById(R.id.oneIV));
+            }
+
+            @Override
+            public View onCreateSnapshotView(Context context, Parcelable snapshot) {
+                System.out.println("--ExitSharedElementCallback.onCreateSnapshotView--");
+                return super.onCreateSnapshotView(context, snapshot);
+            }
+
+            @Override
+            public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                System.out.println("--ExitSharedElementCallback.onSharedElementStart--");
+//                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+//                System.out.println("sharedElementNames is " + sharedElementNames);
+//                System.out.println("sharedElements is " + sharedElements);
+            }
+
+            @Override
+            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                System.out.println("--ExitSharedElementCallback.onSharedElementEnd--");
+//                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+//                System.out.println("sharedElementNames is " + sharedElementNames);
+//                System.out.println("sharedElements is " + sharedElements);
+            }
+
+            @Override
+            public void onSharedElementsArrived(List<String> sharedElementNames, List<View> sharedElements, OnSharedElementsReadyListener listener) {
+                System.out.println("--ExitSharedElementCallback.onSharedElementsArrived--");
+                System.out.println("sharedElementNames is " + sharedElementNames);
+                System.out.println("sharedElements is " + sharedElements);
+                System.out.println("listener is " + listener);
+
+
+                super.onSharedElementsArrived(sharedElementNames, sharedElements, listener);
+            }
+        };
 
 
         //设置共享组件转换对象
-        window.setSharedElementExitTransition(fade); //共享组件出场变换
+        window.setSharedElementExitTransition(changesBounds); //共享组件出场变换
+        window.setExitTransition(fade); //共享组件出场变换
 //        window.setSharedElementReenterTransition(changesBounds);  //（按Back后返回时，本Activity入场动画，测试失败了）
 //        window.setSharedElementsUseOverlay(false); //禁用遮罩层，让共享元素也能参与动画（Exit仅作用非遮罩层的View）
+
+        setExitSharedElementCallback(sharedElementCallback);//绑定退出共享元素回调
 
 
         super.onCreate(bundle);
         setContentView(R.layout.activity_window_share);
 
-//        findViewById(R.id.siv).setVisibility(View.INVISIBLE);//设置共享元素可见性（fade需要可见性发生改变才能应用动画）
-//        findViewById(R.id.button19).setVisibility(View.INVISIBLE);//设置非共享元素可见性
 
     }
 
@@ -180,32 +278,26 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
     }
 
 
-
     public void sharedStart(View view) {
         System.out.println("********sharedStart******");
 
-        ImageView imageView = findViewById(R.id.siv);
+        ImageView oneIV = findViewById(R.id.oneIV);
+        ImageView twoIV = findViewById(R.id.twoIV);
 
 
         Intent intent = new Intent(this, WindowShareTransitionOneActivity.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, imageView, "shared");//单共享对象
+//        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, oneIV, "sharedOne");//单共享对象
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,//多共享对象
+                Pair.<View, String>create(oneIV, "sharedOne"),
+                Pair.<View, String>create(twoIV, "sharedTwo"));
+
         startActivity(intent, options.toBundle());
 
 
         //如果SharedElementExitTransition使用ChangeBounds就需要调整View的布局参数，否则不会有任何动画
-//        imageView.setTop(450);
-//        imageView.setLeft(150);
-
-
-
-        //如果SharedElementExitTransition使用Fade就需要修改父View的可见性，否则不会有任何动画
-        //方式一：修改可见性
-//        imageView.setVisibility(View.VISIBLE);
-//        findViewById(R.id.button19).setVisibility(View.VISIBLE);
-
-        //方式二：fade动画也适用于增/删元素（因为增删元素也会改变可见性）
-//        ViewGroup viewGroup = findViewById(R.id.linearLayout5);
-//        viewGroup.removeAllViews();
+        oneIV.setBottom(750);
+        twoIV.setRight(350);
+        findViewById(R.id.button19).setTop(50);
 
 
     }

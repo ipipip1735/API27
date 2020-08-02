@@ -37,7 +37,7 @@ public class SharedOneFragment extends Fragment {
 
 
         Transition transition = new Fade()
-                .addTarget(R.id.imageView)
+//                .addTarget(R.id.imageView)
 //                .excludeTarget(R.id.imageView, true)
                 .setDuration(duration)
                 .addListener(new TransitionListenerAdapter() {
@@ -51,50 +51,50 @@ public class SharedOneFragment extends Fragment {
                         System.out.println("~~onTransitionEnd~~");
                     }
                 });
-        setExitTransition(transition);
+//        setExitTransition(transition);
 
 
-        setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                System.out.println("--ExitSharedElementCallback.onMapSharedElements--");
-                System.out.println("names is " + names);
-                System.out.println("sharedElements is " + sharedElements);
-            }
-
-            @Override
-            public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
-                System.out.println("--ExitSharedElementCallback.onSharedElementStart--");
-            }
-
-            @Override
-            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
-                System.out.println("--ExitSharedElementCallback.onSharedElementEnd--");
-            }
-
-            @Override
-            public void onRejectSharedElements(List<View> rejectedSharedElements) {
-                System.out.println("--ExitSharedElementCallback.onRejectSharedElements--");
-            }
-
-            @Override
-            public Parcelable onCaptureSharedElementSnapshot(View sharedElement, Matrix viewToGlobalMatrix, RectF screenBounds) {
-                System.out.println("--ExitSharedElementCallback.onCaptureSharedElementSnapshot--");
-                return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
-            }
-
-            @Override
-            public View onCreateSnapshotView(Context context, Parcelable snapshot) {
-                System.out.println("--ExitSharedElementCallback.onCreateSnapshotView--");
-                return super.onCreateSnapshotView(context, snapshot);
-            }
-
-            @Override
-            public void onSharedElementsArrived(List<String> sharedElementNames, List<View> sharedElements, OnSharedElementsReadyListener listener) {
-                System.out.println("--ExitSharedElementCallback.onSharedElementsArrived--");
-                super.onSharedElementsArrived(sharedElementNames, sharedElements, listener);
-            }
-        });
+//        setExitSharedElementCallback(new SharedElementCallback() {
+//            @Override
+//            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+//                System.out.println("--ExitSharedElementCallback.onMapSharedElements--");
+//                System.out.println("names is " + names);
+//                System.out.println("sharedElements is " + sharedElements);
+//            }
+//
+//            @Override
+//            public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+//                System.out.println("--ExitSharedElementCallback.onSharedElementStart--");
+//            }
+//
+//            @Override
+//            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+//                System.out.println("--ExitSharedElementCallback.onSharedElementEnd--");
+//            }
+//
+//            @Override
+//            public void onRejectSharedElements(List<View> rejectedSharedElements) {
+//                System.out.println("--ExitSharedElementCallback.onRejectSharedElements--");
+//            }
+//
+//            @Override
+//            public Parcelable onCaptureSharedElementSnapshot(View sharedElement, Matrix viewToGlobalMatrix, RectF screenBounds) {
+//                System.out.println("--ExitSharedElementCallback.onCaptureSharedElementSnapshot--");
+//                return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+//            }
+//
+//            @Override
+//            public View onCreateSnapshotView(Context context, Parcelable snapshot) {
+//                System.out.println("--ExitSharedElementCallback.onCreateSnapshotView--");
+//                return super.onCreateSnapshotView(context, snapshot);
+//            }
+//
+//            @Override
+//            public void onSharedElementsArrived(List<String> sharedElementNames, List<View> sharedElements, OnSharedElementsReadyListener listener) {
+//                System.out.println("--ExitSharedElementCallback.onSharedElementsArrived--");
+//                super.onSharedElementsArrived(sharedElementNames, sharedElements, listener);
+//            }
+//        });
 
 
 

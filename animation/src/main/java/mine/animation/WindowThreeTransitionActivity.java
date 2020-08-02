@@ -116,14 +116,14 @@ public class WindowThreeTransitionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WindowFourTransitionActivity.class);
 
         //使用放大动画
+        ActivityOptions options = ActivityOptions.makeScaleUpAnimation(imageView, 0,0, imageView.getWidth(), imageView.getHeight());
 
-//        ActivityOptions options = ActivityOptions.makeScaleUpAnimation(imageView, 0,0, imageView.getWidth(), imageView.getHeight());
         //使用缩略图放大动画
-
 //        ActivityOptions options = ActivityOptions.makeThumbnailScaleUpAnimation(imageView, bitmap, 10, 100);
-        //使用逐步显现动画
 
-        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(imageView, 0, 0, imageView.getWidth(), imageView.getHeight());
+        //使用逐步显现动画
+//        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(imageView, 0, 0, imageView.getWidth(), imageView.getHeight());
+
         //使用自定义动画
 //        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter, R.anim.exit);//仅使用进场动画（出场动画的起始值和结束值一样，所以不播放）
 //        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter, 0);//仅使用进场动画
