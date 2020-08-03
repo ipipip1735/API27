@@ -43,19 +43,7 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
         Window window = getWindow();
 
 
-        //非共享元素钩子函数
-        TransitionListenerAdapter adapter = new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Fade.onTransitionStart~~");
-            }
 
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Fade.onTransitionEnd~~");
-            }
-
-        };
 
 
         //共享元素转换钩子函数
@@ -63,8 +51,8 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 System.out.println("...EnterSharedElementCallback.onMapSharedElements...");
-                System.out.println("names is " + names);
-                System.out.println("sharedElements is " + sharedElements);
+//                System.out.println("names is " + names);
+//                System.out.println("sharedElements is " + sharedElements);
 
 //                names.remove(0);
 //                sharedElements.remove(names.get(0));
@@ -72,7 +60,7 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
             @Override
             public void onSharedElementsArrived(List<String> sharedElementNames, List<View> sharedElements, OnSharedElementsReadyListener listener) {
-//                System.out.println("...EnterSharedElementCallback.onSharedElementsArrived...");
+                System.out.println("...EnterSharedElementCallback.onSharedElementsArrived...");
 //                System.out.println("sharedElementNames is " + sharedElementNames);
 //                System.out.println("sharedElements is " + sharedElements);
 //                System.out.println("listener is " + listener);
@@ -178,10 +166,32 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
         };
 
         //创建转换对象
-        final Transition fade = new Fade().setDuration(duration).addListener(adapter);
-        Transition explode = new Explode().setDuration(duration).addListener(adapter);
-        Transition slide = new Slide(TOP).setDuration(duration).addListener(adapter);
-        Transition changesBounds = new ChangeBounds().setDuration(duration).addListener(adapter);
+        final Transition fade = new Fade().setDuration(duration)
+                .addListener(new TransitionListenerAdapter() {//非共享元素钩子函数
+            @Override
+            public void onTransitionStart(Transition transition) {
+                System.out.println("~~Fade.onTransitionStart~~");
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                System.out.println("~~Fade.onTransitionEnd~~");
+            }
+
+        });
+        Transition changesBounds = new ChangeBounds().setDuration(duration)
+                .addListener(new TransitionListenerAdapter() {//非共享元素钩子函数
+            @Override
+            public void onTransitionStart(Transition transition) {
+                System.out.println("~~changesBounds.onTransitionStart~~");
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                System.out.println("~~changesBounds.onTransitionEnd~~");
+            }
+
+        });
 
 
         //设置共享组件转换对象

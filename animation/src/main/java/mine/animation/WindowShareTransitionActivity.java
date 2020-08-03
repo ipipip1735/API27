@@ -40,20 +40,6 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
         long duration = 2000L;
         Window window = getWindow();
 
-        //非共享元素钩子函数
-        TransitionListenerAdapter adapter = new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                System.out.println("~~Fade.onTransitionStart~~");
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                System.out.println("~~Fade.onTransitionEnd~~");
-            }
-
-        };
-
 
         //共享元素转换钩子函数
         SharedElementCallback sharedElementCallback = new SharedElementCallback() {
@@ -62,30 +48,30 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 System.out.println("--ExitSharedElementCallback.onMapSharedElements--");
-                System.out.println("names is " + names);
-                System.out.println("sharedElements is " + sharedElements);
+//                System.out.println("names is " + names);
+//                System.out.println("sharedElements is " + sharedElements);
 
-                if (first) {
-
-
-                    //删除共享元素
-//                    sharedElements.remove(names.get(0));
-//                    names.remove(0);
-
-
-                    //增加共享元素
-//                    sharedElements.put("sharedTwo", findViewById(R.id.twoIV));
-//                    names.add("sharedTwo");
-
-
-                    //替换共享元素
-//                    sharedElements.put("sharedTwo", findViewById(R.id.twoIV));
-
-
-                    first = false;
-                } else {
-                    first = true;
-                }
+//                if (first) {
+//
+//
+//                    //删除共享元素
+////                    sharedElements.remove(names.get(0));
+////                    names.remove(0);
+//
+//
+//                    //增加共享元素
+////                    sharedElements.put("sharedTwo", findViewById(R.id.twoIV));
+////                    names.add("sharedTwo");
+//
+//
+//                    //替换共享元素
+////                    sharedElements.put("sharedTwo", findViewById(R.id.twoIV));
+//
+//
+//                    first = false;
+//                } else {
+//                    first = true;
+//                }
             }
 
             @Override
@@ -95,7 +81,7 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 //                System.out.println("viewToGlobalMatrix is " + viewToGlobalMatrix);
 //                System.out.println("screenBounds is " + screenBounds);
 
-                System.out.println(sharedElement.getWidth() + ", " + sharedElement.getHeight() + "|" + sharedElement.getLeft() + ", " + sharedElement.getTop() + ", " + sharedElement.getRight() + ", " + sharedElement.getBottom());
+//                System.out.println(sharedElement.getWidth() + ", " + sharedElement.getHeight() + "|" + sharedElement.getLeft() + ", " + sharedElement.getTop() + ", " + sharedElement.getRight() + ", " + sharedElement.getBottom());
 
 //                Matrix matrix = new Matrix();
 //                matrix.setRotate(80.6f);
@@ -155,9 +141,9 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
             @Override
             public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
                 System.out.println("--ExitSharedElementCallback.onSharedElementEnd--");
-                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
-                System.out.println("sharedElementNames is " + sharedElementNames);
-                System.out.println("sharedElements is " + sharedElements);
+//                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+//                System.out.println("sharedElementNames is " + sharedElementNames);
+//                System.out.println("sharedElements is " + sharedElements);
 
                 View v = sharedElementSnapshots.get(0);
                 System.out.println(v);
@@ -196,10 +182,32 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
         //创建转换对象
-        final Transition fade = new Fade().setDuration(duration).addListener(adapter);
-        Transition explode = new Explode().setDuration(duration).addListener(adapter);
-        Transition slide = new Slide(TOP).setDuration(duration).addListener(adapter);
-        Transition changesBounds = new ChangeBounds().setDuration(duration).addListener(adapter);
+        final Transition fade = new Fade().setDuration(duration)
+                .addListener(new TransitionListenerAdapter() { //非共享元素钩子函数
+                    @Override
+                    public void onTransitionStart(Transition transition) {
+                        System.out.println("~~Fade.onTransitionStart~~");
+                    }
+
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        System.out.println("~~Fade.onTransitionEnd~~");
+                    }
+
+                });
+        Transition changesBounds = new ChangeBounds().setDuration(duration)
+                .addListener(new TransitionListenerAdapter() { //非共享元素钩子函数
+                    @Override
+                    public void onTransitionStart(Transition transition) {
+                        System.out.println("~~changesBounds.onTransitionStart~~");
+                    }
+
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        System.out.println("~~changesBounds.onTransitionEnd~~");
+                    }
+
+                });
 
         //设置共享组件转换对象
         window.setSharedElementExitTransition(changesBounds); //共享组件出场变换
@@ -309,8 +317,8 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
         //如果SharedElementExitTransition使用ChangeBounds就需要调整View的布局参数，否则不会有任何动画
-//        oneIV.setBottom(750);
-//        twoIV.setRight(350);
+        oneIV.setBottom(750);
+        twoIV.setRight(350);
 //        findViewById(R.id.button19).setTop(50);
 
 
