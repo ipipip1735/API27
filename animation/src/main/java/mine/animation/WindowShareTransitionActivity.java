@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -90,7 +91,9 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
 
-                return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+                Parcelable bitmap = super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+                System.out.println(bitmap);
+                return bitmap;
 //                return null;
             }
 
@@ -110,74 +113,18 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
             @Override
             public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
                 System.out.println("--ExitSharedElementCallback.onSharedElementStart--");
-//                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
-//                System.out.println("sharedElementNames is " + sharedElementNames);
-//                System.out.println("sharedElements is " + sharedElements);
-
-
-
-                //快照View
-                View v = sharedElementSnapshots.get(0);
-                System.out.println(v);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
-                v = sharedElementSnapshots.get(1);
-                System.out.println(v);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
-
-
-                //共享View
-                v = sharedElements.get(0);
-                System.out.println(v);
-//                v.setBottom(1400);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
-                v = sharedElements.get(1);
-                System.out.println(v);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
-
+                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+                System.out.println("sharedElementNames is " + sharedElementNames);
+                System.out.println("sharedElements is " + sharedElements);
 
             }
 
             @Override
             public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
                 System.out.println("--ExitSharedElementCallback.onSharedElementEnd--");
-//                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
-//                System.out.println("sharedElementNames is " + sharedElementNames);
-//                System.out.println("sharedElements is " + sharedElements);
-
-
-                //快照View
-                View v = sharedElementSnapshots.get(0);
-                System.out.println(v);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
-                v = sharedElementSnapshots.get(1);
-                System.out.println(v);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
-
-
-                //共享View
-                v = sharedElements.get(0);
-                System.out.println(v);
-//                v.setBottom(1400);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
-                v = sharedElements.get(1);
-                System.out.println(v);
-//                System.out.println(v.getX());
-//                System.out.println(v.getY());
-//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+                System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+                System.out.println("sharedElementNames is " + sharedElementNames);
+                System.out.println("sharedElements is " + sharedElements);
 
             }
 
