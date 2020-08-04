@@ -44,7 +44,7 @@
         android:background="@color/DEEPSKYBLUE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/a" />
+        app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <ImageView
         android:id="@+id/sivo"
@@ -55,7 +55,7 @@
         android:background="@color/GOLD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:srcCompat="@drawable/b" />
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
 
 </android.support.constraint.ConstraintLayout>

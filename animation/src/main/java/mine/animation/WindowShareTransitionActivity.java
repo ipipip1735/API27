@@ -77,7 +77,7 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
             @Override
             public Parcelable onCaptureSharedElementSnapshot(View sharedElement, Matrix viewToGlobalMatrix, RectF screenBounds) {
                 System.out.println("--ExitSharedElementCallback.onCaptureSharedElementSnapshot--");
-//                System.out.println("sharedElement is " + sharedElement);
+                System.out.println("sharedElement is " + sharedElement);
 //                System.out.println("viewToGlobalMatrix is " + viewToGlobalMatrix);
 //                System.out.println("screenBounds is " + screenBounds);
 
@@ -87,6 +87,8 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 //                matrix.setRotate(80.6f);
 //                viewToGlobalMatrix = matrix;
 //                viewToGlobalMatrix.postConcat(matrix);
+
+
 
                 return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
 //                return null;
@@ -114,28 +116,33 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
 
 
+                //快照View
                 View v = sharedElementSnapshots.get(0);
                 System.out.println(v);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
                 v = sharedElementSnapshots.get(1);
                 System.out.println(v);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
 
 
+                //共享View
                 v = sharedElements.get(0);
                 System.out.println(v);
 //                v.setBottom(1400);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+                v = sharedElements.get(1);
                 System.out.println(v);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+
+
             }
 
             @Override
@@ -145,27 +152,33 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 //                System.out.println("sharedElementNames is " + sharedElementNames);
 //                System.out.println("sharedElements is " + sharedElements);
 
+
+                //快照View
                 View v = sharedElementSnapshots.get(0);
                 System.out.println(v);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
                 v = sharedElementSnapshots.get(1);
                 System.out.println(v);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
 
 
+                //共享View
                 v = sharedElements.get(0);
                 System.out.println(v);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                v.setBottom(1400);
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+                v = sharedElements.get(1);
                 System.out.println(v);
-                System.out.println(v.getX());
-                System.out.println(v.getY());
-                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+//                System.out.println(v.getX());
+//                System.out.println(v.getY());
+//                System.out.println(v.getWidth() + ", " + v.getHeight() + "|" + v.getLeft() + ", " + v.getTop() + ", " + v.getRight() + ", " + v.getBottom());
+
             }
 
             @Override
@@ -186,12 +199,12 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
                 .addListener(new TransitionListenerAdapter() { //非共享元素钩子函数
                     @Override
                     public void onTransitionStart(Transition transition) {
-                        System.out.println("~~Fade.onTransitionStart~~");
+                        System.out.println("~~src|Fade.onTransitionStart~~");
                     }
 
                     @Override
                     public void onTransitionEnd(Transition transition) {
-                        System.out.println("~~Fade.onTransitionEnd~~");
+                        System.out.println("~~src|Fade.onTransitionEnd~~");
                     }
 
                 });
@@ -199,12 +212,12 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
                 .addListener(new TransitionListenerAdapter() { //非共享元素钩子函数
                     @Override
                     public void onTransitionStart(Transition transition) {
-                        System.out.println("~~changesBounds.onTransitionStart~~");
+                        System.out.println("~~src|ChangesBounds.onTransitionStart~~");
                     }
 
                     @Override
                     public void onTransitionEnd(Transition transition) {
-                        System.out.println("~~changesBounds.onTransitionEnd~~");
+                        System.out.println("~~src|ChangesBounds.onTransitionEnd~~");
                     }
 
                 });
