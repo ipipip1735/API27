@@ -93,8 +93,8 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 
                 Parcelable bitmap = super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
                 System.out.println(bitmap);
-                return bitmap;
-//                return null;
+//                return bitmap;
+                return null;
             }
 
             @Override
@@ -107,25 +107,26 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
             @Override
             public View onCreateSnapshotView(Context context, Parcelable snapshot) {
                 System.out.println("--ExitSharedElementCallback.onCreateSnapshotView--");
-                return super.onCreateSnapshotView(context, snapshot);
+                System.out.println("snapshot is " + snapshot);
+                View view = super.onCreateSnapshotView(context, snapshot);
+                System.out.println(view);
+                return view;
             }
 
             @Override
             public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
                 System.out.println("--ExitSharedElementCallback.onSharedElementStart--");
+                System.out.println("sharedElements is " + sharedElements);
                 System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
                 System.out.println("sharedElementNames is " + sharedElementNames);
-                System.out.println("sharedElements is " + sharedElements);
-
             }
 
             @Override
             public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
                 System.out.println("--ExitSharedElementCallback.onSharedElementEnd--");
+                System.out.println("sharedElements is " + sharedElements);
                 System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
                 System.out.println("sharedElementNames is " + sharedElementNames);
-                System.out.println("sharedElements is " + sharedElements);
-
             }
 
             @Override
@@ -134,7 +135,6 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 //                System.out.println("sharedElementNames is " + sharedElementNames);
 //                System.out.println("sharedElements is " + sharedElements);
 //                System.out.println("listener is " + listener);
-
 
                 super.onSharedElementsArrived(sharedElementNames, sharedElements, listener);
             }

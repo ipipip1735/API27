@@ -76,9 +76,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 //                System.out.println("context is " + context);
                 System.out.println("snapshot is " + snapshot);
 
-//                Bitmap bitmap = (Bitmap) snapshot;
-//                System.out.println(bitmap.getByteCount());
-
                 View view = super.onCreateSnapshotView(context, snapshot);
                 System.out.println(view);
                 return view;
@@ -93,17 +90,17 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
                 System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
 
 
-                if (first) {
-
-                    first = false;
-                } else {
-                    ImageView imageView = (ImageView) sharedElements.get(0);
-                    View view = sharedElementSnapshots.get(0);
-                    imageView.setImageDrawable(view.getBackground());
-                    sharedElementSnapshots.get(0).setLeft(500);
-                    System.out.println("-------------------------");
-                    first = true;
-                }
+//                if (first) {
+//
+//                    first = false;
+//                } else {
+//                    ImageView imageView = (ImageView) sharedElements.get(0);
+//                    View view = sharedElementSnapshots.get(0);
+//                    imageView.setImageDrawable(view.getBackground());
+//                    sharedElementSnapshots.get(0).setLeft(500);
+//                    System.out.println("-------------------------");
+//                    first = true;
+//                }
 
 
 //                System.out.println(snapshot.getDrawable());
@@ -119,11 +116,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
                 System.out.println("sharedElementNames is " + sharedElementNames);
                 System.out.println("sharedElements is " + sharedElements);
                 System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
-
-
-
-
-
             }
 
             @Override
@@ -133,7 +125,11 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 //                System.out.println("viewToGlobalMatrix is " + viewToGlobalMatrix);
 //                System.out.println("screenBounds is " + screenBounds);
 
-                return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+
+                Parcelable bitmap = super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+                System.out.println(bitmap);
+                return bitmap;
+//                return null;
             }
         };
 
