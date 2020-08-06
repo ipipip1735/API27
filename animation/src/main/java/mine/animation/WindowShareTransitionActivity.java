@@ -82,19 +82,11 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
 //                System.out.println("viewToGlobalMatrix is " + viewToGlobalMatrix);
 //                System.out.println("screenBounds is " + screenBounds);
 
-//                System.out.println(sharedElement.getWidth() + ", " + sharedElement.getHeight() + "|" + sharedElement.getLeft() + ", " + sharedElement.getTop() + ", " + sharedElement.getRight() + ", " + sharedElement.getBottom());
-
-//                Matrix matrix = new Matrix();
-//                matrix.setRotate(80.6f);
-//                viewToGlobalMatrix = matrix;
-//                viewToGlobalMatrix.postConcat(matrix);
-
-
-
+                //保存bitmap作为快照
                 Parcelable bitmap = super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
                 System.out.println(bitmap);
-//                return bitmap;
-                return null;
+                return bitmap;
+//                return null;
             }
 
             @Override
@@ -108,6 +100,8 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
             public View onCreateSnapshotView(Context context, Parcelable snapshot) {
                 System.out.println("--ExitSharedElementCallback.onCreateSnapshotView--");
                 System.out.println("snapshot is " + snapshot);
+
+                //使用保存bitmap（snapshot就是bitmap，bitmap实现了Parcelable）创建View
                 View view = super.onCreateSnapshotView(context, snapshot);
                 System.out.println(view);
                 return view;

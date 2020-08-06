@@ -67,7 +67,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
             public void onRejectSharedElements(List<View> rejectedSharedElements) {
                 System.out.println("...EnterSharedElementCallback.onRejectSharedElements...");
 //                System.out.println("rejectedSharedElements is " + rejectedSharedElements);
-//                rejectedSharedElements.remove(0);
             }
 
             @Override
@@ -76,6 +75,7 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 //                System.out.println("context is " + context);
                 System.out.println("snapshot is " + snapshot);
 
+                //使用保存bitmap（snapshot就是bitmap，bitmap实现了Parcelable）创建View
                 View view = super.onCreateSnapshotView(context, snapshot);
                 System.out.println(view);
                 return view;
@@ -89,25 +89,15 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
                 System.out.println("sharedElements is " + sharedElements);
                 System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
 
-
-//                if (first) {
-//
-//                    first = false;
-//                } else {
-//                    ImageView imageView = (ImageView) sharedElements.get(0);
-//                    View view = sharedElementSnapshots.get(0);
-//                    imageView.setImageDrawable(view.getBackground());
-//                    sharedElementSnapshots.get(0).setLeft(500);
-//                    System.out.println("-------------------------");
-//                    first = true;
-//                }
-
-
-//                System.out.println(snapshot.getDrawable());
-
-//                imageView.setImageDrawable(snapshot.getDrawable());
-
-
+                if (first) {
+                    first = false;
+                    View view = sharedElementSnapshots.get(0);//获取快照View
+                    ImageView imageView = (ImageView) sharedElements.get(0);
+                    imageView.setImageDrawable(view.getBackground());//修改共享View的ImageDrawable
+                    imageView.setRight(900);//设置动画起始值（共享View的布局参数）
+                } else {
+                    first = true;
+                }
             }
 
             @Override
@@ -116,6 +106,7 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
                 System.out.println("sharedElementNames is " + sharedElementNames);
                 System.out.println("sharedElements is " + sharedElements);
                 System.out.println("sharedElementSnapshots is " + sharedElementSnapshots);
+
             }
 
             @Override
@@ -158,7 +149,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
             public void onTransitionEnd(Transition transition) {
                 System.out.println("~~des|ChangesBounds.onTransitionEnd~~");
             }
-
         });
 
 
@@ -176,7 +166,6 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
         setContentView(R.layout.activity_window_share_one);
         findViewById(R.id.siv).setTransitionName("sharedOne");
         findViewById(R.id.sivo).setTransitionName("sharedTwo");
-//        findViewById(android.R.id.content).setTransitionName("content");
 
     }
 
