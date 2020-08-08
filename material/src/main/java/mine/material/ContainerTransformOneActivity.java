@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 
@@ -25,12 +26,22 @@ public class ContainerTransformOneActivity extends AppCompatActivity {
 
         setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());//绑定共享元素入场回调
 
-        getWindow().setSharedElementEnterTransition(new MaterialContainerTransform()//绑定共享元素入场动画
-                .addTarget(android.R.id.content)
-                .setDuration(duration));
-        getWindow().setSharedElementReturnTransition(new MaterialContainerTransform()//绑定共享元素出场动画
-                .addTarget(android.R.id.content)
-                .setDuration(duration));
+
+
+
+        MaterialContainerTransform materialContainerTransform = new MaterialContainerTransform();
+        materialContainerTransform.setStartShapeAppearanceModel(
+                new ShapeAppearanceModel.Builder()
+                        .setAllCornerSizes(90f)
+                        .build());
+        materialContainerTransform.addTarget(android.R.id.content)
+                .setDuration(duration);
+
+
+
+        getWindow().setSharedElementEnterTransition(materialContainerTransform);//绑定共享元素入场动画
+        getWindow().setSharedElementReturnTransition(materialContainerTransform.clone());//绑定共享元素出场动画
+
 
 
         super.onCreate(savedInstanceState);
