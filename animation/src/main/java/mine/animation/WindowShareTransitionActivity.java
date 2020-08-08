@@ -170,10 +170,10 @@ public class WindowShareTransitionActivity extends AppCompatActivity {
                 });
 
         //设置共享组件转换对象
-        window.setSharedElementExitTransition(changesBounds); //共享组件出场变换
         window.setExitTransition(fade); //共享组件出场变换
-//        window.setSharedElementReenterTransition(changesBounds);  //（按Back后返回时，本Activity入场动画，测试失败了）
-//        window.setSharedElementsUseOverlay(false); //禁用遮罩层，让共享元素也能参与动画（Exit仅作用非遮罩层的View）
+        window.setSharedElementExitTransition(changesBounds); //共享组件出场变换
+        window.setSharedElementReenterTransition(changesBounds.clone().setDuration(duration));  //（按Back后返回时，本Activity入场动画，测试失败了）
+        window.setSharedElementsUseOverlay(false); //禁用遮罩层，让共享元素也能参与动画（Exit仅作用非遮罩层的View）
 
         setExitSharedElementCallback(sharedElementCallback);//绑定退出共享元素回调
 

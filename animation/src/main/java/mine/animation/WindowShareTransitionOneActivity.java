@@ -164,12 +164,13 @@ public class WindowShareTransitionOneActivity extends AppCompatActivity {
 
         //设置共享组件转换对象
         window.setSharedElementEnterTransition(changesBounds); //共享组件进入变换
-        window.setEnterTransition(fade);
+//        window.setEnterTransition(fade);
 //        window.setReturnTransition(fade);
-//        window.setSharedElementReturnTransition(changesBounds);  //共享组件返回变换，优先级高于SharedElementReenterTransition
+        window.setSharedElementReturnTransition(changesBounds.clone().setDuration(duration * 2));  //共享组件返回变换，优先级高于SharedElementReenterTransition
 //        window.setTransitionBackgroundFadeDuration(5000L);
 
         setEnterSharedElementCallback(sharedElementCallback);//绑定进入共享元素回调
+
 
 
         super.onCreate(bundle);
