@@ -10,12 +10,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/animation" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/coordinatorlayout" />
-            <option value="$PROJECT_DIR$/drawerlayout" />
-            <option value="$PROJECT_DIR$/material" />
-            <option value="$PROJECT_DIR$/navigation" />
+            <option value="$PROJECT_DIR$/contactProvider" />
+            <option value="$PROJECT_DIR$/contentProvide" />
+            <option value="$PROJECT_DIR$/file" />
+            <option value="$PROJECT_DIR$/fileprovider" />
+            <option value="$PROJECT_DIR$/room" />
+            <option value="$PROJECT_DIR$/sqlitedb" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
