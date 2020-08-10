@@ -9,6 +9,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteTransactionListener;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -111,7 +112,25 @@ public class PersonContentProvider extends ContentProvider {
 
         if (Objects.isNull(db)) db = personSQLiteOpenHelper.getWritableDatabase();
 
-        db.beginTransaction();
+//        db.beginTransaction();
+        db.beginTransactionWithListener(new SQLiteTransactionListener() {
+            @Override
+            public void onBegin() {
+                System.out.println("~~onBegin~~");
+            }
+
+            @Override
+            public void onCommit() {
+                System.out.println("~~onCommit~~");
+
+            }
+
+            @Override
+            public void onRollback() {
+                System.out.println("~~onRollback~~");
+
+            }
+        });
         try {
             ContentProviderResult[] results = super.applyBatch(operations);
             db.setTransactionSuccessful();
