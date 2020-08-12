@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
     public void insert(View view) {
         System.out.println("~~button.insert~~");
 
-        insertRawContact();
-//        insertData();
+//        insertRawContact();
+        insertData();
 //        insertRawContactBatch(); //批量插入
 
     }
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
 //        queryContact();
 //        queryWithLookupKey();
 //        queryRawContact();
-        queryData();
+//        queryData();
 //        queryWithEtity();
 //        queryPhoneLookup();
 //        queryQuickContact();
@@ -496,8 +496,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //方法一：使用过滤器匹配联系人
-//        Uri uri = Uri.parse("content://com.android.contacts/contacts/1/photo");
-        Uri uri = Uri.parse("content://com.android.contacts/contacts/filter/Chris");
+        Uri uri = Uri.parse("content://com.android.contacts/contacts/1/photo");
+//        Uri uri = Uri.parse("content://com.android.contacts/contacts/filter/Chris");
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         System.out.println("count is " + cursor.getCount());
         cursor.moveToNext();
@@ -653,8 +653,8 @@ public class MainActivity extends AppCompatActivity {
 //        Uri uri = Uri.parse("content://com.android.contacts/data/emails");
 //        Uri uri = Uri.parse("content://com.android.contacts/data/emails/lookup/ab@de.com");
 //        Uri uri = Uri.parse("content://com.android.contacts/data/emails/filter/chris");
-//        Uri uri = Uri.parse("content://com.android.contacts/phone_lookup/3011231234");
-        Uri uri = Uri.parse("content://com.android.contacts/phone_lookup/1231234");
+        Uri uri = Uri.parse("content://com.android.contacts/phone_lookup/3012345678");
+//        Uri uri = Uri.parse("content://com.android.contacts/phone_lookup/1231234");
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
 
@@ -726,7 +726,7 @@ public class MainActivity extends AppCompatActivity {
 //        String phoneNumber = "12011231234";
 //        String phoneNumber = "2011231234";
 //        String phoneNumber = "1231234";
-        String phoneNumber = "5205653232";
+        String phoneNumber = "3012345678";
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";
@@ -752,7 +752,7 @@ public class MainActivity extends AppCompatActivity {
      * content://com.android.contacts/raw_contacts
      * content://com.android.contacts/raw_contacts/1
      * content://com.android.contacts/raw_contacts/1/data
-     * content://com.android.contacts/raw_contacts/1/display_photo
+     * content://com.android.contacts/raw_contacts/1/display_photo //测试失败
      * content://com.android.contacts/raw_contacts/1/entity
      * content://com.android.contacts/raw_contact_entities
      * content://com.android.contacts/raw_contact_entities_corp
@@ -832,23 +832,28 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("=queryContact=");
 
         //查询Contacts表
-//        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
 //        uri = Uri.parse(uri.toString() + "/1");//返回contact_id = 1的联系人的状态信息
 //        uri = Uri.parse(uri.toString() + "/1/data");//返回contact_id = 1的联系人的数据信息
 //        uri = Uri.parse(uri.toString() + "/1/entities");//使用/entities和/data后缀几乎没什么区别，返回id为联系人的数据信息
-//        uri = Uri.parse(uri.toString() + "/1/photo");//返回contact_id = 1且mimetype = vnd.android.cursor.item/photo的联系人
-//        uri = Uri.parse(uri.toString() + "/2/suggestions");
+        uri = Uri.parse(uri.toString() + "/1/photo");//返回contact_id = 1且mimetype = vnd.android.cursor.item/photo的联系人
+//        uri = Uri.parse(uri.toString() + "/1/suggestions");
 //        uri = Uri.parse(uri.toString() + "/1/suggestions/XXX");
 
 
         //查询lookup key
+//        Uri uri = ContactsContract.Contacts.getLookupUri(1, "0r1-2E384C3A4E403233");
+//        Uri uri = ContactsContract.Contacts.getLookupUri(getContentResolver(), Uri.parse("content://com.android.contacts/contacts/1"));
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r3-");//获取Contact_ID为3的记录
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r1-4032322A2A2A");//使用Lookup查询
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,"0r2-4F45413F3131/2");//Lookup和ID组合查询
+
+
 
         //查询人名
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Chris");//名
 //        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI,"Lee");//姓
-        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Chris Lee");//姓名
+//        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, "Chris Lee");//姓名
 
 
         String sortOrder = ContactsContract.Contacts._ID + " ASC";

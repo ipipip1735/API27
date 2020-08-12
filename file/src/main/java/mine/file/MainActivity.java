@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void internal(View view) {
         System.out.println("~~button.internal~~");
-        File file;
+//        File file;
 
 
 //        file = getDir("myfile", MODE_PRIVATE); //结果为 /data/user/0/mine.file/app_myfile
@@ -108,8 +108,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        File file = getFileStreamPath("myfile");
-//        if (file.exists())
-//            System.out.println("file path is " + file.getName());
+//        if (file.exists()) {
+//            System.out.println("getName is " + file.getName());
+//            System.out.println("file path is " + file.getAbsolutePath());
+//        }
 
 
 //        other();
@@ -158,42 +160,42 @@ public class MainActivity extends AppCompatActivity {
     private void writeInternal() {
 
         //方法一，仅操作子目录
-//        try {
-//            FileOutputStream outputStream;
-//            String filename = "myfile";
-//            String fileContents = "Hello world!";
-////            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+        try {
+            FileOutputStream outputStream;
+            String filename = "myfile";
+            String fileContents = "Hello world!";
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
 //            outputStream = openFileOutput(filename, Context.MODE_APPEND);
-//            outputStream.write(fileContents.getBytes());
-//            outputStream.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+            outputStream.write(fileContents.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         //方法二，使用文件描述符操作任意层级子目录
-        try {
-            Path path = Paths.get(getFilesDir().toString(), "logs", "slq.log");
-            Files.createDirectories(path.getParent());
-
-            ParcelFileDescriptor parcelFileDescriptor =
-                    ParcelFileDescriptor.open(path.toFile(), ParcelFileDescriptor.parseMode("wa"));
-            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-
-            OutputStream outputStream = new FileOutputStream(fileDescriptor);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-            String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
-            bufferedWriter.write(sql);
-            bufferedWriter.newLine();
-            bufferedWriter.close();
-            parcelFileDescriptor.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Path path = Paths.get(getFilesDir().toString(), "logs", "slq.log");
+//            Files.createDirectories(path.getParent());
+//
+//            ParcelFileDescriptor parcelFileDescriptor =
+//                    ParcelFileDescriptor.open(path.toFile(), ParcelFileDescriptor.parseMode("wa"));
+//            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+//
+//            OutputStream outputStream = new FileOutputStream(fileDescriptor);
+//            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+//            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+//            String sql = "SELECLT * FROM Car WHERE ROWID = " + new Random().nextInt(99) + ";";
+//            bufferedWriter.write(sql);
+//            bufferedWriter.newLine();
+//            bufferedWriter.close();
+//            parcelFileDescriptor.close();
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -299,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("state is " + state);
 
         File file = new File("/storage/emulated/0/Pictures");
-        state = Environment.getExternalStorageState(); // 结果为 mounted
+        state = Environment.getExternalStorageState(file); // 结果为 mounted
         System.out.println("state is " + state);
 
 

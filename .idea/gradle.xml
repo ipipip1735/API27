@@ -11,12 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/contactProvider" />
-            <option value="$PROJECT_DIR$/contentProvide" />
-            <option value="$PROJECT_DIR$/file" />
-            <option value="$PROJECT_DIR$/fileprovider" />
-            <option value="$PROJECT_DIR$/room" />
-            <option value="$PROJECT_DIR$/sqlitedb" />
+            <option value="$PROJECT_DIR$/camerax" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
