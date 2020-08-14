@@ -193,6 +193,8 @@ public class FormatConvertActivity extends AppCompatActivity {
     public void config(View view) {
         System.out.println("~~button.config~~");
 
+        camera.stopPreview();
+
 //        camera.setDisplayOrientation(90);
 
 //        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();

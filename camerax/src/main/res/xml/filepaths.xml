@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Paths>
     <external-files-path path="Pictures/images/" name="pics" />
+    <external-files-path path="Movies/videos/" name="videos" />
 </Paths>
 

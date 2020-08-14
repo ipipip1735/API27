@@ -373,6 +373,8 @@ public class PreviewActivity extends AppCompatActivity {
     public void config(View view) {
         System.out.println("~~button.config~~");
 
+        camera.stopPreview();
+
         //设置预览尺寸
         int widht = 320, height = 240;
         Camera.Parameters parameters = camera.getParameters();
@@ -452,7 +454,7 @@ public class PreviewActivity extends AppCompatActivity {
                 System.out.println("width=" + options.outWidth + ", height=" + options.outHeight);
 
 
-                File file = new File(getCacheDir(), "sscc.jpg");
+                File file = new File(getCacheDir(), "oneShot-" + new Random().nextInt(999) + ".jpg");
                 try {
                     FileOutputStream fileOutputStream = new FileOutputStream(file);
                     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
@@ -700,8 +702,8 @@ public class PreviewActivity extends AppCompatActivity {
 
         //录制
         System.out.println("-------Video--------");
-        System.out.println("getPreferredPreviewSizeForVideo is " + parameters.getPreferredPreviewSizeForVideo());
-        System.out.println("getSupportedVideoSizes is " + parameters.getSupportedVideoSizes());
+        System.out.println("getPreferredPreviewSizeForVideo is  width=" + parameters.getPreferredPreviewSizeForVideo().width + ", height=" + parameters.getPreferredPreviewSizeForVideo().height);
+        size("getSupportedVideoSizes is ", parameters.getSupportedVideoSizes());
         System.out.println("getVideoStabilization is " + parameters.getVideoStabilization());
 
 
@@ -719,6 +721,8 @@ public class PreviewActivity extends AppCompatActivity {
         System.out.println("range'min is " + range[1]);
 
         System.out.println("getSupportedPreviewFpsRange is " + parameters.getSupportedPreviewFpsRange());
+        for (int i = 0; i < parameters.getSupportedPreviewFpsRange().size(); i++)
+            System.out.println("FpsRange is " + i);
         System.out.println("getSupportedPreviewFrameRates is " + parameters.getSupportedPreviewFrameRates());
 
 

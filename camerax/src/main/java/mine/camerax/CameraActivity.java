@@ -1,12 +1,9 @@
 package mine.camerax;
 
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,25 +18,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.provider.MediaStore.Video.Thumbnails.MINI_KIND;
 
 public class CameraActivity extends AppCompatActivity {
 
     static int SHOW = 1;
     static int SAVE = 2;
+    static int SAVE_VIDEO = 21;
     static int VIDEO = 3;
-    private File image;
+    private File image, video;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +175,17 @@ public class CameraActivity extends AppCompatActivity {
             viewGroup.addView(videoView);
         }
 
+        //方式三：保存录像
+        if (requestCode == SAVE_VIDEO && resultCode == RESULT_OK) {
+            Uri videoUri = data.getData();//获取URI
+            System.out.println("uri is " + videoUri);
+//            VideoView videoView = new VideoView(this);
+//            videoView.setVideoURI(videoUri);//绑定URI
+//            videoView.setMediaController(new MediaController(this));//绑定控制器
+//            ViewGroup viewGroup = findViewById(R.id.fl);
+//            viewGroup.addView(videoView);
+        }
+
 
     }
 
@@ -203,6 +206,11 @@ public class CameraActivity extends AppCompatActivity {
         System.out.println("~~button.save~~");
 
 
+//        savePic();
+        saveVideo();
+    }
+
+    private void savePic() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "images");
@@ -241,10 +249,53 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
+
+    private void saveVideo() {
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "VIDEO_" + timeStamp + "_";
+        File storageDir = new File(getExternalFilesDir(Environment.DIRECTORY_MOVIES), "videos");
+        boolean b = storageDir.mkdir();//创建目录
+        System.out.println(b);
+
+
+        try {
+            //创建临时文件（如果目录不存在，则创建到系统临时目录）
+            video = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".mp4",   /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        if (video != null) {
+            System.out.println("video path is " + video.getAbsolutePath());//打印绝对路径
+
+            Uri videoURI = FileProvider.getUriForFile(this,
+                    "TNT",
+                    video);
+            System.out.println("URI is " + videoURI);//打印路径对应URI
+
+            Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//创建Intent
+
+
+            //不需要授权，启用摄像头就已经授权了，使用FileProvider仅仅为了让URI映射实际地址
+//            takePictureIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //授予临时读权限
+//            takePictureIntent.setFlags(FLAG_GRANT_WRITE_URI_PERMISSION); //授予临时写权限
+
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoURI); //保存到文件
+            startActivityForResult(takeVideoIntent, SAVE_VIDEO); //启动摄像头
+        }
+    }
+
+
     public void gallery(View view) {
         System.out.println("~~button.gallery~~");
 
-        //将图片公开到相册
+        //方式一：将图片公开到相册（官方文档上的例子，测试失败了）
 //        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);//创建媒体扫描器对应的Intent
 //        Uri uri = Uri.fromFile(image);
 //        System.out.println("uris is " + uri);
@@ -252,44 +303,33 @@ public class CameraActivity extends AppCompatActivity {
 //        this.sendBroadcast(mediaScanIntent);
 
 
-//        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);//创建媒体扫描器对应的Intent
-//        uri = FileProvider.getUriForFile(this, "TNT", image);
-//        System.out.println("uris is " + uri);
-//        mediaScanIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //授予临时读权限
-//        mediaScanIntent.setFlags(FLAG_GRANT_WRITE_URI_PERMISSION); //授予临时写权限
-//        mediaScanIntent.setData(uri);
-//        this.sendBroadcast(mediaScanIntent);
-
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE, "TTTTile");
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "description XXX");
-        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-        System.out.println("uri is " + uri);
-        if (uri == null) return;
-
-        try (OutputStream outputStream = getContentResolver().openOutputStream(uri);
-             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-             InputStream inputStream = new FileInputStream("/storage/emulated/0/Android/data/mine.camerax/files/Pictures/images/JPEG_20200813_000616_8583340753083822908.jpg");
-             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-
-            byte[] bytes = new byte[1024];
-            int n = 0;
-            while ((n = bufferedInputStream.read(bytes)) != -1)
-                bufferedOutputStream.write(bytes, 0, n);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        //方式二：使用工具方法增加图片到相册，并增加对应的缩略图
+//        File file = new File("/storage/emulated/0/Android/data/mine.camerax/files/Pictures/images/JPEG_20200813_000616_8583340753083822908.jpg");
+//        String uri = "";
+//        try {
+//            uri = MediaStore.Images.Media.insertImage(getContentResolver(), file.toString(), "ttt", "dddd");
+//            System.out.println("uri is " + uri);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        //获取缩略图
+//        long id = ContentUris.parseId(Uri.parse(uri));
+//        Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), id, MediaStore.Images.Thumbnails.MINI_KIND, null);
+//        System.out.println("height = " + bitmap.getHeight() + ", " +
+//                "width = " + bitmap.getWidth() + ", " +
+//                "size = " + bitmap.getByteCount());
+//        //获取微缩图
+//        bitmap = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), id, MediaStore.Images.Thumbnails.MICRO_KIND, null);
+//        System.out.println("height = " + bitmap.getHeight() + ", " +
+//                "width = " + bitmap.getWidth() + ", " +
+//                "size = " + bitmap.getByteCount());
 
     }
 
     public void video(View view) {
         System.out.println("~~button.video~~");
+
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, VIDEO);
@@ -305,7 +345,7 @@ public class CameraActivity extends AppCompatActivity {
     public void del(View view) {
         System.out.println("~~button.del~~");
 
-        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
 
 
     }
@@ -313,21 +353,5 @@ public class CameraActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
-//        Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
-        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        System.out.println("uri is " + uri);
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-
-        System.out.println(cursor.getCount());
-
-        while (cursor.moveToNext()) {
-            for (String name : cursor.getColumnNames()) {
-                System.out.println("name is " + name);
-                System.out.println(name + " is " + cursor.getString(cursor.getColumnIndex(name)));
-            }
-        }
-        cursor.close();
-
     }
 }

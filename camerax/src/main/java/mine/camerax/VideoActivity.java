@@ -257,7 +257,6 @@ public class VideoActivity extends AppCompatActivity {
 
         mediaRecorder.start();
 
-
     }
 
     public void end(View view) {
@@ -365,7 +364,9 @@ public class VideoActivity extends AppCompatActivity {
 
 
         // Step 4: Set output file
-        mediaRecorder.setOutputFile(new File(getCacheDir(), fileName).toString());//内部私有目录
+        File file = new File(getCacheDir(), fileName);
+        System.out.println("file is " + file);
+        mediaRecorder.setOutputFile(file.toString());//内部私有目录
 //        mediaRecorder.setOutputFile(new File(getExternalMediaDirs()[0], fileName).toString());//外部私有目录
 //        mediaRecorder.setOutputFile(new File(Environment.getExternalStoragePublicDiretory(Environment.DIRECTORY_DCIM), getPackageName() + fileName).toString());//共用目录
 
