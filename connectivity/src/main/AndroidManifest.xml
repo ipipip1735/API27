@@ -41,13 +41,13 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
 
-        <activity android:name=".NetworkManagerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--        <activity android:name=".NetworkManagerActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 <!--        <activity android:name=".WiFiManagerActivity">-->
 <!--            <intent-filter>-->
@@ -56,6 +56,14 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
 <!--        </activity>-->
+
+        <activity android:name=".VolleyActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 <!--        <activity android:name=".CronetActivity">-->
 <!--            <intent-filter>-->
@@ -80,6 +88,16 @@
 <!--            </intent-filter>-->
 <!--        </receiver>-->
 
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="TNT"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
 
     </application>
 
