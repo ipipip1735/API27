@@ -1,7 +1,10 @@
 package mine.connectivity;
 
+import android.content.ContentUris;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,11 +33,18 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookieStore;
 import java.net.HttpCookie;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -368,7 +378,8 @@ public class VolleyActivity extends AppCompatActivity {
 
         final RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = "http://192.168.0.127/upload.php";
+        String url = "http://192.168.0.126/post.php";
+//        String url = "http://192.168.0.127/upload.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -386,17 +397,6 @@ public class VolleyActivity extends AppCompatActivity {
                 queue.stop();
             }
         }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                System.out.println("~~getHeaders~~");
-//                return super.getHeaders();
-
-                Map<String, String> map = new HashMap<>();
-                map.put("Content-Type", "multipart/form-data; boundary=ABCDIEF");
-
-                return map;
-            }
-
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 System.out.println("~~getParams~~");
@@ -425,7 +425,8 @@ public class VolleyActivity extends AppCompatActivity {
 
         final RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = "http://192.168.0.127/upload.php";
+        String url = "http://192.168.0.126/post.php";
+//        String url = "http://192.168.0.127/upload.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -443,17 +444,15 @@ public class VolleyActivity extends AppCompatActivity {
                 queue.stop();
             }
         }) {
+            String boundaryString;
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 System.out.println("~~getHeaders~~");
-//                return super.getHeaders();
 
-                String boundaryString = UUID.randomUUID().toString().substring(0, 6);
+                boundaryString = UUID.randomUUID().toString().substring(0, 6);
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "multipart/form-data; boundary=" + boundaryString + "; charset=utf-8");
-                map.put("Accept", "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2");
-                map.put("Cache-Control", "no-cache");
-                map.put("Accept-Encoding", "br");
 
                 return map;
             }
@@ -461,36 +460,65 @@ public class VolleyActivity extends AppCompatActivity {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 System.out.println("~~getBody~~");
-//                return super.getBody();
 
-                String boundaryString = UUID.randomUUID().toString().substring(0, 6);
+                Uri uri = Uri.parse("content://TNT/images/w2.jpg");
+
+
+                FileChannel fileChannel = null;
+                ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+
+                long fileSize = 0;
+                try {
+                    ParcelFileDescriptor pfd = getContentResolver().openFile(uri, "r", null);
+                    fileChannel = new FileInputStream(pfd.getFileDescriptor()).getChannel();//创建文件通道
+                    fileSize = fileChannel.size();
+                    if (fileSize > 2 * 1024 * 1024) {
+                        fileChannel.close();
+                        System.out.println("file size is much more big!");
+                    } else {
+                        byteBuffer = ByteBuffer.allocate((int) fileSize + 1024);
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 StringBuffer stringBuffer = new StringBuffer(1024);
                 stringBuffer.append("--" + boundaryString + "\n");
                 stringBuffer.append("Content-Disposition: form-data; name=\"one\"" + "\n\n");
                 stringBuffer.append("11111" + "\n");
-                stringBuffer.append("--" + boundaryString + "--\n");
 
-                return stringBuffer.toString().getBytes(UTF_8);
-            }
+                if (byteBuffer.capacity() == 1024) {
+                    stringBuffer.append("--" + boundaryString + "--\n");
+                    byteBuffer.put(UTF_8.encode(stringBuffer.toString()));
+                    return byteBuffer.array();
+                }
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                System.out.println("~~getParams~~");
-//                return super.getParams();
 
-                Map<String, String> map = new HashMap<>();
-                map.put("FirstName", "chris");
-                map.put("LastName", "Lee");
-                return map;
-            }
+                stringBuffer.append("--" + boundaryString + "\n");
+                stringBuffer.append("Content-Disposition: form-data; name=\"file\";filename=\"w2.jpg\"" + "\n");
+                stringBuffer.append("Content-Type: image/jpeg" + "\n\n");
+                byteBuffer.put(UTF_8.encode(stringBuffer.toString()));
+                stringBuffer.delete(0, stringBuffer.length());
 
-            @Override
-            protected String getParamsEncoding() {
-                System.out.println("~~getParamsEncoding~~");
+                try {
+                    int n = fileChannel.read(byteBuffer);
+                    System.out.println("n is " + n);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                return super.getParamsEncoding();
+                stringBuffer.append("\n--" + boundaryString + "--\n");
+                byteBuffer.put(UTF_8.encode(stringBuffer.toString()));
+
+
+                return byteBuffer.array();
             }
         };
+
 
         queue.add(stringRequest);
     }

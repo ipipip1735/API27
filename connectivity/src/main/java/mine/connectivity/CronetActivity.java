@@ -331,7 +331,6 @@ public class CronetActivity extends AppCompatActivity {
             connection.setRequestProperty("Accept-Charset", charset);
             String boundaryString = UUID.randomUUID().toString().substring(0, 6);
             connection.addRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundaryString);
-            connection.setChunkedStreamingMode(1024);
 
 
             //发送请求主体
