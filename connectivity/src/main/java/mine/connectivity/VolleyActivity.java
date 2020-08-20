@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
@@ -40,6 +41,8 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookieStore;
 import java.net.HttpCookie;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -131,8 +134,8 @@ public class VolleyActivity extends AppCompatActivity {
 
 
 //        volleyBasic();
-//        volleyPostText();
-        volleyPostFile(); //失败了，Volley不支持multipart/form-data
+//        volleyPostText();//POST文本字段
+//        volleyPostFile();//POST混合字段
 //        volleyForJSON();
 //        volleyWithCustomRequest();
 //        volleyWithCookie();
@@ -142,7 +145,7 @@ public class VolleyActivity extends AppCompatActivity {
 //        volleyForImageView();
 
         //自定义Cache接口和NetWork接口
-//        volleyWithCacheAndNetwork();
+        volleyWithCacheAndNetwork();
 
     }
 
@@ -345,7 +348,16 @@ public class VolleyActivity extends AppCompatActivity {
     private void volleyWithCacheAndNetwork() {
 
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024);
-        Network network = new BasicNetwork(new HurlStack());
+        Network network = new BasicNetwork(new HurlStack(){
+            @Override
+            protected HttpURLConnection createConnection(URL url) throws IOException {
+                HttpURLConnection httpURLConnection = super.createConnection(url);
+
+                httpURLConnection.setChunkedStreamingMode(16 * 1024);
+
+                return httpURLConnection;
+            }
+        });
 
 
         RequestQueue queue = new RequestQueue(cache, network);
@@ -416,7 +428,7 @@ public class VolleyActivity extends AppCompatActivity {
             }
         };
 
-        queue.add(stringRequest);
+        queue.add(stringRequest.setShouldCache(false));
     }
 
 
@@ -519,8 +531,7 @@ public class VolleyActivity extends AppCompatActivity {
             }
         };
 
-
-        queue.add(stringRequest);
+        queue.add(stringRequest.setShouldCache(false));
     }
 
 
