@@ -1,13 +1,8 @@
 package mine.preferences;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
-import java.util.Map;
 
 public class SharePreferencesActivity extends PreferenceActivity {
     @Override

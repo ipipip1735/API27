@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        app:fragment="mine.preferences.PreferenceScreenActivity$ScreenOneFragment"
+        app:key="psone"
+        app:title="Preference Screen One"
+        app:summary="summary psone"/>
+
+    <Preference
+        app:fragment="mine.preferences.PreferenceScreenActivity$ScreenTwoFragment"
+        app:key="pstwo"
+        app:title="Preference Screen Two"
+        app:summary="summary pstwo"/>
+</PreferenceScreen>

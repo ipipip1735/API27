@@ -4,5 +4,13 @@
         <attr name="customOne" format="string" />
         <attr name="customTwo" format="float" />
     </declare-styleable>
+    <string-array name="key">
+        <item>one</item>
+        <item>two</item>
+    </string-array>
+    <string-array name="value">
+        <item>111</item>
+        <item>222</item>
+    </string-array>
 </resources>
 

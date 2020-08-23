@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:key="pone"
+        app:title="AAA"
+        app:summary="aaaaaaaaaaa"/>
+
+    <Preference
+        app:key="ptwo"
+        app:title="BBB"
+        app:isPreferenceVisible="false"
+        app:summary="bbbbbbbbbbb"/>
+
+</PreferenceScreen>

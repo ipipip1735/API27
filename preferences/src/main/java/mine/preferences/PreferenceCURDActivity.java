@@ -2,30 +2,34 @@ package mine.preferences;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreference;
 
 /**
  * Created by Administrator on 2017/4/27.
  */
 
-public class PreferenceCURDActivity extends AppCompatActivity{
+public class PreferenceCURDActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_curd);
+        setContentView(R.layout.activity_main);
 
-        PreferenceFragment preferenceFragment = new Father();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.ll, preferenceFragment)
+
+        SettingsFragment settingsFragment = new SettingsFragment();
+        System.out.println(settingsFragment);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.ll, new SettingsFragment())
                 .commit();
     }
 
@@ -86,7 +90,6 @@ public class PreferenceCURDActivity extends AppCompatActivity{
     }
 
 
-
     public void add(View view) {
         System.out.println("~~button.add~~");
 
@@ -104,33 +107,36 @@ public class PreferenceCURDActivity extends AppCompatActivity{
         System.out.println("~~button.modify~~");
     }
 
-    public static class Father extends PreferenceFragment {
+
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+
         @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            //方式一：
-//            addPreferencesFromResource(R.xml.preference_curd);
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            System.out.println("**** " + getClass().getSimpleName() + ".onCreatePreferences ****");
+            System.out.println("rootKey is " + rootKey);
 
 
+            //方式一：使用XML
+            setPreferencesFromResource(R.xml.preference_screen, "psone");
 
-            //方式二：
-            Context context = getContext();
-            PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
 
-            SwitchPreference notificationPreference = new SwitchPreference(context);
-            notificationPreference.setKey("notifications");
-            notificationPreference.setTitle("Enable message notifications");
-
-            Preference feedbackPreference = new Preference(context);
-            feedbackPreference.setKey("feedback");
-            feedbackPreference.setTitle("Send feedback");
-            feedbackPreference.setSummary("Report technical issues or suggest new features");
-
-            screen.addPreference(notificationPreference);
-            screen.addPreference(feedbackPreference);
-
-            setPreferenceScreen(screen);
+            //方式二：使用JAVA
+//            Context context = getContext();
+//            PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+//
+//            SwitchPreference notificationPreference = new SwitchPreference(context);
+//            notificationPreference.setKey("notifications");
+//            notificationPreference.setTitle("Enable message notifications");
+//
+//            Preference feedbackPreference = new Preference(context);
+//            feedbackPreference.setKey("feedback");
+//            feedbackPreference.setTitle("Send feedback");
+//            feedbackPreference.setSummary("Report technical issues or suggest new features");
+//
+//            screen.addPreference(notificationPreference);
+//            screen.addPreference(feedbackPreference);
+//
+//            setPreferenceScreen(screen);
 
 
             //方式三：多PreferenceScreen嵌套

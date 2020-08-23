@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        app:key="pthree"
+        app:title="CCC"
+        app:summary="ccccccccc"
+        app:entries="@array/key"
+        app:entryValues="@array/value"/>
+
+    <MultiSelectListPreference
+        app:key="pfive"
+        app:title="EEE"
+        app:summary="eeeeeeee"
+        app:entries="@array/key"
+        app:entryValues="@array/value"/>
+
+    <EditTextPreference
+        app:key="pfour"
+        app:title="DDD"
+        app:summary="ddddddddd"/>
+</PreferenceScreen>
+
+
