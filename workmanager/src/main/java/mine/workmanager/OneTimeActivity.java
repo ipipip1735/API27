@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.work.BackoffPolicy;
+import androidx.work.Configuration;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
@@ -107,14 +108,14 @@ public class OneTimeActivity extends AppCompatActivity {
 
 //        equeue();
 //        workInfo();
-        chain();
+//        chain();
 //        uri();
 //        constraints();
 //        operation();
 //        stop();
 //        retry();
         //-----------
-//        rxWork();
+        rxWork();
 
     }
 
@@ -146,8 +147,7 @@ public class OneTimeActivity extends AppCompatActivity {
                 .build();
         id = rxWork.getId();
 
-        WorkManager workManager = WorkManager.getInstance(this);
-        workManager.enqueue(rxWork);
+        WorkManager.getInstance(this).enqueue(rxWork);
     }
 
     private void stop() {
