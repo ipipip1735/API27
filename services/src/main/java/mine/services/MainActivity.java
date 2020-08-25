@@ -15,7 +15,7 @@ import java.util.Objects;
 
 
 /**
- * CCreated by Administrator on 2019/1/30.
+ * Created by Administrator on 2019/1/30.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //连续启动服务，根据ID终止服务
-        Intent intent = new Intent(this, BaseService.class);
-        startService(intent);
-        startService(intent);
+//        Intent intent = new Intent(this, BaseService.class);
+//        startService(intent);
+//        startService(intent);
 
 
     }

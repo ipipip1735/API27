@@ -89,8 +89,9 @@ public class MessengerActivity extends AppCompatActivity implements ServiceConne
         System.out.println("~~start~~");
 
         //方式一：直接启动服务
-        //        Intent intent = new Intent(this, MessengerService.class);
-        //        startService(intent);
+        Intent intent = new Intent(this, MessengerService.class);
+        startService(intent);
+
 
 
 

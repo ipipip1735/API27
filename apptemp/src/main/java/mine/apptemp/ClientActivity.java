@@ -102,6 +102,8 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
         intent.setPackage(getPackageName());
         startService(intent);
 
+
+
     }
 
 
@@ -176,9 +178,8 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
         System.out.println(service);
 
         isBunding = true;
-        baseService = ((BaseBinder) service).getServiceHandler();
-
-        System.out.println(baseService);
+//        baseService = ((BaseBinder) service).getServiceHandler();
+//        System.out.println(baseService);
 
 
     }

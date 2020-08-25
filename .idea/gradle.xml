@@ -11,7 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/workmanager" />
+            <option value="$PROJECT_DIR$/services" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

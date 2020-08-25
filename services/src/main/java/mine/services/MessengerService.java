@@ -75,6 +75,7 @@ public class MessengerService extends Service {
         System.out.println(Thread.currentThread());
         System.out.println("start id  is " + startId);
 
+
         //方式一：直接从Intent中获取Messenger对象
 //        Messenger messenger = intent.getParcelableExtra("Messenger");
 //        System.out.println(messenger);

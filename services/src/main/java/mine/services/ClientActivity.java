@@ -86,12 +86,12 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
     public void start(View view) {
         System.out.println("~~start~~");
 
-        Intent intent = new Intent("bs");
-        intent.setPackage(getPackageName());
+//        Intent intent = new Intent("bs");
+//        intent.setPackage(getPackageName());
 
 
-//        Intent intent = new Intent("messenger");
-//        intent.setPackage("mine.services");
+        Intent intent = new Intent("messenger");
+        intent.setPackage("mine.services");
 
 
 //        Intent intent = new Intent("messenger");
