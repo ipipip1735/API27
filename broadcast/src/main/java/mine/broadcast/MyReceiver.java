@@ -3,6 +3,7 @@ package mine.broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -35,12 +36,12 @@ public class MyReceiver extends BroadcastReceiver {
         ToolClass.showThread();
 
 //        order(); //有序广播
-        sync(); //异步任务
+        async(); //异步任务
 
 
     }
 
-    private void sync() {
+    private void async() {
 
         //方式一
 //        new Thread(new Runnable() {
@@ -67,7 +68,11 @@ public class MyReceiver extends BroadcastReceiver {
 
                 System.out.println("msg is " + msg.obj);
                 PendingResult pendingResult = (PendingResult) msg.obj;
-                System.out.println(pendingResult.getResultCode());
+                System.out.println("getResultCode is " + pendingResult.getResultCode());
+                System.out.println("getResultData is " + pendingResult.getResultData());
+
+                Bundle bundle = pendingResult.getResultExtras(true);
+                System.out.println(bundle.getInt("one"));
 
                 pendingResult.finish();  //销毁PendingResult对象
                 return true;
@@ -84,7 +89,11 @@ public class MyReceiver extends BroadcastReceiver {
 
                         if (i == 3) {
                             Message message = new Message();
-                            message.obj = goAsync(); //获取PendingResult对象
+                            PendingResult pendingResult = goAsync(); //获取PendingResult对象
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("one", 111);
+                            pendingResult.setResult(999, "AAA", bundle);
+                            message.obj = pendingResult;
                             handler.sendMessage(message);
                         }
                     }
