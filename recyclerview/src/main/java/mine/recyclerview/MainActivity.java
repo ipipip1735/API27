@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
 
-//        layoutManager = new LinearLayoutManager(this);
-        layoutManager = new LayoutManaager();//使用自定义布局管理器
+
+        layoutManager = new LinearLayoutManager(this);
+//        layoutManager = new LayoutManaager();//使用自定义布局管理器
 
 
 
@@ -60,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 6);//设置缓存池尺寸，默认尺寸为5
 
 
-        bindListen(); //绑定各种监听器
+//        bindListen(); //绑定各种监听器
 //        bindAnimator(); //绑定动画
-//        bindDecoration(); //绑定装饰器
+        bindDecoration(); //绑定装饰器
 //        bindDragDrop();//绑定侧滑
     }
 
@@ -313,6 +314,7 @@ public class MainActivity extends AppCompatActivity {
 
         //方式二：自定义
         RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
+            int offset = 20;
 
             @Override
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -324,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
 
                 for (int i = 1; i < parent.getChildCount(); i++) { //遍历绘制
                     int left = parent.getChildAt(i).getLeft();
-                    int top = parent.getChildAt(i).getTop();
+                    int top = parent.getChildAt(i).getTop() - offset;
                     paint.setColor(Color.BLUE);
 //                    paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
                     c.drawLine(left, top, width, top, paint);
@@ -358,13 +360,11 @@ public class MainActivity extends AppCompatActivity {
                     int top = parent.getChildAt(i).getTop();
                     int right = parent.getChildAt(i).getRight();
                     int bottom = parent.getChildAt(i).getBottom();
+                    System.out.println(parent.getChildAt(i));
 //                    paint.setColor(Color.BLUE);
                     paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-                    c.drawRect(left+10, top+10, right-10, bottom-10, paint);
+                    c.drawRect(left+15, top+15, right-15, bottom-15, paint);
                 }
-
-
-
             }
 
             @Override
@@ -374,9 +374,9 @@ public class MainActivity extends AppCompatActivity {
 
                 int paddingLeft, paddingTop, paddingRight, paddingBottom;
                 paddingLeft = 0;
-                paddingTop = 15;
+                paddingTop = offset;
                 paddingRight = 0;
-                paddingBottom = 0;
+                paddingBottom = offset;
                 outRect.set(paddingLeft, paddingTop, paddingRight, paddingBottom);
             }
         };
@@ -401,8 +401,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindListen() {
-
-
         //拦截器
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -414,13 +412,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTouchEvent(RecyclerView rv, MotionEvent e) {
                 System.out.println("~~onTouchEvent~~");
-
             }
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
                 System.out.println("~~onRequestDisallowInterceptTouchEvent~~");
-
             }
         });
 
