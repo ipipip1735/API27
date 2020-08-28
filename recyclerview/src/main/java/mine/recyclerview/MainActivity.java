@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 //        layoutManager = new LayoutManaager();//使用自定义布局管理器
 
 
-
         dataset = new ArrayList<>(12);
         for (int i = 0; i < 180; i++) {
             dataset.add("item" + i);
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        bindListen(); //绑定各种监听器
 //        bindAnimator(); //绑定动画
-        bindDecoration(); //绑定装饰器
+//        bindDecoration(); //绑定装饰器
 //        bindDragDrop();//绑定侧滑
     }
 
@@ -196,10 +195,9 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
 
 
-
         //查找子View对应的ViewHolder
-        if(!this.list.isEmpty()){
-            TextView textView = this.list.get(this.list.size()-1);
+        if (!this.list.isEmpty()) {
+            TextView textView = this.list.get(this.list.size() - 1);
             RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(textView);
             System.out.println(textView.getText() + "|" + holder);
         }
@@ -250,25 +248,24 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
         //查询缓存池缓存个数
-        RecyclerView.RecycledViewPool pool = recyclerView.getRecycledViewPool();
-        System.out.println("getRecycledViewCount is " + pool.getRecycledViewCount(0));
+//        RecyclerView.RecycledViewPool pool = recyclerView.getRecycledViewPool();
+//        System.out.println("getRecycledViewCount is " + pool.getRecycledViewCount(0));
 
 
         //取出所有缓存，即清空缓存池
-        for (int i = 0; i < pool.getRecycledViewCount(0); i++) {
-            RecyclerView.ViewHolder holder = pool.getRecycledView(0);
-            System.out.println("holder is " + holder);
-        }
+//        while (pool.getRecycledViewCount(0) != 0) {
+//            RecyclerView.ViewHolder holder = pool.getRecycledView(0);
+//            System.out.println("holder is " + holder);
+//            System.out.println("getRecycledViewCount is " + pool.getRecycledViewCount(0));
+//        }
 
 
         //查询子View的ViewHolder以及它的Position
-        System.out.println(((TextView) target).getText() + "|" + recyclerView.getChildViewHolder(target));
-        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(target));
-        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(target));
-        System.out.println("---------");
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            TextView textView = (TextView) recyclerView.getChildAt(i);
-            System.out.print(textView.getText() + "|");
+            TextView target = (TextView) recyclerView.getChildAt(i);
+            System.out.println(((TextView) target).getText() + "|" + recyclerView.getChildViewHolder(target));
+            System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(target));
+            System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(target));
         }
 
     }
@@ -363,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(parent.getChildAt(i));
 //                    paint.setColor(Color.BLUE);
                     paint.setColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-                    c.drawRect(left+15, top+15, right-15, bottom-15, paint);
+                    c.drawRect(left + 15, top + 15, right - 15, bottom - 15, paint);
                 }
             }
 
@@ -457,8 +454,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
     private void bindDragDrop() {
