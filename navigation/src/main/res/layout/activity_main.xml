@@ -28,6 +28,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph_deeplink" />
+        app:navGraph="@navigation/nav_graph" />
+<!--        app:navGraph="@navigation/nav_graph_deeplink" />-->
+<!--        app:navGraph="@navigation/nav_graph_activity" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

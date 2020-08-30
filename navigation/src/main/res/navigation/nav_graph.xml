@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_oneFragment_to_twoFragment"
             app:destination="@id/twoFragment"/>
+        <action
+            android:id="@+id/action_oneFragment_to_oneActivity"
+            app:destination="@id/oneActivity" />
 
         <!--配置参数-->
 <!--        <argument android:name="three" app:argType="integer" android:defaultValue="-1" />-->
@@ -39,5 +42,9 @@
         <argument android:name="one" app:argType="integer" android:defaultValue="-1" />
         <argument android:name="two" app:argType="integer" android:defaultValue="-1" />
     </fragment>
+    <activity
+        android:id="@+id/oneActivity"
+        android:name="mine.navigation.OneActivity"
+        android:label="OneActivity" />
 </navigation>
 

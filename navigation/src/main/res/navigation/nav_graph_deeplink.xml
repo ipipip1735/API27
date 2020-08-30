@@ -6,8 +6,8 @@
     app:startDestination="@id/oneFragment">
 
     <!--全局Action-->
-    <!--    <action android:id="@+id/action_global_oneFragment" app:destination="@id/oneFragment"/>-->
-    <!--    <action android:id="@+id/action_global_twoFragment" app:destination="@id/twoFragment"/>-->
+        <action android:id="@+id/action_global_oneFragment" app:destination="@id/oneFragment"/>
+        <action android:id="@+id/action_global_twoFragment" app:destination="@id/twoFragment"/>
 
 
 
@@ -17,27 +17,29 @@
         android:label="TwoFragment"
         tools:layout="@layout/fragment_two">
         <!--配置Action-->
-<!--        <action-->
-<!--            android:id="@+id/action_twoFragment_to_oneFragment"-->
-<!--            app:destination="@id/oneFragment" />-->
+        <action
+            android:id="@+id/action_twoFragment_to_oneFragment"
+            app:destination="@id/oneFragment" />
 
         <!--配置参数-->
-<!--        <argument-->
-<!--            android:name="one"-->
-<!--            android:defaultValue="-1"-->
-<!--            app:argType="integer" />-->
-<!--        <argument-->
-<!--            android:name="two"-->
-<!--            android:defaultValue="-1"-->
-<!--            app:argType="integer" />-->
-<!--        <deepLink android:id="@+id/deepLink" app:uri="http://a.b/?one={one}&amp;two={two}" />-->
+        <argument
+            android:name="one"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="two"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <deepLink android:id="@+id/deepLink" app:uri="http://a.b/?one={one}&amp;two={two}" />
     </fragment>
+
     <fragment
         android:id="@+id/oneFragment"
         android:name="mine.navigation.OneFragment"
         android:label="fragment_one"
         tools:layout="@layout/fragment_one">
     </fragment>
+
     <navigation
         android:id="@+id/navigation"
         app:startDestination="@id/fourFragment">

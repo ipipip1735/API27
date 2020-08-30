@@ -3,12 +3,14 @@ package mine.navigation;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ActionOnlyNavDirections;
+import androidx.navigation.ActivityNavigator;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -41,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("~~Activity.handleOnBackPressed2~~");
             }
         };
-
-
-
 
 
 //        System.out.println(callback1.isEnabled());
@@ -121,17 +120,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-//        navigation();
+        navigation();
+//        navigationActivity();
 
 //        callback2.remove();
-        callback2.setEnabled(false);
+//        callback2.setEnabled(false);
+
+    }
+
+    private void navigationActivity() {
+
+        //方式一：使用NavController
+//        NavController navController = Navigation.findNavController(this, R.id.fragment);
+//        navController.navigate(R.id.action_oneFragment_to_oneActivity);
+
+
+        //方式二：使用ActivityNavigator
+        ActivityNavigator activityNavigator = new ActivityNavigator(this);
+        ActivityNavigator.Destination destination = activityNavigator
+                .createDestination()
+                .setAction("one");//使用隐式Intent
+//                .setIntent(new Intent(this, OneActivity.class));//使用显式Intent
+        activityNavigator.navigate(destination, null, null, null);
+
+
+
 
     }
 
     private void navigation() {
 
-//        NavController navController = Navigation.findNavController(this, R.id.fragment);
-//        navController.navigate(R.id.action_oneFragment_to_twoFragment);
+        NavController navController = Navigation.findNavController(this, R.id.fragment);
+        navController.navigate(R.id.action_oneFragment_to_twoFragment);
 //        navController.navigate(R.id.action_twoFragment_to_oneFragment);//错误，使用Activity跳转时源Destination，此Action不属于此Fragment
 
 
@@ -143,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //使用全局Action
-//        NavController navController = Navigation.findNavController(this, R.id.fragment);
+//       NavController navController = Navigation.findNavController(this, R.id.fragment);
 //       navController.navigate(NavGraphDirections.actionGlobalOneFragment().setTwo(222).setFour(444));
 //       navController.navigate(NavGraphDirections.actionGlobalTwoFragment().setOne(111).setTwo(222));
 
@@ -155,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
 //                .setEnterAnim(R.anim.fragment_fade_in)
 //                .build();
 //        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, navOptions);
-
 
     }
 
