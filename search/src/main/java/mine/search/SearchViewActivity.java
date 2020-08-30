@@ -98,8 +98,8 @@ public class SearchViewActivity extends AppCompatActivity {
         searchView.setIconifiedByDefault(false); //显示输入框，而不是图标
         searchView.setSubmitButtonEnabled(true); //显示提交按钮
         searchView.setQueryRefinementEnabled(true); //在每个查询提示的item尾部增加精化按钮
-//        return true;
-        return false;
+        return true;
+//        return false;
     }
 
     @Override
@@ -128,12 +128,6 @@ public class SearchViewActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
     }
-
-//    @Override
-//    public boolean onSearchRequested(@Nullable SearchEvent searchEvent) {
-//        System.out.println("*********  " + getClass().getSimpleName() + ".onSearchRequested  *********");
-//        return super.onSearchRequested(searchEvent);
-//    }
 
     @Override
     protected void onDestroy() {

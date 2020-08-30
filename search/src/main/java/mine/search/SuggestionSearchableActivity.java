@@ -19,26 +19,26 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_main);
 
+        //获取搜索提示查询信息（点击搜索提示后导航到本Activity才会携带这些信息）
         System.out.println("getAction is " + getIntent().getAction());
         System.out.println("getData is " + getIntent().getData());
         System.out.println("getDataString is " + getIntent().getDataString());
 
 
-        //获取查询数据
+        //获取查询信息
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             System.out.println("query is " + query);
+
             //获取额外数据
             Bundle bundle = intent.getBundleExtra(SearchManager.APP_DATA);
             if (Objects.nonNull(bundle)) {
-
                 int n = bundle.getInt("one");
-                System.out.println(n);
+                System.out.println("one is " + n);
             }
 
             if (Objects.nonNull(query)) {
-
 
                 //方式二：保存查询内容
 //                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
@@ -52,9 +52,6 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
 
             }
         }
-
-
-
 
 
     }
@@ -79,7 +76,6 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             System.out.println("query is " + query);
         }
-
     }
 
     @Override
@@ -129,19 +125,6 @@ public class SuggestionSearchableActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        //方法一
-        boolean b = onSearchRequested();
-        System.out.println(b);
-
-        //方法二
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("one", 1111);
-//        startSearch("AAAAA", true, bundle, false);
-
-        //方法三
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("one", 1111);
-//        triggerSearch("one", bundle);
     }
 
 

@@ -95,6 +95,21 @@ public class DialogSearchActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
     }
 
+
+    @Override
+    public boolean onSearchRequested() {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSearchRequested  *********");
+
+//        startSearch("AAAA", true, null, false);
+
+        System.out.println("getSearchEvent is " + getSearchEvent());
+        Bundle bundle = new Bundle();
+        bundle.putInt("one", 111);
+        startSearch("AAAA", true, bundle, false);
+
+        return true;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -120,7 +135,6 @@ public class DialogSearchActivity extends AppCompatActivity {
 
         SearchManager searchManager = getSystemService(SearchManager.class);
         searchManager.stopSearch(); //结束语言搜索
-
 
     }
 
