@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 //                Color.argb(255, 255, 0, 0),
 //                Color.argb(255, 0, 255, 0));
 //        swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);//设置尺寸
+//        swipeRefreshLayout.setProgressViewOffset(true, 300, 500);
 
         //绑定向上滚动监听器
         swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 final ListView lv = (ListView) child;
 
 
-                if (!lv.canScrollList(1) && !isAdding) {//判断能否向下滚动，按需加载
+                if (!lv.canScrollList(View.SCROLL_INDICATOR_TOP) && !isAdding) {//判断能否向下滚动，按需加载
                     isAdding = true;
                     final Toast toast = Toast.makeText(child.getContext(), "Loading...", Toast.LENGTH_LONG);
                     toast.show();
@@ -126,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                                     textView.setText("nameHead-");
 
                                     ArrayAdapter<String> arrayAdapter = (ArrayAdapter) ((ListView) child).getAdapter();
-
 
                                     int n = lv.getLastVisiblePosition() - lv.getFirstVisiblePosition();
                                     tag++;
@@ -215,11 +215,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setProgressViewEndTarget(true, 100);
         swipeRefreshLayout.setRefreshing(true);
-
-
     }
 
 
