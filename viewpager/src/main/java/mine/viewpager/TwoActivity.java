@@ -32,6 +32,7 @@ public class TwoActivity extends AppCompatActivity {
 
         mPager = findViewById(R.id.vp);
         mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+//        mPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
 
         mPager.setAdapter(new FragmentStateAdapter(this) {
             @Override

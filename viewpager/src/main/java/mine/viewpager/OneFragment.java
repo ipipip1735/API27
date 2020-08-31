@@ -24,26 +24,6 @@ public class OneFragment extends Fragment {
 
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        TabsActivity activity = (TabsActivity) getActivity();
-        new TabLayoutMediator(activity.mTabLayout, activity.mPager, true,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        System.out.println("~~onConfigureTab~~");
-                        System.out.println("tab is " + tab);
-                        System.out.println("position is " + position);
-
-                        tab.setText("AAA" + position);
-                        tab.setIcon(R.drawable.ic_launcher_background);
-                    }
-                }).attach();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_one, container, false);

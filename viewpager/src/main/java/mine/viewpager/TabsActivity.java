@@ -28,8 +28,8 @@ public class TabsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-//        setContentView(R.layout.activity_tabs);
-        setContentView(R.layout.activity_tabs_with_pageview2);
+        setContentView(R.layout.activity_tabs);
+//        setContentView(R.layout.activity_tabs_with_pageview2);
 
         mPager = findViewById(R.id.vp);
         mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -43,7 +43,7 @@ public class TabsActivity extends AppCompatActivity {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return new OneFragment(position);
+                return new TabsFragment(position);
             }
         });
 
