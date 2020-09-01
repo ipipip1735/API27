@@ -26,17 +26,12 @@
         <!--</activity>-->
 
 
-
-
-        <!--<activity android:name=".ExampleActivity">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN"/>-->
-        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-
-
-
+<!--        <activity android:name=".ExampleActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
 
 
 <!--        <activity android:name=".ComponentsActivity">-->
@@ -67,24 +62,20 @@
 <!--        </activity>-->
 
 
-        <activity android:name=".ViewActivity">
+<!--        <activity android:name=".ViewActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
+
+
+        <activity android:name=".OverlayActivity">
         <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
         </intent-filter>
         </activity>
-
-
-
-
-
-
-
-
-
-
-
-
 
     </application>
 

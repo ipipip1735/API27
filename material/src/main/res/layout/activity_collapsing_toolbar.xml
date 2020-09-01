@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:fitsSystemWindows="true"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -26,9 +26,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="match_parent" app:layout_collapseMode="none"
                 android:src="@drawable/abc_vector_test"
                 android:background="@color/YellowGreen"/>
+<!--                android:layout_height="350dp" app:layout_collapseMode="pin"-->
 <!--                app:layout_collapseMode="parallax" app:layout_collapseParallaxMultiplier="0.5"-->
 
 

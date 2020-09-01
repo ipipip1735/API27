@@ -19,19 +19,19 @@ public class ButtonActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_button);
 
-//        toggleButton = findViewById(R.id.toggleButton);
+        toggleButton = findViewById(R.id.toggleButton);
 //        toggleButton = findViewById(R.id.toggleButton1);
 
-//        toggleButton.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-//            @Override
-//            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-//                System.out.println("~~onButtonChecked~~");
-//                System.out.println("group is " + group);
-//                System.out.println("checkedId is " + checkedId);
-//                System.out.println("isChecked is " + isChecked);
-//                System.out.println(group.getCheckedButtonIds());
-//            }
-//        });
+        toggleButton.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                System.out.println("~~onButtonChecked~~");
+                System.out.println("group is " + group);
+                System.out.println("checkedId is " + checkedId);
+                System.out.println("isChecked is " + isChecked);
+                System.out.println(group.getCheckedButtonIds());
+            }
+        });
     }
 
     @Override

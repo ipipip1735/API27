@@ -22,5 +22,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/activity_navigation_header"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_view" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -1,7 +1,7 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
-<!--    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+<!--    <style name="AppTheme" parent="Theme.MaterialComponents.Light">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- 全局样式 -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -16,7 +16,7 @@
         <!-- 组件样式-->
 <!--        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>-->
 <!--        <item name="buttonStyle">@style/Widget.App.ButtonStyle</item>-->
-<!--        <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>-->
+        <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
 <!--        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>-->
 <!--        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>-->
     </style>
@@ -26,6 +26,7 @@
         <item name="cornerFamilyTopRight">cut</item>
         <item name="cornerFamilyBottomRight">cut</item>
         <item name="cornerFamilyBottomLeft">cut</item>
+<!--        <item name="cornerSize">0.5dp</item>-->
 <!--        <item name="cornerFamily">rounded</item>-->
     </style>
 

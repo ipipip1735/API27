@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         }
         listView.setAdapter(arrayAdapter);
 
-//        listView.setNestedScrollingEnabled(true);
+        listView.setNestedScrollingEnabled(true);
 
 
 

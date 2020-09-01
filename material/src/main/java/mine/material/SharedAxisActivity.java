@@ -39,12 +39,12 @@ public class SharedAxisActivity extends AppCompatActivity {
                 .setDuration(1500L));
 
         //设置重进入动画
-//        getWindow().setReenterTransition(new MaterialSharedAxis(direction, false)
-////                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
-////                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
-////                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
-//                .setDuration(1000L));
-//        getWindow().setAllowReturnTransitionOverlap(false);//返回动画使用顺序播放模式
+        getWindow().setReenterTransition(new MaterialSharedAxis(direction, false)
+//                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
+//                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
+//                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
+                .setDuration(1000L));
+        getWindow().setAllowReturnTransitionOverlap(false);//返回动画使用顺序播放模式
 
 
 

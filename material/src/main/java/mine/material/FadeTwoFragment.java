@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.platform.MaterialSharedAxis;
 
@@ -22,8 +23,8 @@ public class FadeTwoFragment extends Fragment {
         long duration = 5000L;
         setEnterTransition(new MaterialFadeThrough().setDuration(duration));
         setExitTransition(new MaterialFadeThrough().setDuration(duration));
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

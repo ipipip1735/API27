@@ -22,7 +22,6 @@ public class FadeOneFragment extends Fragment {
         long duration = 5000L;
         setEnterTransition(new MaterialFadeThrough().setDuration(duration));
         setExitTransition(new MaterialFadeThrough().setDuration(duration));
-
     }
 
     @Override

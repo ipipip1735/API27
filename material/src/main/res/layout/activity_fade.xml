@@ -104,26 +104,26 @@
         app:constraint_referenced_ids="button9,button11,button12,button8,button7,button10,button14,button13"
         tools:layout_editor_absoluteY="731dp" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/fragmentNav"-->
-<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/barrier"-->
-<!--        app:defaultNavHost="true"-->
-<!--        app:navGraph="@navigation/nav_fade" />-->
-
     <fragment
-        android:id="@+id/fragment"
-        android:name="mine.material.FadeOneFragment"
+        android:id="@+id/fragmentNav"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier"/>
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_fade" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/fragment"-->
+<!--        android:name="mine.material.FadeOneFragment"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/barrier"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

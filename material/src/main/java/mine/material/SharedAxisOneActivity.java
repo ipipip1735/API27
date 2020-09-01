@@ -38,12 +38,12 @@ public class SharedAxisOneActivity extends AppCompatActivity {
 
 
         //设置返回动画
-//        getWindow().setReturnTransition(new MaterialSharedAxis(direction, false)
-////                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
-////                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
-////                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
-//                .setDuration(1000L));
-//        getWindow().setAllowEnterTransitionOverlap(false);//入场动画使用顺序播放模式
+        getWindow().setReturnTransition(new MaterialSharedAxis(direction, false)
+//                .addTarget(R.id.cl)//使用白名单，仅允许布局配置中的View参与动画
+//                .excludeTarget(android.R.id.statusBarBackground, true)//使用黑名单，排除顶部状态条
+//                .excludeTarget(android.R.id.navigationBarBackground, true)//使用黑名单，排除底部导航条
+                .setDuration(1000L));
+        getWindow().setAllowEnterTransitionOverlap(false);//入场动画使用顺序播放模式
 
 
 

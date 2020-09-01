@@ -18,6 +18,9 @@ public class BottomAppBarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_bar);
 
 
+
+
+
     }
 
     @Override

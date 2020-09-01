@@ -89,8 +89,8 @@ public class DialogActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
 //        alertDialog();//警告对话框
-//        simpleDialog();//简单对话框
-        confirmationDialog();//确认对话框
+        simpleDialog();//简单对话框
+//        confirmationDialog();//确认对话框
 
     }
 

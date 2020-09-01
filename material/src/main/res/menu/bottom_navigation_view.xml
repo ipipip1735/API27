@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/oneFragment"
+        android:id="@+id/page_1"
         android:enabled="true"
         android:title="AAA"
         app:showAsAction="ifRoom|collapseActionView"/>
     <item
-        android:id="@+id/twoFragment"
+        android:id="@+id/page_2"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_menu_24"
         android:title="BBB"/>
@@ -16,6 +16,12 @@
         android:enabled="true"
         android:icon="@drawable/abc_vector_test"
         android:title="CCC"/>
+    <item android:title="DDD">
+        <menu>
+            <item android:title="ONE" />
+            <item android:title="TWO" />
+        </menu>
+    </item>
 </menu>
 
 

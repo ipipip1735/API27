@@ -100,7 +100,8 @@ public class BottomSheetDialogActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        new OneBottomSheetDialogFragment().show(getSupportFragmentManager(), "G");
+        new OneBottomSheetDialogFragment()
+                .show(getSupportFragmentManager(), "G");
 
     }
 

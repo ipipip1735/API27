@@ -13,45 +13,45 @@
 
 
 <!--        <activity android:name=".TextfieldActivity">-->
-<!--&lt;!&ndash;        <activity android:name=".SliderActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".NavigationViewsActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".SelectActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".DialogActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".CollapsingToolbarLayoutActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".AppBarLayoutActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".ChipsActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".BottomSheetsActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".BottomSheetDialogActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".BottomNavigationViewActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".CoordinatorLayoutActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".BottomAppBarActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".BadgeDrawableActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".ButtonActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".FloatingActionButtonActivity">&ndash;&gt;-->
-<!--&lt;!&ndash;        <activity android:name=".SnackbarsActivity">&ndash;&gt;-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+<!--        <activity android:name=".SliderActivity">-->
+<!--        <activity android:name=".NavigationViewsActivity">-->
+<!--        <activity android:name=".SelectActivity">-->
+<!--        <activity android:name=".DialogActivity">-->
+<!--        <activity android:name=".CollapsingToolbarLayoutActivity">-->
+<!--        <activity android:name=".AppBarLayoutActivity">-->
+<!--        <activity android:name=".ChipsActivity">-->
+<!--        <activity android:name=".BottomSheetsActivity">-->
+<!--        <activity android:name=".BottomSheetDialogActivity">-->
+        <activity android:name=".BottomNavigationViewActivity">
+<!--        <activity android:name=".CoordinatorLayoutActivity">-->
+<!--        <activity android:name=".BottomAppBarActivity">-->
+<!--        <activity android:name=".BadgeDrawableActivity">-->
+<!--        <activity android:name=".ButtonActivity">-->
+<!--        <activity android:name=".FloatingActionButtonActivity">-->
+<!--        <activity android:name=".SnackbarsActivity">-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
 
 
 
         <!--容器转换之Activity切换-->
-        <activity android:name=".ContainerTransformActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ContainerTransformOneActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+<!--        <activity android:name=".ContainerTransformActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+<!--        <activity android:name=".ContainerTransformOneActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 
         <!--容器转换之Fragment切换-->

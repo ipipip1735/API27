@@ -31,10 +31,10 @@ public class ContainerTransformFragmentActivity extends AppCompatActivity {
 
 
         //初始化Fragment容器
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentNav, new TransitionOneFragment())
-                .commit();
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragmentNav, new TransitionOneFragment())
+//                .commit();
     }
 
     @Override
@@ -104,21 +104,21 @@ public class ContainerTransformFragmentActivity extends AppCompatActivity {
         System.out.println("~~button.go~~");
 
         //方式一：使用导航器
-//        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
-//        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-//                .addSharedElement(findViewById(R.id.ll), "shared")
-//                .build();
-//        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                .addSharedElement(findViewById(R.id.ll), "shared")
+                .build();
+        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, null, extras);
 
 
 
         //方式二：手动调用FragmentManager
-        getSupportFragmentManager()
-                .beginTransaction()
-                .addSharedElement(findViewById(R.id.ll), "shared")
-                .replace(R.id.fragmentNav, new TransitionTwoFragment())
-                .addToBackStack(null)
-                .commit();
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .addSharedElement(findViewById(R.id.ll), "shared")
+//                .replace(R.id.fragmentNav, new TransitionTwoFragment())
+//                .addToBackStack(null)
+//                .commit();
 
     }
 

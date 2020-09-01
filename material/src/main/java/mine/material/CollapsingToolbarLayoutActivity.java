@@ -32,7 +32,7 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 //        collapsingToolbarLayout.setTitle("TTTTTT");
 
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);//设置Toolbar是无效的，优先级没有CollapsingToolbarLayout高
 //        toolbar.setTitle("SSSSSSSSSSS");
 //        setSupportActionBar(toolbar);
 

@@ -92,13 +92,13 @@ public class SnackbarsActivity extends AppCompatActivity {
         ViewGroup root = findViewById(R.id.fl);
 
         Snackbar.make(root,"AAA", BaseTransientBottomBar.LENGTH_SHORT)
-                .setAction("BBB", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        System.out.println("~~onClick~~");
-                    }
-                })
-                .setActionTextColor(getResources().getColor(R.color.DarkOrchid, null))
+//                .setAction("BBB", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        System.out.println("~~onClick~~");
+//                    }
+//                })
+//                .setActionTextColor(getResources().getColor(R.color.DarkOrchid, null))
                 .setBackgroundTint(getResources().getColor(R.color.DeepPink, null))
                 .show();
     }

@@ -86,12 +86,12 @@ public class NavigationUIActivity extends AppCompatActivity {
 
 
         //方式六：使用ActionBarDrawerToggle
-        setContentView(R.layout.activity_action_bar_drawer_toggle);
-        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+//        setContentView(R.layout.activity_action_bar_drawer_toggle);
+//        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
 
 
     }

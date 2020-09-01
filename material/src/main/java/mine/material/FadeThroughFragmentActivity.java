@@ -85,11 +85,11 @@ public class FadeThroughFragmentActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         //切换为FadeTwoFragment
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentNav, new FadeTwoFragment())
-                .addToBackStack("two")
-                .commit();
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment, new FadeTwoFragment())
+//                .addToBackStack("two")
+//                .commit();
     }
 
 
@@ -97,10 +97,10 @@ public class FadeThroughFragmentActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 
         //切换为FadeOneFragment
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentNav, new FadeOneFragment())
-                .commit();
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment, new FadeOneFragment())
+//                .commit();
     }
 
     public void nav(View view) {
@@ -115,6 +115,8 @@ public class FadeThroughFragmentActivity extends AppCompatActivity {
     public void bind(View view) {
         System.out.println("~~button.bind~~");
 
+        NavController navController = Navigation.findNavController(this, R.id.fragmentNav);
+        navController.navigate(R.id.action_twoFragment_to_oneFragment);
     }
 
     public void unbind(View view) {

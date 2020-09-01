@@ -11,7 +11,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/viewpager" />
+            <option value="$PROJECT_DIR$/drawerlayout" />
+            <option value="$PROJECT_DIR$/material" />
+            <option value="$PROJECT_DIR$/view" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -31,15 +31,15 @@ public class ChipsActivity extends AppCompatActivity {
 
         //使用Chip组
         ChipGroup chipGroup = (ChipGroup) findViewById(R.id.gc);
-//        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(ChipGroup group, int checkedId) {
-//                System.out.println("~~onCheckedChanged~~");
-//                System.out.println("group is " + group);
-//                System.out.println("checkedId is " + checkedId);
-//                System.out.println(group.findViewById(checkedId));
-//            }
-//        });
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                System.out.println("~~onCheckedChanged~~");
+                System.out.println("group is " + group);
+                System.out.println("checkedId is " + checkedId);
+                System.out.println(group.findViewById(checkedId));
+            }
+        });
 
         for (int i = 0; i < 20; i++) {
             Chip chip = new Chip(this);

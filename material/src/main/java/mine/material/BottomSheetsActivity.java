@@ -146,14 +146,14 @@ public class BottomSheetsActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-//        behavior.setState(STATE_HALF_EXPANDED);
+
         behavior.setState(STATE_HIDDEN);
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
+        behavior.setState(STATE_HALF_EXPANDED);
     }
 
     public void bind(View view) {
