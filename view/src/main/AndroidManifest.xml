@@ -70,7 +70,14 @@
 <!--        </activity>-->
 
 
-        <activity android:name=".OverlayActivity">
+<!--        <activity android:name=".OverlayActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
+
+        <activity android:name=".ViewTreeObserverActivity">
         <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

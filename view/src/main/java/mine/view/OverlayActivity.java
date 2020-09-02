@@ -1,21 +1,16 @@
 package mine.view;
 
 import android.content.Intent;
-import android.content.res.XmlResourceParser;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PixelFormat;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -111,7 +106,7 @@ public class OverlayActivity extends AppCompatActivity {
                 Paint paint = new Paint();
                 paint.setColor(getResources().getColor(R.color.Orchid, null));
 
-                canvas.drawCircle(-10, -10, 100, paint);
+                canvas.drawCircle(-10, -10, 500, paint);
 
             }
 
@@ -133,11 +128,21 @@ public class OverlayActivity extends AppCompatActivity {
         };
 
 
-        FrameLayout frameLayout = findViewById(R.id.fl);
-//        frameLayout.setForeground(drawable);
-//        frameLayout.setClipChildren(false);
-        frameLayout.getOverlay().add(drawable);
+        //使用ClipToPadding
+//        ConstraintLayout constraintLayout = findViewById(R.id.top);
+//        constraintLayout.setClipToPadding(false);//禁用剪切到padding，即父View的padding部分也能被渲染
+//
+//        FrameLayout frameLayout = findViewById(R.id.fl);
+//        frameLayout.setLeft(frameLayout.getLeft() - 100);
 
+
+        //使用ClipChildren
+        ConstraintLayout constraintLayout = findViewById(R.id.top);
+        constraintLayout.setClipChildren(false);//禁用剪切边界，即子View绘制内容可以超过子Viwe布局边界
+
+        FrameLayout frameLayout = findViewById(R.id.fl);
+//        frameLayout.setForeground(drawable);//绘制前景，和getOverlay是等价的
+        frameLayout.getOverlay().add(drawable);
 
 
     }
@@ -145,6 +150,19 @@ public class OverlayActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~stop~~");
+
+        FrameLayout frameLayout = findViewById(R.id.fl);
+        frameLayout.setLeft(frameLayout.getLeft() - 100);
+
+
+//        FrameLayout frameLayout = findViewById(R.id.fl);
+//        System.out.println("frameLayout padding is " + frameLayout.getPaddingStart() + ", " + frameLayout.getPaddingTop() + ", " + frameLayout.getPaddingEnd() + ", " + frameLayout.getPaddingBottom());
+//
+//
+//
+//        ConstraintLayout cl = findViewById(R.id.top);
+//        System.out.println("cl padding is " + cl.getPaddingStart() + ", " + cl.getPaddingTop() + ", " + cl.getPaddingEnd() + ", " + cl.getPaddingBottom());
+
 
     }
 }

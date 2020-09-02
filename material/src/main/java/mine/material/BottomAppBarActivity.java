@@ -1,9 +1,15 @@
 package mine.material;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 /**
  * Created by Administrator on 2020/6/27.
@@ -17,7 +23,32 @@ public class BottomAppBarActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_bottom_bar);
 
+        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
+        bottomAppBar.setElevation(10);
 
+
+        LinearLayout linearLayout = findViewById(R.id.ll);
+        for (int i = 0; i < 180; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("ooo - " + i);
+            linearLayout.addView(textView);
+        }
+
+
+        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~onClick~~");
+            }
+        });
+
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                System.out.println("~~onMenuItemClick~~");
+                return false;
+            }
+        });
 
 
 
