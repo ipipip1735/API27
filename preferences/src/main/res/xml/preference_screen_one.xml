@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        app:key="pone"
-        app:title="AAA"
-        app:summary="aaaaaaaaaaa"/>
+    <PreferenceCategory app:key="pcone" app:title="Preference Category one">
+        <Preference app:key="pone" app:title="AAA" app:summary="aaaaaaaaaaa"/>
+        <Preference app:key="ptwo" app:title="BBB" app:summary="bbbbbbbbbbb"/>
+    </PreferenceCategory>
 
-    <Preference
-        app:key="ptwo"
-        app:title="BBB"
-        app:isPreferenceVisible="false"
-        app:summary="bbbbbbbbbbb"/>
+    <PreferenceCategory app:key="pctwo" app:title="Preference Category two">
+        <Preference app:key="pthree" app:title="CCC" app:summary="ccccccccc"/>
+        <Preference app:key="pfour" app:isPreferenceVisible="false" app:title="DDD" app:summary="dddddddddd"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>

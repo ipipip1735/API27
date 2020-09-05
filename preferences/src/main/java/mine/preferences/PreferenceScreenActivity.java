@@ -182,7 +182,12 @@ public class PreferenceScreenActivity extends AppCompatActivity
             setPreferencesFromResource(R.xml.preference_screen_one, rootKey);
 
             Preference preference = findPreference("ptwo");
-            preference.setVisible(true);
+            System.out.println("preference is " + preference);
+
+            findPreference("pfour").setVisible(true);
+
+
+
 
 
         }
