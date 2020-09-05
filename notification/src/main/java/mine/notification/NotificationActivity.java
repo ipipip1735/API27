@@ -18,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Random;
 
 import static android.app.Notification.BADGE_ICON_SMALL;
@@ -108,7 +110,7 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
 
-        basicNotify(notificationManager); //创建通知
+//        basicNotify(notificationManager); //创建通知
 //        componentNotify(notificationManager); //组件通知(点击通知启动组件)
 //        stackNotify(notificationManager); //回退栈通知
 //
@@ -117,7 +119,7 @@ public class NotificationActivity extends AppCompatActivity {
 //        progressNotify(notificationManager); //进度条通知
 //
 //        styleNotify(notificationManager); //样式通知
-//        mediaStyleNotify(notificationManager); //媒体样式通知
+        mediaStyleNotify(notificationManager); //媒体样式通知
 //        fullScreenNotify(notificationManager); //全屏通知
 //        customNotify(notificationManager); //自定义样式通知
 //        foldNotify(notificationManager); //可折叠通知
@@ -337,7 +339,7 @@ public class NotificationActivity extends AppCompatActivity {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);//将给启动的Intent创建新的Task栈
         stackBuilder.addParentStack(OneActivity.class);//增加OneActivity的父Activity，即NotificationActivity
         stackBuilder.addNextIntent(new Intent(this, OneActivity.class)); //增加第一个Activity
-//        stackBuilder.addNextIntent(new Intent(this, MainActivity.class)); //增加第二个Activity
+        stackBuilder.addNextIntent(new Intent(this, TwoActivity.class)); //增加第二个Activity
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
 
@@ -348,38 +350,43 @@ public class NotificationActivity extends AppCompatActivity {
     private void basicNotify(NotificationManager notificationManager) {
 
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this, "c1")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("ttt")
-                        .setContentText("Hello World!")
-//                        .setContentInfo("OOOOO")//本方法API24+已经废弃，请使用setSubText()代替
-                        .setSubText("stststst");
-        notificationManager.notify(mId, mBuilder.build());
 
-
-//        String subText = "sssssssssssssssssssssssssssssssssssssssssssssssss" +
-//                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
-//                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
-//                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss";
-//
-//        String title = "ttttttttttttttttttttttttttttttttttttttttttttttttt" +
-//                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
-//                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
-//                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt";
-//
-//        String context = "ccccccccccccccccccccccccccccccccccccccccccccccccc" +
-//                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
-//                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
-//                "ccccccccccccccccccccccccend";
-//
 //        NotificationCompat.Builder mBuilder =
 //                new NotificationCompat.Builder(this, "c1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle(title)
-//                .setContentText(context)
-//                .setSubText(subText);
+//                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+////                        .setWhen(System.currentTimeMillis())//通知启动时间为当前时间（默认值就是当前时间戳，可以省略此方法）
+////                        .setWhen(Instant.now().plus(Duration.ofMinutes(1)).toEpochMilli())//超过当前时间则显示now
+////                        .setWhen(Instant.now().minus(Duration.ofMinutes(1)).toEpochMilli())//当前时间减1分钟
+//                        .setShowWhen(false)
+//                        .setContentTitle("ttt")
+//                        .setContentText("Hello World!")
+////                        .setContentInfo("OOOOO")//本方法API24+已经废弃，请使用setSubText()代替
+//                        .setSubText("stststst");
 //        notificationManager.notify(mId, mBuilder.build());
+
+
+        String subText = "sssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss" +
+                "sssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
+        String title = "ttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt" +
+                "ttttttttttttttttttttttttttttttttttttttttttttttttttttttt";
+
+        String context = "ccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccccccccccccccccccccccccccccccccc" +
+                "ccccccccccccccccccccccccend";
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(context)
+                .setSubText(subText);
+        notificationManager.notify(mId, mBuilder.build());
 
 
     }
@@ -417,8 +424,8 @@ public class NotificationActivity extends AppCompatActivity {
         Notification customNotification = new NotificationCompat.Builder(this, "c1")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContent(notificationLayout1)//折叠时的布局
-                .setCustomContentView(notificationLayout2)//比setContent()优先级高
-                .setCustomBigContentView(notificationLayoutExpanded)//设置展开后的样式，优先级最高
+//                .setCustomContentView(notificationLayout2)//比setContent()优先级高
+//                .setCustomBigContentView(notificationLayoutExpanded)//设置展开后的样式，优先级最高
                 .build();
         notificationManager.notify(mId, customNotification);
 
@@ -428,81 +435,81 @@ public class NotificationActivity extends AppCompatActivity {
     private void groupNotify(NotificationManager notificationManager) {
 
         //单个分组
-        Notification notification1 = new NotificationCompat.Builder(this, "c1")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("n1")
-                .setContentText("aaaaaaaaaa")
-                .setGroup("myGroup") //指定所属的组
-                .setAutoCancel(true)
-                .build();
-        Notification groupNotify = new NotificationCompat.Builder(this, "c1")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("GG")
-                .setContentText("n1, n2")
-                .setGroup("myGroup")
-                .setAutoCancel(true)
-                .setGroupSummary(true) //设置为组简洁通知
-                .build();
-        Notification notification2 = new NotificationCompat.Builder(this, "c1")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("n2")
-                .setContentText("bbbbbbbbbbbbbb")
-                .setGroup("myGroup") //指定所属的组
-                .setAutoCancel(true)
-                .build();
-
-        notificationManager.notify(1, notification1);
-        notificationManager.notify(3, groupNotify);
-        notificationManager.notify(2, notification2);
+//        Notification notification1 = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("n1")
+//                .setContentText("aaaaaaaaaa")
+//                .setGroup("myGroup") //指定所属的组
+//                .setAutoCancel(true)
+//                .build();
+//        Notification groupNotify = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("GG")
+//                .setContentText("n1, n2")
+//                .setGroup("myGroup")
+//                .setAutoCancel(true)
+//                .setGroupSummary(true) //设置为组简洁通知
+//                .build();
+//        Notification notification2 = new NotificationCompat.Builder(this, "c1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("n2")
+//                .setContentText("bbbbbbbbbbbbbb")
+//                .setGroup("myGroup") //指定所属的组
+//                .setAutoCancel(true)
+//                .build();
+//
+//        notificationManager.notify(1, notification1);
+//        notificationManager.notify(3, groupNotify);
+//        notificationManager.notify(2, notification2);
 
 
         //多个分组
-//        Notification notification10 = new NotificationCompat.Builder(this, "c1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle("n10")
-//                .setContentText("aaaaaaaaaa")
-//                .setGroup("myGroup1") //指定所属的组
-//                .setAutoCancel(true)
-//                .build();
-//        Notification groupNotify1 = new NotificationCompat.Builder(this, "c1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle("GG")
-//                .setContentText("n1")
-//                .setGroup("myGroup1")
-//                .setAutoCancel(true)
-//                .setGroupSummary(true) //设置为组简介通知
-//                .build();
-//
-//        notificationManager.notify(10, notification10);
-//        notificationManager.notify(1, groupNotify1);
-//
-//
-//        Notification notification20 = new NotificationCompat.Builder(this, "c1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle("n20")
-//                .setContentText("aaaaaaaaaa")
-//                .setGroup("myGroup2") //指定所属的组
-//                .setAutoCancel(true)
-//                .build();
-//        Notification notification21 = new NotificationCompat.Builder(this, "c1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle("n21")
-//                .setContentText("aaaaaaaaaa")
-//                .setGroup("myGroup2") //指定所属的组
-//                .setAutoCancel(true)
-//                .build();
-//        Notification groupNotify2 = new NotificationCompat.Builder(this, "c1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle("GG")
-//                .setContentText("n2")
-//                .setGroup("myGroup2")
-//                .setAutoCancel(true)
-//                .setGroupSummary(true) //设置为组简介通知
-//                .build();
-//
-//        notificationManager.notify(20, notification20);
-//        notificationManager.notify(21, notification21);
-//        notificationManager.notify(2, groupNotify2);
+        Notification notification10 = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("n10")
+                .setContentText("aaaaaaaaaa")
+                .setGroup("myGroup1") //指定所属的组
+                .setAutoCancel(true)
+                .build();
+        Notification groupNotify1 = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("GG")
+                .setContentText("n1")
+                .setGroup("myGroup1")
+                .setAutoCancel(true)
+                .setGroupSummary(true) //设置为组简介通知
+                .build();
+
+        notificationManager.notify(10, notification10);
+        notificationManager.notify(1, groupNotify1);
+
+
+        Notification notification20 = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("n20")
+                .setContentText("aaaaaaaaaa")
+                .setGroup("myGroup2") //指定所属的组
+                .setAutoCancel(true)
+                .build();
+        Notification notification21 = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("n21")
+                .setContentText("aaaaaaaaaa")
+                .setGroup("myGroup2") //指定所属的组
+                .setAutoCancel(true)
+                .build();
+        Notification groupNotify2 = new NotificationCompat.Builder(this, "c1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("GG")
+                .setContentText("n2")
+                .setGroup("myGroup2")
+                .setAutoCancel(true)
+                .setGroupSummary(true) //设置为组简介通知
+                .build();
+
+        notificationManager.notify(20, notification20);
+        notificationManager.notify(21, notification21);
+        notificationManager.notify(2, groupNotify2);
 
 
     }
@@ -550,7 +557,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         MediaSession mediaSession = new MediaSession(this, "XXX");
         Notification.MediaStyle style = new Notification.MediaStyle()
-                .setShowActionsInCompactView(1, 0);
+                .setShowActionsInCompactView(1);
 
 
         Notification.Builder mBuilder = new Notification.Builder(this, "c1")

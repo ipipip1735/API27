@@ -28,9 +28,21 @@
 <!--        <activity android:name=".OneActivity">-->
         <activity android:name=".OneActivity" android:parentActivityName=".NotificationActivity">
             <intent-filter>
-                <action android:name="MAIN" />
+                <action android:name="VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".TwoActivity">
+<!--        <activity android:name=".TwoActivity"  android:parentActivityName=".OneActivity">-->
+            <intent-filter>
+                <action android:name="VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".OneActivity" />
         </activity>
 
         <receiver android:name="MBR" />
