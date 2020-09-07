@@ -17,7 +17,10 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static android.support.v4.media.MediaBrowserCompat.MediaItem.FLAG_PLAYABLE;
 
 /**
  * Created by Administrator on 2019/1/31.
@@ -240,6 +243,8 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             super.onPlayFromMediaId(mediaId, extras);
             System.out.println("*********  " + getClass().getSimpleName() + ".onPlayFromMediaId  *********");
+            System.out.println("mediaId is " + mediaId);
+
         }
 
         @Override
@@ -478,6 +483,19 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
         System.out.println("getBrowserRootHints is " + getBrowserRootHints());
         System.out.println("getCurrentBrowserInfo is " + getCurrentBrowserInfo());
 
+        List<MediaBrowserCompat.MediaItem> list = new ArrayList<>();
+
+        MediaDescriptionCompat mediaDescriptionCompat = new MediaDescriptionCompat.Builder()//创建构建器
+                .setMediaId("LIG")//设置媒体文件ID
+                .setTitle("XXX")//设置标题
+                .setSubtitle("oooooooo")//设置副标
+                .setMediaUri(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.ltg))//设置媒体资源URI
+                .build();
+
+        list.add(new MediaBrowserCompat.MediaItem(mediaDescriptionCompat, FLAG_PLAYABLE));//加入容器
+        result.sendResult(list);//发送给客户端
+
+//        result.sendResult(null);//如果没有查询到对应的媒体文件，则返回Null，那么客户端将触发on
 
     }
 
@@ -494,21 +512,51 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
         return super.onUnbind(intent);
     }
 
+    @Override
+    public void onSearch(@NonNull String query, Bundle extras, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onSearch  *********");
+
+        System.out.println("query is " + query);
+        System.out.println("result is " + result);
+
+
+        if (true) {
+            List<MediaBrowserCompat.MediaItem> list = new ArrayList<>();
+
+            MediaDescriptionCompat mediaDescriptionCompat = new MediaDescriptionCompat.Builder()//创建构建器
+                    .setMediaId("LIG")//设置媒体文件ID
+                    .setTitle("XXX")//设置标题
+                    .setSubtitle("oooooooo")//设置副标
+                    .setMediaUri(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.ltg))//设置媒体资源URI
+                    .build();
+
+            list.add(new MediaBrowserCompat.MediaItem(mediaDescriptionCompat, FLAG_PLAYABLE));//加入容器
+            result.sendResult(list);//发送给客户端
+        } else {
+            super.onSearch(query, extras, result);//如果查询失败则调用父类方法，发送result.sendResult(null);
+        }
+
+    }
+
     @Nullable
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName,
                                  int clientUid,
                                  @Nullable Bundle rootHints) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onGetRoot  *********");
-//        System.out.println("getBrowserRootHints is " + getBrowserRootHints());
-//        System.out.println("getCurrentBrowserInfo is " + getCurrentBrowserInfo());
-//        System.out.println("-----");
-//        System.out.println("clientPackageName is " + clientPackageName);
-//        System.out.println("clientUid is " + clientUid);
-//        System.out.println("rootHints is " + rootHints);
+        System.out.println("getBrowserRootHints is " + getBrowserRootHints());
+        System.out.println("getCurrentBrowserInfo is " + getCurrentBrowserInfo());
+        System.out.println("-----");
+        System.out.println("clientPackageName is " + clientPackageName);
+        System.out.println("clientUid is " + clientUid);
+        System.out.println("rootHints is " + rootHints);
 
 
-        return new BrowserRoot("XXXXXXXXXXX", null);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(MediaBrowserServiceCompat.BrowserRoot.EXTRA_RECENT, true);//根列表是否为最近播放列表
+        bundle.putBoolean(MediaBrowserServiceCompat.BrowserRoot.EXTRA_OFFLINE, true);//根列表是否为离线播放列表（本地列表，不需要访问网络）
+        bundle.putBoolean(MediaBrowserServiceCompat.BrowserRoot.EXTRA_SUGGESTED, false);//根列表是否为建议播放列表（被标记为建议的文件排在顶部）
+        return new BrowserRoot("XXXXXXXXXXX", bundle);
     }
 
     @Override
@@ -517,7 +565,9 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
         System.out.println("*********  " + getClass().getSimpleName() + ".onLoadItem  *********");
         System.out.println("itemId is " + itemId);
         System.out.println("result is " + result);
-//        result.sendResult(null);
+
+
+        result.sendResult(null);
 
     }
 

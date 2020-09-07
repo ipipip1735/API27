@@ -5,7 +5,10 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.service.media.MediaBrowserService;
+import android.support.annotation.NonNull;
 import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Objects;
 
 import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DURATION;
@@ -84,8 +88,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onConnected() {
                         System.out.println("~~ConnectionCallback.onConnected~~");
                         MediaSessionCompat.Token token = mMediaBrowser.getSessionToken();
-                        System.out.println("Token is " + token);
-                        System.out.println(mMediaBrowser.getRoot());
+                        System.out.println("token is " + token);
+
+                        System.out.println("getRoot is " + mMediaBrowser.getRoot());
+
+                        Bundle bundle = mMediaBrowser.getExtras();
+                        System.out.println("EXTRA_RECENT is " +bundle.getBoolean(MediaBrowserServiceCompat.BrowserRoot.EXTRA_RECENT));
+                        System.out.println("EXTRA_OFFLINE is " +bundle.getBoolean(MediaBrowserServiceCompat.BrowserRoot.EXTRA_OFFLINE));
+                        System.out.println("EXTRA_SUGGESTED is " +bundle.getBoolean(MediaBrowserServiceCompat.BrowserRoot.EXTRA_SUGGESTED));
+
 
                         try {
                             MediaControllerCompat mediaController = new MediaControllerCompat(MainActivity.this, token);
@@ -245,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         //控制器是否存在
         MediaControllerCompat mediaController = MediaControllerCompat.getMediaController(this);
         if (Objects.nonNull(mediaController)) {
-            asyncTask.execute(mediaController); //开始异步任务
+//            asyncTask.execute(mediaController); //开始异步任务
         }
 
 
@@ -397,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
 
         MediaControllerCompat mediaController = MediaControllerCompat.getMediaController(MainActivity.this);
         mediaController.getTransportControls().play();
+        mediaController.getTransportControls().playFromMediaId("LIG", null);
 
     }
 
@@ -418,9 +430,77 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void subscribe(View view) {
+        System.out.println("~~button.subscribe~~");
+
+        MediaBrowserCompat.SubscriptionCallback callback = new MediaBrowserCompat.SubscriptionCallback() {
+            @Override
+            public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowserCompat.MediaItem> children) {
+                System.out.println("~~SubscriptionCallback.onChildrenLoaded~~");
+                System.out.println("parentId is " + parentId);
+                System.out.println("children is " + children);
+
+
+                super.onChildrenLoaded(parentId, children);
+            }
+
+            @Override
+            public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowserCompat.MediaItem> children, @NonNull Bundle options) {
+                System.out.println("~~SubscriptionCallback.onChildrenLoaded~~");
+                System.out.println("parentId is " + parentId);
+                System.out.println("children is " + children);
+                System.out.println("options is " + options);
+
+                super.onChildrenLoaded(parentId, children, options);
+            }
+
+            @Override
+            public void onError(@NonNull String parentId) {
+                System.out.println("~~SubscriptionCallback.onError~~");
+                System.out.println("parentId is " + parentId);
+                super.onError(parentId);
+            }
+
+            @Override
+            public void onError(@NonNull String parentId, @NonNull Bundle options) {
+                System.out.println("~~SubscriptionCallback.onError~~");
+                System.out.println("parentId is " + parentId);
+                System.out.println("options is " + options);
+                super.onError(parentId, options);
+            }
+        };
+
+
+        mMediaBrowser.subscribe("ccc", callback);
+
+//        mMediaBrowser.unsubscribe("ccc", callback);//取消订阅，不再接收回调
+
+    }
+
+
     public void query(View view) {
         System.out.println("~~button.query~~");
 
+
+        mMediaBrowser.search("xx", null, new MediaBrowserCompat.SearchCallback() {
+            @Override
+            public void onSearchResult(@NonNull String query, Bundle extras, @NonNull List<MediaBrowserCompat.MediaItem> items) {
+                System.out.println("~~SearchCallback.onSearchResult~~");
+                System.out.println("query is " + query);
+                System.out.println("items is " + items);
+
+
+                super.onSearchResult(query, extras, items);
+            }
+
+            @Override
+            public void onError(@NonNull String query, Bundle extras) {
+                System.out.println("~~SearchCallback.onError~~");
+                System.out.println("query is " + query);
+
+                super.onError(query, extras);
+            }
+        });
     }
 
 }

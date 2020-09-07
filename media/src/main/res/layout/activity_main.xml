@@ -20,7 +20,7 @@
         android:layout_height="52dp"
         android:onClick="seekTo"
         android:text="seekTo"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@id/button2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
         tools:layout_editor_absoluteX="16dp" />
@@ -31,8 +31,8 @@
         android:layout_height="wrap_content"
         android:onClick="state"
         android:text="state"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@id/button3"
+        app:layout_constraintTop_toBottomOf="@id/button"
         tools:layout_editor_absoluteX="16dp" />
 
     <Button
@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:onClick="prepare"
         android:text="prepare"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@id/button4"
+        app:layout_constraintTop_toBottomOf="@id/button2"
         tools:layout_editor_absoluteX="16dp" />
 
     <Button
@@ -51,8 +51,8 @@
         android:layout_height="wrap_content"
         android:onClick="play"
         android:text="play"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@id/button5"
+        app:layout_constraintTop_toBottomOf="@id/button3"
         tools:layout_editor_absoluteX="16dp" />
 
     <Button
@@ -71,8 +71,28 @@
         android:layout_height="wrap_content"
         android:onClick="stop"
         android:text="stop"
+        app:layout_constraintBottom_toTopOf="@id/button7"
+        app:layout_constraintTop_toBottomOf="@id/button5"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="subscribe"
+        android:text="subscribe"
+        app:layout_constraintBottom_toTopOf="@id/button8"
+        app:layout_constraintTop_toBottomOf="@id/button6"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="query"
+        android:text="query"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5"
+        app:layout_constraintTop_toBottomOf="@id/button7"
         tools:layout_editor_absoluteX="16dp" />
 
     <RelativeLayout

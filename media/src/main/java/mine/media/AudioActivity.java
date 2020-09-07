@@ -281,8 +281,8 @@ public class AudioActivity extends AppCompatActivity {
         int volume = audioManager.getStreamVolume(STREAM_MUSIC);//获取音量
         System.out.println(volume);
 
+//        audioManager.adjustStreamVolume(STREAM_MUSIC, ADJUST_RAISE, FLAG_SHOW_UI);
         audioManager.setStreamVolume(STREAM_MUSIC, ++volume, FLAG_PLAY_SOUND);//调整音量
-        audioManager.adjustStreamVolume(STREAM_MUSIC, ADJUST_RAISE, FLAG_SHOW_UI);
 
 //        audioManager.setRingerMode(RINGER_MODE_VIBRATE); //设置响铃模式
 
@@ -302,8 +302,8 @@ public class AudioActivity extends AppCompatActivity {
 
 
         //创建请求对象
-        audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-//        audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+//        audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+        audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
 //        audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
 //        audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE)
 //                .setAudioAttributes(audioAttributes)//设置属性，可选的
