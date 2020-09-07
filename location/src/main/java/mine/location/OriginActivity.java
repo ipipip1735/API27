@@ -161,7 +161,7 @@ public class OriginActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 0f, locationListener);
 
 
-        GnssStatus.Callback callback = new GnssStatus.Callback() {
+        callback = new GnssStatus.Callback() {
             @Override
             public void onStarted() {
                 super.onStarted();
