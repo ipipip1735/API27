@@ -34,7 +34,7 @@ public class MediatorLiveDataActivity extends AppCompatActivity {
 
         liveData1 = new MutableLiveData();
         liveData1.observe(this, value -> {
-            System.out.println("liveData1| vaule is " + value);
+            System.out.println("liveData| vaule is " + value);
         });
 
         liveData2 = new MutableLiveData();
@@ -52,10 +52,10 @@ public class MediatorLiveDataActivity extends AppCompatActivity {
             HashMap<String, String> data = (HashMap<String, String>) mediatorLiveData.getValue();
             if (Objects.isNull(data)) {
                 data = new HashMap<>();
-                data.put("liveData1", (String) value);
+                data.put("liveData", (String) value);
                 System.out.println("~~ init MediatorLiveData ~~");
             } else {
-                data.put("liveData1", (String) value);
+                data.put("liveData", (String) value);
             }
 //            mediatorLiveData.setValue(data);
         });
