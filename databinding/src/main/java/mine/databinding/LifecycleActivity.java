@@ -1,26 +1,19 @@
 package mine.databinding;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableArrayMap;
-import androidx.databinding.ObservableMap;
-import androidx.databinding.ViewDataBinding;
-
 import android.os.Bundle;
 import android.view.View;
 
-import mine.databinding.data.Car;
-import mine.databinding.data.Cat;
-import mine.databinding.data.Listener;
-import mine.databinding.data.Person;
-import mine.databinding.data.User;
-import mine.databinding.databinding.ActivityMainBinding;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
+import mine.databinding.data.Dog;
+import mine.databinding.databinding.ActivityAdaptorBinding;
 
 
 /**
- * Created by Administrator on 2020/10/25.
+ * Created by Administrator on 2020/11/2.
  */
-public class MainActivity extends AppCompatActivity {
+public class LifecycleActivity extends AppCompatActivity {
 
 
     @Override
@@ -28,37 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        //方式一：
-//        setContentView(R.layout.activity_main);
-//        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        binding.setUser(new User("Bob"));
-//        setContentView(binding.getRoot());
-//        System.out.println(binding.tv);//获取View，布局文件中带ID的都是
-
-
-        //方式二：使用工具类
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setUser(new User("Bob"));
-        binding.setCar(new Car(123456));
-        binding.setListener(new Listener());
-        binding.setPerson(new Person("Tom"));
-        binding.setCat(new Cat("Tom"));
-
-        binding.setMap(new ObservableArrayMap<>());
-        binding.getMap().put("one", 111);
-        binding.getMap().put("two", "22222");
-        binding.getMap().addOnMapChangedCallback(new ObservableMap.OnMapChangedCallback<ObservableMap<String, Object>, String, Object>() {
-            @Override
-            public void onMapChanged(ObservableMap<String, Object> sender, String key) {
-                System.out.println("~~OnMapChangedCallback.onMapChanged~~");
-                System.out.println("sender is " + sender);
-                System.out.println("key is " + key);
-
-            }
-        });
-
-
-
+        ActivityAdaptorBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_adaptor);
+        binding.setLifecycleOwner(this);
     }
 
     @Override
@@ -121,33 +85,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
-        ViewDataBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-//        binding.setVariable(BR.user, new User("Tom"));
-
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
-        ActivityMainBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getPerson().name.set("Jack");
-
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
-        ActivityMainBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getMap().put("one", 121);
-
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
-
-        ActivityMainBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getCat().setName("QS");
 
     }
 
@@ -167,5 +117,4 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
     }
-
 }
