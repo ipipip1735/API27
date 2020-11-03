@@ -1,22 +1,13 @@
 package mine.databinding.data;
 
-import android.widget.TextView;
-
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-import androidx.databinding.BindingMethod;
-import androidx.databinding.BindingMethods;
-
-import java.util.Random;
-
 /**
- * Created by Administrator on 2020/11/1.
+ * Created by Administrator on 2020/11/4.
  */
-public class Dog {
+public class Fish{
     String name;
     Integer age;
 
-    public Dog(String name) {
+    public Fish(String name) {
         System.out.println("--- " + getClass().getSimpleName() + ".Constructor ---");
         this.name = name;
         age = 10;

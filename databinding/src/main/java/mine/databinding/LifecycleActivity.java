@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import mine.databinding.data.Dog;
+import mine.databinding.data.Fish;
 import mine.databinding.databinding.ActivityAdaptorBinding;
+import mine.databinding.databinding.ActivityFishBinding;
 
 
 /**
@@ -21,8 +23,9 @@ public class LifecycleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        ActivityAdaptorBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_adaptor);
+        ActivityFishBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_fish);
         binding.setLifecycleOwner(this);
+        binding.setFish(new Fish("sis"));
     }
 
     @Override
@@ -85,6 +88,8 @@ public class LifecycleActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+
+
     }
 
 
