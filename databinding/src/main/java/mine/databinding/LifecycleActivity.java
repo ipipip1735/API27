@@ -23,9 +23,9 @@ public class LifecycleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        ActivityFishBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_fish);
-        binding.setLifecycleOwner(this);
-        binding.setFish(new Fish("sis"));
+//        ActivityFishBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_fish);
+//        binding.setLifecycleOwner(this);
+//        binding.setFish(new Fish("sis"));
     }
 
     @Override

@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("~~OnMapChangedCallback.onMapChanged~~");
                 System.out.println("sender is " + sender);
                 System.out.println("key is " + key);
-
             }
         });
 
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         ViewDataBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-//        binding.setVariable(BR.user, new User("Tom"));
+        binding.setVariable(BR.user, new User("Tom"));
 
     }
 

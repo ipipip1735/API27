@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.API27">
 
-        <activity android:name=".LifecycleActivity">
-<!--        <activity android:name=".AdapterActivity">-->
+<!--        <activity android:name=".LifecycleActivity">-->
+        <activity android:name=".AdapterActivity">
 <!--        <activity android:name=".MainActivity">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

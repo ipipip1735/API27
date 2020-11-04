@@ -30,11 +30,12 @@ public class Utilites {
 //    }
 
 
-    @BindingConversion
-    public static String mk(String one) {
-        System.out.println("~~Utilites.mk~~");
-        System.out.println("one is " + one);
-        return "go";
-    }
+    //拦截setter，完成内容转换
+//    @BindingConversion
+//    public static String mk(String one) {
+//        System.out.println("~~Utilites.mk~~");
+//        System.out.println("one is " + one);
+//        return "go";
+//    }
 
 }
