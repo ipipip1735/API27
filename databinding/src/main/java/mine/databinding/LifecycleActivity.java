@@ -5,11 +5,12 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 
-import mine.databinding.data.Dog;
-import mine.databinding.data.Fish;
-import mine.databinding.databinding.ActivityAdaptorBinding;
-import mine.databinding.databinding.ActivityFishBinding;
+import mine.databinding.data.User;
+import mine.databinding.data.TheViewModel;
+import mine.databinding.databinding.ActivityLifecycleBinding;
 
 
 /**
@@ -23,9 +24,16 @@ public class LifecycleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-//        ActivityFishBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_fish);
-//        binding.setLifecycleOwner(this);
-//        binding.setFish(new Fish("sis"));
+        ActivityLifecycleBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_lifecycle);
+        binding.setLifecycleOwner(this);
+
+        TheViewModel theViewModel = new ViewModelProvider(this).get(TheViewModel.class);
+        theViewModel.setUser(new MutableLiveData<>(new User("Tom")));
+        binding.setViewModel(theViewModel);
+
+        binding.setUser(new MutableLiveData<>(new User("Mary")));
+
+
     }
 
     @Override
@@ -89,12 +97,16 @@ public class LifecycleActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-
+        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getViewModel().getUser().setValue(new User("Jack"));
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+
+        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getUser().setValue(new User("Lisa"));
     }
 
     public void bind(View view) {

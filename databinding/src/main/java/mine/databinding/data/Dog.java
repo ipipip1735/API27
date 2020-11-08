@@ -14,12 +14,14 @@ import java.util.Random;
  */
 public class Dog {
     String name;
-    Integer age;
+    boolean gender;
+
+
 
     public Dog(String name) {
         System.out.println("--- " + getClass().getSimpleName() + ".Constructor ---");
         this.name = name;
-        age = 10;
+        gender = false;
     }
 
     public void setName(String name) {
@@ -27,19 +29,20 @@ public class Dog {
         this.name = name;
     }
 
-    public void setAge(Integer age) {
-        System.out.println("~~~ " + getClass().getSimpleName() + ".setAge ~~~");
-        this.age = age;
-    }
-
     public String getName() {
         System.out.println("~~~ " + getClass().getSimpleName() + ".getName ~~~");
         return name;
     }
 
-    public Integer getAge() {
-        System.out.println("~~~ " + getClass().getSimpleName() + ".getAge ~~~");
-        return age;
+    public boolean isGender() {
+        System.out.println("~~~ " + getClass().getSimpleName() + ".setName ~~~");
+        return gender;
     }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+
 
 }

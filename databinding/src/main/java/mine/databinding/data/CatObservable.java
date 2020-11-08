@@ -8,17 +8,19 @@ import java.util.Random;
 /**
  * Created by Administrator on 2020/11/1.
  */
-public class Cat extends BaseObservable {
+public class CatObservable extends BaseObservable {
     String name;
     int age;
 
-    public Cat(String name) {
+    public CatObservable(String name) {
+        System.out.println("~~CatObservable~~");
         this.name = name;
         age = new Random().nextInt(120);
     }
 
     @Bindable
     public String getName() {
+        System.out.println("~~getName~~");
         return name;
     }
     @Bindable

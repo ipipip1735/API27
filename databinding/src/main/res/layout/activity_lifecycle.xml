@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<!--        <variable name="user" type="mine.databinding.data.UserViewModel" />-->
+        <import type="mine.databinding.data.User" />
+        <variable name="viewModel" type="mine.databinding.data.TheViewModel" />
+        <variable name="user" type="androidx.lifecycle.MutableLiveData&lt;User>" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -114,18 +116,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="ddd"
+            android:text="@{viewModel.user.name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/textView8"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:text="@{dog.name}"-->
-<!--            app:layout_constraintStart_toEndOf="@id/textView7"-->
-<!--            app:layout_constraintTop_toTopOf="@id/textView7"/>-->
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@{user.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

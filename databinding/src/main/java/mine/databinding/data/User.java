@@ -15,6 +15,7 @@ public class User {
     }
 
     public String getName() {
+        System.out.println("~~~ " + getClass().getSimpleName() + ".getName ~~~");
         return name;
     }
     public int getAge() {

@@ -2,22 +2,11 @@ package mine.databinding;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableArrayMap;
-import androidx.databinding.ObservableMap;
-import androidx.databinding.ViewDataBinding;
 
-import mine.databinding.data.Car;
-import mine.databinding.data.Cat;
 import mine.databinding.data.Dog;
-import mine.databinding.data.Listener;
-import mine.databinding.data.Person;
-import mine.databinding.data.User;
 import mine.databinding.databinding.ActivityAdaptorBinding;
 import mine.databinding.databinding.ActivityMainBinding;
 
@@ -97,15 +86,29 @@ public class AdapterActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+
+
+        //方式一：每次使用数据对象新实例
+//        ActivityAdaptorBinding binding = DataBindingUtil.findBinding(findViewById(R.id.cl));
+//        binding.setDog(new Dog("oneeee"));//更新数据绑定对象
+
+        //方式一：每次使用同一个数据对象实例
+        ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getDog().setName("twooooo");
+        binding.setDog(binding.getDog());//更新数据绑定对象
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+
+
+
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
     }
 
     public void unbind(View view) {
