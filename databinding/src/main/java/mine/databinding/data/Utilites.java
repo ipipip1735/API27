@@ -24,14 +24,14 @@ public class Utilites {
 //    }
 
 
-////    @BindingAdapter({"four", "five"})
+    @BindingAdapter({"four", "five"})
 //    @BindingAdapter(value = {"four", "five"}, requireAll = false)
-//    public static void kt(View view, int one, int two) {
-//        System.out.println("~~Utilites.kt~~");
-//        System.out.println("view is " + view);
-//        System.out.println("one is " + one);
-//        System.out.println("two is " + two);
-//    }
+    public static void kt(View view, int one, int two) {
+        System.out.println("~~Utilites.kt~~");
+        System.out.println("view is " + view);
+        System.out.println("one is " + one);
+        System.out.println("two is " + two);
+    }
 
 
     //拦截setter，完成内容转换

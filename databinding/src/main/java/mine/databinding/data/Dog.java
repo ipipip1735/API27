@@ -15,6 +15,7 @@ import java.util.Random;
 public class Dog {
     String name;
     boolean gender;
+    int age;
 
 
 
@@ -43,6 +44,13 @@ public class Dog {
         this.gender = gender;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
 
 }
