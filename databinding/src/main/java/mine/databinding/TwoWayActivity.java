@@ -5,25 +5,28 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 
-import mine.databinding.data.Dog;
-import mine.databinding.databinding.ActivityAdaptorBinding;
-import mine.databinding.databinding.ActivityMainBinding;
+import mine.databinding.data.TheViewModel;
+import mine.databinding.data.User;
+import mine.databinding.databinding.ActivityLifecycleBinding;
 
 
 /**
- * Created by Administrator on 2020/11/1.
+ * Created by Administrator on 2020/11/2.
  */
-public class AdapterActivity extends AppCompatActivity {
-
+public class TwoWayActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        ActivityAdaptorBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_adaptor);
-        binding.setDog(new Dog("Odie"));
+        ActivityLifecycleBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_lifecycle);
+        binding.setLifecycleOwner(this);
+
+
     }
 
     @Override
@@ -63,11 +66,13 @@ public class AdapterActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
+
     @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -81,30 +86,28 @@ public class AdapterActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
+
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        //方式一：每次使用数据对象新实例
-//        ActivityAdaptorBinding binding = DataBindingUtil.findBinding(findViewById(R.id.cl));
-//        binding.setDog(new Dog("oneeee"));//更新数据绑定对象
+        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getViewModel().getUser().setValue(new User("Jack"));
+//        theViewModel.getUser().setValue(new User("Jack"));
 
-        //方式二：每次使用同一个数据对象实例
-        ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getDog().setName("twooooo");
-        binding.getDog().setAge(2);
-        binding.getDog().setGender(true);
-        binding.setDog(binding.getDog());//更新数据绑定对象
+
+
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
+        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getUser().setValue(new User("Lisa"));
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
-
     }
 
     public void unbind(View view) {

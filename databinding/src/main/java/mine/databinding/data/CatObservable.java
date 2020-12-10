@@ -2,6 +2,7 @@ package mine.databinding.data;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
 import java.util.Random;
 
@@ -18,7 +19,7 @@ public class CatObservable extends BaseObservable {
         age = new Random().nextInt(120);
     }
 
-    @Bindable
+//    @Bindable
     public String getName() {
         System.out.println("~~getName~~");
         return name;
@@ -35,6 +36,7 @@ public class CatObservable extends BaseObservable {
 
     public void setAge(int age) {
         this.age = age;
-        notifyChange();
+//        notifyChange();
+        notifyPropertyChanged(BR.age);
     }
 }

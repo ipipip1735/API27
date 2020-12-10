@@ -121,17 +121,17 @@
 <!--            app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
         <!--使用@BindingAdapter拦截getter-->
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{dog.name}"
-            app:five="@{dog.age * 2}"
-            app:four="@{dog.age}"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView7"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@{dog.name}"-->
+<!--            app:five="@{dog.age * 2}"-->
+<!--            app:four="@{dog.age}"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
         <!--使用@BindingConversion完成内容转换-->
 <!--        <TextView-->
@@ -155,16 +155,16 @@
 <!--            app:layout_constraintStart_toStartOf="parent"-->
 <!--            app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/textView9"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="64dp"-->
-<!--            android:text="@{dog.gender}"-->
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="64dp"
+            android:text="@{dog.gender}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier" />
 <!--            android:visibility="@{Boolean.valueOf(true)}"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

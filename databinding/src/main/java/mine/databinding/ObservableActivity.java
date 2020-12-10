@@ -45,11 +45,6 @@ public class ObservableActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
         binding.setPerson(new Person("Mack"));
 
     }
@@ -117,6 +112,7 @@ public class ObservableActivity extends AppCompatActivity {
 
         ActivityObservableBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
         binding.getCat().setName("Kate");
+        binding.getCat().setAge(12);
     }
 
 

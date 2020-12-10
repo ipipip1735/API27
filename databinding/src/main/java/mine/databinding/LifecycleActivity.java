@@ -17,7 +17,7 @@ import mine.databinding.databinding.ActivityLifecycleBinding;
  * Created by Administrator on 2020/11/2.
  */
 public class LifecycleActivity extends AppCompatActivity {
-
+    TheViewModel theViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +27,11 @@ public class LifecycleActivity extends AppCompatActivity {
         ActivityLifecycleBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_lifecycle);
         binding.setLifecycleOwner(this);
 
-        TheViewModel theViewModel = new ViewModelProvider(this).get(TheViewModel.class);
+        theViewModel = new ViewModelProvider(this).get(TheViewModel.class);
         theViewModel.setUser(new MutableLiveData<>(new User("Tom")));
         binding.setViewModel(theViewModel);
 
         binding.setUser(new MutableLiveData<>(new User("Mary")));
-
-
     }
 
     @Override
@@ -99,6 +97,10 @@ public class LifecycleActivity extends AppCompatActivity {
 
         ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
         binding.getViewModel().getUser().setValue(new User("Jack"));
+//        theViewModel.getUser().setValue(new User("Jack"));
+
+
+
     }
 
 

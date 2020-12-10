@@ -23,6 +23,7 @@ public class Dog {
         System.out.println("--- " + getClass().getSimpleName() + ".Constructor ---");
         this.name = name;
         gender = false;
+        age = 2;
     }
 
     public void setName(String name) {

@@ -24,25 +24,25 @@ public class Utilites {
 //    }
 
 
-    @BindingAdapter({"four", "five"})
-//    @BindingAdapter(value = {"four", "five"}, requireAll = false)
-    public static void kt(View view, int one, int two) {
-        System.out.println("~~Utilites.kt~~");
-        System.out.println("view is " + view);
-        System.out.println("one is " + one);
-        System.out.println("two is " + two);
-    }
-
-
-    //拦截setter，完成内容转换
-//    @BindingConversion
-//    public static String mk(boolean one) {
-//        System.out.println("~~Utilites.mk~~");
+//    @BindingAdapter({"four", "five"})
+////    @BindingAdapter(value = {"four", "five"}, requireAll = false)
+//    public static void kt(View view, int one, int two) {
+//        System.out.println("~~Utilites.kt~~");
+//        System.out.println("view is " + view);
 //        System.out.println("one is " + one);
-//        return one ? "male" : "female";
+//        System.out.println("two is " + two);
 //    }
 
-    //拦截setter，完成内容转换
+
+    //拦截setter，完成类型转换
+    @BindingConversion
+    public static String mk(boolean one) {
+        System.out.println("~~Utilites.mk~~");
+        System.out.println("one is " + one);
+        return one ? "male" : "female";
+    }
+
+    //拦截setter，完成类型转换
 //    @BindingConversion
 //    public static int kt(boolean one) {
 //        System.out.println("~~Utilites.kt~~");
