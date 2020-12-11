@@ -8,9 +8,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import mine.databinding.data.CattleObservable;
 import mine.databinding.data.TheViewModel;
 import mine.databinding.data.User;
 import mine.databinding.databinding.ActivityLifecycleBinding;
+import mine.databinding.databinding.ActivityTwoWayBinding;
 
 
 /**
@@ -23,9 +25,8 @@ public class TwoWayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        ActivityLifecycleBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_lifecycle);
-        binding.setLifecycleOwner(this);
-
+        ActivityTwoWayBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way);
+        binding.setCattle(new CattleObservable("ox"));
 
     }
 
@@ -91,8 +92,7 @@ public class TwoWayActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getViewModel().getUser().setValue(new User("Jack"));
-//        theViewModel.getUser().setValue(new User("Jack"));
+
 
 
 
@@ -101,9 +101,6 @@ public class TwoWayActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
-        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getUser().setValue(new User("Lisa"));
     }
 
     public void bind(View view) {

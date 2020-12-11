@@ -35,12 +35,12 @@ public class Utilites {
 
 
     //拦截setter，完成类型转换
-    @BindingConversion
-    public static String mk(boolean one) {
-        System.out.println("~~Utilites.mk~~");
-        System.out.println("one is " + one);
-        return one ? "male" : "female";
-    }
+//    @BindingConversion
+//    public static String mk(boolean one) {
+//        System.out.println("~~Utilites.mk~~");
+//        System.out.println("one is " + one);
+//        return one ? "male" : "female";
+//    }
 
     //拦截setter，完成类型转换
 //    @BindingConversion

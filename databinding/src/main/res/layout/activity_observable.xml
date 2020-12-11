@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="@{cat.name + ` - ` + cat.age}"
+            android:text="@{`cat.age is ` + cat.age}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier" />
 
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
-            android:text="@{person.name}"
+            android:text="@{`cat.name is ` + cat.name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier" />
 

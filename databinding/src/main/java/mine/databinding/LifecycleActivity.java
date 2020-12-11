@@ -2,6 +2,7 @@ package mine.databinding;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -27,11 +28,13 @@ public class LifecycleActivity extends AppCompatActivity {
         ActivityLifecycleBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_lifecycle);
         binding.setLifecycleOwner(this);
 
+        //仅LiveDate
+        binding.setUser(new MutableLiveData<>(new User("Mary")));
+
+        //ViewModel包裹的LiveData
         theViewModel = new ViewModelProvider(this).get(TheViewModel.class);
         theViewModel.setUser(new MutableLiveData<>(new User("Tom")));
         binding.setViewModel(theViewModel);
-
-        binding.setUser(new MutableLiveData<>(new User("Mary")));
     }
 
     @Override
@@ -95,11 +98,18 @@ public class LifecycleActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
 
+        //修改ViewModel(View属性同步变更)
+//        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+//        binding.getViewModel().getUser().setValue(new User("Jack"));
+////        theViewModel.getUser().setValue(new User("Jack"));
+
+
+        //修改View属性(同时更新数据绑定对象)
+        TextView textView = findViewById(R.id.textView7);
+        User user = new User("Jone");
+        textView.setText(user.getName() + " - " + user.getAge());
         ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getViewModel().getUser().setValue(new User("Jack"));
-//        theViewModel.getUser().setValue(new User("Jack"));
-
-
+        binding.getViewModel().getUser().setValue(user);
 
     }
 
@@ -134,6 +144,12 @@ public class LifecycleActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        System.out.println("User is " + binding.getViewModel().getUser().getValue());
+
+        TextView textView = findViewById(R.id.textView7);
+        System.out.println(textView.getText());
 
     }
 }

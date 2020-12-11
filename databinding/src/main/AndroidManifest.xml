@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.API27">
 
-<!--        <activity android:name=".TwoWayActivity">-->
+        <activity android:name=".TwoWayActivity">
 <!--        <activity android:name=".LifecycleActivity">-->
 <!--        <activity android:name=".AdapterActivity">-->
-        <activity android:name=".ObservableActivity">
+<!--        <activity android:name=".ObservableActivity">-->
 <!--        <activity android:name=".MainActivity">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

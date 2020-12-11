@@ -155,16 +155,16 @@
 <!--            app:layout_constraintStart_toStartOf="parent"-->
 <!--            app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="64dp"
-            android:text="@{dog.gender}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier" />
-<!--            android:visibility="@{Boolean.valueOf(true)}"-->
+<!--        <TextView-->
+<!--            android:id="@+id/textView9"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginTop="64dp"-->
+<!--            android:text="@{dog.gender}"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/barrier" />-->
+<!--&lt;!&ndash;            android:visibility="@{Boolean.valueOf(true)}"&ndash;&gt;-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
