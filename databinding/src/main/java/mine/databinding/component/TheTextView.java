@@ -1,4 +1,4 @@
-package mine.databinding;
+package mine.databinding.component;
 
 import android.content.Context;
 import android.util.AttributeSet;

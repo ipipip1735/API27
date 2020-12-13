@@ -8,19 +8,18 @@ import java.util.Random;
 import mine.databinding.BR;
 
 /**
- * Created by Administrator on 2020/11/1.
+ * Created by Administrator on 2020/12/14.
  */
-public class CattleObservable extends BaseObservable {
+public class UserObservable extends BaseObservable {
     String name;
     int age;
 
-    public CattleObservable(String name) {
-        System.out.println("--CatObservable--");
+    public UserObservable(String name) {
+        System.out.println("--UserObservable--");
         this.name = name;
         age = new Random().nextInt(120);
     }
 
-    @Bindable
     public String getName() {
         System.out.println("~~CattleObservable.getName~~");
         return name;
@@ -29,7 +28,8 @@ public class CattleObservable extends BaseObservable {
     public void setName(String name) {
         System.out.println("~~CattleObservable.setName~~");
         this.name = name;
-        notifyPropertyChanged(BR.name);
+        notifyChange();
+//        notifyPropertyChanged(BR.name);
     }
 
     public int getAge() {

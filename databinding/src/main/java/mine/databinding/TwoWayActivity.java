@@ -8,9 +8,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.sql.Time;
+import java.time.Instant;
+
+import mine.databinding.data.CatObservable;
 import mine.databinding.data.CattleObservable;
 import mine.databinding.data.TheViewModel;
 import mine.databinding.data.User;
+import mine.databinding.data.UserObservable;
 import mine.databinding.databinding.ActivityLifecycleBinding;
 import mine.databinding.databinding.ActivityTwoWayBinding;
 
@@ -26,7 +31,8 @@ public class TwoWayActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         ActivityTwoWayBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way);
-        binding.setCattle(new CattleObservable("ox"));
+//        binding.setCattle(new CattleObservable("ox"));
+        binding.setUser(new UserObservable("ox"));
 
     }
 
@@ -90,25 +96,29 @@ public class TwoWayActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
-        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-
-
-
-
+//        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+//        binding.getCattle().setName("Max");
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+//        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+//        binding.textView.setText("Lobby");
+
+//        System.out.println("Cattle.name is " + binding.getCattle().getName());
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getUser().setName("xox");
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
+        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        System.out.println("time is " + binding.timeTextView.time);
 
     }
 

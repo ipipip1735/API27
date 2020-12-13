@@ -110,7 +110,7 @@
             tools:layout_editor_absoluteY="731dp" />
 
         <!--使用@BindingMethods设置setter-->
-<!--        <mine.databinding.TheTextView-->
+<!--        <mine.databinding.component.TheTextView-->
 <!--            android:id="@+id/tv"-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->

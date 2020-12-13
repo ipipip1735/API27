@@ -1,12 +1,13 @@
 package mine.databinding.data;
 
-import android.graphics.drawable.ColorDrawable;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.databinding.BindingAdapter;
-import androidx.databinding.BindingConversion;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
+
+import java.sql.Time;
+
+import mine.databinding.component.TheTextView;
+import mine.databinding.component.TimeTextView;
 
 /**
  * Created by Administrator on 2020/11/1.
@@ -50,4 +51,26 @@ public class Utilites {
 //        return one ? View.VISIBLE : View.GONE;
 //    }
 
+    /**
+     * 双向绑定
+     */
+//    @BindingAdapter(value = {"app:time", "app:timeAttrChanged"}, requireAll = false)
+//    public static void setTime(TimeTextView view, String time, InverseBindingListener timeAttrChanged) {
+//        System.out.println("~~Utilites.setTime~~");
+//        System.out.println("view = " + view + ", time = " + time + ", timeAttrChanged = " + timeAttrChanged);
+////        if (view.time != newValue) {
+////            view.time = newValue;
+////        }
+//
+//        if (!view.time.equals(time)) {
+//            view.time = time;
+//            timeAttrChanged.onChange();
+//        }
+//    }
+//
+//    @InverseBindingAdapter(attribute = "app:time", event = "app:timeAttrChanged")
+//    public static String getTime(TimeTextView view) {
+//        System.out.println("~~Utilites.getTime~~");
+//        return view.time;
+//    }
 }
