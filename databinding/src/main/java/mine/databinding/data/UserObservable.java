@@ -21,15 +21,14 @@ public class UserObservable extends BaseObservable {
     }
 
     public String getName() {
-        System.out.println("~~CattleObservable.getName~~");
+        System.out.println("~~UserObservable.getName~~");
         return name;
     }
 
     public void setName(String name) {
-        System.out.println("~~CattleObservable.setName~~");
+        System.out.println("~~UserObservable.setName~~");
         this.name = name;
         notifyChange();
-//        notifyPropertyChanged(BR.name);
     }
 
     public int getAge() {

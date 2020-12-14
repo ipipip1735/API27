@@ -20,32 +20,17 @@ import java.sql.Time;
  */
 public class TimeTextView extends MaterialTextView {
     public String time = "ooooo";
+    public InverseBindingListener timeAttrChanged;
 
     public TimeTextView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         System.out.println("---TimeTextView.Constructor---");
     }
 
-
-//    @BindingAdapter(value = {"app:time", "app:timeAttrChanged"}, requireAll = false)
-//    public static void setTime(TimeTextView view, String time, InverseBindingListener timeAttrChanged) {
-//        System.out.println("~~Utilites.setTime~~");
-//        System.out.println("view = " + view + ", time = " + time + ", timeAttrChanged = " + timeAttrChanged);
-////        if (view.time != newValue) {
-////            view.time = newValue;
-////        }
-//
-//        if (!view.time.equals(time)) {
-//            view.time = time;
-//            timeAttrChanged.onChange();
-//        }
-//    }
-//
-//    @InverseBindingAdapter(attribute = "app:time", event = "app:timeAttrChanged")
-//    public static String getTime(TimeTextView view) {
-//        System.out.println("~~Utilites.getTime~~");
-//        return view.time;
-//    }
+    public void setTime(String time) {
+        this.time = time;
+        timeAttrChanged.onChange();
+    }
 }
 
 

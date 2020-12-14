@@ -54,23 +54,25 @@ public class Utilites {
     /**
      * 双向绑定
      */
-//    @BindingAdapter(value = {"app:time", "app:timeAttrChanged"}, requireAll = false)
-//    public static void setTime(TimeTextView view, String time, InverseBindingListener timeAttrChanged) {
-//        System.out.println("~~Utilites.setTime~~");
-//        System.out.println("view = " + view + ", time = " + time + ", timeAttrChanged = " + timeAttrChanged);
-////        if (view.time != newValue) {
-////            view.time = newValue;
-////        }
-//
-//        if (!view.time.equals(time)) {
-//            view.time = time;
-//            timeAttrChanged.onChange();
+    @BindingAdapter(value = {"app:time", "app:timeAttrChanged"}, requireAll = false)
+    public static void setTime(TimeTextView view, String time, InverseBindingListener timeAttrChanged) {
+        System.out.println("~~Utilites.setTime~~");
+        System.out.println("view = " + view + ", time = " + time + ", timeAttrChanged = " + timeAttrChanged);
+//        if (view.time != newValue) {
+//            view.time = newValue;
 //        }
-//    }
-//
-//    @InverseBindingAdapter(attribute = "app:time", event = "app:timeAttrChanged")
-//    public static String getTime(TimeTextView view) {
-//        System.out.println("~~Utilites.getTime~~");
-//        return view.time;
-//    }
+
+
+        if (!view.time.equals(time)) {
+            view.time = time;
+            view.timeAttrChanged = timeAttrChanged;
+            timeAttrChanged.onChange();
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "app:time", event = "app:timeAttrChanged")
+    public static String getTime(TimeTextView view) {
+        System.out.println("~~Utilites.getTime~~");
+        return view.time;
+    }
 }

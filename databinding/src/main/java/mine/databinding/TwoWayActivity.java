@@ -105,7 +105,7 @@ public class TwoWayActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 //        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
 //        binding.textView.setText("Lobby");
-
+//
 //        System.out.println("Cattle.name is " + binding.getCattle().getName());
     }
 
@@ -113,12 +113,17 @@ public class TwoWayActivity extends AppCompatActivity {
         System.out.println("~~button.bind~~");
         ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
         binding.getUser().setName("xox");
+        System.out.println("time is " + binding.timeTextView.time);
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
         ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
         System.out.println("time is " + binding.timeTextView.time);
+
+        binding.timeTextView.setTime("tot");
+
+        System.out.println("name is " + binding.getUser().getName());
 
     }
 
