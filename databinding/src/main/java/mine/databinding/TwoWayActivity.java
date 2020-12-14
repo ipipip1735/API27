@@ -32,7 +32,7 @@ public class TwoWayActivity extends AppCompatActivity {
 
         ActivityTwoWayBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way);
 //        binding.setCattle(new CattleObservable("ox"));
-        binding.setUser(new UserObservable("ox"));
+        binding.setUser(new UserObservable("Bob"));
 
     }
 
@@ -112,18 +112,16 @@ public class TwoWayActivity extends AppCompatActivity {
     public void bind(View view) {
         System.out.println("~~button.bind~~");
         ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getUser().setName("xox");
-        System.out.println("time is " + binding.timeTextView.time);
+        binding.getUser().setName("Jack");
+        System.out.println("---time is " + binding.timeTextView.time);
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
         ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        System.out.println("time is " + binding.timeTextView.time);
 
-        binding.timeTextView.setTime("tot");
-
-        System.out.println("name is " + binding.getUser().getName());
+        binding.timeTextView.setTime("Mary");
+        System.out.println("---name is " + binding.getUser().getName());
 
     }
 
@@ -141,6 +139,11 @@ public class TwoWayActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        System.out.println("name is " + binding.getUser().getName());
+        System.out.println("time is " + binding.timeTextView.time);
+
 
     }
 }

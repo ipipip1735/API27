@@ -73,6 +73,8 @@ public class Utilites {
     @InverseBindingAdapter(attribute = "app:time", event = "app:timeAttrChanged")
     public static String getTime(TimeTextView view) {
         System.out.println("~~Utilites.getTime~~");
+        System.out.println("view = " + view);
+        System.out.println("time is " + view.time);
         return view.time;
     }
 }
