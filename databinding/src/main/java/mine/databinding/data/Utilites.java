@@ -1,10 +1,15 @@
 package mine.databinding.data;
 
+import android.widget.TextView;
+
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
 import androidx.databinding.InverseBindingListener;
+import androidx.databinding.InverseMethod;
 
 import java.sql.Time;
+import java.util.Date;
+import java.util.zip.ZipEntry;
 
 import mine.databinding.component.TheTextView;
 import mine.databinding.component.TimeTextView;
@@ -50,31 +55,4 @@ public class Utilites {
 //        System.out.println("one is " + one);
 //        return one ? View.VISIBLE : View.GONE;
 //    }
-
-    /**
-     * 双向绑定
-     */
-    @BindingAdapter(value = {"app:time", "app:timeAttrChanged"}, requireAll = false)
-    public static void setTime(TimeTextView view, String time, InverseBindingListener timeAttrChanged) {
-        System.out.println("~~Utilites.setTime~~");
-        System.out.println("view = " + view + ", time = " + time + ", timeAttrChanged = " + timeAttrChanged);
-//        if (view.time != newValue) {
-//            view.time = newValue;
-//        }
-
-
-        if (!view.time.equals(time)) {
-            view.time = time;
-            view.timeAttrChanged = timeAttrChanged;
-            timeAttrChanged.onChange();
-        }
-    }
-
-    @InverseBindingAdapter(attribute = "app:time", event = "app:timeAttrChanged")
-    public static String getTime(TimeTextView view) {
-        System.out.println("~~Utilites.getTime~~");
-        System.out.println("view = " + view);
-        System.out.println("time is " + view.time);
-        return view.time;
-    }
 }

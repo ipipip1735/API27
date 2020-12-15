@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="cattle" type='mine.databinding.data.CattleObservable' />
+        <variable name="user" type='mine.databinding.data.UserObservable' />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
@@ -108,16 +109,15 @@
             app:constraint_referenced_ids="button4,button7,button6,button5,button,button2,button8,button3"
             tools:layout_editor_absoluteY="731dp" />
 
-        <TextView
-            android:id="@+id/textView"
+        <mine.databinding.component.TimeTextView
+            android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@={cattle.name}"
+            android:text="xxxx"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier"/>
-
-
+            app:layout_constraintTop_toBottomOf="@id/barrier"
+            app:time="@={user.age}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

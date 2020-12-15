@@ -5,33 +5,27 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
-import java.sql.Time;
-import java.time.Instant;
+import java.util.Date;
 
-import mine.databinding.data.CatObservable;
 import mine.databinding.data.CattleObservable;
-import mine.databinding.data.TheViewModel;
-import mine.databinding.data.User;
-import mine.databinding.data.UserObservable;
-import mine.databinding.databinding.ActivityLifecycleBinding;
-import mine.databinding.databinding.ActivityTwoWayBinding;
+import mine.databinding.data.CustomerObservable;
+import mine.databinding.databinding.ActivityTwoWayWithConvertersBinding;
 
 
-/**
- * Created by Administrator on 2020/11/2.
+/**S
+ * Created by Administrator on 2020/12/15.
  */
-public class TwoWayActivity extends AppCompatActivity {
+public class TwoWayWithConvertersActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        ActivityTwoWayBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way);
-        binding.setCattle(new CattleObservable("ox"));
+        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
+        binding.setCustomer(new CustomerObservable("Bob"));
+        System.out.println(binding.getCustomer());
 
     }
 
@@ -95,21 +89,42 @@ public class TwoWayActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getCattle().setName("Max");
+
+        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
+//        binding.setCustomer(new CustomerObservable("Bob"));
+        System.out.println(binding.getCustomer());
+
+//        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
+//        System.out.println(binding.getCustomer());
+
+//        binding.getCustomer().setBirthDay(new Date());
+
+
+//        System.out.println();
+
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.textView.setText("Lobby");
 
-        System.out.println("Cattle.name is " + binding.getCattle().getName());
+        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
+//        String s = (String) binding.textView.getText();
+//        System.out.println("s = " + s);
+
+//        System.out.println("birthDay is " + binding.getCustomer().getBirthDay());
+
+        System.out.println("tv is " + binding.textView);
+
+        binding.textView.setText("ddddd");
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
+        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
+        System.out.println(binding.getCustomer());
+//        System.out.println(binding.getCustomer().getBirthDay());
 
     }
 
@@ -119,13 +134,11 @@ public class TwoWayActivity extends AppCompatActivity {
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
-
     }
 
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-
     }
 
 

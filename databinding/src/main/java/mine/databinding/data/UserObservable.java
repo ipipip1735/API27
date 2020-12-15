@@ -3,6 +3,8 @@ package mine.databinding.data;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
+import java.sql.Time;
+import java.time.Instant;
 import java.util.Random;
 
 import mine.databinding.BR;
@@ -12,12 +14,23 @@ import mine.databinding.BR;
  */
 public class UserObservable extends BaseObservable {
     String name;
-    int age;
+    Time age;
+
+    public Time getAge() {
+        return age;
+    }
+
+    @Bindable
+    public void setAge(Time age) {
+        this.age = age;
+//        notifyPropertyChanged(BR.age);
+        notifyChange();
+    }
 
     public UserObservable(String name) {
         System.out.println("--UserObservable--");
         this.name = name;
-        age = new Random().nextInt(120);
+        age = new Time(Instant.now().toEpochMilli());
     }
 
     public String getName() {
@@ -28,14 +41,6 @@ public class UserObservable extends BaseObservable {
     public void setName(String name) {
         System.out.println("~~UserObservable.setName~~");
         this.name = name;
-        notifyChange();
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 }

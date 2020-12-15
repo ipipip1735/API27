@@ -5,33 +5,26 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.sql.Time;
 import java.time.Instant;
 
-import mine.databinding.data.CatObservable;
-import mine.databinding.data.CattleObservable;
-import mine.databinding.data.TheViewModel;
-import mine.databinding.data.User;
 import mine.databinding.data.UserObservable;
-import mine.databinding.databinding.ActivityLifecycleBinding;
-import mine.databinding.databinding.ActivityTwoWayBinding;
+import mine.databinding.databinding.ActivityTwoWayWithCustomFieldBinding;
 
 
 /**
- * Created by Administrator on 2020/11/2.
+ * Created by Administrator on 2020/12/15.
  */
-public class TwoWayActivity extends AppCompatActivity {
+public class TwoWayWithCustomFieldActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
-        ActivityTwoWayBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way);
-        binding.setCattle(new CattleObservable("ox"));
+        ActivityTwoWayWithCustomFieldBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_custom_field);
+        binding.setUser(new UserObservable("Bob"));
 
     }
 
@@ -95,21 +88,27 @@ public class TwoWayActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getCattle().setName("Max");
+
+        ActivityTwoWayWithCustomFieldBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getUser().setAge(new Time(Instant.now().toEpochMilli()));
+
+        System.out.println("age = " + binding.getUser().getAge());
+        System.out.println("time = " + binding.timeTextView.time);
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-        ActivityTwoWayBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.textView.setText("Lobby");
+        ActivityTwoWayWithCustomFieldBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.timeTextView.setTime(new Time(Instant.now().toEpochMilli()));
 
-        System.out.println("Cattle.name is " + binding.getCattle().getName());
+        System.out.println("age = " + binding.getUser().getAge());
+        System.out.println("time = " + binding.timeTextView.time);
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
 
     }
 
@@ -131,5 +130,11 @@ public class TwoWayActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+        ActivityTwoWayWithCustomFieldBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        System.out.println("age = " + binding.getUser().getAge());
+        System.out.println("time = " + binding.timeTextView.time);
+
+
     }
 }

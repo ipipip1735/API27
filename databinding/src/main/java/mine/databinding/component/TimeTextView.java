@@ -19,7 +19,7 @@ import java.sql.Time;
  * Created by Administrator on 2020/12/12.
  */
 public class TimeTextView extends MaterialTextView {
-    public String time = "ooooo";
+    public Time time;
     public InverseBindingListener timeAttrChanged;
 
     public TimeTextView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -27,7 +27,7 @@ public class TimeTextView extends MaterialTextView {
         System.out.println("---TimeTextView.Constructor---");
     }
 
-    public void setTime(String time) {
+    public void setTime(Time time) {
         this.time = time;
         timeAttrChanged.onChange();
     }
