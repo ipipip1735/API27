@@ -102,8 +102,8 @@ public class TwoWayWithConvertersActivity extends AppCompatActivity {
         System.out.println("~~button.bind~~");
 
         ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
-        System.out.println(binding.getCustomer());
-//        System.out.println(binding.getCustomer().getBirthDay());
+        System.out.println(binding.getCustomer().getBirthDay());
+        System.out.println(binding.textView.getText());
 
     }
 
