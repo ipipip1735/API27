@@ -66,13 +66,11 @@ public class TwoWayWithConvertersActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -86,37 +84,18 @@ public class TwoWayWithConvertersActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
-
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
-//        binding.setCustomer(new CustomerObservable("Bob"));
-        System.out.println(binding.getCustomer());
-
-//        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
-//        System.out.println(binding.getCustomer());
-
-//        binding.getCustomer().setBirthDay(new Date());
-
-
-//        System.out.println();
-
+        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.setCustomer(new CustomerObservable("Bob"));
     }
-
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
-        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_two_way_with_converters);
-//        String s = (String) binding.textView.getText();
-//        System.out.println("s = " + s);
-
-//        System.out.println("birthDay is " + binding.getCustomer().getBirthDay());
-
-        System.out.println("tv is " + binding.textView);
-
-        binding.textView.setText("ddddd");
+        ActivityTwoWayWithConvertersBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.textView.setText("xox");
     }
 
     public void bind(View view) {
