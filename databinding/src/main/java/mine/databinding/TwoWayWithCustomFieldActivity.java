@@ -12,7 +12,6 @@ import java.time.Instant;
 import mine.databinding.data.UserObservable;
 import mine.databinding.databinding.ActivityTwoWayWithCustomFieldBinding;
 
-
 /**
  * Created by Administrator on 2020/12/15.
  */
@@ -109,7 +108,6 @@ public class TwoWayWithCustomFieldActivity extends AppCompatActivity {
     public void bind(View view) {
         System.out.println("~~button.bind~~");
 
-
     }
 
     public void unbind(View view) {
@@ -134,7 +132,6 @@ public class TwoWayWithCustomFieldActivity extends AppCompatActivity {
         ActivityTwoWayWithCustomFieldBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
         System.out.println("age = " + binding.getUser().getAge());
         System.out.println("time = " + binding.timeTextView.time);
-
 
     }
 }

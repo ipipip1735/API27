@@ -110,15 +110,15 @@
             tools:layout_editor_absoluteY="731dp" />
 
         <!--使用@BindingMethods设置setter-->
-<!--        <mine.databinding.component.TheTextView-->
-<!--            android:id="@+id/tv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:text="@{dog.name}"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/barrier" />-->
+        <mine.databinding.component.TheTextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{dog.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier" />
 
         <!--使用@BindingAdapter拦截getter-->
 <!--        <TextView-->

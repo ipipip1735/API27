@@ -100,10 +100,19 @@ public class AdapterActivity extends AppCompatActivity {
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
+        ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getDog().setName("oneeeee");
+//        binding.getDog().setAge(2);
+//        binding.getDog().setGender(true);
+        binding.setDog(binding.getDog());//更新数据绑定对象
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
+
+
+
 
     }
 

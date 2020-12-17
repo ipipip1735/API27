@@ -51,7 +51,7 @@ public class TwoWayUtilites {
         System.out.println("~~TwoWayUtilites.dateToString~~");
         System.out.println("value = " + value);
 
-        return new Date().toString();
+        return new Date().toString() + "xxxx";
     }
 
     public static Date stringToDate(String value) {
