@@ -92,7 +92,7 @@ public class AdapterActivity extends AppCompatActivity {
         ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
         binding.getDog().setName("twooooo");
         binding.getDog().setAge(2);
-        binding.getDog().setGender(true);
+//        binding.getDog().setGender(true);
         binding.setDog(binding.getDog());//更新数据绑定对象
     }
 
@@ -101,18 +101,15 @@ public class AdapterActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 
         ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getDog().setName("oneeeee");
-//        binding.getDog().setAge(2);
-//        binding.getDog().setGender(true);
-        binding.setDog(binding.getDog());//更新数据绑定对象
+        binding.tv.setAge(11);
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
 
-
-
-
+        ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        System.out.println("tv.age is " + binding.tv.getAge());
+        System.out.println("dog.age is " + binding.getDog().getAge());
 
     }
 

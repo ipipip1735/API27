@@ -17,7 +17,7 @@ public class TwoWayUtilites {
     /**
      * 双向绑定
      */
-    @BindingAdapter(value = {"app:time", "timeAttrChanged"}, requireAll = false)
+    @BindingAdapter(value = {"time", "timeAttrChanged"}, requireAll = false)
     public static void setTime(TimeTextView view, Time time, InverseBindingListener timeAttrChanged) {
         System.out.println("~~TwoWayUtilites.setTime~~");
         System.out.println("view = " + view + ", time = " + time + ", timeAttrChanged = " + timeAttrChanged);
@@ -32,7 +32,7 @@ public class TwoWayUtilites {
         }
     }
 
-    @InverseBindingAdapter(attribute = "app:time")
+    @InverseBindingAdapter(attribute = "time")
 //    @InverseBindingAdapter(attribute = "app:time", event = "timeAttrChanged")
     public static Time getTime(TimeTextView view) {
         System.out.println("~~TwoWayUtilites.getTime~~");
@@ -40,8 +40,6 @@ public class TwoWayUtilites {
         System.out.println("time is " + view.time);
         return view.time;
     }
-
-
 
     /**
      * 双向转换
