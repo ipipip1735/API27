@@ -1,20 +1,27 @@
-package mine.apptemp;
+package mine.hilt;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import dagger.hilt.android.AndroidEntryPoint;
+import mine.hilt.data.Person;
+
 /**
- * Created by Administrator on 2018/9/6.
+ * Created by Administrator on 2012/12/21.
  */
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+
+    Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_client);
+        setContentView(R.layout.activity_main);
 
     }
 
@@ -78,24 +85,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        startActivity(new Intent(this, SingletonActivity.class));
 
-
-//        Intent intent = new Intent("receivertrial");
-//        intent.setPackage("mine.broadcast");
-
-//        sendBroadcast(intent);
-//        sendBroadcast(intent, "a.b"); //增加权限限制
-//        intent.putExtra("mReceiver", "One");//携带数据
-
+        System.out.println("person = " + person);
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
-        Singleton singleton = Singleton.getThis("Mary", this);
-        System.out.println(singleton);
     }
 
     public void bind(View view) {
