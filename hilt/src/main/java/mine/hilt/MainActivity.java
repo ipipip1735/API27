@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import mine.hilt.data.Person;
 
@@ -14,7 +16,7 @@ import mine.hilt.data.Person;
  */
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
-
+    @Inject
     Person person;
 
     @Override
