@@ -1,5 +1,6 @@
 package mine.hilt.data;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -8,13 +9,17 @@ import dagger.hilt.android.components.ActivityComponent;
 /**
  * Created by Administrator on 2020/12/22.
  */
-@Module
 @InstallIn(ActivityComponent.class)
-public class TheModule {
+@Module
+public abstract class TheModule {
 
     @Provides
-    public static Person providePerson() {
-        System.out.println("~~TheModule.providePerson~~");
-        return new Person();
+    public static Owner provideOwner(Pet pet) {
+        System.out.println("~~TheModule.provideOwner~~");
+        return new Owner(pet);
     }
+
+//    @Binds
+//    abstract Sense bindPerson(Person person);
+
 }
