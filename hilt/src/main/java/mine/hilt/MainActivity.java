@@ -34,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
 //    Owner owner;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         //注入Hilt模块中提供的依赖
 //        System.out.println("owner = " + owner);
-
-        //
-
-
 
     }
 
