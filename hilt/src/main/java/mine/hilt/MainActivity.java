@@ -2,19 +2,18 @@ package mine.hilt;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import mine.hilt.data.Car;
-import mine.hilt.data.Engine;
+import mine.hilt.annotation.CatPet;
+import mine.hilt.annotation.DogPet;
+import mine.hilt.data.Animal;
+import mine.hilt.data.Child;
+import mine.hilt.data.Company;
 import mine.hilt.data.Owner;
-import mine.hilt.data.Person;
-import mine.hilt.data.Sense;
 
 /**
  * Created by Administrator on 2012/12/21.
@@ -33,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
 //    @Inject
 //    Owner owner;
 
+//    @Inject
+//    @CatPet
+//    Animal animal;
+
+    @Inject
+    Company company;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
         //注入Hilt模块中提供的依赖
 //        System.out.println("owner = " + owner);
+
+        //注入Hilt模块中提供的依赖（使用限定器）
+//        System.out.println("child.animal = " + child.animal);
+//        System.out.println("animal = " + animal);
+
+        //作用域
+        System.out.println("company = " + company);
 
     }
 
