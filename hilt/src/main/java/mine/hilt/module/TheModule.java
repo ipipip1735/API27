@@ -10,8 +10,8 @@ import mine.hilt.data.Pet;
 /**
  * Created by Administrator on 2020/12/22.
  */
-//@InstallIn(ActivityComponent.class)
-//@Module
+@InstallIn(ActivityComponent.class)
+@Module
 public abstract class TheModule {
 
 //    @Provides

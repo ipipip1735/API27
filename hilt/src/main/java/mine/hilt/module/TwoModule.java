@@ -7,6 +7,7 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ActivityComponent;
+import dagger.hilt.android.scopes.ActivityScoped;
 import mine.hilt.annotation.CatPet;
 import mine.hilt.annotation.DogPet;
 import mine.hilt.data.Animal;
@@ -22,8 +23,8 @@ import mine.hilt.data.Dog;
 @Module
 public abstract class TwoModule {
 
+    @ActivityScoped
     @Provides
-    @Singleton
     public static Company provideCompany(){
         return new Company();
     }
