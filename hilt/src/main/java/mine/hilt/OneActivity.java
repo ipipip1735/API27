@@ -9,6 +9,7 @@
 
  import dagger.hilt.android.AndroidEntryPoint;
  import mine.hilt.data.Company;
+ import mine.hilt.data.Employee;
 
  /**
   * Created by Administrator on 2012/12/25.
@@ -16,7 +17,7 @@
  @AndroidEntryPoint
  public class OneActivity extends AppCompatActivity {
      @Inject
-     Company company;
+     Company company1, company2;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,8 @@
          setContentView(R.layout.activity_main);
 
          //作用域
-         System.out.println("company = " + company);
+         System.out.println("OneActivity|company1 = " + company1);
+         System.out.println("OneActivity|company2 = " + company2);
 
      }
 
@@ -86,11 +88,9 @@
          System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
      }
 
-
      public void start(View view) {
          System.out.println("~~button.start~~");
      }
-
 
      public void stop(View view) {
          System.out.println("~~button.stop~~");
@@ -108,15 +108,12 @@
 
      public void reloading(View view) {
          System.out.println("~~button.reloading~~");
-
      }
-
 
      public void del(View view) {
          System.out.println("~~button.del~~");
 
      }
-
 
      public void query(View view) {
          System.out.println("~~button.query~~");

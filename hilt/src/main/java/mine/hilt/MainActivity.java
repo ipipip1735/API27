@@ -2,6 +2,7 @@
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import mine.hilt.annotation.DogPet;
 import mine.hilt.data.Animal;
 import mine.hilt.data.Child;
 import mine.hilt.data.Company;
+import mine.hilt.data.Employee;
 import mine.hilt.data.Owner;
 
 /**
@@ -36,8 +38,11 @@ public class MainActivity extends AppCompatActivity {
 //    @CatPet
 //    Animal animal;
 
+//    @Inject
+//    Company company1, company2;
+
     @Inject
-    Company company;
+    Employee employee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("animal = " + animal);
 
         //作用域
-        System.out.println("company = " + company);
+//        System.out.println("Activity|company1 = " + company1);
+//        System.out.println("Activity|company2 = " + company2);
+        System.out.println("employee = " + employee);
 
     }
 
@@ -104,13 +111,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -124,11 +129,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
-
     public void start(View view) {
         System.out.println("~~button.start~~");
+        startActivity(new Intent(this, OneActivity.class));
     }
-
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
@@ -136,12 +140,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
-
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
-
     }
 
     public void reloading(View view) {
