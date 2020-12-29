@@ -15,6 +15,7 @@ import mine.hilt.data.Animal;
 import mine.hilt.data.Child;
 import mine.hilt.data.Company;
 import mine.hilt.data.Employee;
+import mine.hilt.data.Horse;
 import mine.hilt.data.Owner;
 
 /**
@@ -41,8 +42,11 @@ public class MainActivity extends AppCompatActivity {
 //    @Inject
 //    Company company1, company2;
 
-    @Inject
-    Employee employee;
+//    @Inject
+//    Employee employee;
+    
+//    @Inject
+//    Horse horse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +72,13 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("animal = " + animal);
 
         //作用域
-//        System.out.println("Activity|company1 = " + company1);
-//        System.out.println("Activity|company2 = " + company2);
-        System.out.println("employee = " + employee);
-
+////        System.out.println("Activity|company1 = " + company1);
+////        System.out.println("Activity|company2 = " + company2);
+//        System.out.println("employee = " + employee);
+        
+        
+        //同一组件内的绑定器或提供器可相互提供依赖
+//        System.out.println("horse = " + horse.water);
     }
 
     @Override

@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import mine.hilt.data.Company;
 import mine.hilt.data.Employee;
+import mine.hilt.data.Mouse;
+import mine.hilt.data.Sheep;
 
 /**
  * Created by Administrator on 2020/12/27.
@@ -25,11 +27,25 @@ public class TheFragment extends Fragment {
 //    @Inject
 //    Company company;
 
+//    @Inject
+//    Sheep sheep;
+
+    @Inject
+    Mouse mouse;
+
     @Override
     public void onAttach(@NonNull Context context) {
         System.out.println("~~TheFragment.onAttach~~");
         super.onAttach(context);
 //        System.out.println("Fragment|company = " + company);
+
+        //父组件可以给子组件提供依赖
+//        System.out.println("Fragment|sheep = " + sheep);
+
+
+        //获取Hilt提供的默认绑定
+        System.out.println("Fragment|mouse = " + mouse);
+
     }
 
     @Nullable
