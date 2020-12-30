@@ -16,7 +16,6 @@ import mine.hilt.data.Water;
 @Module
 public class ThreeModule {
 
-
     @Provides
     public static Horse provideHorse(Water water) {
         System.out.println("~~ThreeModule.provideHorse~~");

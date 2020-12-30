@@ -1,16 +1,13 @@
 package mine.hilt.data;
 
-import javax.inject.Singleton;
-
-import dagger.hilt.EntryPoint;
-import dagger.hilt.InstallIn;
-import dagger.hilt.android.components.ApplicationComponent;
+import javax.inject.Inject;
 
 /**
- * Created by Administrator on 2020/12/29 19:03.
+ * Created by Administrator on 2020/12/30 14:06.
  */
-@EntryPoint
-@InstallIn(Singleton.class)
-public interface Media {
-    void play();
+public class Media {
+    @Inject
+    public Media() {
+        System.out.println("~~MediaImp.MediaImp~~");
+    }
 }
