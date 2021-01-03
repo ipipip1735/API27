@@ -1,33 +1,35 @@
  package mine.hilt;
 
+ import android.content.Intent;
  import android.os.Bundle;
  import android.view.View;
 
  import androidx.appcompat.app.AppCompatActivity;
-
- import javax.inject.Inject;
+ import androidx.lifecycle.ViewModelProvider;
 
  import dagger.hilt.android.AndroidEntryPoint;
- import mine.hilt.data.Company;
- import mine.hilt.data.Employee;
+ import mine.hilt.data.StringViewModel;
 
  /**
-  * Created by Administrator on 2020/12/25.
+  * Created by Administrator on 2020/12/21.
   */
  @AndroidEntryPoint
- public class OneActivity extends AppCompatActivity {
-     @Inject
-     Company company1, company2;
+ public class ElevenActivity extends AppCompatActivity {
+//     @Inject
+//     Sense sense;
+
+     StringViewModel stringViewModel;
+
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
          System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-         setContentView(R.layout.activity_main);
+         setContentView(R.layout.activity_eleven);
 
-         //作用域
-         System.out.println("OneActivity|company1 = " + company1);
-         System.out.println("OneActivity|company2 = " + company2);
+         stringViewModel = new ViewModelProvider(this).get(StringViewModel.class);
+         System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
+
 
      }
 
@@ -68,13 +70,11 @@
          System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
      }
 
-
      @Override
      protected void onStop() {
          super.onStop();
          System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
      }
-
 
      @Override
      protected void onSaveInstanceState(Bundle outState) {
@@ -90,6 +90,8 @@
 
      public void start(View view) {
          System.out.println("~~button.start~~");
+
+         
      }
 
      public void stop(View view) {
@@ -98,22 +100,23 @@
 
      public void bind(View view) {
          System.out.println("~~button.bind~~");
-
      }
 
      public void unbind(View view) {
          System.out.println("~~button.unbind~~");
-
      }
 
      public void reloading(View view) {
          System.out.println("~~button.reloading~~");
+
      }
+
 
      public void del(View view) {
          System.out.println("~~button.del~~");
 
      }
+
 
      public void query(View view) {
          System.out.println("~~button.query~~");

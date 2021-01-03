@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "mine.hilt"
-        minSdkVersion 29
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -43,5 +43,9 @@ dependencies {
 
     kapt 'com.google.dagger:hilt-android-compiler:2.30.1-alpha'
     implementation 'com.google.dagger:hilt-android:2.30.1-alpha'
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
+
+
+//    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
 
 }
