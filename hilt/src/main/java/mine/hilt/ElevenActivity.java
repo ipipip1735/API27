@@ -5,6 +5,7 @@
  import android.view.View;
 
  import androidx.appcompat.app.AppCompatActivity;
+ import androidx.hilt.lifecycle.HiltViewModelFactory;
  import androidx.lifecycle.ViewModelProvider;
 
  import javax.inject.Inject;
@@ -23,6 +24,11 @@
      StringViewModel stringViewModel;
 
 
+//     @Inject
+//     HiltViewModelFactory hiltViewModelFactory;
+
+
+
      @Override
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
@@ -32,6 +38,19 @@
          stringViewModel = new ViewModelProvider(this).get(StringViewModel.class);
          System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
 //         System.out.println("milk is " + stringViewModel.milk);
+
+
+//         System.out.println("hiltViewModelFactory = " + hiltViewModelFactory);
+
+
+
+//         ViewModelProvider viewModelProvider = new ViewModelProvider(
+//                 backStackEntry,
+//                 getDefaultViewModelProviderFactory()
+//         );
+
+
+
 
 
      }
