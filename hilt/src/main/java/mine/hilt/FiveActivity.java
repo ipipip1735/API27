@@ -83,7 +83,6 @@ public class FiveActivity extends AppCompatActivity {
     public void start(View view) {
         System.out.println("~~button.start~~");
         sendBroadcast(new Intent(this, TheReceiver.class));
-
     }
 
     public void stop(View view) {

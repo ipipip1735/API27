@@ -7,7 +7,10 @@
  import androidx.appcompat.app.AppCompatActivity;
  import androidx.lifecycle.ViewModelProvider;
 
+ import javax.inject.Inject;
+
  import dagger.hilt.android.AndroidEntryPoint;
+ import mine.hilt.data.Milk;
  import mine.hilt.data.StringViewModel;
 
  /**
@@ -15,8 +18,7 @@
   */
  @AndroidEntryPoint
  public class ElevenActivity extends AppCompatActivity {
-//     @Inject
-//     Sense sense;
+
 
      StringViewModel stringViewModel;
 
@@ -29,6 +31,7 @@
 
          stringViewModel = new ViewModelProvider(this).get(StringViewModel.class);
          System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
+//         System.out.println("milk is " + stringViewModel.milk);
 
 
      }
@@ -91,7 +94,6 @@
      public void start(View view) {
          System.out.println("~~button.start~~");
 
-         
      }
 
      public void stop(View view) {
@@ -108,19 +110,14 @@
 
      public void reloading(View view) {
          System.out.println("~~button.reloading~~");
-
      }
-
 
      public void del(View view) {
          System.out.println("~~button.del~~");
-
      }
-
 
      public void query(View view) {
          System.out.println("~~button.query~~");
-
      }
 
  }
