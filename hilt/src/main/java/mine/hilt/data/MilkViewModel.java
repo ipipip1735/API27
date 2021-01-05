@@ -17,33 +17,35 @@ import dagger.hilt.android.components.ActivityRetainedComponent;
 /**
  * Created by Administrator on 2021/1/3.
  */
-public class StringViewModel extends ViewModel {
+public class MilkViewModel extends ViewModel {
+
+
     private Milk milk;
-    private final SavedStateHandle savedStateHandle;
+    private Milk milk1;
+    private SavedStateHandle savedStateHandle;
 
 
 
     @ViewModelInject
-    public StringViewModel(Milk milk, @Assisted SavedStateHandle savedStateHandle) {
+    public MilkViewModel(Milk milk, Milk milk1, @Assisted SavedStateHandle savedStateHandle) {
+//    public MilkViewModel(Milk milk, @Assisted SavedStateHandle savedStateHandle) {
         System.out.println("~~StringViewModel.StringViewModel~~");
-        System.out.println("savedStateHandle = " + savedStateHandle);
+        System.out.println("milk = " + milk + ", savedStateHandle = " + savedStateHandle);
+        System.out.println("milk1 = " + milk1);
+
+
         this.milk = milk;
         this.savedStateHandle = savedStateHandle;
 
     }
 
-//    public String getName() {
-//
-//        if (name == null) {
-//            name = "Bob-" + new Random().nextInt(100);
-//        }
-//        return name;
-//    }
+    public void setMilk(Milk milk) {
+        this.milk = milk;
+    }
 
-//    public void setName(String name) {
-//        this.name = name;
-//        savedStateHandle.set("male", name);
-//    }
+    public Milk getMilk() {
+        return milk;
+    }
 
     @Override
     protected void onCleared() {

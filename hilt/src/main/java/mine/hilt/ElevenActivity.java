@@ -1,18 +1,13 @@
  package mine.hilt;
 
- import android.content.Intent;
  import android.os.Bundle;
  import android.view.View;
 
  import androidx.appcompat.app.AppCompatActivity;
- import androidx.hilt.lifecycle.HiltViewModelFactory;
  import androidx.lifecycle.ViewModelProvider;
 
- import javax.inject.Inject;
-
  import dagger.hilt.android.AndroidEntryPoint;
- import mine.hilt.data.Milk;
- import mine.hilt.data.StringViewModel;
+ import mine.hilt.data.MilkViewModel;
 
  /**
   * Created by Administrator on 2020/12/21.
@@ -20,14 +15,7 @@
  @AndroidEntryPoint
  public class ElevenActivity extends AppCompatActivity {
 
-
-     StringViewModel stringViewModel;
-
-
-//     @Inject
-//     HiltViewModelFactory hiltViewModelFactory;
-
-
+     MilkViewModel milkViewModel;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +23,8 @@
          System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
          setContentView(R.layout.activity_eleven);
 
-         stringViewModel = new ViewModelProvider(this).get(StringViewModel.class);
-         System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
-//         System.out.println("milk is " + stringViewModel.milk);
-
-
-//         System.out.println("hiltViewModelFactory = " + hiltViewModelFactory);
-
-
-
-//         ViewModelProvider viewModelProvider = new ViewModelProvider(
-//                 backStackEntry,
-//                 getDefaultViewModelProviderFactory()
-//         );
-
-
-
-
+         milkViewModel = new ViewModelProvider(this).get(MilkViewModel.class);
+         System.out.println("stringViewModel is " + milkViewModel.getMilk() + "|" + milkViewModel.hashCode());
 
      }
 
