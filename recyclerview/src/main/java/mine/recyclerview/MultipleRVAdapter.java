@@ -1,5 +1,6 @@
 package mine.recyclerview;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,13 +11,13 @@ import java.util.List;
 
 
 /**
- * Created by Administrator on 2019/3/26.
+ * Created by Administrator on 2021/1/5.
  */
-public class RVAdapter<T> extends RecyclerView.Adapter {
+public class MultipleRVAdapter<T> extends RecyclerView.Adapter {
     private List<T> dataset;
     private List<TextView> target;
 
-    public RVAdapter(List<T> dataset, List<TextView> v) {
+    public MultipleRVAdapter(List<T> dataset, List<TextView> v) {
         this.dataset = dataset;
         this.target = v;
     }
@@ -28,7 +29,15 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
         System.out.print("viewType is " + viewType);
         System.out.println("|parent is " + parent);
 
-        TextView v = new TextView(parent.getContext());
+        TextView v;
+        if (viewType == 0) {
+            v = new TextView(parent.getContext());
+            v.setBackgroundColor(Color.RED);
+        } else {
+            v = new TextView(parent.getContext());
+            v.setTextColor(Color.RED);
+        }
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,8 +47,8 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
                 System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
                 System.out.println("getChildItemId is " + recyclerView.getChildItemId(v));
                 System.out.println(((TextView) v).getText() + "|" + recyclerView.getChildViewHolder(v));
-                if (RVAdapter.this.target != null) {
-                    RVAdapter.this.target.add((TextView) v);
+                if (MultipleRVAdapter.this.target != null) {
+                    MultipleRVAdapter.this.target.add((TextView) v);
                 } else {
                     System.out.println("target is null");
                 }
@@ -60,7 +69,7 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
         System.out.println(s);
         ((MyViewHolder) holder).textView.setText(s);
 
-        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+        System.out.println(((TextView) holder.itemView).getText() + "|" + holder);
     }
 
     @Override
@@ -71,16 +80,25 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        System.out.println("~~MultipleRVAdapter.getItemViewType~~");
+        System.out.println("position = " + position);
+//        return super.getItemViewType(position);
+
+        return position % 2;
+    }
+
+    @Override
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
         System.out.println("~~onViewRecycled~~");
-        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+        System.out.println(((TextView) holder.itemView).getText() + "|" + holder);
 
     }
 
     @Override
     public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
         System.out.println("~~onFailedToRecycleView~~");
-        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+        System.out.println(((TextView) holder.itemView).getText() + "|" + holder);
 
         return super.onFailedToRecycleView(holder);
     }
@@ -88,13 +106,13 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     @Override
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         System.out.println("~~onViewAttachedToWindow~~");
-        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+        System.out.println(((TextView) holder.itemView).getText() + "|" + holder);
     }
 
     @Override
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
         System.out.println("~~onViewDetachedFromWindow~~");
-        System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
+        System.out.println(((TextView) holder.itemView).getText() + "|" + holder);
     }
 
     @Override
@@ -116,10 +134,11 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     private void iterate(@NonNull RecyclerView recyclerView) {
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             TextView textView = (TextView) recyclerView.getChildAt(i);
-            System.out.print(textView.getText()+"|");
+            System.out.print(textView.getText() + "|");
         }
         System.out.println("");
     }
+
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -130,5 +149,4 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
             textView = v;
         }
     }
-
 }

@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 180; i++) {
             dataset.add("item" + i);
         }
-        adapter = new RVAdapter<>(dataset, this.list);
+//        adapter = new RVAdapter<>(dataset, this.list);
+        adapter = new MultipleRVAdapter(dataset, this.list);
 
         recyclerView = findViewById(R.id.rv);
 //        recyclerView.setHasFixedSize(true);//使用固定尺寸
