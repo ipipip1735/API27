@@ -9,7 +9,7 @@ import dagger.hilt.android.scopes.ActivityScoped;
  * Created by Administrator on 2021/1/4 17:52.
  */
 //@ActivityScoped
-@ActivityRetainedScoped
+//@ActivityRetainedScoped
 public class Milk {
 
 //    @Inject

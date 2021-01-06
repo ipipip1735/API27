@@ -29,7 +29,7 @@ public class MilkViewModel extends ViewModel {
     @ViewModelInject
     public MilkViewModel(Milk milk, Milk milk1, @Assisted SavedStateHandle savedStateHandle) {
 //    public MilkViewModel(Milk milk, @Assisted SavedStateHandle savedStateHandle) {
-        System.out.println("~~StringViewModel.StringViewModel~~");
+        System.out.println("~~MilkViewModel.MilkViewModel~~");
         System.out.println("milk = " + milk + ", savedStateHandle = " + savedStateHandle);
         System.out.println("milk1 = " + milk1);
 

@@ -24,7 +24,7 @@
          setContentView(R.layout.activity_eleven);
 
          milkViewModel = new ViewModelProvider(this).get(MilkViewModel.class);
-         System.out.println("stringViewModel is " + milkViewModel.getMilk() + "|" + milkViewModel.hashCode());
+         System.out.println("milkViewModel is " + milkViewModel.getMilk() + "|" + milkViewModel.hashCode());
 
      }
 
