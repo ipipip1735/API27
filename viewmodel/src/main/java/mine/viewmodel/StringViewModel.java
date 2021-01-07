@@ -1,7 +1,7 @@
 package mine.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.SavedStateHandle;
+import androidx.lifecycle.ViewModel;
 
 import java.util.Random;
 

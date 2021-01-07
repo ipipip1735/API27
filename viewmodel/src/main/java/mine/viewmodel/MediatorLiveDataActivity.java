@@ -1,17 +1,13 @@
 package mine.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 /**

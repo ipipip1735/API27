@@ -1,7 +1,6 @@
 package mine.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
-
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * Created by Administrator on 2018/9/13.

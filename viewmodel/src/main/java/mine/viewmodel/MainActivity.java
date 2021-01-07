@@ -1,17 +1,13 @@
 package mine.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Objects;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,17 +15,18 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     BaseViewModel baseViewModel;
     StringViewModel stringViewModel;
+    SavedStateViewModel savedStateViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_client);
 
         //方式一：最简使用
-        stringViewModel = ViewModelProviders.of(this).get(StringViewModel.class);
-        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
+//        stringViewModel = new ViewModelProvider(this).get(StringViewModel.class);
+//        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
 
 
 
@@ -45,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
 //            textView.setText(data);//更新UI
 //        });
 
+
+        //方法三：最简LiveData
+        savedStateViewModel = new ViewModelProvider(this).get(SavedStateViewModel.class);
+        System.out.println("savedStateViewModel = " + savedStateViewModel);
 
     }
 
@@ -115,17 +116,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-        stringViewModel = ViewModelProviders.of(this).get(StringViewModel.class);
+        stringViewModel = new ViewModelProvider(this).get(StringViewModel.class);
         System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
     }
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
-
+        savedStateViewModel.setName("bob");
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
+        System.out.println("name is " + savedStateViewModel.getName());
     }
 
     public void reloading(View view) {

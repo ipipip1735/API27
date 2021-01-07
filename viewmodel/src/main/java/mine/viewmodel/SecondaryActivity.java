@@ -1,13 +1,14 @@
 package mine.viewmodel;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 public class SecondaryActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class SecondaryActivity extends AppCompatActivity {
         ViewGroup viewGroup = findViewById(R.id.fl);
         viewGroup.addView(textView);
 
-        baseViewModel = ViewModelProviders.of(this).get(BaseViewModel.class);
+        baseViewModel = new ViewModelProvider(this).get(BaseViewModel.class);
 
 
         //Create the observer which updates the UI.
@@ -115,7 +116,7 @@ public class SecondaryActivity extends AppCompatActivity {
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-        baseViewModel = ViewModelProviders.of(this).get(BaseViewModel.class);
+        baseViewModel = new ViewModelProvider(this).get(BaseViewModel.class);
         System.out.println(baseViewModel);
 
     }
