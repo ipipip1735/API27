@@ -12,11 +12,14 @@ import java.util.List;
 public class SavedStateViewModel extends ViewModel {
 
     private SavedStateHandle savedStateHandle;
+    private String name;
 
     public SavedStateViewModel(SavedStateHandle savedStateHandle) {
         System.out.println("~~SavedStateViewModel.SavedStateViewModel~~");
         System.out.println("savedStateHandle = " + savedStateHandle);
         this.savedStateHandle = savedStateHandle;
+
+        name = savedStateHandle.<String>get("name");
 
 //        LiveData<String> queryLiveData = savedStateHandle.getLiveData("query");
 //        filteredData = Transformations.switchMap(queryLiveData, query -> {
@@ -25,11 +28,12 @@ public class SavedStateViewModel extends ViewModel {
     }
 
     public String getName() {
-        return savedStateHandle.get("name");
+        return name;
     }
 
     public void setName(String name) {
-        savedStateHandle.set("name", name);
+        this.name = name;
+        savedStateHandle.set("name", this.name);
     }
 
 
