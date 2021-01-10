@@ -12,7 +12,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
             <option value="$PROJECT_DIR$/hilt" />
-            <option value="$PROJECT_DIR$/recyclerview" />
             <option value="$PROJECT_DIR$/viewmodel" />
           </set>
         </option>

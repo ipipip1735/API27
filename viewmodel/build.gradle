@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
 
 
     defaultConfig {
         applicationId "mine.viewmodel"
-        minSdkVersion 27
-        targetSdkVersion 27
+        minSdkVersion 29
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -27,7 +27,7 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
-    buildToolsVersion = '28.0.3'
+    buildToolsVersion = '29.0.3'
 }
 
 dependencies {
@@ -40,18 +40,17 @@ dependencies {
 
 
     implementation 'androidx.fragment:fragment:1.2.5'
-
-
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.0-rc01"
 
 
 
 //    def arch_version = "2.1.0"
 //    def lifecycle_version = "2.2.0"
-
+//
 //    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 //    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 //    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
-
+//
 //    // Annotation processor
 //    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 //    // alternately - if using Java8, use the following instead of lifecycle-compiler

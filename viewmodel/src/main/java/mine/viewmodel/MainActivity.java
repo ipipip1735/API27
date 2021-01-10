@@ -2,12 +2,15 @@ package mine.viewmodel;
 
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.io.File;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     BaseViewModel baseViewModel;
     StringViewModel stringViewModel;
     SavedStateViewModel savedStateViewModel;
+    SavedStateWithProviderViewModel savedStateWithProviderViewModel;
 
 
     @Override
@@ -43,9 +47,14 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-        //方法三：最简LiveData
-        savedStateViewModel = new ViewModelProvider(this).get(SavedStateViewModel.class);
-        System.out.println("savedStateViewModel = " + savedStateViewModel);
+        //方法三：最简SavedStateHandle
+//        savedStateViewModel = new ViewModelProvider(this).get(SavedStateViewModel.class);
+//        System.out.println("savedStateViewModel = " + savedStateViewModel);
+
+
+        //方法三：最简ViewModel提供器
+        savedStateWithProviderViewModel = new ViewModelProvider(this).get(SavedStateWithProviderViewModel.class);
+        System.out.println("savedStateWithProviderViewModel = " + savedStateWithProviderViewModel);
 
     }
 
@@ -94,11 +103,16 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
 
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        System.out.println("*********  " + getClass().getSimpleName() + ".onRestoreInstanceState  *********");
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onSaveInstanceState  *********");
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -106,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
-
 
     public void start(View view) {
         System.out.println("~~button.start~~");
@@ -132,18 +145,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
-
     }
 
 
     public void del(View view) {
         System.out.println("~~button.del~~");
 
+        savedStateWithProviderViewModel.setFile(getCacheDir());
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+
+        File file = savedStateWithProviderViewModel.getFile();
+        System.out.println("file = " + file);
     }
 
 }

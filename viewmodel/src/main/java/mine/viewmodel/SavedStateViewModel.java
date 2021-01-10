@@ -12,7 +12,7 @@ import java.util.List;
 public class SavedStateViewModel extends ViewModel {
 
     private SavedStateHandle savedStateHandle;
-    public String name;
+
     public SavedStateViewModel(SavedStateHandle savedStateHandle) {
         System.out.println("~~SavedStateViewModel.SavedStateViewModel~~");
         System.out.println("savedStateHandle = " + savedStateHandle);
@@ -25,13 +25,11 @@ public class SavedStateViewModel extends ViewModel {
     }
 
     public String getName() {
-        name = savedStateHandle.get("name");
-        return name;
+        return savedStateHandle.get("name");
     }
 
     public void setName(String name) {
-        this.name = name;
-        savedStateHandle.set("name", this.name);
+        savedStateHandle.set("name", name);
     }
 
 
