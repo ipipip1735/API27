@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("savedStateViewModel = " + savedStateViewModel);
 
 
+
         //方法三：最简ViewModel提供器
 //        savedStateWithProviderViewModel = new ViewModelProvider(this).get(SavedStateWithProviderViewModel.class);
 //        System.out.println("savedStateWithProviderViewModel = " + savedStateWithProviderViewModel);

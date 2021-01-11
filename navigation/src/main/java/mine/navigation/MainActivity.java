@@ -4,6 +4,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ActionOnlyNavDirections;
 import androidx.navigation.ActivityNavigator;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.NavOptions;
@@ -144,15 +145,14 @@ public class MainActivity extends AppCompatActivity {
         activityNavigator.navigate(destination, null, null, null);
 
 
-
-
     }
 
     private void navigation() {
 
+        //基本使用
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         navController.navigate(R.id.action_oneFragment_to_twoFragment);
-//        navController.navigate(R.id.action_twoFragment_to_oneFragment);//错误，使用Activity跳转时源Destination，此Action不属于此Fragment
+//        navController.navigate(R.id.action_twoFragment_to_oneFragment);//错误，目标Action不属于当前Fragment
 
 
         //使用安全插件传递参数
@@ -175,6 +175,16 @@ public class MainActivity extends AppCompatActivity {
 //                .setEnterAnim(R.anim.fragment_fade_in)
 //                .build();
 //        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, navOptions);
+
+
+        //导航回退栈
+//        NavController navController = Navigation.findNavController(this, R.id.fragment);
+//        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();
+//        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
+//
+//        navBackStackEntry = navController.getPreviousBackStackEntry();
+//        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
+
 
     }
 

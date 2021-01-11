@@ -9,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
@@ -32,7 +36,6 @@ public class TwoFragment extends Fragment {
 //                        System.out.println("~~OneFragment.handleOnBackPressed~~");
 //                    }
 //                });
-
     }
 
 
@@ -72,5 +75,38 @@ public class TwoFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        System.out.println("~~TwoFragment.onViewCreated~~");
+        System.out.println("view = " + view + ", savedInstanceState = " + savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
+
+
+        //导航回退栈
+        NavController navController = Navigation.findNavController(view);
+        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();
+        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
+
+        navBackStackEntry = navController.getPreviousBackStackEntry();
+        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
+
+
+
+
+
+//        NavBackStackEntry navBackStackEntry = Navigation.findNavController(view).getBackStackEntry(R.id.twoFragment);
+//        System.out.println("navBackStackEntry = " + navBackStackEntry);
+//
+//        StringViewModel stringViewModel = new ViewModelProvider(navBackStackEntry).get(StringViewModel.class);
+//        System.out.println(stringViewModel.getName());
+
+
+
+
+
+
     }
 }
