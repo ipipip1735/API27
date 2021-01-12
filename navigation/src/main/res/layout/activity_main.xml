@@ -12,10 +12,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
-        android:text="start"
+        android:layout_marginTop="16dp"
         android:onClick="start"
+        android:text="start"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="stop"
+        android:text="stop"
+        app:layout_constraintStart_toEndOf="@+id/button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
@@ -29,7 +39,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
-<!--        app:navGraph="@navigation/nav_graph_deeplink" />-->
+    <!--        app:navGraph="@navigation/nav_graph_deeplink" />-->
 <!--        app:navGraph="@navigation/nav_graph_activity" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

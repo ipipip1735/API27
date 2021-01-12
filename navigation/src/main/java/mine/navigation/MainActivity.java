@@ -2,16 +2,12 @@ package mine.navigation;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.ActionOnlyNavDirections;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ActivityNavigator;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.FragmentNavigator;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     OnBackPressedCallback callback1;
     OnBackPressedCallback callback2;
 
+    StringViewModel stringViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
 //        callback1.setEnabled(false);
 //        System.out.println(callback1.isEnabled());
 
-        getOnBackPressedDispatcher().addCallback(this, callback1);
-        getOnBackPressedDispatcher().addCallback(this, callback2);
+//        getOnBackPressedDispatcher().addCallback(this, callback1);
+//        getOnBackPressedDispatcher().addCallback(this, callback2);
 
     }
 
@@ -121,11 +118,44 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        navigation();
+//        navigation();
+        backStackEntry();
+//        backStackEntryWithSavedStateHandle();
+//        backStackEntryWithViewModelStore();
+
+
+
 //        navigationActivity();
 
 //        callback2.remove();
 //        callback2.setEnabled(false);
+
+    }
+
+    private void backStackEntry() {
+        //导航回退栈
+        NavController navController = Navigation.findNavController(this, R.id.fragment);
+
+        //从回退栈中获取当前节点
+        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();
+        System.out.println("getCurrentBackStackEntry() is " + navBackStackEntry.getDestination());
+
+        //从回退栈中获取当前节点
+        navBackStackEntry = navController.getPreviousBackStackEntry();
+        System.out.println("getPreviousBackStackEntry() is " + navBackStackEntry.getDestination());//返回null（因为OneFragment的首页，所以没有前一节点）
+
+        //获取任意节点
+        navBackStackEntry = navController.getBackStackEntry(R.id.oneFragment);
+        System.out.println("getBackStackEntry() is " + navBackStackEntry.getDestination());
+    }
+
+    private void backStackEntryWithViewModelStore() {
+
+        NavController navController = Navigation.findNavController(this, R.id.fragment);
+
+        stringViewModel = new ViewModelProvider(navController.getCurrentBackStackEntry()).get(StringViewModel.class);
+        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
+        navController.navigate(R.id.action_oneFragment_to_twoFragment);
 
     }
 
@@ -143,9 +173,15 @@ public class MainActivity extends AppCompatActivity {
                 .setAction("one");//使用隐式Intent
 //                .setIntent(new Intent(this, OneActivity.class));//使用显式Intent
         activityNavigator.navigate(destination, null, null, null);
-
-
     }
+
+    private void backStackEntryWithSavedStateHandle() {
+
+        NavController navController = Navigation.findNavController(this, R.id.fragment);
+        navController.getCurrentBackStackEntry().getSavedStateHandle().set("name", "Bob");//保存数据
+        navController.navigate(R.id.action_oneFragment_to_twoFragment);
+    }
+
 
     private void navigation() {
 
@@ -157,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
         //使用安全插件传递参数
 //        NavController navController = Navigation.findNavController(this, R.id.fragment);
-//        navController.navigate(OneFragmentDirections.actionOneFragmentToTwoFragment2()
+//        navController.navigate(OneFragmentDirections.actionOneFragmentToTwoFragment()
 //                .setOne(111)
 //                .setTwo(222));
 
@@ -175,23 +211,15 @@ public class MainActivity extends AppCompatActivity {
 //                .setEnterAnim(R.anim.fragment_fade_in)
 //                .build();
 //        navController.navigate(R.id.action_oneFragment_to_twoFragment, null, navOptions);
-
-
-        //导航回退栈
-//        NavController navController = Navigation.findNavController(this, R.id.fragment);
-//        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();
-//        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
-//
-//        navBackStackEntry = navController.getPreviousBackStackEntry();
-//        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
-
-
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
 
+        NavController navController = Navigation.findNavController(this, R.id.fragment);
+        String name = navController.getCurrentBackStackEntry().getSavedStateHandle().get("name");
+        System.out.println("name = " + name);
     }
 
     public void bind(View view) {

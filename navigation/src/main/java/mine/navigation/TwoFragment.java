@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
@@ -22,6 +23,8 @@ import androidx.navigation.fragment.FragmentNavigator;
  * Created by Administrator on 2020/7/2.
  */
 public class TwoFragment extends Fragment {
+
+    StringViewModel stringViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,25 +89,53 @@ public class TwoFragment extends Fragment {
 
 
         //导航回退栈
-        NavController navController = Navigation.findNavController(view);
-        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();
-        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
-
-        navBackStackEntry = navController.getPreviousBackStackEntry();
-        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
-
-
-
-
-
-//        NavBackStackEntry navBackStackEntry = Navigation.findNavController(view).getBackStackEntry(R.id.twoFragment);
-//        System.out.println("navBackStackEntry = " + navBackStackEntry);
+//        NavController navController = Navigation.findNavController(view);
+//        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();//获取当前节点
+//        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
 //
-//        StringViewModel stringViewModel = new ViewModelProvider(navBackStackEntry).get(StringViewModel.class);
-//        System.out.println(stringViewModel.getName());
+//        navBackStackEntry = navController.getPreviousBackStackEntry();//获取前一节点
+//        System.out.println("navBackStackEntry = " + navBackStackEntry.getDestination());
 
 
 
+        //获取参数
+//        Bundle bundle = navBackStackEntry.getArguments();//从BackStackEntry获取参数
+//        Integer integer = bundle.getInt("one");
+//        System.out.println("integer = " + integer);
+//
+//        bundle = getArguments();//从Fragment获取参数（参数与BackStackEntry中获取的是同一个）
+//        integer = bundle.getInt("one");
+//        System.out.println("integer = " + integer);
+
+
+
+        //获取NavDestination
+//        NavController navController = Navigation.findNavController(view);
+//        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();
+//        NavDestination navDestination = navBackStackEntry.getDestination();
+//        System.out.println("navDestination = " + navDestination);
+//
+//        System.out.println("navDestination.getNavigatorName() is " + navDestination.getNavigatorName());
+//        System.out.println("navDestination.getLabel() is " + navDestination.getLabel());
+//        System.out.println("navDestination.getId() is " + navDestination.getId());
+
+
+
+        //获取父节点ViewModel
+        NavController navController = Navigation.findNavController(view);
+        stringViewModel = new ViewModelProvider(navController.getPreviousBackStackEntry()).get(StringViewModel.class);
+        System.out.println("stringViewModel is " + stringViewModel.getName() + "|" + stringViewModel.hashCode());
+
+
+        //修改父节点数据
+//        NavController navController = Navigation.findNavController(view);
+//        String name = navController.getPreviousBackStackEntry()
+////        String name = navController.getCurrentBackStackEntry()
+//                .getSavedStateHandle()
+//                .get("name");
+//        System.out.println("name = " + name);
+//
+//        navController.getPreviousBackStackEntry().getSavedStateHandle().set("name", "Jack");//修改父节点数据
 
 
 
