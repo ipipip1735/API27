@@ -7,8 +7,11 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 //import mine.hilt.component.DaggerTheComponent;
+import mine.hilt.component.DaggerOneComponent;
+import mine.hilt.component.OneComponent;
 import mine.hilt.component.TheComponent;
 import mine.hilt.data.Bottle;
+import mine.hilt.data.Cloud;
 
 
 /**
@@ -27,6 +30,7 @@ public class SixActivity extends AppCompatActivity {
 //                .build();
 //        theComponent.inject(this);
 //        System.out.println(DaggerTheComponent.builder());
+
     }
 
     @Override
@@ -86,7 +90,15 @@ public class SixActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        sendBroadcast(new Intent(this, TheReceiver.class));
+
+        OneComponent oneComponent = DaggerOneComponent.create();
+        System.out.println("oneComponent = " + oneComponent);
+
+        Cloud cloud = oneComponent.cloud();
+        System.out.println("cloud = " + cloud);
+
+        cloud = oneComponent.cloud();
+        System.out.println("cloud = " + cloud);
 
     }
 

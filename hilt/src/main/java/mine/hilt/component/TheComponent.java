@@ -9,15 +9,14 @@ import mine.hilt.data.Bottle;
 /**
  * Created by Administrator on 2021/1/2.
  */
-@Component(dependencies = Bottle.class)
+@Component
 public interface TheComponent {
 
-    void inject(SixActivity sixActivity);
+//    void inject(SixActivity sixActivity);
 
-
-    @Component.Builder
-    interface Builder {
-        Builder appDependencies(Bottle bottle);
-        TheComponent build();
-    }
+//    @Component.Builder
+//    interface Builder {
+//        Builder appDependencies(Bottle bottle);
+//        TheComponent build();
+//    }
 }
