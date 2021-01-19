@@ -5,28 +5,31 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
-//import mine.hilt.component.DaggerTheComponent;
-import mine.hilt.component.TheComponent;
-import mine.hilt.data.Bottle;
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import mine.hilt.data.Circle;
+import mine.hilt.data.TheWorker;
 
 
 /**
- * Created by Administrator on 2021/1/2.
+ * Created by Administrator on 2021/1/16.
  */
-public class SixActivity extends AppCompatActivity {
+@AndroidEntryPoint
+public class WorkerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_three);
-
-//        TheComponent theComponent = DaggerTheComponent.builder()
-//                .appDependencies(new Bottle())
-//                .build();
-//        theComponent.inject(this);
-//        System.out.println(DaggerTheComponent.builder());
+        setContentView(R.layout.activity_worker);
+        WorkManager.getInstance(this)
+                .enqueue(new OneTimeWorkRequest
+                        .Builder(TheWorker.class)
+                        .build());
     }
 
     @Override
@@ -66,11 +69,13 @@ public class SixActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onBackPressed  *********");
     }
 
+
     @Override
     protected void onStop() {
         super.onStop();
         System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -86,7 +91,7 @@ public class SixActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        sendBroadcast(new Intent(this, TheReceiver.class));
+
 
     }
 
@@ -96,10 +101,12 @@ public class SixActivity extends AppCompatActivity {
 
     public void bind(View view) {
         System.out.println("~~button.bind~~");
+
     }
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
+
     }
 
     public void reloading(View view) {
@@ -108,6 +115,7 @@ public class SixActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
+
     }
 
     public void query(View view) {

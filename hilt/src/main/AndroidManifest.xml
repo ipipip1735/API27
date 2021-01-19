@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="mine.hilt">
 
-    <application
-        android:name=".TheApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.API27">
-        <activity android:name=".ElevenActivity">
-<!--        <activity android:name=".SixActivity">-->
-<!--        <activity android:name=".FiveActivity">-->
-<!--        <activity android:name=".ThreeActivity">-->
-<!--        <activity android:name=".TwoActivity">-->
-<!--        <activity android:name=".MainActivity">-->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <application
+            android:name=".TheApplication"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.API27">
+            <activity android:name=".WorkerActivity">
+<!--            <activity android:name=".ElevenActivity">-->
+    <!--        <activity android:name=".SixActivity">-->
+    <!--        <activity android:name=".FiveActivity">-->
+    <!--        <activity android:name=".ThreeActivity">-->
+    <!--        <activity android:name=".TwoActivity">-->
+    <!--        <activity android:name=".MainActivity">-->
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
 
-        <activity android:name=".OneActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            <activity android:name=".OneActivity">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>
 
-        <activity android:name=".FourActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            <activity android:name=".FourActivity">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>
 
-        <provider android:name=".TheContentProvider"  android:authorities="TNT"/>
+            <provider android:name=".TheContentProvider"  android:authorities="TNT"/>
+            <provider
+                android:name="androidx.work.impl.WorkManagerInitializer"
+                android:authorities="${applicationId}.workmanager-init"
+                tools:node="remove" />
 
-        <receiver android:name=".TheReceiver" />
+            <receiver android:name=".TheReceiver" />
 
+        </application>
 
-    </application>
 
 </manifest>

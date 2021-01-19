@@ -12,7 +12,7 @@ import dagger.hilt.android.scopes.ActivityScoped;
 //@ActivityRetainedScoped
 public class Milk {
 
-//    @Inject
+    @Inject
     public Milk() {
         System.out.println("~~Milk.Milk~~");
     }
