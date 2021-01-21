@@ -7,42 +7,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import mine.hilt.component.DaggerOneComponent;
-import mine.hilt.component.DaggerTwoComponent;
-import mine.hilt.component.OneComponent;
-import mine.hilt.component.TwoComponent;
-import mine.hilt.data.Cloud;
-import mine.hilt.data.Wind;
-
+import mine.hilt.component.DaggerThreeComponent;
+import mine.hilt.component.ThreeComponent;
+import mine.hilt.data.Snow;
 
 /**
  * Created by Administrator on 2021/1/2.
  */
-public class SixActivity extends AppCompatActivity {
-
-    @Inject
-    Wind wind;
+public class EightActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //使用Dagger组件给Android组件提供依赖
-        TwoComponent twoComponent = DaggerTwoComponent.create();
-        twoComponent.inject(this);
-        System.out.println("wind = " + wind);
 
 
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_three);
-
-//        TheComponent theComponent = DaggerTheComponent.builder()
-//                .appDependencies(new Bottle())
-//                .build();
-//        theComponent.inject(this);
-//        System.out.println(DaggerTheComponent.builder());
-
     }
 
     @Override
@@ -102,23 +84,10 @@ public class SixActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
-        OneComponent oneComponent = DaggerOneComponent.create();
-        System.out.println("oneComponent = " + oneComponent);
-
-        Cloud cloud = oneComponent.cloud();
-        System.out.println("cloud = " + cloud);
-
-        cloud = oneComponent.cloud();
-        System.out.println("cloud = " + cloud);
-
     }
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
-
-
-
     }
 
     public void bind(View view) {
