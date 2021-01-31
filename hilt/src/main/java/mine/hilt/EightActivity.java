@@ -7,24 +7,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+import mine.hilt.component.DaggerFatherComponent;
 import mine.hilt.component.DaggerThreeComponent;
 import mine.hilt.component.ThreeComponent;
+import mine.hilt.data.Rain;
 import mine.hilt.data.Snow;
 
 /**
  * Created by Administrator on 2021/1/2.
  */
+@AndroidEntryPoint
 public class EightActivity extends AppCompatActivity {
 
+    @Inject
+    Rain rain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_three);
+
+        DaggerFatherComponent.create().sonComponent().create().inject(this);
+
+        System.out.println("rain = " + rain);
+
     }
 
     @Override
