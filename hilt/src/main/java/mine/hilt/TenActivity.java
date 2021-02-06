@@ -5,19 +5,20 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import mine.hilt.component.DaggerFiveComponent;
-import mine.hilt.component.DaggerFourComponent;
-import mine.hilt.component.FiveComponent;
-import mine.hilt.data.Door;
-import mine.hilt.data.Room;
-import mine.hilt.module.DaggerWithBindsModule;
+import mine.hilt.data.Openable;
 
 /**
  * Created by Administrator on 2021/2/3.
  */
 public class TenActivity extends AppCompatActivity {
+
+//    @Inject
+//    Set<Openable> openables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,11 @@ public class TenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_three);
 
 
-        DaggerFiveComponent.create().inject(this);
+//        DaggerFiveComponent.create().inject(this);
+//        System.out.println("openables = " + openables);
+
+
+
 
     }
 

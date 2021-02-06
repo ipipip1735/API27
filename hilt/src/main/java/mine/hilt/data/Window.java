@@ -3,13 +3,13 @@ package mine.hilt.data;
 import javax.inject.Inject;
 
 /**
- * Created by Administrator on 2021/2/4 18:40.
+ * Created by Administrator on 2021/2/6.
  */
-public class Box implements Openable {
+public class Window implements Openable {
 
     @Inject
-    public Box() {
-        System.out.println("~~" + getClass().getSimpleName() + ".Box~~");
+    public Window() {
+        System.out.println("~~" + getClass().getSimpleName() + ".Window~~");
     }
 
     @Override
