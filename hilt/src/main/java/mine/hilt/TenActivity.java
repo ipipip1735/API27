@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import mine.hilt.component.DaggerFiveComponent;
+import mine.hilt.component.DaggerSixComponent;
 import mine.hilt.data.Openable;
 
 /**
@@ -31,6 +32,8 @@ public class TenActivity extends AppCompatActivity {
 //        System.out.println("openables = " + openables);
 
 
+        Set<Openable> openables = DaggerSixComponent.create().openables();
+        System.out.println("openables = " + openables);
 
 
     }

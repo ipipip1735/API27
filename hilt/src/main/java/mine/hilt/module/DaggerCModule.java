@@ -26,6 +26,6 @@ public class DaggerCModule {
     @Provides
     @ElementsIntoSet
     public Set<Openable> openables(Box box, Window window) {
-    return new HashSet<>(Arrays.asList(box, window));
+        return new HashSet<>(Arrays.asList(box, window));
     }
 }

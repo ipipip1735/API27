@@ -11,4 +11,5 @@ import mine.hilt.module.DaggerBModule;
 @Component(modules = {DaggerAModule.class, DaggerBModule.class})
 public interface FiveComponent {
     void inject(TenActivity tenActivity);
+
 }
