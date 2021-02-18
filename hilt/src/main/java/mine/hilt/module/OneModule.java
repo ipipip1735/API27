@@ -24,19 +24,19 @@ import mine.hilt.data.Dog;
 public abstract class OneModule {
 
     //限定提供器
-//    @DogPet
-//    @Provides
-//    public static Child bindDog(Dog dog){
-//        Child child = new Child(dog);
-//        return child;
-//    }
-//
-//    @CatPet
-//    @Provides
-//    public static Child bindCat(Cat cat){
-//        Child child = new Child(cat);
-//        return child;
-//    }
+    @DogPet
+    @Provides
+    public static Child bindDog(Dog dog){
+        Child child = new Child(dog);
+        return child;
+    }
+
+    @CatPet
+    @Provides
+    public static Child bindCat(Cat cat){
+        Child child = new Child(cat);
+        return child;
+    }
 
 
 

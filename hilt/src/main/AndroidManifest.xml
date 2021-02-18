@@ -12,8 +12,9 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.API27">
 <!--            <activity android:name=".WorkerActivity">-->
+            <activity android:name=".TwelveActivity">
 <!--            <activity android:name=".ElevenActivity">-->
-            <activity android:name=".TenActivity">
+<!--            <activity android:name=".TenActivity">-->
 <!--            <activity android:name=".NineActivity">-->
 <!--            <activity android:name=".EightActivity">-->
 <!--            <activity android:name=".SevenActivity">-->

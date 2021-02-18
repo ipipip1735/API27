@@ -1,31 +1,36 @@
 package mine.hilt.module;
 
-import android.util.ArraySet;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.migration.DisableInstallInCheck;
+import dagger.multibindings.ClassKey;
 import dagger.multibindings.ElementsIntoSet;
-import dagger.multibindings.IntoSet;
+import dagger.multibindings.IntoMap;
+import dagger.multibindings.StringKey;
 import mine.hilt.data.Box;
 import mine.hilt.data.Openable;
 import mine.hilt.data.Window;
 
 /**
- * Created by Administrator on 2021/2/7 06:26.
+ * Created by Administrator on 2021/2/8 19:48.
  */
 @Module
 @DisableInstallInCheck
-public class DaggerCModule {
+public class DaggerDModule {
 
     @Provides
-    @ElementsIntoSet
-    public Set<Openable> openables(Box box, Window window) {
-        return new HashSet<>(Arrays.asList(box, window));
+    @IntoMap @StringKey("box")
+    public Openable box(Box box) {
+        return box;
+    }
+
+    @Provides
+    @IntoMap @ClassKey(Window.class)
+    public Openable window() {
+        return new Window();
     }
 }

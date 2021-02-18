@@ -9,8 +9,10 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import mine.hilt.component.AComponent;
+import mine.hilt.component.DaggerAComponent;
 import mine.hilt.component.DaggerFiveComponent;
-import mine.hilt.component.DaggerSixComponent;
+import mine.hilt.component.DaggerTenComponent;
 import mine.hilt.data.Openable;
 
 /**
@@ -28,13 +30,47 @@ public class TenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_three);
 
 
-//        DaggerFiveComponent.create().inject(this);
+        //组装到Set容器
+//        DaggerFiveComponent.create().inject(this);//依赖注入
+//        System.out.println("openables = " + openables);
+
+//        Set<Openable> openables = DaggerSixComponent.create().openables();//直接获取Set容器
 //        System.out.println("openables = " + openables);
 
 
-        Set<Openable> openables = DaggerSixComponent.create().openables();
-        System.out.println("openables = " + openables);
 
+        //组装到Map容器
+//        Map<String, Openable> map = DaggerNineComponent.create().openables();
+//        System.out.println("map = " + map);
+
+        //使用String作为Map容器的Key
+//        Map<String, Openable> map = DaggerSevenComponent.create().OpenableByString();
+//        System.out.println("map = " + map);
+
+        //使用Class作为Map容器的Key
+//        Map<Class<?>, Openable> mapByClass = DaggerSevenComponent.create().openablesByClass();
+//        System.out.println("mapByClass = " + mapByClass);
+
+        //使用枚举对象作为Map容器的Key
+//        Map<Color, Openable> map = DaggerEightComponent.create().openableByEnum();
+//        System.out.println("map = " + map);
+//        Map<Class<? extends Integer>, Openable> mapByClass = DaggerEightComponent.create().openablesByClass();
+//        System.out.println("mapByClass = " + mapByClass);
+
+
+
+        //使用@Multibinds完成多绑定
+//        Set<Openable> set = DaggerTenComponent.create().openables();
+//        System.out.println("set = " + set);
+
+
+
+        //父子组件组装
+//        AComponent aComponent = DaggerAComponent.create();
+//        Set<Openable> set = aComponent.openable();
+//        System.out.println("set = " + set);
+//        set = aComponent.bComponent().openable();
+//        System.out.println("set = " + set);
 
     }
 
