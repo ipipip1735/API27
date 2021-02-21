@@ -25,7 +25,6 @@
 
          milkViewModel = new ViewModelProvider(this).get(MilkViewModel.class);
          System.out.println("milkViewModel is " + milkViewModel.getMilk() + "|" + milkViewModel.hashCode());
-
      }
 
      @Override

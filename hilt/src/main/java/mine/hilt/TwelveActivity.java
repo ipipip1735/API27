@@ -19,7 +19,6 @@
  @AndroidEntryPoint
  public class TwelveActivity extends AppCompatActivity {
 
-
      @Override
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);

@@ -12,21 +12,17 @@ import mine.hilt.data.Sun;
  */
 //@DisableInstallInCheck
 //@Module(subcomponents = ChildComponent.class)
-//public class ChildComponentsModule {
-//
-////    @Provides
-////    Sun mSun(ChildComponent.Builder builder) {
-////        System.out.println("builder = " + builder);
-////        return new Sun();
-////    }
-//}
+//public class ChildComponentsModule {}
 
 @DisableInstallInCheck
 @Module
 public class ChildComponentsModule {
 
     @Provides
-    Sun mSun() {
+    Sun mSun(ChildComponent.Builder newBuilder) {
+        System.out.println("~~" + getClass().getSimpleName() + ".mSun~~");
+        System.out.println("newBuilder = " + newBuilder);
+
         return new Sun();
     }
 }

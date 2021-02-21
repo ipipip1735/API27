@@ -2,6 +2,7 @@ package mine.hilt.component;
 
 import dagger.Provides;
 import dagger.Subcomponent;
+import mine.hilt.data.Moon;
 import mine.hilt.data.Sun;
 
 /**
@@ -11,12 +12,9 @@ import mine.hilt.data.Sun;
 @Subcomponent
 public abstract class ChildComponent {
     @Subcomponent.Builder
-    interface Builder{
+    public interface Builder{
         ChildComponent build();
     }
-
-//    @Provides
-//    Sun getSun(){ return new Sun();}
 }
 
 

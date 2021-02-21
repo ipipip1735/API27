@@ -1,7 +1,10 @@
 package mine.hilt.component;
 
+import javax.inject.Inject;
+
 import dagger.Binds;
 import dagger.Component;
+import mine.hilt.data.Moon;
 import mine.hilt.data.Sun;
 import mine.hilt.module.ChildComponentsModule;
 import mine.hilt.module.SubcomponentsModule;
@@ -11,8 +14,6 @@ import mine.hilt.module.SubcomponentsModule;
  */
 @Component(modules = ChildComponentsModule.class)
 public interface MotherComponent {
-
-
+    ChildComponent.Builder newBuilder();
     Sun sun();
-//    ChildComponent.Builder newBuilder();
 }

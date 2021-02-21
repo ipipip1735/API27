@@ -66,11 +66,11 @@ public class TenActivity extends AppCompatActivity {
 
 
         //父子组件组装
-//        AComponent aComponent = DaggerAComponent.create();
-//        Set<Openable> set = aComponent.openable();
-//        System.out.println("set = " + set);
-//        set = aComponent.bComponent().openable();
-//        System.out.println("set = " + set);
+        AComponent aComponent = DaggerAComponent.create();
+        Set<Openable> set = aComponent.openable();
+        System.out.println("set = " + set);
+        set = aComponent.bComponent().openable();
+        System.out.println("set = " + set);
 
     }
 
