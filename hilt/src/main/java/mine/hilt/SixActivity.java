@@ -8,8 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import javax.inject.Inject;
 
 import mine.hilt.component.DaggerOneComponent;
+import mine.hilt.component.DaggerTheComponent;
 import mine.hilt.component.DaggerTwoComponent;
 import mine.hilt.component.OneComponent;
+import mine.hilt.component.TheComponent;
 import mine.hilt.component.TwoComponent;
 import mine.hilt.data.Cloud;
 import mine.hilt.data.Wind;
@@ -28,9 +30,9 @@ public class SixActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         //使用Dagger组件给Android组件提供依赖
-        TwoComponent twoComponent = DaggerTwoComponent.create();
-        twoComponent.inject(this);
-        System.out.println("wind = " + wind);
+//        TwoComponent twoComponent = DaggerTwoComponent.create();
+//        twoComponent.inject(this);
+//        System.out.println("wind = " + wind);
 
 
         super.onCreate(savedInstanceState);
@@ -42,6 +44,14 @@ public class SixActivity extends AppCompatActivity {
 //                .build();
 //        theComponent.inject(this);
 //        System.out.println(DaggerTheComponent.builder());
+
+
+
+//        Cloud cloud = DaggerTheComponent.create().cloud();
+//        Cloud cloud = DaggerTheComponent.create().getCloud().injectMembers();
+
+        DaggerTheComponent.create().inject(this);
+        System.out.println("wind = " + wind);
 
     }
 

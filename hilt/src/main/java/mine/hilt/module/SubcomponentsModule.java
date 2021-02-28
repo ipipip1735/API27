@@ -11,5 +11,4 @@ import mine.hilt.component.SonComponent;
  */
 @DisableInstallInCheck
 @Module(subcomponents = SonComponent.class)
-public class SubcomponentsModule {
-}
+public class SubcomponentsModule {}

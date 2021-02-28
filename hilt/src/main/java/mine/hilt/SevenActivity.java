@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import javax.inject.Inject;
 
 import mine.hilt.component.DaggerOneComponent;
-import mine.hilt.component.DaggerThreeComponent;
 import mine.hilt.component.OneComponent;
 import mine.hilt.component.ThreeComponent;
 import mine.hilt.data.Cloud;
@@ -19,15 +18,15 @@ import mine.hilt.data.Snow;
  */
 public class SevenActivity extends AppCompatActivity {
 
-    @Inject
-    Snow snow;
+//    @Inject
+//    Snow snow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        ThreeComponent threeComponent = DaggerThreeComponent.create();
-        threeComponent.inject(this);
-        System.out.println("snow = " + snow);
+//        ThreeComponent threeComponent = DaggerThreeComponent.create();
+//        threeComponent.inject(this);
+//        System.out.println("snow = " + snow);
 
 
         super.onCreate(savedInstanceState);

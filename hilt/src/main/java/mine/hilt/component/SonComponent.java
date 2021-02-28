@@ -2,6 +2,7 @@ package mine.hilt.component;
 
 import dagger.Subcomponent;
 import mine.hilt.EightActivity;
+import mine.hilt.data.Milk;
 import mine.hilt.data.Sun;
 import mine.hilt.module.SonModule;
 
@@ -29,5 +30,6 @@ public interface SonComponent {
     }
 
     Sun sun();
+    Milk milk();
     void inject(EightActivity eightActivity);
 }

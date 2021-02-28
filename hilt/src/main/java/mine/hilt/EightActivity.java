@@ -11,14 +11,16 @@ import dagger.hilt.android.AndroidEntryPoint;
 import mine.hilt.component.ChildComponent;
 import mine.hilt.component.DFatherComponent;
 import mine.hilt.component.DSonComponent;
-import mine.hilt.component.DaggerDFatherComponent;
-import mine.hilt.component.DaggerDSonComponent;
-import mine.hilt.component.DaggerFatherComponent;
-import mine.hilt.component.DaggerMotherComponent;
-import mine.hilt.component.DaggerThreeComponent;
+
+
+import mine.hilt.component.FatherComponent;
 import mine.hilt.component.MotherComponent;
+import mine.hilt.component.SonComponent;
 import mine.hilt.component.ThreeComponent;
+import mine.hilt.data.Milk;
 import mine.hilt.data.Moon;
+import mine.hilt.data.Openable;
+import mine.hilt.data.Pet;
 import mine.hilt.data.Rain;
 import mine.hilt.data.Snow;
 import mine.hilt.data.Sun;
@@ -27,14 +29,17 @@ import mine.hilt.module.SonModule;
 /**
  * Created by Administrator on 2021/1/2.
  */
-@AndroidEntryPoint
+//@AndroidEntryPoint
 public class EightActivity extends AppCompatActivity {
 
 //    @Inject
 //    Rain rain;
 
-    @Inject
-    Moon moon;
+//    @Inject
+//    Moon moon;
+
+//    @Inject
+//    Openable openable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +63,26 @@ public class EightActivity extends AppCompatActivity {
 //        System.out.println("sun = " + sun);
 
 
+        //使用提供器创建子组件
+//        SonComponent.Factory factory = DaggerFatherComponent.create().provider().get();
+//        SonComponent sonComponent = factory.create(new SonModule("ok"));
+//        Sun sun = sonComponent.sun();
+//        System.out.println("sun = " + sun);
+//        Milk milk = sonComponent.milk();
+//        System.out.println("milk = " + milk);
+
 
 
         //组件依赖
-        DFatherComponent dFatherComponent = DaggerDFatherComponent.create();
+//        DFatherComponent dFatherComponent = DaggerDFatherComponent.create();
+//
+//        DSonComponent dSonComponent = DaggerDSonComponent.builder()
+//                .setFather(dFatherComponent)
+//                .build();
 
-        DSonComponent dSonComponent = DaggerDSonComponent.builder()
-                .setFather(dFatherComponent)
-                .build();
-
-        dSonComponent.inject(this);
-        System.out.println("moon = " + moon);
+//        dSonComponent.inject(this);
+//        System.out.println("moon = " + moon);
+//        System.out.println("snow = " + snow);
 
 
 
