@@ -20,7 +20,8 @@ public class LayoutActivity extends AppCompatActivity {
         super.onCreate(bundle);
         System.out.println("**********  Example  onCreate  ***********");
 
-        setContentView(R.layout.activity_request_layout);
+//        setContentView(R.layout.activity_request_layout);
+        setContentView(R.layout.activity_linear_layout);
 
     }
 
