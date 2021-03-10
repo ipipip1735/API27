@@ -20,7 +20,11 @@
         <provider
             android:authorities="TNT"
             android:name="mine.clipboard.ClipContentProvider"
-            android:exported="true"/>
+            android:grantUriPermissions="false"
+            android:exported="true">
+            <grant-uri-permission android:pathPrefix="/person" />
+
+        </provider>
         
     </application>
 

@@ -1,20 +1,27 @@
-package mine.apptemp;
+package mine.file;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 
-/**
- * Created by Administrator on 2018/9/6.
- */
-public class MainActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+public class PermissionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_client);
+        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
+        setContentView(R.layout.activity_main);
 
     }
 
@@ -34,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         System.out.println("*********  " + getClass().getSimpleName() + ".onRestart  *********");
-
     }
 
     @Override
@@ -76,35 +82,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void start(View view) {
-        System.out.println("~~button.start~~");
-//        startActivity(new Intent(this, SingletonActivity.class));
+    public void internal(View view) {
+        System.out.println("~~button.internal~~");
 
+        File file;
 
-//        Intent intent = new Intent("receivertrial");
-//        intent.setPackage("mine.broadcast");
+        file = getExternalFilesDir("imgs");
+//        file = new File(getCacheDir(), "imgs");
+        if (!file.exists() && file.mkdirs()) System.out.println(file);
 
-//        sendBroadcast(intent);
-//        sendBroadcast(intent, "a.b"); //增加权限限制
-//        intent.putExtra("mReceiver", "One");//携带数据
+        try {
+            file = File.createTempFile("img", null, file);
+            System.out.println("file = " + file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Uri uri = FileProvider.getUriForFile(this, "mine.file", file);
+        System.out.println("uri = " + uri);
 
         Intent intent = new Intent("wfile");
+
+
+        List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            System.out.println("packageName = " + packageName);
+            grantUriPermission("mine.apptemp", uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
         startActivity(intent);
 
     }
 
 
-    public void stop(View view) {
+    public void cache(View view) {
         System.out.println("~~button.stop~~");
 
-        Singleton singleton = Singleton.getThis("Mary", this);
-        System.out.println(singleton);
-    }
-
-    public void bind(View view) {
-        System.out.println("~~button.bind~~");
 
     }
+
+    public void external(View view) {
+        System.out.println("~~button.external~~");
+
+    }
+
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
@@ -117,15 +141,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void del(View view) {
-        System.out.println("~~button.del~~");
+    public void temp(View view) {
+        System.out.println("~~button.temp~~");
 
     }
 
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
     }
-
 }

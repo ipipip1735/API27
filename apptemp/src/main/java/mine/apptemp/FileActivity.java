@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -15,6 +17,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -236,6 +239,19 @@ public class FileActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
+
+        Uri uri = (Uri) getIntent().getExtras().get(MediaStore.EXTRA_OUTPUT);
+        System.out.println("uri = " + uri);
+
+
+        try(InputStream inputStream = getContentResolver().openInputStream(uri)) {
+            System.out.println("size is " + inputStream.available());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
 
     }
 

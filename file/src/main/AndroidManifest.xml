@@ -9,13 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".PermissionActivity">
+<!--        <activity android:name=".MainActivity">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="mine.file"
+            android:exported="false"
+            android:grantUriPermissions="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+            <grant-uri-permission android:pathPrefix="/imgs" />
+        </provider>
     </application>
 
 </manifest>
