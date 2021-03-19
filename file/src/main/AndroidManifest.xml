@@ -18,6 +18,15 @@
             </intent-filter>
         </activity>
 
+
+
+<!--        <activity android:name=".PermissionActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="three" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="mine.file"

@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <permission android:name="a.b" />
     <uses-permission android:name="a.b" />
@@ -20,11 +20,12 @@
 
 
         <activity android:name=".MainActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!--<activity android:name=".SingletonActivity">-->
@@ -49,41 +50,50 @@
         <!--</activity>-->
 
         <!--<activity android:name=".ComponentActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity android:name=".ContentProviderActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
-<!--        <activity android:name=".BitmapActivity">-->
-<!--        <intent-filter>-->
-<!--        <action android:name="android.intent.action.MAIN" />-->
-<!--            <action android:name="android.intent.action.VIEW" />-->
-<!--        <category android:name="android.intent.category.LAUNCHER" />-->
-<!--        </intent-filter>-->
+        <!--        <activity android:name=".BitmapActivity">-->
+        <!--        <intent-filter>-->
+        <!--        <action android:name="android.intent.action.MAIN" />-->
+        <!--            <action android:name="android.intent.action.VIEW" />-->
+        <!--        <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--        </intent-filter>-->
+        <!--        </activity>-->
+
+        <!--        <activity android:name=".BroadcastActivity">-->
+        <!--        <intent-filter>-->
+        <!--        <action android:name="android.intent.action.MAIN" />-->
+        <!--        <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--        </intent-filter>-->
+        <!--        </activity>-->
+
+<!--        <activity android:name=".FileActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="two" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
 <!--        </activity>-->
 
-<!--        <activity android:name=".BroadcastActivity">-->
-<!--        <intent-filter>-->
-<!--        <action android:name="android.intent.action.MAIN" />-->
-<!--        <category android:name="android.intent.category.LAUNCHER" />-->
-<!--        </intent-filter>-->
-<!--        </activity>-->
-
-        <activity android:name=".FileActivity">
-        <intent-filter>
-        <action android:name="wfile" />
-        <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+        <activity android:name=".IntentActivity">
+            <intent-filter>
+                <action android:name="two" />
+                <action android:name="android.intent.action.SEND" />
+<!--                <data android:mimeType="a/b"/>-->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <!--<activity android:name=".NotificationActivity">-->
@@ -93,13 +103,13 @@
         <!--</intent-filter>-->
         <!--</activity>-->
 
-<!--        <activity android:name=".ClientActivity">-->
-<!--        <intent-filter>-->
-<!--        <action android:name="android.intent.action.MAIN" />-->
-<!--        <action android:name="android.intent.action.VIEW" />-->
-<!--        <category android:name="android.intent.category.LAUNCHER" />-->
-<!--        </intent-filter>-->
-<!--        </activity>-->
+        <!--        <activity android:name=".ClientActivity">-->
+        <!--        <intent-filter>-->
+        <!--        <action android:name="android.intent.action.MAIN" />-->
+        <!--        <action android:name="android.intent.action.VIEW" />-->
+        <!--        <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--        </intent-filter>-->
+        <!--        </activity>-->
 
         <!--<activity android:name=".MessengerActivity">-->
         <!--<intent-filter>-->
@@ -118,8 +128,8 @@
 
         <receiver android:name=".DownloadReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
-                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
 

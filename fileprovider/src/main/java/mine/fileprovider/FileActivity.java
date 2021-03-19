@@ -121,7 +121,16 @@ public class FileActivity extends AppCompatActivity {
         System.out.println("uri is " + uri);
 
 
-        //获取文件内容
+        //方式一：获取文件尺寸
+//        try(InputStream inputStream = getContentResolver().openInputStream(uri)) {
+//            System.out.println("size is " + inputStream.available());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+
+        //方式二：获取文件内容（使用文件描述符）
         try (ParcelFileDescriptor parcelFileDescriptor =
                      getContentResolver().openFileDescriptor(uri, "r")) {
             FileDescriptor fd = parcelFileDescriptor.getFileDescriptor();

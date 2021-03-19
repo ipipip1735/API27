@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mine.intent">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.API27">
+<!--        <activity android:name=".SendActivity">-->
+        <activity android:name=".ChooserActivity">
+<!--        <activity android:name=".MainActivity">-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <data android:mimeType="a/b"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".OneActivity">
+            <intent-filter>
+                <action android:name="one" />
+<!--                <data android:mimeType="a/b"/>-->
+
+<!--                <data-->
+<!--                    android:scheme="aa"/>-->
+
+<!--                <data-->
+<!--                    android:scheme="AA"/>-->
+
+<!--                <data-->
+<!--                    android:scheme="AA"-->
+<!--                    android:host="BB" />-->
+
+<!--                <data-->
+<!--                    android:scheme="AA"-->
+<!--                    android:host="BB"-->
+<!--                    android:port="123"-->
+<!--                    android:path="/CC/de.fghi"/>-->
+
+<!--                <data android:scheme="AA"-->
+<!--                    android:host="BB"-->
+<!--                    android:port="123"-->
+<!--                    android:path="/CC/d.efg"-->
+<!--                    android:mimeType="aa/*"/>-->
+
+<!--                <data android:scheme="AA"-->
+<!--                    android:mimeType="aa/*"/>-->
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="III"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+
+
+        <receiver android:name=".TheBroadcastReceiver" />
+
+
+    </application>
+
+</manifest>

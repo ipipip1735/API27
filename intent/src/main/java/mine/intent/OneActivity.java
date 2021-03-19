@@ -1,14 +1,16 @@
-package mine.apptemp;
+package mine.intent;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
- * Created by Administrator on 2018/9/6.
+ * Created by Administrator on 2021/3/11.
  */
-public class MainActivity extends AppCompatActivity {
+public class OneActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,5 +115,4 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("~~button.query~~");
 
     }
-
 }
