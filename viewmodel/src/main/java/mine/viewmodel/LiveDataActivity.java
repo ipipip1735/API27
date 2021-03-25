@@ -226,9 +226,6 @@ public class LiveDataActivity extends AppCompatActivity {
             }
             return liveData;
         }
-
-
-
     }
 
 

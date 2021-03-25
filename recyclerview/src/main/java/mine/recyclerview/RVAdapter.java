@@ -58,7 +58,7 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
 
         String s = dataset.get(position).toString();
         System.out.println(s);
-        ((MyViewHolder) holder).textView.setText(s);
+        ((TextView)holder.itemView).setText(s);
 
         System.out.println(((TextView)holder.itemView).getText() + "|" + holder);
     }
@@ -122,12 +122,8 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView textView;
-
         public MyViewHolder(TextView v) {
             super(v);
-            textView = v;
         }
     }
 

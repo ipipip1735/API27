@@ -11,10 +11,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apptemp" />
-            <option value="$PROJECT_DIR$/file" />
-            <option value="$PROJECT_DIR$/fileprovider" />
-            <option value="$PROJECT_DIR$/hilt" />
-            <option value="$PROJECT_DIR$/intent" />
+            <option value="$PROJECT_DIR$/drawable" />
+            <option value="$PROJECT_DIR$/recyclerview" />
+            <option value="$PROJECT_DIR$/view" />
+            <option value="$PROJECT_DIR$/viewmodel" />
+            <option value="$PROJECT_DIR$/widget" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager = linearLayoutManager;
 //        layoutManager = new LayoutManaager();//使用自定义布局管理器
 
 
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 180; i++) {
             dataset.add("item" + i);
         }
-//        adapter = new RVAdapter<>(dataset, this.list);
-        adapter = new MultipleRVAdapter(dataset, this.list);
+        adapter = new RVAdapter<>(dataset, this.list);
+//        adapter = new MultipleRVAdapter(dataset, this.list);
 
         recyclerView = findViewById(R.id.rv);
 //        recyclerView.setHasFixedSize(true);//使用固定尺寸
