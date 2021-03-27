@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><!--<bitmap xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--<selector xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--    <item android:state_pressed="true" android:drawable="@color/green" /> &lt;!&ndash; pressed &ndash;&gt;-->
+<!--    <item android:state_selected="true" android:drawable="@color/red" />-->
+<!--&lt;!&ndash;    <item android:state_pressed="true" android:drawable="@color/red" />&ndash;&gt;-->
+<!--&lt;!&ndash;    <item android:state_focused="true"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:drawable="@color/teal_700" /> &lt;!&ndash; focused &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <item android:state_hovered="true"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:drawable="@color/purple_200" /> &lt;!&ndash; hovered &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <item android:drawable="@color/BlanchedAlmond" /> &lt;!&ndash; default &ndash;&gt;&ndash;&gt;-->
+<!--</selector>-->
+
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:state_focused="true"
+    android:state_pressed="true"
+    android:drawable="@color/red" />
+<item android:state_pressed="true"
+    android:drawable="@color/green" />
+<item android:drawable="@color/Gold" />
+</selector>
+
+

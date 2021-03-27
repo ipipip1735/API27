@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transition xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item1" android:drawable="@drawable/diamond"/>
+    <item android:id="@+id/item2" android:drawable="@drawable/boll"
+        android:top="100dp" android:start="100dp" />
+</transition>
+

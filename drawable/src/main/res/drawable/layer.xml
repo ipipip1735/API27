@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><!--<bitmap xmlns:android="http://schemas.android.com/apk/res/android"-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item1"
+        android:drawable="@drawable/bitmap_diamond"/>
+    <item android:id="@+id/item2"
+        android:drawable="@drawable/bitmap_boll"
+        android:top="10dp"/>
+</layer-list>
+

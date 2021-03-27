@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ProgressBarActivity">
 
     <!--水平有限进度条-->
 <!--    <ProgressBar-->
@@ -26,8 +26,7 @@
         android:id="@+id/progressBar"
         android:indeterminate="true"
         android:indeterminateOnly = "false"
-        android:indeterminateBehavior="repeat"
-        android:mirrorForRtl="true"
+        android:indeterminateBehavior="cycle"
         android:progressDrawable="@drawable/horizontal_bar"
         android:indeterminateDrawable = "@drawable/horizontal_indeterminate_bar"
         android:layout_width="match_parent"
