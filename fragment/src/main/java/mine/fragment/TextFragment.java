@@ -18,8 +18,8 @@ public class TextFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onAttach  *********");
         super.onAttach(context);
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onAttach  *********");
 
 //        System.out.println(context);
 //        System.out.println(getActivity());
@@ -28,16 +28,16 @@ public class TextFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-
         super.onCreate(savedInstanceState);
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onCreate  *********");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onCreateView  *********");
-        System.out.println("getId is " + getId());
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onCreateView  *********");
+        System.out.println("inflater = " + inflater + ", container = " + container + ", savedInstanceState = " + savedInstanceState);
+        System.out.println("hashCode() is " + hashCode());
         System.out.println("getTag is " + getTag());
 
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_text, container, false);
@@ -49,50 +49,50 @@ public class TextFragment extends Fragment {
 
     @Override
     public void onStart() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         super.onStart();
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onStart  *********");
 
     }
 
     @Override
     public void onResume() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onResume  *********");
         super.onResume();
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onResume  *********");
 
     }
 
     @Override
     public void onPause() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onPause  *********");
         super.onPause();
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onPause  *********");
 
     }
 
     @Override
     public void onStop() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onStop  *********");
         super.onStop();
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onStop  *********");
 
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroyView  *********");
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onDestroyView  *********");
 
     }
 
     @Override
     public void onDestroy() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
         super.onDestroy();
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onDestroy  *********");
 
     }
 
     @Override
     public void onDetach() {
-        System.out.println("*********  " + getClass().getSimpleName() + ".onDetach  *********");
         super.onDetach();
+        System.out.println("*********  " + hashCode() +  "|" + getClass().getSimpleName() + ".onDetach  *********");
 
     }
 

@@ -19,7 +19,7 @@ import static android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
  */
 public class FragmentTransactionActivity extends AppCompatActivity {
 
-    Fragment fragment = null;
+    Fragment fragment;
     FragmentManager fragmentManager;
     FragmentManager.OnBackStackChangedListener listener;
     List<Integer> list;
@@ -122,10 +122,30 @@ public class FragmentTransactionActivity extends AppCompatActivity {
         textFragment.setArguments(bundle);//传递参数
 
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        System.out.println("fragmentTransaction = " + fragmentTransaction);
+        System.out.println("isEmpty() is " + fragmentTransaction.isEmpty());//判断状态
         fragmentTransaction.add(R.id.ll, textFragment, "Tag-" + id)
+                .setBreadCrumbTitle("CT-" + id)
                 .addToBackStack("addText" + id);
         fragmentTransaction.commit();
+
+//        System.out.println("isEmpty() is " + fragmentTransaction.isEmpty());//判断状态
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 5; i++) {
+//
+//                    try {
+//                        Thread.sleep(2000L);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    System.out.println("isEmpty() is " + fragmentTransaction.isEmpty());//判断状态
+//                }
+//            }
+//        }).start();
 
     }
 
@@ -133,20 +153,10 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     public void remove(View view) {
         System.out.println("~~button.remove~~");
 
-        //配置参数
-        String text = "text" + new Random().nextInt(99);
-        Bundle bundle = new Bundle();
-        bundle.putString("text", text);
-
-        //创建Fragment
-        TextFragment textFragment = new TextFragment();
-        textFragment.setArguments(bundle);//传递参数
-
-
         getSupportFragmentManager()
                 .beginTransaction()
-                .remove(fragmentManager.findFragmentByTag("frag1"))
-                .addToBackStack("removeText")
+                .remove(fragmentManager.findFragmentByTag("Tag-" + list.get(0)))
+//                .addToBackStack("removeText")
                 .commit();
 
     }
@@ -155,7 +165,9 @@ public class FragmentTransactionActivity extends AppCompatActivity {
         System.out.println("~~button.replace~~");
 
         //配置参数
-        String text = "text" + new Random().nextInt(99);
+        int id = new Random().nextInt(99);
+        list.add(id); //保存ID
+        String text = "text" + id;
         Bundle bundle = new Bundle();
         bundle.putString("text", text);
 
@@ -163,9 +175,8 @@ public class FragmentTransactionActivity extends AppCompatActivity {
         TextFragment textFragment = new TextFragment();
         textFragment.setArguments(bundle);//传递参数
 
-
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.ll, textFragment, "NewFrag")
+        fragmentTransaction.replace(R.id.ll, textFragment, "Tag-" + id)
                 .addToBackStack("three");
         fragmentTransaction.commit();
 
@@ -173,28 +184,45 @@ public class FragmentTransactionActivity extends AppCompatActivity {
 
     public void show(View view) {
         System.out.println("~~button.show~~");
-
-        int count = fragmentManager.getBackStackEntryCount();//获取总数
-        System.out.println("count is " + count);
-
-        for (int i = 0; i < count; i++) { //打印
-            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
-            System.out.println("getId is " + backStackEntry.getId());
-            System.out.println("getName is " + backStackEntry.getName());
-        }
+        getSupportFragmentManager().beginTransaction()
+                .show(fragment)
+                .addToBackStack("x")
+                .commit();
     }
 
     public void hide(View view) {
         System.out.println("~~button.hide~~");
+
+        fragment = getSupportFragmentManager().findFragmentById(R.id.ll);
+        getSupportFragmentManager().beginTransaction()
+                .hide(getSupportFragmentManager().findFragmentById(R.id.ll))
+                .addToBackStack("x")
+                .commit();
+
     }
 
     public void attach(View view) {
         System.out.println("~~button.attach~~");
 
+//        fragment = getSupportFragmentManager().findFragmentByTag("Tag-" + list.get(0));
+
+        System.out.println("fragment = " + fragment);
+        getSupportFragmentManager().beginTransaction()
+                .attach(fragment)
+                .addToBackStack("x")
+                .commit();
     }
 
     public void detach(View view) {
         System.out.println("~~button.detach~~");
+//        fragment = getSupportFragmentManager().findFragmentById(R.id.ll);
+        fragment = getSupportFragmentManager().findFragmentByTag("Tag-" + list.get(0));
+
+
+        getSupportFragmentManager().beginTransaction()
+                .detach(fragment)
+                .addToBackStack("x")
+                .commit();
     }
 
     public void pop(View view) {
@@ -204,5 +232,42 @@ public class FragmentTransactionActivity extends AppCompatActivity {
         System.out.println("tag is " + tag);
         fragmentManager.popBackStack(tag, POP_BACK_STACK_INCLUSIVE);
 
+    }
+
+    public void info(View view) {
+        System.out.println("~~button.info~~");
+
+//        int count = fragmentManager.getBackStackEntryCount();//获取总数
+//        System.out.println("count is " + count);
+
+        //打印所有回退栈实例
+//        for (int i = 0; i < count; i++) {
+//            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
+//            System.out.println(i + "|getId is " + backStackEntry.getId());
+//            System.out.println(i + "|getName is " + backStackEntry.getName());
+//            System.out.println(i + "|getBreadCrumbTitle is " + backStackEntry.getBreadCrumbTitle());
+//            System.out.println(i + "|getBreadCrumbTitleRes is " + backStackEntry.getBreadCrumbTitleRes());
+//            System.out.println(i + "|getBreadCrumbShortTitle is " + backStackEntry.getBreadCrumbShortTitle());
+//            System.out.println(i + "|getBreadCrumbShortTitleRes is " + backStackEntry.getBreadCrumbShortTitleRes());
+//        }
+
+
+        //查询Fragment
+//        Fragment fragment = fragmentManager.findFragmentById(R.id.ll);
+        Fragment fragment = fragmentManager.findFragmentByTag("Tag-" + list.get(0));
+        System.out.println("fragment = " + fragment);
+        System.out.println("id is " + fragment.getId() + ", R.id.ll is " + R.id.ll + ", Tag is " + fragment.getTag());
+
+
+        //打印所有Fragment
+//        for (int id : list) {
+//            fragment = fragmentManager.findFragmentByTag("Tag-" + id);
+//            if (fragment == null) continue;
+//            System.out.println("fragment = " + fragment);
+//            System.out.println("fragment.getId() is " + fragment.getId() + ", R.id.ll is " + R.id.ll);
+//        }
+
+
+        for (Fragment f : fragmentManager.getFragments()) System.out.println("f = " + f);
     }
 }

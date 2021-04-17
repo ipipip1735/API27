@@ -93,9 +93,18 @@
         android:layout_height="wrap_content"
         android:onClick="pop"
         android:text="pop"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button9"
         app:layout_constraintTop_toBottomOf="@+id/button7"
         tools:layout_editor_absoluteX="8dp" />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="info"
+        android:onClick="info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="8dp"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -129,4 +138,5 @@
             android:layout_height="wrap_content"
             android:text="YYYYYYYYYYYY" />
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
