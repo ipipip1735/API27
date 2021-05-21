@@ -1,17 +1,11 @@
 package mine.hilt.module;
 
-import javax.inject.Singleton;
-
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ActivityComponent;
-import dagger.hilt.android.components.ApplicationComponent;
-import dagger.hilt.components.SingletonComponent;
 import mine.hilt.annotation.CatPet;
 import mine.hilt.annotation.DogPet;
-import mine.hilt.data.Animal;
 import mine.hilt.data.Cat;
 import mine.hilt.data.Child;
 import mine.hilt.data.Dog;

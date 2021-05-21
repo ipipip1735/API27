@@ -14,9 +14,13 @@ import mine.hilt.module.EEModule;
 public interface CComponent {
     @Component.Builder
     interface Go{
-
         @BindsInstance
         Go foo(Box box);
         CComponent ccc();
     }
+
+//    @Component.Factory
+//    interface Go{
+//        CComponent sk(@BindsInstance Box box);
+//    }
 }

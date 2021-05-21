@@ -7,22 +7,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import dagger.hilt.android.AndroidEntryPoint;
 import mine.hilt.component.DaggerFourComponent;
-import mine.hilt.component.DaggerTwoComponent;
-import mine.hilt.data.Door;
-import mine.hilt.data.Room;
+import mine.hilt.data.Person;
 
 /**
  * Created by Administrator on 2021/2/3.
  */
 public class NineActivity extends AppCompatActivity {
 
-    @Inject
-    Room room;
+//    @Inject
+//    Room room;
+
+//    @Inject
+//    Door door;
 
     @Inject
-    Door door;
+    Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,9 @@ public class NineActivity extends AppCompatActivity {
 
         DaggerFourComponent.create().inject(this);
 
-        System.out.println("room = " + room);
-        System.out.println("door = " + door);
+//        System.out.println("room = " + room);
+//        System.out.println("door = " + door);
+//        System.out.println("person = " + person);
 
     }
 

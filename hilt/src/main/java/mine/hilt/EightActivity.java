@@ -5,24 +5,16 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
 import mine.hilt.component.ChildComponent;
 import mine.hilt.component.DFatherComponent;
 import mine.hilt.component.DSonComponent;
-
-
-import mine.hilt.component.FatherComponent;
-import mine.hilt.component.MotherComponent;
+import mine.hilt.component.DaggerDFatherComponent;
+import mine.hilt.component.DaggerDSonComponent;
+import mine.hilt.component.DaggerFatherComponent;
+import mine.hilt.component.DaggerMotherComponent;
 import mine.hilt.component.SonComponent;
-import mine.hilt.component.ThreeComponent;
+import mine.hilt.data.Earth;
 import mine.hilt.data.Milk;
-import mine.hilt.data.Moon;
-import mine.hilt.data.Openable;
-import mine.hilt.data.Pet;
-import mine.hilt.data.Rain;
-import mine.hilt.data.Snow;
 import mine.hilt.data.Sun;
 import mine.hilt.module.SonModule;
 
@@ -39,6 +31,12 @@ public class EightActivity extends AppCompatActivity {
 //    Moon moon;
 
 //    @Inject
+//    Sun sun;
+
+//    @Inject
+//    Earth earth;
+
+//    @Inject
 //    Openable openable;
 
     @Override
@@ -48,11 +46,14 @@ public class EightActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
         setContentView(R.layout.activity_three);
 
-        //依赖注入
-//        DaggerFatherComponent.create().sonComponent().create().inject(this);
-//        System.out.println("rain = " + rain);
 
-//        DaggerFatherComponent.create().sonComponent().create(new SonModule("Son")).sun();
+//        DaggerFatherComponent.create().build().build().inject(this);//直接使用构建器
+//        DaggerFatherComponent.create().sonComponent().create(new SonModule("Son")).inject(this);//直接使用工厂
+//        DaggerFatherComponent.create().provider().get().create().inject(this);//使用工厂提供器
+//        DaggerFatherComponent.create().provider().get().sonModule(new SonModule("ok")).build().inject(this);//使用构建器提供器
+//        DaggerFatherComponent.create().sonComponent(new SonModule("ok")).inject(this);//最简方式
+//        System.out.println("sun = " + sun);
+
 
 
         //从子组件获取依赖
@@ -61,6 +62,12 @@ public class EightActivity extends AppCompatActivity {
 //
 //        Sun sun = DaggerMotherComponent.create().sun();//获取子组件提供的依赖
 //        System.out.println("sun = " + sun);
+//
+//        DaggerMotherComponent.create().inject(this);
+//        System.out.println("sun = " + sun);
+//        Earth earth = DaggerMotherComponent.create().newBuilder().build().earth();
+//        System.out.println("earth = " + earth);
+
 
 
         //使用提供器创建子组件
@@ -72,10 +79,8 @@ public class EightActivity extends AppCompatActivity {
 //        System.out.println("milk = " + milk);
 
 
-
         //组件依赖
 //        DFatherComponent dFatherComponent = DaggerDFatherComponent.create();
-//
 //        DSonComponent dSonComponent = DaggerDSonComponent.builder()
 //                .setFather(dFatherComponent)
 //                .build();
@@ -83,7 +88,6 @@ public class EightActivity extends AppCompatActivity {
 //        dSonComponent.inject(this);
 //        System.out.println("moon = " + moon);
 //        System.out.println("snow = " + snow);
-
 
 
     }

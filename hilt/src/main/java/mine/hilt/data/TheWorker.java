@@ -3,23 +3,24 @@ package mine.hilt.data;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.hilt.Assisted;
-import androidx.hilt.work.WorkerInject;
+import androidx.hilt.work.HiltWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import javax.inject.Inject;
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
 
 /**
  * Created by Administrator on 2021/1/17.
  */
+@HiltWorker
 public class TheWorker extends Worker {
 
     Milk milk;
 
-    @WorkerInject
-    public TheWorker(@Assisted @NonNull Context context,
-                     @Assisted @NonNull WorkerParameters workerParams,
+    @AssistedInject
+    public TheWorker( @Assisted @NonNull Context context,
+                      @Assisted @NonNull WorkerParameters workerParams,
                      Milk milk) {
         super(context, workerParams);
         System.out.println("~~" + getClass().getSimpleName() + ".TheWorker~~");

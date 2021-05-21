@@ -2,6 +2,8 @@ package mine.hilt.component;
 
 import dagger.Component;
 import mine.hilt.EightActivity;
+import mine.hilt.data.Moon;
+import mine.hilt.data.Snow;
 
 /**
  * Created by Administrator on 2021/2/21.
@@ -14,7 +16,10 @@ public interface DSonComponent {
         DSonComponent build();
     }
 
-    void inject(EightActivity eightActivity);
+    Moon mm();
+//    Snow ss();
+
+//    void inject(EightActivity eightActivity);
 
 }
 

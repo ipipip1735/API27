@@ -1,84 +1,37 @@
- package mine.hilt;
+package mine.hilt;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import javax.inject.Inject;
 
+import dagger.hilt.EntryPoints;
 import dagger.hilt.android.AndroidEntryPoint;
-import mine.hilt.annotation.CatPet;
-import mine.hilt.annotation.DogPet;
-import mine.hilt.data.Animal;
-import mine.hilt.data.Child;
-import mine.hilt.data.Company;
-import mine.hilt.data.Employee;
-import mine.hilt.data.Horse;
-import mine.hilt.data.Owner;
+import dagger.hilt.internal.ComponentEntryPoint;
+import mine.hilt.component.CustomComponent;
+import mine.hilt.component.CustomComponentManager;
+import mine.hilt.component.ep.CustomComponentEntryPoint;
+import mine.hilt.component.ep.SingletonComponentEntryPoint;
+import mine.hilt.data.Basketball;
+import mine.hilt.data.Person;
+import mine.hilt.data.Volleyball;
 
 /**
- * Created by Administrator on 2020/12/21.
+ * Created by Administrator on 2021/1/2.
  */
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
-//    @Inject
-//    Sense sense;
-
-//    @Inject
-//    Car car;
-
-//    @Inject
-//    Engine engine;
-
-//    @Inject
-//    Owner owner;
-
-//    @Inject
-//    @CatPet
-//    Animal animal;
+public class EntryPointActivity extends AppCompatActivity {
 
     @Inject
-    Company company1, company2;
-
-//    @Inject
-//    Employee employee;
-    
-//    @Inject
-//    Horse horse;
+    CustomComponentManager customComponentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_main);
-
-        //注入本app对象（非Hilt模块中的对象）
-//        System.out.println("engine = " + engine);
-
-        //非Android组件之间注入
-//        System.out.println("car = " + car);
-//        System.out.println(car.engine);//Car依赖Engine
-
-        //注入Hilt模块中绑定的接口实现类
-//        System.out.println("sense = " + sense);
-
-        //注入Hilt模块中提供的依赖
-//        System.out.println("owner = " + owner);
-
-        //注入Hilt模块中提供的依赖（使用限定器）
-//        System.out.println("child.animal = " + child.animal);
-//        System.out.println("animal = " + animal);
-
-        //作用域
-        System.out.println("Activity|company1 = " + company1);
-        System.out.println("Activity|company2 = " + company2);
-//        System.out.println("employee = " + employee);
-        
-        
-        //同一组件内的绑定器或提供器可相互提供依赖
-//        System.out.println("horse = " + horse.water);
+        setContentView(R.layout.activity_three);
     }
 
     @Override
@@ -138,11 +91,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-        startActivity(new Intent(this, OneActivity.class));
+
+        //从应用组件中获取依赖
+        SingletonComponentEntryPoint entryPoint = EntryPoints.get(this, SingletonComponentEntryPoint.class);
+        Basketball basketBall = entryPoint.getBasketball();
+        System.out.println("basketBall = " + basketBall);
     }
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+
+        //方式一：使用入口点
+        CustomComponentEntryPoint customComponentEntryPoint = EntryPoints.get(customComponentManager.customComponent, CustomComponentEntryPoint.class);
+        Volleyball volleyball = customComponentEntryPoint.getVolleyball();
+        System.out.println("volleyball = " + volleyball);
+
+        Person person = customComponentEntryPoint.getPerson();
+        System.out.println("person = " + person);
+
+
+        //方式二：直接从自定义组件中获取依赖
+//        System.out.println("customComponentManager.customComponent = " + customComponentManager.customComponent);
     }
 
     public void bind(View view) {
@@ -155,19 +124,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
-
     }
-
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-
     }
-
 
     public void query(View view) {
         System.out.println("~~button.query~~");
-
     }
-
 }

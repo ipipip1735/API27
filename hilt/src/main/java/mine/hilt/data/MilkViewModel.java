@@ -1,22 +1,18 @@
 package mine.hilt.data;
 
-import androidx.hilt.Assisted;
-import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Random;
-
 import javax.inject.Inject;
 
-import dagger.hilt.EntryPoint;
-import dagger.hilt.InstallIn;
-import dagger.hilt.android.EntryPointAccessors;
-import dagger.hilt.android.components.ActivityRetainedComponent;
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
 /**
  * Created by Administrator on 2021/1/3.
  */
+@HiltViewModel
 public class MilkViewModel extends ViewModel {
 
 
@@ -25,9 +21,8 @@ public class MilkViewModel extends ViewModel {
     private SavedStateHandle savedStateHandle;
 
 
-
-    @ViewModelInject
-    public MilkViewModel(Milk milk, Milk milk1, @Assisted SavedStateHandle savedStateHandle) {
+    @Inject
+    public MilkViewModel(Milk milk, Milk milk1, SavedStateHandle savedStateHandle) {
 //    public MilkViewModel(Milk milk, @Assisted SavedStateHandle savedStateHandle) {
         System.out.println("~~MilkViewModel.MilkViewModel~~");
         System.out.println("milk = " + milk + ", savedStateHandle = " + savedStateHandle);

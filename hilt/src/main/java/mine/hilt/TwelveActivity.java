@@ -5,18 +5,13 @@
 
  import androidx.appcompat.app.AppCompatActivity;
 
- import javax.inject.Inject;
-
  import dagger.hilt.android.AndroidEntryPoint;
- import mine.hilt.annotation.DogPet;
  import mine.hilt.component.DaggerCComponent;
  import mine.hilt.data.Box;
- import mine.hilt.data.Child;
 
  /**
   * Created by Administrator on 2021/2/17.
   */
- @AndroidEntryPoint
  public class TwelveActivity extends AppCompatActivity {
 
      @Override
@@ -25,7 +20,15 @@
          System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
          setContentView(R.layout.activity_eleven);
 
-         DaggerCComponent.builder().ccc();
+         //方式一：使用构建器
+         DaggerCComponent.builder()
+                 .foo(new Box())
+                 .ccc();
+
+         //方式二：使用工厂类
+//         DaggerCComponent.factory().sk(new Box());
+
+
      }
 
 

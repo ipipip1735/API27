@@ -11,6 +11,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.API27">
+            <activity android:name=".EntryPointActivity">
 <!--            <activity android:name=".WorkerActivity">-->
 <!--            <activity android:name=".TwelveActivity">-->
 <!--            <activity android:name=".ElevenActivity">-->
@@ -18,7 +19,7 @@
 <!--            <activity android:name=".NineActivity">-->
 <!--            <activity android:name=".EightActivity">-->
 <!--            <activity android:name=".SevenActivity">-->
-            <activity android:name=".SixActivity">
+<!--            <activity android:name=".SixActivity">-->
 <!--            <activity android:name=".FiveActivity">-->
     <!--        <activity android:name=".ThreeActivity">-->
     <!--        <activity android:name=".TwoActivity">-->

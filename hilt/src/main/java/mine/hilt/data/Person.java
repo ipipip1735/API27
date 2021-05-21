@@ -11,7 +11,7 @@ public class Person implements Sense {
     int age;
     String name;
 
-    @Inject
+
     public  Person() {
         System.out.println("~~Person.Person~~");
         this.age = 0;

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 public class Child {
     public Animal animal;
 
-    @Inject
+
     public Child(Animal animal) {
         this.animal = animal;
     }

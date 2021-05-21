@@ -10,5 +10,6 @@ import mine.hilt.component.SonComponent;
  * Created by Administrator on 2021/1/31.
  */
 @DisableInstallInCheck
-@Module(subcomponents = SonComponent.class)
+@Module
+//@Module(subcomponents = SonComponent.class)
 public class SubcomponentsModule {}
