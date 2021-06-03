@@ -126,7 +126,8 @@ public class FragmentTransactionActivity extends AppCompatActivity {
         System.out.println("fragmentTransaction = " + fragmentTransaction);
         System.out.println("isEmpty() is " + fragmentTransaction.isEmpty());//判断状态
         fragmentTransaction.add(R.id.ll, textFragment, "Tag-" + id)
-                .setBreadCrumbTitle("CT-" + id)
+                .setBreadCrumbTitle("CT-" + id)//设置面包屑标题
+                .setBreadCrumbShortTitle("CST-" + id)//设置面包屑副标题
                 .addToBackStack("addText" + id);
         fragmentTransaction.commit();
 
@@ -237,26 +238,25 @@ public class FragmentTransactionActivity extends AppCompatActivity {
     public void info(View view) {
         System.out.println("~~button.info~~");
 
-//        int count = fragmentManager.getBackStackEntryCount();//获取总数
-//        System.out.println("count is " + count);
-
         //打印所有回退栈实例
-//        for (int i = 0; i < count; i++) {
-//            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
-//            System.out.println(i + "|getId is " + backStackEntry.getId());
-//            System.out.println(i + "|getName is " + backStackEntry.getName());
-//            System.out.println(i + "|getBreadCrumbTitle is " + backStackEntry.getBreadCrumbTitle());
-//            System.out.println(i + "|getBreadCrumbTitleRes is " + backStackEntry.getBreadCrumbTitleRes());
-//            System.out.println(i + "|getBreadCrumbShortTitle is " + backStackEntry.getBreadCrumbShortTitle());
-//            System.out.println(i + "|getBreadCrumbShortTitleRes is " + backStackEntry.getBreadCrumbShortTitleRes());
-//        }
+        int count = fragmentManager.getBackStackEntryCount();//获取总数
+        System.out.println("count is " + count);
+        for (int i = 0; i < count; i++) {
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
+            System.out.println(i + "|getId is " + backStackEntry.getId());
+            System.out.println(i + "|getName is " + backStackEntry.getName());
+            System.out.println(i + "|getBreadCrumbTitle is " + backStackEntry.getBreadCrumbTitle());
+            System.out.println(i + "|getBreadCrumbTitleRes is " + backStackEntry.getBreadCrumbTitleRes());
+            System.out.println(i + "|getBreadCrumbShortTitle is " + backStackEntry.getBreadCrumbShortTitle());
+            System.out.println(i + "|getBreadCrumbShortTitleRes is " + backStackEntry.getBreadCrumbShortTitleRes());
+        }
 
 
         //查询Fragment
 //        Fragment fragment = fragmentManager.findFragmentById(R.id.ll);
-        Fragment fragment = fragmentManager.findFragmentByTag("Tag-" + list.get(0));
-        System.out.println("fragment = " + fragment);
-        System.out.println("id is " + fragment.getId() + ", R.id.ll is " + R.id.ll + ", Tag is " + fragment.getTag());
+//        Fragment fragment = fragmentManager.findFragmentByTag("Tag-" + list.get(0));
+//        System.out.println("fragment = " + fragment);
+//        System.out.println("id is " + fragment.getId() + ", R.id.ll is " + R.id.ll + ", Tag is " + fragment.getTag());
 
 
         //打印所有Fragment
