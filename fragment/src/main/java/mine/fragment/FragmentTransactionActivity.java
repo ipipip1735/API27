@@ -231,7 +231,10 @@ public class FragmentTransactionActivity extends AppCompatActivity {
 
         String tag = "addText" + list.get(2);
         System.out.println("tag is " + tag);
-        fragmentManager.popBackStack(tag, POP_BACK_STACK_INCLUSIVE);
+//        fragmentManager.popBackStack(tag, POP_BACK_STACK_INCLUSIVE);
+//        fragmentManager.popBackStack();//栈顶出栈
+//        fragmentManager.popBackStack(null, 0);//栈顶出栈，等价于popBackStack()
+        fragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE);
 
     }
 
