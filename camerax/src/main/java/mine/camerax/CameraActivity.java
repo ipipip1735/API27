@@ -1,10 +1,16 @@
 package mine.camerax;
 
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,8 +28,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -31,6 +40,7 @@ public class CameraActivity extends AppCompatActivity {
     static int SAVE = 2;
     static int SAVE_VIDEO = 21;
     static int VIDEO = 3;
+    static int PIC_CROP = 4;
     private File image, video;
 
     @Override
@@ -40,6 +50,12 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera);
 
 
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
     }
 
     @Override
@@ -102,9 +118,9 @@ public class CameraActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         System.out.println("*********  " + getClass().getSimpleName() + ".onActivityResult  *********");
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("requestCode is " + requestCode);
-        System.out.println("resultCode is " + resultCode); //-1为RESULT_OK
-        System.out.println("data is " + data);
+        System.out.println("requestCode = " + requestCode + ", resultCode = " + resultCode + ", data = " + data);
+//        System.out.println(data.getSerializableExtra("data"));
+//        System.out.println(data.getExtras());
 
 
         //方式一：直接显示
@@ -158,10 +174,7 @@ public class CameraActivity extends AppCompatActivity {
 
             //解析图片
             Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
-
-
             imageView.setImageBitmap(bitmap);
-
         }
 
         //方式二：录像
@@ -186,7 +199,20 @@ public class CameraActivity extends AppCompatActivity {
 //            viewGroup.addView(videoView);
         }
 
+        //裁剪图片
+        if (requestCode == PIC_CROP && resultCode == RESULT_OK) {
+            Uri uri = data.getData();//获取URI
+            System.out.println("uri is " + uri);
+            System.out.println("type is " + data.getType());
+            System.out.println("Extras is " + data.getParcelableExtra("cropped-rect"));
+            System.out.println("Extras is " + data.getParcelableExtra("data"));
 
+            try {
+                if(uri != null)System.out.println("uri is " + getContentResolver().openInputStream(uri).available());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void start(View view) {
@@ -207,13 +233,116 @@ public class CameraActivity extends AppCompatActivity {
 
 
 //        savePic();
-        saveVideo();
+        crop();
+//        saveVideo();
+    }
+
+    private void crop() {
+
+        //方式一：输入输出使用相同Uri
+//        try {
+//            File image = new File(getCacheDir(), "cross.png");
+//            System.out.println("image is " + new FileInputStream(image).available());
+//
+//            Uri photoUri = FileProvider.getUriForFile(this, "TNT", image);
+//            System.out.println("photoUri is " + getContentResolver().openInputStream(photoUri));
+//
+//
+//            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+//            cropIntent.setDataAndType(photoUri, "image/*");
+//
+//            cropIntent.putExtra("crop", true);
+//            cropIntent.putExtra("aspectX", 1);
+//            cropIntent.putExtra("aspectY", 1);
+//            cropIntent.putExtra("outputX", 50);
+//            cropIntent.putExtra("outputY", 50);
+//            cropIntent.putExtra("return-data", true);
+//            cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//            cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG);
+//            startActivityForResult(cropIntent, PIC_CROP);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+        //方式二：使用不同Uri
+//        try {
+//            File image = new File(getCacheDir(), "cross.png");
+//            System.out.println("image is " + new FileInputStream(image).available());
+//
+//            Uri inUri = FileProvider.getUriForFile(this, "TNT", image);
+//            System.out.println("inUri is " + getContentResolver().openInputStream(inUri));
+//
+//            File cropImage = File.createTempFile("CROP_", ".jpg", Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES));
+//            Uri outUri = Uri.parse(cropImage.toURI().toString());
+//            System.out.println("outUri is " + getContentResolver().openInputStream(outUri));
+//
+//
+//            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+//            cropIntent.setData(inUri);//设置输入Uri
+//            cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//
+//            cropIntent.putExtra("crop", true);
+//            cropIntent.putExtra("aspectX", 1);
+//            cropIntent.putExtra("aspectY", 1);
+//            cropIntent.putExtra("outputX", 50);
+//            cropIntent.putExtra("outputY", 50);
+//            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outUri);//设置输出Uri
+//            startActivityForResult(cropIntent, PIC_CROP);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        //方式三：输出Bitmap
+        try {
+            File image = new File(getCacheDir(), "cross.png");
+            System.out.println("image is " + new FileInputStream(image).available());
+
+            Uri inUri = FileProvider.getUriForFile(this, "TNT", image);
+            System.out.println("inUri is " + getContentResolver().openInputStream(inUri).available());
+
+            File cropImage = File.createTempFile("CROP_", ".jpg", Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES));
+            System.out.println(cropImage.exists() + "|cropImage = " + cropImage);
+            Uri outUri = Uri.parse(cropImage.toURI().toString());
+            System.out.println("outUri is " + getContentResolver().openInputStream(outUri).available());
+
+//            File cropImage = File.createTempFile("CROP_", ".jpg", getCacheDir());
+//            Uri outUri = FileProvider.getUriForFile(this, "TNT", cropImage);
+//            System.out.println("outUri is " + getContentResolver().openInputStream(outUri).available());
+
+
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setData(inUri);
+            cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            cropIntent.putExtra("crop", true);
+            cropIntent.putExtra("aspectX", 1);//剪切框比例
+            cropIntent.putExtra("aspectY", 1);
+//            cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG);//如果没有指定输出格式默认为.jpg
+            cropIntent.putExtra("outputX", 10);
+            cropIntent.putExtra("outputY", 100);
+            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outUri);
+//            cropIntent.putExtra("set-as-wallpaper", true);//是否设置为壁纸
+//            cropIntent.putExtra("spotlightX", 100);//剪切后拉伸尺寸为spotlightX/spotlightY，再应用为壁纸
+//            cropIntent.putExtra("spotlightY", 5);
+            cropIntent.putExtra("return-data", true);
+            startActivityForResult(cropIntent, PIC_CROP);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     private void savePic() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "images");
+        File storageDir = new File(getExternalFilesDir(DIRECTORY_PICTURES), "images");
         boolean b = storageDir.mkdir();//创建目录
         System.out.println(b);
 
@@ -344,8 +473,6 @@ public class CameraActivity extends AppCompatActivity {
 
     public void del(View view) {
         System.out.println("~~button.del~~");
-
-
 
 
     }

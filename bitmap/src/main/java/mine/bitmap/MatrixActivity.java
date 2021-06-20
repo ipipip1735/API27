@@ -2,15 +2,20 @@ package mine.bitmap;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -21,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Random;
 
 public class MatrixActivity extends AppCompatActivity {
     ImageView image;
@@ -119,6 +126,7 @@ public class MatrixActivity extends AppCompatActivity {
 //        set();
 //        post();
         map();
+//        resource();
 
 //        cala();
 
@@ -134,33 +142,51 @@ public class MatrixActivity extends AppCompatActivity {
 //        RectF rectF = new RectF(rect.left, rect.top, rect.right, rect.bottom);
 //        System.out.println(rectF);
 //        Matrix m = new Matrix();
-////        m.setTranslate(10, 20);//平移变换矩阵
-//        m.setScale(0.95f, 1.02f);//缩放变换矩阵
+//        m.setTranslate(10, 20);//平移变换矩阵
+////        m.setScale(0.95f, 1.02f);//缩放变换矩阵
 //        m.mapRect(rectF);
 //        System.out.println(rectF);
 //
 //        drawable.setBounds((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
 
 
-
-
-        //旋转变换矩阵，测试失败
-        Drawable drawable = image.getDrawable();
+        //旋转变换矩阵（方式一），测试失败
+        Drawable drawable = getDrawable(R.drawable.w2);
         Rect rect = drawable.getBounds();
         System.out.println(rect);
 
-        RectF rectF = new RectF(0,0, 100, 100);
-//        RectF rectF = new RectF(rect.left, rect.top, rect.right, rect.bottom);
+//        RectF rectF = new RectF(0, 0, 100, 100);
+        RectF rectF = new RectF(rect.left, rect.top, rect.right, rect.bottom);
         System.out.println(rectF);
         Matrix m = new Matrix();
 //        m.setRotate(degree+=90, rect.centerX(), rect.centerY());//旋转变换矩阵
-        m.setRotate(degree+=90, 100, 100);//旋转变换矩阵
+        m.setRotate(degree += 30, 100, 100);//旋转变换矩阵
         m.mapRect(rectF);
         System.out.println(rectF);
 
+        //这里是错误的，Bound仅能指定渲染范围，无法改变Bitmap本身像素数据，所以旋转矩阵不能使用此方法，见方式二
         drawable.setBounds((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
+        image.setImageDrawable(drawable);
 
 
+        //旋转变换矩阵（方式二）
+//        BitmapDrawable bitmapDrawable = (BitmapDrawable) getDrawable(R.drawable.w2);
+//        Bitmap bitmap = bitmapDrawable.getBitmap();
+//        int w = bitmap.getWidth();
+//        int h = bitmap.getHeight();
+//        System.out.println("h = " + h + ", w = " + w);
+//        int iw = bitmapDrawable.getIntrinsicWidth();
+//        int ih = bitmapDrawable.getIntrinsicHeight();
+//        System.out.println("ih = " + ih + ", iw = " + iw);
+//
+//        Matrix m = new Matrix();
+//        m.setRotate(degree += 10, 0, 0);
+//        System.out.println("m = " + m);
+//        bitmap = Bitmap.createBitmap(bitmapDrawable.getBitmap(), 0, 0, w, h, m, false);
+//        System.out.println("h = " + bitmap.getHeight() + ", w = " + bitmap.getWidth());
+//
+////        Bitmap bitmap = Bitmap.createBitmap(bitmapDrawable.getBitmap(), 0, 0, bitmapDrawable.getIntrinsicWidth(), bitmapDrawable.getIntrinsicHeight(), m, false);
+//        image.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
 
     }
 
@@ -378,6 +404,44 @@ public class MatrixActivity extends AppCompatActivity {
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
+
+
+        //方式一
+//        int width = 100, height = 100;
+//        int[] colors = new int[width * height * 3];
+//        Arrays.fill(colors, 255);
+//        Bitmap bitmap = Bitmap.createBitmap(colors, width, height, Bitmap.Config.RGB_565);
+//        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+//        image.setImageDrawable(bitmapDrawable);
+
+        //方式二
+//        Bitmap bitmap = Bitmap.createBitmap(getResources().getDisplayMetrics(), width, height, Bitmap.Config.ARGB_8888, false);
+//        bitmap.setHasAlpha(false);
+//        Paint paint = new Paint();
+//        paint.setARGB(255, 255, 0, 0);
+//        Canvas canvas = new Canvas(bitmap);
+//        canvas.drawRect(new Rect(0, 0, 100, 100), paint);
+//
+//        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+//        image.setImageDrawable(bitmapDrawable);
+//        System.out.println("displayMetrics is " + getResources().getDisplayMetrics());
+
+        //方式三
+        int width = 100, height = 100;
+        int[] colors = new int[width * height * 3];
+        Arrays.fill(colors, 255);
+        Bitmap source = Bitmap.createBitmap(colors, width, height, Bitmap.Config.RGB_565);
+        System.out.println("source.isMutable() = " + source.isMutable());
+
+//        Bitmap source = BitmapFactory.decodeResource(getResources(), R.drawable.w1);
+        System.out.println("source = " + source);
+        Matrix m = new Matrix();
+        m.setRotate(30);
+        source = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), m, true);
+        System.out.println("source = " + source);
+        System.out.println("source.isMutable() = " + source.isMutable());
+        System.out.println("isHard is " + source.getConfig().equals(Bitmap.Config.HARDWARE));
+        image.setImageDrawable(new BitmapDrawable(getResources(), source));
 
     }
 
