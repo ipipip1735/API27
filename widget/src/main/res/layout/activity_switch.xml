@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".SwitchActivity">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="start"
+        android:text="start"
+        android:textColor="@color/switch_color_list"/>
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch"
+        android:textStyle="bold"
+        android:layoutDirection="rtl" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:switchMinWidth="300dp"
+        android:switchPadding="20dp"
+        android:text="开关" />
+
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:thumbTextPadding="20dp"
+        android:showText="true"
+        android:textOn="Y"
+        android:textOff="N" />
+
+    <Switch
+        android:id="@+id/switch4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:thumbTextPadding="20dp"
+        android:switchTextAppearance="@style/xxx"
+        android:showText="true"
+        android:text="xxx"
+        android:textOn="on"
+        android:textOff="off" />
+
+    <Switch
+        android:id="@+id/switch5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:thumbTextPadding="20dp"
+        android:switchTextAppearance="@style/xxx"
+        android:showText="true"
+        android:thumbTint="@color/Orange"
+        android:thumbTintMode="src_in"
+        android:text="xxx"
+        android:textOn="on"
+        android:textOff="off" />
+
+    <Switch
+        android:id="@+id/switch6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="switch6"
+        android:showText="true"
+        android:textOff="drop"
+        android:textOn="takeoff"
+        android:thumb="@drawable/ic_baseline_airplanemode_active_24"/>
+<!--        android:splitTrack="true"-->
+<!--        android:thumb="@drawable/rectangle"/>-->
+
+    <Switch
+        android:id="@+id/switch7"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        android:track="@drawable/rectangle"
+        android:splitTrack="true" />
+
+    <Switch
+        android:id="@+id/switch8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:trackTint="@color/blue"
+        android:trackTintMode="src_over"/>
+
+    <Switch
+        android:id="@+id/switch9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:switchMinWidth="150dp"
+        android:thumbTint="@color/switch_color_list"/>
+
+
+</LinearLayout>
