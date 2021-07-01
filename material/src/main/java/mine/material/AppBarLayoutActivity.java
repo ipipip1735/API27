@@ -31,7 +31,15 @@ public class AppBarLayoutActivity extends AppCompatActivity {
         }
 
 
-
+        AppBarLayout appBarLayout = findViewById(R.id.abl);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                System.out.println("~~AppBarLayoutActivity.onOffsetChanged~~");
+                System.out.println("verticalOffset = " + verticalOffset + ", appBarLayout = " + appBarLayout);
+                System.out.println("appBarLayout.isLiftOnScroll() = " + appBarLayout.isLiftOnScroll());
+            }
+        });
 
 
 

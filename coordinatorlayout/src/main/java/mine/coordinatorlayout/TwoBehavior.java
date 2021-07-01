@@ -45,7 +45,7 @@ class TwoBehavior extends CoordinatorLayout.Behavior<View> {
         return true;
     }
 
-//    @Override
+    //    @Override
 //    public void onNestedScrollAccepted(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
 //        System.out.println("~~" + getClass().getSimpleName() + ".onNestedScrollAccepted~~");
 //        super.onNestedScrollAccepted(coordinatorLayout, child, directTargetChild, target, axes, type);
@@ -68,7 +68,7 @@ class TwoBehavior extends CoordinatorLayout.Behavior<View> {
         System.out.println("dyUnconsumed is " + dyUnconsumed);
         System.out.println("type is " + type);
         for (int i = 0; i < consumed.length; i++) {
-            System.out.println(consumed[i]);
+            System.out.println("consumed.[" + i + "] = " + consumed[i]);
         }
 
 //        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);

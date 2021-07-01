@@ -7,6 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/White"
+        app:liftOnScroll="true"
+        app:elevation="4dp">
+
+        <TextView
+            android:id="@+id/avltv"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:text="TTTTTTT"
+            android:textSize="26dp"/>
+<!--            app:layout_scrollFlags="scroll|snap"/>-->
+<!--            android:minHeight="20dp" app:layout_scrollFlags="scroll|exitUntilCollapsed"/>-->
+<!--            android:minHeight="20dp"app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"/>-->
+<!--            app:layout_scrollFlags="scroll|enterAlways"/>-->
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv"
         android:layout_width="match_parent"
@@ -19,26 +40,5 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/abl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/avltv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TTTTTTT"
-            android:textSize="26dp"
-            android:textColor="@color/White"
-            android:layout_marginTop="350dp" app:layout_scrollFlags="scroll"/>
-<!--            app:layout_scrollFlags="scroll|snap"/>-->
-<!--            android:minHeight="20dp" app:layout_scrollFlags="scroll|exitUntilCollapsed"/>-->
-<!--            android:minHeight="20dp"app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"/>-->
-<!--            app:layout_scrollFlags="scroll|enterAlways"/>-->
-
-    </com.google.android.material.appbar.AppBarLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

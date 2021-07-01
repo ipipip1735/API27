@@ -21,8 +21,8 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
-        setContentView(R.layout.activity_coordinatorlayout);
-//        setContentView(R.layout.activity_coordinatorlayout_one);
+//        setContentView(R.layout.activity_coordinatorlayout);
+        setContentView(R.layout.activity_coordinatorlayout_one);
 
         findViewById(R.id.button).setOnTouchListener(new View.OnTouchListener() {
             float offsetX = 0;
