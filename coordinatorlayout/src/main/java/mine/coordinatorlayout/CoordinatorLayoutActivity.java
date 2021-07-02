@@ -54,6 +54,10 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
             }
         });
 
+        //无效onTouch事件把点击事件处理了
+        findViewById(R.id.button).setOnClickListener(v -> {
+            System.out.println("~~Button~~");
+        });
 
 
 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Green">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/avltv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="20dp"
+            android:text="TTTTTTT"
+            android:textSize="26dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+        <!--            app:layout_scrollFlags="scroll|snap"/>-->
+        <!--                        android:minHeight="20dp" app:layout_scrollFlags="scroll|exitUntilCollapsed"/>-->
+        <!--                        android:minHeight="20dp"app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"/>-->
+        <!--            app:layout_scrollFlags="scroll|enterAlways"/>-->
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Orange"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:background="@color/Green">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="20dp"
+                        android:text="TTTTTTT"
+                        android:textSize="26dp"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+                    <!--            app:layout_scrollFlags="scroll|snap"/>-->
+                    <!--                        android:minHeight="20dp" app:layout_scrollFlags="scroll|exitUntilCollapsed"/>-->
+                    <!--                        android:minHeight="20dp"app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"/>-->
+                    <!--            app:layout_scrollFlags="scroll|enterAlways"/>-->
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/Orange"
+                    android:nestedScrollingEnabled="true"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                    <LinearLayout
+                        android:id="@+id/ll2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+                </ScrollView>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

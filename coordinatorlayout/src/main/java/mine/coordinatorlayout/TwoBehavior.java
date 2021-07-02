@@ -76,6 +76,10 @@ class TwoBehavior extends CoordinatorLayout.Behavior<View> {
 
         child.setX(child.getX() + dxConsumed);
         child.setY(child.getY() + dyConsumed);
+        if (child.getId() == R.id.button1) {
+            child.setX(0);
+            child.setY(0);
+        }
     }
 //
 //    @Override

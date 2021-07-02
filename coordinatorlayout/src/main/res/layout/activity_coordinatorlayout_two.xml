@@ -20,8 +20,7 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="166dp"
+        android:layout_gravity="center"
         android:text="Two"
         app:layout_behavior=".TwoBehavior" />
 

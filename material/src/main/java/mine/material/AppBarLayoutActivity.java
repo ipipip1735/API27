@@ -19,6 +19,54 @@ public class AppBarLayoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
+//        one();
+        two();
+
+
+    }
+
+    private void two() {
+
+//        setContentView(R.layout.activity_app_bar_one);
+        setContentView(R.layout.activity_app_bar_two);
+
+
+        LinearLayout linearLayout = findViewById(R.id.ll);
+        if (linearLayout != null) {
+            for (int i = 0; i < 100; i++) {
+                TextView textView = new TextView(this);
+                textView.setText("TV" + i);
+                linearLayout.addView(textView);
+            }
+        }
+
+        LinearLayout linearLayout1 = findViewById(R.id.ll1);
+        if (linearLayout1 != null) {
+            for (int i = 0; i < 100; i++) {
+                TextView textView = new TextView(this);
+                textView.setText("1|TV" + i);
+                linearLayout1.addView(textView);
+            }
+        }
+
+        LinearLayout linearLayout2 = findViewById(R.id.ll2);
+        if (linearLayout2 != null) {
+            for (int i = 0; i < 100; i++) {
+                TextView textView = new TextView(this);
+                textView.setText("2|TV" + i);
+                linearLayout2.addView(textView);
+            }
+        }
+
+//        LinearLayout linearLayout3 = findViewById(R.id.ll3);
+//        for (int i = 0; i < 100; i++) {
+//            TextView textView = new TextView(this);
+//            textView.setText("3|TV" + i);
+//            linearLayout3.addView(textView);
+//        }
+    }
+
+    private void one() {
         setContentView(R.layout.activity_app_bar);
 
 
@@ -30,7 +78,6 @@ public class AppBarLayoutActivity extends AppCompatActivity {
             linearLayout.addView(textView);
         }
 
-
         AppBarLayout appBarLayout = findViewById(R.id.abl);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -40,9 +87,6 @@ public class AppBarLayoutActivity extends AppCompatActivity {
                 System.out.println("appBarLayout.isLiftOnScroll() = " + appBarLayout.isLiftOnScroll());
             }
         });
-
-
-
     }
 
     @Override
