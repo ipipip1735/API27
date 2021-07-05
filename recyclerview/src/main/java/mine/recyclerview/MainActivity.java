@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -18,9 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static android.support.v7.widget.RecyclerView.HORIZONTAL;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
+import static android.support.v7.widget.RecyclerView.VERTICAL;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -29,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager linearLayoutManager;
+    private GridLayoutManager gridLayoutManager;
     List<TextView> list = new ArrayList<>();
     View target;
     List<String> dataset;
@@ -41,10 +45,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        layoutManager = linearLayoutManager;
-//        layoutManager = new LayoutManaager();//使用自定义布局管理器
+        //线性布局
+        linearLayoutManager = new LinearLayoutManager(this, VERTICAL, false){
+            @Override
+            public void onDetachedFromWindow(RecyclerView view, RecyclerView.Recycler recycler) {
+                System.out.println("~~onDetachedFromWindow~~");
+                System.out.println("recycler.getScrapList() = " + recycler.getScrapList());
+                super.onDetachedFromWindow(view, recycler);
+            }
+        };
+
+
+
+        //网格布局
+        gridLayoutManager = new GridLayoutManager(this, 4, VERTICAL, false);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                System.out.println("position % 4 = " + position % 4);
+                return position % 4 == 0 ? 1 : 4;
+            }
+        });
+        new Thread(()->{
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            gridLayoutManager.setSpanCount(new Random().nextInt(5));
+        }).start();
 
 
         dataset = new ArrayList<>(12);
@@ -56,14 +85,15 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv);
 //        recyclerView.setHasFixedSize(true);//使用固定尺寸
-        recyclerView.setLayoutManager(layoutManager);//绑定布局管理器
+        recyclerView.setLayoutManager(linearLayoutManager);//绑定布局管理器
+//        recyclerView.setLayoutManager(gridLayoutManager);//绑定布局管理器
         recyclerView.setAdapter(adapter);//绑定适配器
 
 //        recyclerView.setItemViewCacheSize(3);//设置离屏缓存尺寸，默认尺寸为2
 //        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 6);//设置缓存池尺寸，默认尺寸为5
 
 
-//        bindListen(); //绑定各种监听器
+        bindListen(); //绑定各种监听器
 //        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
 //        bindDragDrop();//绑定侧滑
@@ -402,58 +432,59 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindListen() {
         //拦截器
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                System.out.println("~~onInterceptTouchEvent~~");
-                return true;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-                System.out.println("~~onTouchEvent~~");
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-                System.out.println("~~onRequestDisallowInterceptTouchEvent~~");
-            }
-        });
-
-
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
 //            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                System.out.println("~~onScrollStateChanged~~");
-//                switch (newState) {
-//                    case SCROLL_STATE_IDLE:
-//                        System.out.println("newState is SCROLL_STATE_IDLE");
-//                        break;
-//                    case SCROLL_STATE_DRAGGING:
-//                        System.out.println("newState is SCROLL_STATE_DRAGGING");
-//                        break;
-//                    case SCROLL_STATE_SETTLING:
-//                        System.out.println("newState is SCROLL_STATE_SETTLING");
-//                        break;
-//                    default:
-//                        System.out.println("newState is unknown");
-//                }
+//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+//                System.out.println("~~onInterceptTouchEvent~~");
+//                return false;
 //            }
 //
 //            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                System.out.println("~~onScrolled~~");
-//                System.out.println("dx is " + dx);
-//                System.out.println("dy is " + dy);
-//                //滚动监听器
-//                System.out.println("computeHorizontalScrollExtent() is " + recyclerView.computeHorizontalScrollExtent());
-//                System.out.println("computeHorizontalScrollOffset() is " + recyclerView.computeHorizontalScrollOffset());
-//                System.out.println("computeHorizontalScrollRange() is " + recyclerView.computeHorizontalScrollRange());
-//                System.out.println("computeVerticalScrollExtent() is " + recyclerView.computeVerticalScrollExtent());
-//                System.out.println("computeVerticalScrollOffset() is " + recyclerView.computeVerticalScrollOffset());
-//                System.out.println("computeVerticalScrollRange() is " + recyclerView.computeVerticalScrollRange());
+//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+//                System.out.println("~~onTouchEvent~~");
+//            }
+//
+//            @Override
+//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//                System.out.println("~~onRequestDisallowInterceptTouchEvent~~");
 //            }
 //        });
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                System.out.println("~~onScrollStateChanged~~");
+                switch (newState) {
+                    case SCROLL_STATE_IDLE:
+                        System.out.println("newState is SCROLL_STATE_IDLE");
+                        break;
+                    case SCROLL_STATE_DRAGGING:
+                        System.out.println("newState is SCROLL_STATE_DRAGGING");
+                        break;
+                    case SCROLL_STATE_SETTLING:
+                        System.out.println("newState is SCROLL_STATE_SETTLING");
+                        break;
+                    default:
+                        System.out.println("newState is unknown");
+                }
+                System.out.println("recyclerView.canScrollVertically(1) = " + recyclerView.canScrollVertically(1));
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                System.out.println("~~onScrolled~~");
+                System.out.println("dx is " + dx);
+                System.out.println("dy is " + dy);
+                //滚动监听器
+                System.out.println("computeHorizontalScrollExtent() is " + recyclerView.computeHorizontalScrollExtent());
+                System.out.println("computeHorizontalScrollOffset() is " + recyclerView.computeHorizontalScrollOffset());
+                System.out.println("computeHorizontalScrollRange() is " + recyclerView.computeHorizontalScrollRange());
+                System.out.println("computeVerticalScrollExtent() is " + recyclerView.computeVerticalScrollExtent());
+                System.out.println("computeVerticalScrollOffset() is " + recyclerView.computeVerticalScrollOffset());
+                System.out.println("computeVerticalScrollRange() is " + recyclerView.computeVerticalScrollRange());
+            }
+        });
 
 
     }
@@ -495,16 +526,16 @@ public class MainActivity extends AppCompatActivity {
     private void move() {
         System.out.println("..move..");
 
-        //滚动
-//        layoutManager.scrollToPosition(0);
-//        recyclerView.smoothScrollToPosition(0);
-//        layoutManager.scrollToPositionWithOffset(0, 2);
+        //使用RecyclerView滚动
+//        linearLayoutManager.scrollToPosition(0);//以像素为单位滚动（recyclerView.scrollToPosition()就是间接调用此方法，且更安全）
+//        linearLayoutManager.scrollToPositionWithOffset(10, 30);//以索引为单位滚动，可附加偏移量，正为左偏移，赋值为右偏移
 
 
-        //平滑滚动，即带动画效果
-//        recyclerView.scrollBy(0, 500);
-//        recyclerView.scrollToPosition(25);
-//        recyclerView.smoothScrollBy(0, 500);
+        //使用RecyclerView滚动
+//        recyclerView.scrollBy(500, 0);//以像素为单位滚动
+//        recyclerView.scrollToPosition(25);//以索引为单位滚动
+//        recyclerView.smoothScrollBy(0, 500);//以像素为单位滚动，并带动画效果
+        recyclerView.smoothScrollToPosition(1);//以索引为单位滚动，并带动画效果
 
 //        recyclerView.offsetChildrenHorizontal(150);
 //        recyclerView.offsetChildrenVertical(150);
@@ -516,9 +547,7 @@ public class MainActivity extends AppCompatActivity {
     private void ViewInfo() {
 
         //获取子View尺寸（包含装饰器附加部分)
-        layoutManager.getDecoratedMeasuredHeight(layoutManager.getChildAt(0));
-        layoutManager.getDecoratedMeasuredHeight(layoutManager.getChildAt(0));
-
+        linearLayoutManager.getDecoratedMeasuredHeight(linearLayoutManager.getChildAt(0));
     }
     /*---------------------------------*/
 

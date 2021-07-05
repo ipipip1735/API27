@@ -36,7 +36,7 @@ class OneBehavior extends CoordinatorLayout.Behavior<Button> {
 
 
 //        return super.layoutDependsOn(parent, child, dependency);
-        return dependency.getId() ==  R.id.fl;
+        return dependency.getId() ==  R.id.button;
     }
 
     @Override
@@ -50,7 +50,7 @@ class OneBehavior extends CoordinatorLayout.Behavior<Button> {
 //        System.out.println("dependency|X=" + dependency.getX() + ", Y=" + dependency.getY());
 //        System.out.println("child|X=" + child.getX() + ", Y=" + child.getY());
 
-        if(child.getId() == R.id.fl) child.setY(dependency.getY() + child.getHeight());
+//        if(child.getId() == R.id.fl) child.setY(dependency.getY() + child.getHeight());
 
 //        return super.onDependentViewChanged(parent, child, dependency);
         return true;

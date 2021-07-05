@@ -1,15 +1,19 @@
 package mine.recyclerview;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,27 +43,42 @@ public class ListViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.lv);
         System.out.println(listView);
 
-//        int n = 500;
-//        nameArray = new String[n];
-//
-//        for (int i = 0; i < n; i++) {
-//            nameArray[i] = "chris" + new Random().nextInt(9999);
-//        }
+        int n = 500;
+        nameArray = new String[n];
 
-        nameArray = new String[]{
-                "bob",
-                "jack",
-                "mack",
-                "anna"
-        };
+        for (int i = 0; i < n; i++) {
+            nameArray[i] = i+ "|chris" + new Random().nextInt(9999);
+        }
 
-        list = new ArrayList<>();
+//        nameArray = new String[]{
+//                "bob",
+//                "jack",
+//                "mack",
+//                "anna"
+//        };
+        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, this.nameArray);
 
-//        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, this.nameArray);
-        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 
+//        list = new ArrayList<>();
+//        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(nameAdapter);
+        TextView textView = new TextView(this);
+        textView.setText("xxx");
+        listView.addHeaderView(textView);
 
+
+
+
+        //融合checkbox
+//        listView.setAdapter(new ArrayAdapter<String>(this, -1, this.nameArray){
+//            @NonNull
+//            @Override
+//            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+//                CheckBox checkBox = new CheckBox(ListViewActivity.this);
+//                return checkBox;
+//            }
+//        });
+//        listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
     }
 
@@ -134,8 +153,20 @@ public class ListViewActivity extends AppCompatActivity {
 //        System.out.println(viewPropertyAnimator1);
 
 
-//                .notifyDataSetChanged();
 
+        //选定item
+//        listView.setSelector(R.color.colors);
+//        listView.setSelection(18);
+
+
+//        listView.setStackFromBottom(true);//跳转到底部
+//        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);//设置滚动模式
+
+
+        //指定检查状态
+        listView.setItemChecked(2, true);
+
+//        listView.setTextFilterEnabled(boolean textFilterEnabled)
 
     }
 
@@ -195,5 +226,18 @@ public class ListViewActivity extends AppCompatActivity {
     public void query(View view) {
         System.out.println("~~button.query~~");
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                System.out.println("~~" + getClass().getSimpleName() + ".onScrollStateChanged~~");
+                System.out.println("scrollState = " + scrollState + ", view = " + view);
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                System.out.println("~~" + getClass().getSimpleName() + ".onScroll~~");
+                System.out.println("firstVisibleItem = " + firstVisibleItem + ", visibleItemCount = " + visibleItemCount + ", totalItemCount = " + totalItemCount + ", view = " + view);
+            }
+        });
     }
 }
