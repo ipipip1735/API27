@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -30,6 +31,19 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
         println("|parent is " + parent);
 
         TextView v = new TextView(parent.getContext());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.topMargin = 50;
+        layoutParams.bottomMargin = 50;
+        layoutParams.leftMargin = 50;
+        layoutParams.rightMargin = 50;
+        v.setLayoutParams(layoutParams);
+        v.setPadding(10, 10, 10, 10);
+        v.setBackgroundColor(parent.getContext().getColor(R.color.red));
+
+        System.out.println("parent.getMeasuredHeightAndState() = " + parent.getMeasuredHeightAndState());
+        System.out.println("parent.getMeasuredWidthAndState() = " + parent.getMeasuredWidthAndState());
+
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

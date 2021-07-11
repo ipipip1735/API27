@@ -24,6 +24,8 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 import static android.support.v7.widget.RecyclerView.VERTICAL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_MOVE;
 
 /**
  * Created by Administrator on 2019/3/26.
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //线性布局
-        linearLayoutManager = new LinearLayoutManager(this, VERTICAL, false){
+        linearLayoutManager = new LinearLayoutManager(this, VERTICAL, false) {
             @Override
             public void onDetachedFromWindow(RecyclerView view, RecyclerView.Recycler recycler) {
                 System.out.println("~~onDetachedFromWindow~~");
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 super.onDetachedFromWindow(view, recycler);
             }
         };
-
 
 
         //网格布局
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 return position % 4 == 0 ? 1 : 4;
             }
         });
-        new Thread(()->{
+        new Thread(() -> {
             try {
                 Thread.sleep(1000L);
             } catch (InterruptedException e) {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         dataset = new ArrayList<>(12);
-        for (int i = 0; i < 180; i++) {
+        for (int i = 0; i < 100; i++) {
             dataset.add("item" + i);
         }
         adapter = new RVAdapter<>(dataset, this.list);
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 6);//设置缓存池尺寸，默认尺寸为5
 
 
-        bindListen(); //绑定各种监听器
+//        bindListen(); //绑定各种监听器
 //        bindAnimator(); //绑定动画
 //        bindDecoration(); //绑定装饰器
 //        bindDragDrop();//绑定侧滑
@@ -211,8 +212,6 @@ public class MainActivity extends AppCompatActivity {
 //            dataset.remove(r);//随机删除数据集
 //        }
 //        adapter.notifyDataSetChanged(); //更新适配器，刷新UI
-
-
     }
 
     public void info(View view) {
@@ -223,17 +222,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         //查询Postion
-//        View v = recyclerView.getChildAt(0);
-//        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
-//        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
+        View v = recyclerView.getChildAt(0);
+        System.out.println("getChildAdapterPosition is " + recyclerView.getChildAdapterPosition(v));
+        System.out.println("getChildLayoutPosition is " + recyclerView.getChildLayoutPosition(v));
 
 
         //查找子View对应的ViewHolder
-        if (!this.list.isEmpty()) {
-            TextView textView = this.list.get(this.list.size() - 1);
-            RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(textView);
-            System.out.println(textView.getText() + "|" + holder);
-        }
+//        if (!this.list.isEmpty()) {
+//            TextView textView = this.list.get(this.list.size() - 1);
+//            RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(textView);
+//            System.out.println(textView.getText() + "|" + holder);
+//        }
 
 
         //打印 ViewHolder
@@ -431,26 +430,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindListen() {
-        //拦截器
-//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-//            @Override
-//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//                System.out.println("~~onInterceptTouchEvent~~");
-//                return false;
-//            }
-//
-//            @Override
-//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//                System.out.println("~~onTouchEvent~~");
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//                System.out.println("~~onRequestDisallowInterceptTouchEvent~~");
-//            }
-//        });
+        //子View点击监听器
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                System.out.println("~~onInterceptTouchEvent~~");
+                System.out.println("e = " + e + ", rv = " + rv);
+
+//                switch (e.getAction()) {
+////                    case ACTION_DOWN:
+////                        return true;
+//                    case ACTION_MOVE:
+//                        return true;
+//                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                System.out.println("~~onTouchEvent~~");
+                System.out.println("e = " + e + ", rv = " + rv);
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                System.out.println("~~onRequestDisallowInterceptTouchEvent~~");
+                System.out.println("disallowIntercept = " + disallowIntercept);
+            }
+        });
 
 
+        //滚动监听器
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

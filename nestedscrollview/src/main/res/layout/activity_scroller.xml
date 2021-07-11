@@ -11,10 +11,28 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="start"
         android:onClick="start"
+        android:text="start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop"
+        android:onClick="stop"
+        app:layout_constraintTop_toBottomOf="@id/button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="info"
+        android:onClick="info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
         android:id="@+id/textView"
@@ -42,14 +60,23 @@
             android:layout_height="350dp"
             android:orientation="vertical">
 
-            <TextView
+            <FrameLayout
+                android:id="@+id/fl"
                 android:layout_width="wrap_content"
-                android:layout_height="550dp"
-                android:text="00000000"
-                android:background="@color/colorAccent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <TextView
+                    android:id="@+id/fl_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="550dp"
+                    android:text="00000000"
+                    android:background="@color/colorAccent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </FrameLayout>
+
+
 
             <ListView
                 android:id="@+id/lv"

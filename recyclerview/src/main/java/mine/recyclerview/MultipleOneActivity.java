@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static android.view.MotionEvent.ACTION_MOVE;
 
 /**
  * Created by Administrator on 2021/7/14.
@@ -28,6 +29,7 @@ public class MultipleOneActivity extends AppCompatActivity implements View.OnCli
     Map<Integer, Map<Integer, List<String>>> data;
     List<String> items;
     int d1 = 0, d = 0;
+    boolean isUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +45,16 @@ public class MultipleOneActivity extends AppCompatActivity implements View.OnCli
             Map<Integer, List<String>> data1 = new HashMap<>();
             for (int j = 0; j < 90; j++) {
                 List<String> data2 = new ArrayList<>();
-                for (int k = 0; k < 5; k++) {
+                for (int k = 0; k < 20; k++) {
                     data2.add("right|i=" + i + ",j=" + j + ",k=" + k + "|" + random.nextInt(1000));
                 }
                 data1.put(j, data2);
             }
             data.put(i, data1);
         }
+
+
+
 
 //        d1 = data.get(d).size() > 3 ? 3 : 0;
         for (String list : data.get(d).get(d1)) System.out.println("list = " + list);
@@ -173,7 +178,55 @@ public class MultipleOneActivity extends AppCompatActivity implements View.OnCli
         recyclerView2 = findViewById(R.id.right);
         recyclerView2.setAdapter(adapter2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView2.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            float y = 0;
+
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                System.out.println("~~" + getClass().getSimpleName() + ".onInterceptTouchEvent~~");
+                System.out.println("e = " + e + ", rv = " + rv);
+                System.out.println("isUp = " + isUp);
+
+                switch (e.getAction()) {
+                    case ACTION_MOVE:
+                        if(y !=0){
+                            isUp = y < e.getY();
+                            y = e.getY();
+                        }else {
+                            y = e.getY();
+                        }
+                        break;
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                System.out.println("~~" + getClass().getSimpleName() + ".onTouchEvent~~");
+                System.out.println("e = " + e + ", rv = " + rv);
+
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                System.out.println("~~" + getClass().getSimpleName() + ".onRequestDisallowInterceptTouchEvent~~");
+                System.out.println("disallowIntercept = " + disallowIntercept);
+
+            }
+        });
         recyclerView2.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                System.out.println("~~" + getClass().getSimpleName() + ".onScrolled~~");
+                System.out.println("dx = " + dx + ", dy = " + dy + ", recyclerView = " + recyclerView);
+                isUp = dy < 0;
+            }
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 System.out.println("~~MultipleActivity.onScrollStateChanged~~");
@@ -182,7 +235,7 @@ public class MultipleOneActivity extends AppCompatActivity implements View.OnCli
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (newState != SCROLL_STATE_IDLE) return;
-                if (!recyclerView2.canScrollVertically(-1)) {
+                if (!recyclerView2.canScrollVertically(-1) && isUp) {
                     if (d1 - 1 >= 0) {
                         d1--;
                         System.out.println("------|d = " + d + ", d1 = " + d1);
@@ -203,12 +256,12 @@ public class MultipleOneActivity extends AppCompatActivity implements View.OnCli
                     }
                 }
 
-                if (!recyclerView2.canScrollVertically(1)) {
+                if (!recyclerView2.canScrollVertically(1) && !isUp) {
                     System.out.println("recyclerView2 = " + recyclerView2);
                     System.out.println("d1 = " + d1);
                     if (d1 + 1 < data.get(d).size()) {
                         d1++;
-                        System.out.println("d = " + d + ", d1 = " + d1);
+                        System.out.println("+++++|d = " + d + ", d1 = " + d1);
                         if (data.get(d).get(d1) != null) {
                             items = data.get(d).get(d1);
                             adapter1.notifyDataSetChanged();
@@ -218,13 +271,15 @@ public class MultipleOneActivity extends AppCompatActivity implements View.OnCli
                             System.out.println("linearLayoutManager.findLastVisibleItemPosition() = " + linearLayoutManager.findLastVisibleItemPosition());
                             System.out.println("linearLayoutManager.findFirstVisibleItemPosition() = " + linearLayoutManager.findFirstVisibleItemPosition());
                             System.out.println("linearLayoutManager.findFirstCompletelyVisibleItemPosition() = " + linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                            if (d1 > linearLayoutManager.findLastVisibleItemPosition())
+                            if (d1 >= linearLayoutManager.findLastVisibleItemPosition())
                                 linearLayoutManager.scrollToPositionWithOffset(linearLayoutManager.findFirstCompletelyVisibleItemPosition() + 1, 0);
                         }
                         System.out.println("items = " + items);
                     }
 
                 }
+
+
             }
         });
 
