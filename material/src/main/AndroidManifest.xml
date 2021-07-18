@@ -17,7 +17,7 @@
 <!--        <activity android:name=".NavigationViewsActivity">-->
 <!--        <activity android:name=".SelectActivity">-->
 <!--        <activity android:name=".DialogActivity">-->
-        <activity android:name=".CollapsingToolbarLayoutActivity">
+<!--        <activity android:name=".CollapsingToolbarLayoutActivity">-->
 <!--        <activity android:name=".AppBarLayoutActivity">-->
 <!--        <activity android:name=".ChipsActivity">-->
 <!--        <activity android:name=".BottomSheetsActivity">-->
@@ -25,7 +25,7 @@
 <!--        <activity android:name=".BottomNavigationViewActivity">-->
 <!--        <activity android:name=".CoordinatorLayoutActivity">-->
 <!--        <activity android:name=".BottomAppBarActivity">-->
-<!--        <activity android:name=".BadgeDrawableActivity">-->
+        <activity android:name=".BadgeDrawableActivity">
 <!--        <activity android:name=".ButtonActivity">-->
 <!--        <activity android:name=".FloatingActionButtonActivity">-->
 <!--        <activity android:name=".SnackbarsActivity">-->

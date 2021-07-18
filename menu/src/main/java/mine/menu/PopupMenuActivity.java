@@ -1,8 +1,11 @@
 package mine.menu;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -85,16 +88,22 @@ public class PopupMenuActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
-
+//        Context wrapper = new ContextThemeWrapper(this, R.style.YOURSTYLE);
+//        PopupMenu popupMenu = new PopupMenu(wrapper, findViewById(R.id.textView));
         PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.textView));
         popupMenu.inflate(R.menu.menu_item);
         popupMenu.show();
+//        popupMenu.getMenu().getItem(0).setTitle("");
+//        System.out.println("popupMenu.getMenu().getItem(0) = " + popupMenu.getMenu().getItem(0).getClass());
+
+//        popupMenu.getMenu().getItem(0).setTitleCondensed("XXX");
+
 
         //菜单item点击监听器
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                System.out.println(" ---- PopupMenu  onMenuItemClick() ----");
+                System.out.println("---- PopupMenu  onMenuItemClick() ----");
                 return false;
             }
         });

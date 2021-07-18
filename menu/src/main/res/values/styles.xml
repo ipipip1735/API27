@@ -1,12 +1,28 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- if using android.widget.PopupMenu -->
+<!--        <item name="android:popupMenuStyle">@style/PopupMenu</item>-->
+        <!-- if using android.support.v7.widget.PopupMenu -->
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView</item>
+    </style>
+
+    <style name="PopupMenu">
+        <item name="android:popupBackground">@drawable/vector_one</item>
+    </style>
+
+    <style name="DropDownListView">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:divider">@color/colorAccent</item>
+        <item name="android:dividerHeight">2sp</item>
     </style>
 
 </resources>
