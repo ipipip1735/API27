@@ -13,16 +13,35 @@
         <!-- if using android.support.v7.widget.PopupMenu -->
         <item name="popupMenuStyle">@style/PopupMenu</item>
         <item name="dropDownListViewStyle">@style/DropDownListView</item>
+        <item name="listMenuViewStyle">@style/ListMenuView</item>
     </style>
 
     <style name="PopupMenu">
         <item name="android:popupBackground">@drawable/vector_one</item>
+        <!--菜单出现位置，覆盖于View之上-->
+<!--        <item name="android:overlapAnchor">true</item>-->
+
+        <!--必须背景为白色才可以看见阴影-->
+<!--        <item name="android:popupElevation">10dp</item>-->
+<!--        <item name="android:popupBackground">@color/White</item>-->
     </style>
 
     <style name="DropDownListView">
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:divider">@color/colorAccent</item>
-        <item name="android:dividerHeight">2sp</item>
+        <item name="android:paddingTop">20dp</item>
+<!--        <item name="android:divider">@color/yellow</item>-->
+<!--        <item name="android:dividerHeight">1sp</item>-->
+        <item name="android:listSelector">@color/colors_selector</item>
     </style>
 
+    <style name="ListMenuView">
+<!--        <item name="android:itemBackground">@color/colorAccent</item>-->
+        <!--设置字体样式就不能设置背景-->
+        <item name="android:itemTextAppearance">@style/ItemTextAppearance</item>
+    </style>
+
+
+    <style name="ItemTextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/Aqua</item>
+    </style>
 </resources>

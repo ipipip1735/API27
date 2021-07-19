@@ -113,9 +113,9 @@ public class OneTimeActivity extends AppCompatActivity {
 //        constraints();
 //        operation();
 //        stop();
-//        retry();
+        retry();
         //-----------
-        rxWork();
+//        rxWork();
 
     }
 

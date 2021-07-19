@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="10dp"
-    android:height="11dp"
-    android:viewportWidth="100"
-    android:viewportHeight="100">
+<!--<vector xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:width="10dp"-->
+<!--    android:height="11dp"-->
+<!--    android:viewportWidth="100"-->
+<!--    android:viewportHeight="100">-->
 
-    <!--矩形-->
-    <path
-        android:fillColor="#000000"
-        android:pathData="M0,0 h100 v110 h-100z" />
+<!--    &lt;!&ndash;矩形&ndash;&gt;-->
+<!--    <path-->
+<!--        android:fillColor="#000000"-->
+<!--        android:pathData="M0,0 h100 v110 h-100z" />-->
 
-    <!--连线-->
-<!--    <path android:pathData="L50,50 l0,20"-->
-<!--        android:strokeWidth="0.5"-->
-<!--        android:strokeColor="#000000"/>-->
+<!--    &lt;!&ndash;连线&ndash;&gt;-->
+<!--&lt;!&ndash;    <path android:pathData="L50,50 l0,20"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:strokeWidth="0.5"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:strokeColor="#000000"/>&ndash;&gt;-->
 
-    <!--曲线-->
-<!--    <path android:pathData="M0,20-->
-<!--    C0,10 10,0 20,0-->
-<!--    z"-->
-<!--        android:fillColor="#000000"/>-->
+<!--    &lt;!&ndash;曲线&ndash;&gt;-->
+<!--&lt;!&ndash;    <path android:pathData="M0,20&ndash;&gt;-->
+<!--&lt;!&ndash;    C0,10 10,0 20,0&ndash;&gt;-->
+<!--&lt;!&ndash;    z"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:fillColor="#000000"/>&ndash;&gt;-->
 
-    <!--弧-->
-    <path
-        android:fillColor="#ff0000"
-        android:pathData="M22,32
-        A10,3 45 0,1 42,32
-        Z" />
-    <path
-        android:fillColor="#ffff00"
-        android:pathData="M22,32
-        A10,3 0 0,1 42,32
-        Z" />
-</vector>
+<!--    &lt;!&ndash;弧&ndash;&gt;-->
+<!--    <path-->
+<!--        android:fillColor="#ff0000"-->
+<!--        android:pathData="M22,32-->
+<!--        A10,3 45 0,1 42,32-->
+<!--        Z" />-->
+<!--    <path-->
+<!--        android:fillColor="#ffff00"-->
+<!--        android:pathData="M22,32-->
+<!--        A10,3 0 0,1 42,32-->
+<!--        Z" />-->
+<!--</vector>-->
 
 
 <!--<vector xmlns:android="http://schemas.android.com/apk/res/android"-->
@@ -41,14 +41,11 @@
 <!--    android:viewportWidth="100"-->
 <!--    android:viewportHeight="105">-->
 
-<!--&lt;!&ndash;    <path&ndash;&gt;-->
-<!--&lt;!&ndash;        android:fillColor="#000000"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:pathData="M0,0 h100 v105 h-100z" />&ndash;&gt;-->
+<!--    <path-->
+<!--        android:fillColor="#000000"-->
+<!--        android:pathData="M0,0 h100 v105 h-100z" />-->
 
-
-
-
-    <!--动画-->
+<!--    &lt;!&ndash;动画&ndash;&gt;-->
 <!--    <group-->
 <!--        android:pivotX="50"-->
 <!--        android:pivotY="52.5"-->
@@ -70,3 +67,37 @@
 <!--            android:fillColor="#0000FF"/>-->
 <!--    </group>-->
 <!--</vector>-->
+
+
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+android:width="202dp"
+android:height="142dp"
+android:viewportWidth="202"
+android:viewportHeight="142">
+
+<!--<path-->
+<!--    android:fillColor="#000000"-->
+<!--    android:pathData="M0,0 h250 v160 h-250z" />-->
+
+<!--动画-->
+<group
+    android:pivotX="101"
+    android:pivotY="71"
+    android:rotation="180" >
+    <path android:pathData="M1,11
+    c0,-5 5,-10 10,-10
+    h180
+    c5,0 10,5 10,10
+    v100
+    c0,5 -5,10 -10,10
+    h-150
+    l-5,20 l-5,-20
+    h-20
+    c-5,0 -10,-5 -10,-10
+    z"
+        android:strokeWidth="1"
+        android:strokeColor="#FF0000"
+        android:fillColor="#FFFFFF"/>
+</group>
+</vector>
