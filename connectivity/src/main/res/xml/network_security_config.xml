@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--给某个域名配置CA-->
+<!--    <domain-config>-->
+<!--        <domain includeSubdomains="true">publicobject.com</domain>-->
+<!--        <trust-anchors>-->
+<!--            <certificates src="@raw/root" />-->
+<!--        </trust-anchors>-->
+<!--    </domain-config>-->
+
+
+    <!--配置默认信任锚点证书集合-->
+    <base-config>
+        <trust-anchors>
+            <certificates src="@raw/root"/>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>

@@ -6,7 +6,9 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.os.StrictMode;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -16,7 +18,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import javax.net.ssl.HttpsURLConnection;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -64,17 +68,16 @@ public class URLConnectionActivity extends AppCompatActivity {
     };
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
         setContentView(R.layout.activity_main);
 
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+//        if (android.os.Build.VERSION.SDK_INT > 9) {
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//        }
 
 
     }
@@ -139,9 +142,6 @@ public class URLConnectionActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
 
-
-        url();
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -156,7 +156,7 @@ public class URLConnectionActivity extends AppCompatActivity {
 
         URL url = null;
         try {
-            url = new URL("https://192.168.0.103:6666/cache/sethelp/help.html");
+            url = new URL("https://docs.oracle.com/javase/8/docs/api/java/lang/String.html");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -167,25 +167,8 @@ public class URLConnectionActivity extends AppCompatActivity {
 
 
         //方式一：直接访问网络
-//        try {
-//            connection = (HttpURLConnection) url.openConnection();
-//            stream = connection.getInputStream();
-//
-//            InputStreamReader reader = new InputStreamReader(stream, UTF_8);
-//            BufferedReader bufferedReader = new BufferedReader(reader);
-//            String s;
-//            while ((s = bufferedReader.readLine()) != null) {
-//                System.out.println(s);
-//            }
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        //方式二：使用网络对象访问网络
         try {
-            connection = (HttpURLConnection) network.openConnection(url);
+            connection = (HttpURLConnection) url.openConnection();
             stream = connection.getInputStream();
 
             InputStreamReader reader = new InputStreamReader(stream, UTF_8);
@@ -200,13 +183,30 @@ public class URLConnectionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //方式二：使用网络对象访问网络
+//        try {
+//            connection = (HttpURLConnection) network.openConnection(url);
+//            stream = connection.getInputStream();
+//
+//            InputStreamReader reader = new InputStreamReader(stream, UTF_8);
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+//            String s;
+//            while ((s = bufferedReader.readLine()) != null) {
+//                System.out.println(s);
+//            }
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
 
     private String httpsConnection() {
         URL url = null;
         try {
-            url = new URL("https://www.baidu.com/cache/sethelp/help.html");
+            url = new URL("https://publicobject.com/robots.txt");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -250,7 +250,15 @@ public class URLConnectionActivity extends AppCompatActivity {
 //            System.out.println("getExpiration is " + connection.getExpiration());
 //            System.out.println("getDate is " + connection.getDate());
 //            System.out.println("getLastModified is " + connection.getLastModified());
-            System.out.println("getContent is " + connection.getContent());
+//            System.out.println("getContent is " + connection.getContent());
+
+
+            InputStreamReader reader = new InputStreamReader(connection.getInputStream(), UTF_8);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                System.out.println(s);
+            }
 
 
             //重定向
@@ -269,7 +277,6 @@ public class URLConnectionActivity extends AppCompatActivity {
 
         return result;
     }
-
 
 
     private void url() {
@@ -294,7 +301,6 @@ public class URLConnectionActivity extends AppCompatActivity {
             System.out.println("toExternalForm is " + url.toExternalForm());
 
 
-
             //访问网络
 //            System.out.println("getContent is " + url.getContent());
 //            System.out.println("getContent is " + url.getContent(Class[]classes));
@@ -308,6 +314,11 @@ public class URLConnectionActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void stop(View view) {
+        System.out.println("~~button.stop~~");
+        url();
     }
 
     public void bind(View view) {
