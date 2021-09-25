@@ -1,7 +1,9 @@
 package mine.viewpager;
 
-import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
-import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT;
+import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
+
+import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,18 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-
-public class MainActivity extends AppCompatActivity {
+public class RefreshActivity extends AppCompatActivity {
     ViewPager mPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("*********  " + getClass().getSimpleName() + ".onStart  *********");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_refresh);
 
         mPager = findViewById(R.id.vp);
 
@@ -28,29 +26,23 @@ public class MainActivity extends AppCompatActivity {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-//                System.out.println("~~getItem~~");
-                return new OneFragment(position);
+                System.out.println("~~getItem~~");
+                return new ThreeFragment(position);
+            }
+
+            @Override
+            public int getItemPosition(@NonNull Object object) {
+                System.out.println("~~getItemPosition~~");
+                System.out.println(object.hashCode() + "|object = " + object);
+                return POSITION_NONE;
             }
 
             @Override
             public int getCount() {
-//                System.out.println("~~getCount~~");
+                System.out.println("~~getCount~~");
                 return 5;
             }
         });
-
-
-        mPager.setPageTransformer(true, new ViewPager.PageTransformer() {
-            @Override
-            public void transformPage(@NonNull View page, float position) {
-                System.out.println("~~transformPage~~");
-//                System.out.println("page is " + page);
-                TextView textView = page.findViewById(R.id.tv);
-                System.out.println(textView.getText() + " is " + position);
-            }
-        });
-
-
     }
 
     @Override
@@ -116,4 +108,16 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
+
+
+    public void start(View view) {
+        System.out.println("~~button.start~~");
+
+        System.out.println("mPager.getCurrentItem() = " + mPager.getCurrentItem());
+        mPager.getAdapter().notifyDataSetChanged();
+
+
+    }
+
+
 }
