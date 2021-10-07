@@ -24,16 +24,20 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_webview);
 //        setContentView(R.layout.activity_fullscreen);
         WebView myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("http://10.0.2.2:8080/test.asp");
+//        myWebView.loadUrl("http://192.168.1.3/ad.html");
+//        myWebView.loadUrl("file:///android_asset/ad.html");
+        myWebView.loadUrl("file:///android_res/raw/ad.html");
+
+//        String sHtmlTemplate = "<html><head></head><body><img src=\"tp.png\"></body></html>";
+//        myWebView.loadDataWithBaseURL("file:///android_asset/", sHtmlTemplate, "text/html", "utf-8",null);
+
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
 
         myWebView.addJavascriptInterface(new WebAppInterface(this), "android");
         myWebView.setWebViewClient(new MyWebViewClient());
-
-
-        myWebView.setWebChromeClient(new MyWebChromeClient());
+//        myWebView.setWebChromeClient(new MyWebChromeClient());
 
 
     }
@@ -108,7 +112,7 @@ public class WebViewActivity extends AppCompatActivity {
     public void init(View view) {
         System.out.println("------>>  init  <<------");
         WebView myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("http://10.0.2.2:8080/test1.asp");
+//        myWebView.loadUrl("http://10.0.2.2:8080/test1.asp");
 
     }
 
