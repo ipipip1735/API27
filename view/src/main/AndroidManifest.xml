@@ -44,7 +44,15 @@
 
 
 
-<!--        <activity android:name=".SurfaceViewActivity">-->
+        <activity android:name=".SurfaceViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+<!--        <activity android:name=".TextureViewActivity">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN"/>-->
 <!--                <action android:name="android.intent.action.VIEW"/>-->
@@ -77,12 +85,12 @@
 <!--        </intent-filter>-->
 <!--        </activity>-->
 
-        <activity android:name=".LayoutActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-        </activity>
+<!--        <activity android:name=".LayoutActivity">-->
+<!--        <intent-filter>-->
+<!--        <action android:name="android.intent.action.MAIN"/>-->
+<!--        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--        </activity>-->
 
 <!--        <activity android:name=".ViewTreeObserverActivity">-->
 <!--        <intent-filter>-->

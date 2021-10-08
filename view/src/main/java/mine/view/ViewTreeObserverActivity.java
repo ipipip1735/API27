@@ -25,6 +25,8 @@ import android.widget.TextView;
 public class ViewTreeObserverActivity extends AppCompatActivity {
 
     int id;
+    FrameLayout frameLayout;
+    boolean isDraw = false;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -34,7 +36,7 @@ public class ViewTreeObserverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vew_tree_observer);
 
 
-        FrameLayout frameLayout = new FrameLayout(this) {
+        frameLayout = new FrameLayout(this) {
             @Override
             protected void onDraw(Canvas canvas) {
                 System.out.println("~~frameLayout.onDraw~~");
@@ -62,6 +64,37 @@ public class ViewTreeObserverActivity extends AppCompatActivity {
 
         ViewGroup viewGroup = (ViewGroup) findViewById(R.id.top);
         viewGroup.addView(frameLayout);
+
+
+//        getWindow().getDecorView().getViewTreeObserver()
+//                .addOnWindowAttachListener(new ViewTreeObserver.OnWindowAttachListener() {
+//                    @Override
+//                    public void onWindowAttached() {
+//                        System.out.println("~~ViewTreeObserver.onWindowAttached~~");
+//                        System.out.println("frameLayout.isAttachedToWindow() = " + frameLayout.isAttachedToWindow());
+//                    }
+//
+//                    @Override
+//                    public void onWindowDetached() {
+//                        System.out.println("~~ViewTreeObserver.onWindowDetached~~");
+//                        System.out.println("frameLayout.isAttachedToWindow() = " + frameLayout.isAttachedToWindow());
+//
+//                    }
+//                });
+
+//        getWindow().getDecorView().getViewTreeObserver()
+//                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//                    @Override
+//                    public boolean onPreDraw() {
+//                        System.out.println("~~ViewTreeObserver.onPreDraw~~");
+////                        frameLayout.getViewTreeObserver().removeOnPreDrawListener(this);
+//
+////                        System.out.println(findViewById(id).getX());
+//
+//                        return false;
+//                    }
+//                });
+
 
     }
 
@@ -134,9 +167,13 @@ public class ViewTreeObserverActivity extends AppCompatActivity {
         System.out.println("~~start~~");
 
 
-        ((ViewGroup)findViewById(R.id.top)).removeView(findViewById(id));
+//        ((ViewGroup)findViewById(R.id.top)).removeView(findViewById(id));
 
 
+//        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.top).getParent();
+//        viewGroup.removeView(findViewById(R.id.top));
+
+//        frameLayout.setX(350);
     }
 
 
@@ -147,58 +184,66 @@ public class ViewTreeObserverActivity extends AppCompatActivity {
 
 
         //OnPreDrawListener监听器
-//        frameLayout.getViewTreeObserver()
-//                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//            @Override
-//            public boolean onPreDraw() {
-//                System.out.println("~~frameLayoutTVO.onPreDraw~~");
+        frameLayout.getViewTreeObserver()
+                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                System.out.println("~~ViewTreeObserver.onPreDraw~~");
 //                frameLayout.getViewTreeObserver().removeOnPreDrawListener(this);
-//
-//                System.out.println(findViewById(id).getX());
-//
-//                return false;
-//            }
-//        });
-//
+
+                System.out.println(findViewById(id).getX());
+
+                return isDraw;
+            }
+        });
 //        System.out.println(frameLayout.getX());
 //        frameLayout.setX(350);
 
 
         //addOnWindowAttachListener监听器
+//        frameLayout.getViewTreeObserver().addOnWindowAttachListener(new ViewTreeObserver.OnWindowAttachListener() {
+//            @Override
+//            public void onWindowAttached() {
+//                System.out.println("~~ViewTreeObserver.onWindowAttached~~");
+//                System.out.println("frameLayout.isAttachedToWindow() = " + frameLayout.isAttachedToWindow());
+//            }
+//
+//            @Override
+//            public void onWindowDetached() {
+//                System.out.println("~~ViewTreeObserver.onWindowDetached~~");
+//                System.out.println("frameLayout.isAttachedToWindow() = " + frameLayout.isAttachedToWindow());
+//
+//            }
+//        });
+
+
+        //addOnScrollChangedListener监听器
+//        ListView listView = findViewById(R.id.lv);
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+//        for (int i = 0; i < 180; i++) {
+//            arrayAdapter.add("ooo" + i);
+//        }
+//        listView.setAdapter(arrayAdapter);
 //        frameLayout.getViewTreeObserver()
-//                .addOnWindowAttachListener(new ViewTreeObserver.OnWindowAttachListener() {
+//                .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 //                    @Override
-//                    public void onWindowAttached() {
-//                        System.out.println("~~frameLayoutTVO.onWindowAttached~~");
-//                    }
-//
-//                    @Override
-//                    public void onWindowDetached() {
-//                        System.out.println("~~frameLayoutTVO.onWindowDetached~~");
-//
+//                    public void onScrollChanged() {
+//                        System.out.println("~~ViewTreeObserver.onScrollChanged~~");
 //                    }
 //                });
 
 
+    }
 
 
-        //addOnScrollChangedListener监听器
-        ListView listView = findViewById(R.id.lv);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        for (int i = 0; i < 180; i++) {
-            arrayAdapter.add("ooo" + i);
-        }
-        listView.setAdapter(arrayAdapter);
-        frameLayout.getViewTreeObserver()
-                .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        System.out.println("~~frameLayoutTVO.onScrollChanged~~");
-                    }
-                });
+    public void query(View view) {
+        System.out.println("~~query~~");
+
+//        startActivity(new Intent(this, ViewTreeObserverActivity.class));
+//        System.out.println("frameLayout.isAttachedToWindow() = " + frameLayout.isAttachedToWindow());
 
 
-
+        isDraw = true;
 
     }
 }

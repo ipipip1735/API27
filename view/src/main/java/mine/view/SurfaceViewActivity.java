@@ -29,6 +29,7 @@ public class SurfaceViewActivity extends AppCompatActivity {
     private SurfaceView surfaceView;
     private Thread thread;
     final Random random = new Random();
+    int alpha = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,17 +57,18 @@ public class SurfaceViewActivity extends AppCompatActivity {
 
 
                 thread = new Thread(new Runnable() {
+                    int n = 0;
                     @Override
                     public void run() {
                         while (!thread.isInterrupted()) {
                             Canvas canvas = holder.lockCanvas();
+                            System.out.println("canvas.isHardwareAccelerated() = " + canvas.isHardwareAccelerated() + ", surfaceView.isHardwareAccelerated() = " + surfaceView.isHardwareAccelerated());
                             Paint p = new Paint();
                             p.setColor(getResources().getColor(R.color.AliceBlue, null));
-                            canvas.drawARGB(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextInt(255));
+                            if(n++ %2 == 0)canvas.drawARGB(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextInt(255));
                             canvas.drawCircle(100f, 100f, 100f, p);
                             holder.unlockCanvasAndPost(canvas);
                             try {
-                                System.out.println("--");
                                 Thread.sleep(1000L);
                             } catch (InterruptedException e) {
                                 thread.interrupt();
@@ -114,6 +116,15 @@ public class SurfaceViewActivity extends AppCompatActivity {
 //        surfaceView.setZOrderOnTop(true);
 //        tween.getHolder().addCallback(this);
 
+
+        surfaceView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("~~" + getClass().getSimpleName() + ".onClick~~");
+                System.out.println("v = " + v);
+            }
+        });
+
     }
 
 
@@ -131,9 +142,27 @@ public class SurfaceViewActivity extends AppCompatActivity {
     }
 
     private void transform() {
+        //旋转
 //        surfaceView.setVisibility(View.INVISIBLE);//隐藏SurfaceView将触发surfaceDestroyed()
 //        surfaceView.setScaleX(surfaceView.getScaleX() - 0.1f);
-        surfaceView.setRotation(surfaceView.getRotation() - 10f);
+//        surfaceView.setRotation(surfaceView.getRotation() - 10f);
+
+        //缩放
+//        surfaceView.setScaleX(1.5f);
+
+
+        //SurfaceView无法改变透明度
+//        float a = (alpha+=10) % 100 / 100f;
+//        System.out.println("a = " + a);
+//        surfaceView.setAlpha(1);
+
+
+        //播放动画
+        surfaceView.animate()
+                .x(350f)
+                .setDuration(3000L)
+                .start();
+
     }
 
     private void gatherTransparent() {
