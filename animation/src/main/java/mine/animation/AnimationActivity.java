@@ -1,47 +1,19 @@
 package mine.animation;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.FloatEvaluator;
-import android.animation.IntEvaluator;
-import android.animation.Keyframe;
-import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.TimeInterpolator;
-import android.animation.TypeConverter;
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.graphics.Path;
-import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Property;
-import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ViewAnimator;
-
-import java.util.Objects;
-import java.util.Set;
-
-import static android.graphics.Path.Direction.CCW;
 
 /**
  * Created by Administrator on 2016/7/14.
@@ -54,6 +26,23 @@ public class AnimationActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         setContentView(R.layout.activity_animation);
+
+
+        ImageView imageView = findViewById(R.id.imageView);
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                System.out.println("~~" + getClass().getSimpleName() + ".onClick~~");
+//            }
+//        });
+
+        imageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                System.out.println("~~" + getClass().getSimpleName() + ".onTouch~~" + event);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -147,9 +136,10 @@ public class AnimationActivity extends AppCompatActivity {
         System.out.println("********start******");
 
 
-        tween();
+//        tween();
 //        frame();
-//        viewAnimator(); //视图属性动画
+//        animation(); //视图动画
+        propertyAnimator(); //属性动画
 
 //        vectorAnimated();//矢量动画
 
@@ -232,34 +222,48 @@ public class AnimationActivity extends AppCompatActivity {
     }
 
 
-    private void viewAnimator() {
+    private void propertyAnimator() {
+
 
         //简单使用
-//        ImageView imageView = findViewById(R.id.imageView);
-//        imageView.animate()
-//                .x(50f)
-//                .y(100f)
-//                .alpha(0.5f)
-//                .setDuration(3000)
-//                .start(); //此方法是可选的
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.animate()
+                .x(250f)
+                .y(200f)
+                .alpha(0.5f)
+                .setDuration(3000)
+                .start(); //此方法是可选的
+
 
 
         //绑定监听器
-        ImageView imageView = findViewById(R.id.imageView);
-        imageView.animate()
-                .x(imageView.getX() - 150)
-                .y(imageView.getX() - 140)
-//                .alpha(0)
-                .setDuration(3000)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        System.out.println("~~onAnimationEnd~~");
-//                        imageView.setVisibility(View.GONE);
-                    }
-                })
-                .start();
+//        ImageView imageView = findViewById(R.id.imageView);
+//        imageView.animate()
+//                .x(imageView.getX() - 150)
+//                .y(imageView.getX() - 140)
+////                .alpha(0)
+//                .setDuration(3000)
+//                .setListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        System.out.println("~~onAnimationEnd~~");
+////                        imageView.setVisibility(View.GONE);
+//                    }
+//                })
+//                .start();
 
+    }
+
+
+
+    private void animation() {
+
+        ImageView imageView = findViewById(R.id.imageView);
+        TranslateAnimation animation = new TranslateAnimation(300, 100, 350, 200);
+        animation.setDuration(3000);
+        animation.setRepeatCount(1);
+        animation.setFillAfter(true);
+        imageView.startAnimation(animation);
 
     }
 

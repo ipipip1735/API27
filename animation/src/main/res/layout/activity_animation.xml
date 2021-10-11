@@ -75,7 +75,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:layout_height="203dp"
+            android:layout_height="150dp"
             android:layout_marginStart="44dp"
             android:layout_marginTop="40dp"
             android:src="@drawable/a"

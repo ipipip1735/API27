@@ -87,14 +87,14 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
 
-        <activity android:name=".IntentActivity">
-            <intent-filter>
-                <action android:name="two" />
-                <action android:name="android.intent.action.SEND" />
-<!--                <data android:mimeType="a/b"/>-->
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+<!--        <activity android:name=".IntentActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="two" />-->
+<!--                <action android:name="android.intent.action.SEND" />-->
+<!--&lt;!&ndash;                <data android:mimeType="a/b"/>&ndash;&gt;-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <!--<activity android:name=".NotificationActivity">-->
         <!--<intent-filter>-->

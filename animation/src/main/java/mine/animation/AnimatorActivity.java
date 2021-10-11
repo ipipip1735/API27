@@ -111,11 +111,11 @@ public class AnimatorActivity extends AppCompatActivity {
 //        propertyAnimator(); //属性动画
 
 
-        objectAnimator(); //对象动画
+//        objectAnimator(); //对象动画
 //        animatorSet(); //对象动画集
 //        keyFrameAnimator(); //属性关键帧
 
-//        pathObjectAnimator();//路径动画
+        pathObjectAnimator();//路径动画
 
 //        pathInterpolatorAnimator();
 
@@ -159,6 +159,9 @@ public class AnimatorActivity extends AppCompatActivity {
 
         Path path = new Path();
         path.addRect(100, 100, 500, 500, CCW); //创建矩形路径
+
+        path.moveTo(500, 1000);
+        path.quadTo(0, 500, 500, 0);//二阶贝塞尔曲线
         ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "x", "y", path);
         animator.setDuration(2000l).start(); //沿矩形路径动画
 
