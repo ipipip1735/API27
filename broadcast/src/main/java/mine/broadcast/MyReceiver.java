@@ -42,16 +42,18 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
     private void async() {
+        PendingResult pendingResult = goAsync();
 
         //方式一
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
 //                try {
+//                    System.out.println("pendingResult = " + pendingResult);
 //                    for (int i = 0; i < 10; i++) {
 //                        Thread.sleep(1000L);
 //                        System.out.println(i + "|" + Thread.currentThread());
-//                        if (i == 3) goAsync().finish();//提前销毁
+//                        if (i == 3) pendingResult.finish();//提前销毁
 //                    }
 //
 //                } catch (InterruptedException e) {
@@ -62,23 +64,6 @@ public class MyReceiver extends BroadcastReceiver {
 
 
         //方式二
-        final Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-
-                System.out.println("msg is " + msg.obj);
-                PendingResult pendingResult = (PendingResult) msg.obj;
-                System.out.println("getResultCode is " + pendingResult.getResultCode());
-                System.out.println("getResultData is " + pendingResult.getResultData());
-
-                Bundle bundle = pendingResult.getResultExtras(true);
-                System.out.println(bundle.getInt("one"));
-
-                pendingResult.finish();  //销毁PendingResult对象
-                return true;
-            }
-        });
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -89,12 +74,27 @@ public class MyReceiver extends BroadcastReceiver {
 
                         if (i == 3) {
                             Message message = new Message();
-                            PendingResult pendingResult = goAsync(); //获取PendingResult对象
                             Bundle bundle = new Bundle();
                             bundle.putInt("one", 111);
                             pendingResult.setResult(999, "AAA", bundle);
                             message.obj = pendingResult;
-                            handler.sendMessage(message);
+
+                            new Handler(Looper.getMainLooper(), new Handler.Callback() {
+                                @Override
+                                public boolean handleMessage(Message msg) {
+
+                                    System.out.println("msg is " + msg.obj);
+                                    PendingResult pendingResult = (PendingResult) msg.obj;
+                                    System.out.println("getResultCode is " + pendingResult.getResultCode());
+                                    System.out.println("getResultData is " + pendingResult.getResultData());
+
+                                    Bundle bundle = pendingResult.getResultExtras(true);
+                                    System.out.println(bundle.getInt("one"));
+
+                                    pendingResult.finish();  //销毁PendingResult对象
+                                    return true;
+                                }
+                            }).sendMessage(message);
                         }
                     }
 
