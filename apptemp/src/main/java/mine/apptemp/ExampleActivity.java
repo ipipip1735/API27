@@ -2,8 +2,9 @@ package mine.apptemp;
 
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

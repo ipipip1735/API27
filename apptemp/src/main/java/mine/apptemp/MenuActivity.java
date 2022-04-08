@@ -1,7 +1,6 @@
 package mine.apptemp;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -14,6 +13,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Administrator on 2018/8/25.

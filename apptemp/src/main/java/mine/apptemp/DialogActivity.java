@@ -1,15 +1,12 @@
 package mine.apptemp;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class DialogActivity extends AppCompatActivity {
 

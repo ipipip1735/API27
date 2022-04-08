@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -27,6 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WeakReferenceKTActivity"  android:exported="true"/>
 
         <!--<activity android:name=".SingletonActivity">-->
         <!--<intent-filter>-->
@@ -126,7 +127,7 @@
         <!--</activity>-->
 
 
-        <receiver android:name=".DownloadReceiver">
+        <receiver android:name=".DownloadReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />

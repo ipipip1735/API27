@@ -8,8 +8,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -52,7 +53,7 @@ public class ClientActivity extends AppCompatActivity implements ServiceConnecti
     protected void onRestart() {
         super.onRestart();
         System.out.println("**********  Client.onRestart  ***********");
-        getLoaderManager().enableDebugLogging(true);
+//        getLoaderManager().enableDebugLogging(true);
     }
 
     @Override

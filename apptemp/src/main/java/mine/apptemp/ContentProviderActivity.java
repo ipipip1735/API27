@@ -5,26 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ListView;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.Objects;
-import java.util.Random;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Administrator on 2018/10/16.

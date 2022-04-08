@@ -1,5 +1,7 @@
 package mine.apptemp;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -8,16 +10,15 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,10 +27,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Objects;
 import java.util.Random;
-
-import static android.content.Intent.EXTRA_CHOSEN_COMPONENT;
-import static android.content.Intent.EXTRA_INTENT;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 public class FileActivity extends AppCompatActivity {
