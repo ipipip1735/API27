@@ -10,8 +10,9 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcel;
 import android.os.RemoteException;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ClientActivity extends AppCompatActivity implements ServiceConnection {
     Handler baseService;

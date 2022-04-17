@@ -15,7 +15,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.sql.SQLOutput;
@@ -23,6 +22,8 @@ import java.util.Objects;
 
 import static android.app.job.JobScheduler.RESULT_FAILURE;
 import static android.app.job.JobScheduler.RESULT_SUCCESS;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Administrator on 2019/1/30.

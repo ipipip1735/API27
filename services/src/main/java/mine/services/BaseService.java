@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
 
 import java.util.Objects;
 
@@ -32,7 +31,6 @@ public class BaseService extends Service {
     }
 
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         System.out.println("---- " + getClass().getSimpleName() + ".onBind ----");

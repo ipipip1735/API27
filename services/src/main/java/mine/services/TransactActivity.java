@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.Objects;
 
 import static android.os.IBinder.INTERFACE_TRANSACTION;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 /**
