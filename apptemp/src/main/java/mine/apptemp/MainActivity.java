@@ -5,10 +5,15 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/9/6.
  */
 public class MainActivity extends AppCompatActivity {
+    List<Byte[]> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +83,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
         System.out.println("~~button.start~~");
+        Byte[] bytes = new Byte[1];
+        Arrays.fill(bytes, (byte) 0);
+        list.add(bytes);
 
     }
 
 
     public void stop(View view) {
         System.out.println("~~button.stop~~");
+        list.clear();
 
     }
 
@@ -111,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void query(View view) {
         System.out.println("~~button.query~~");
+        int[] ints = new int[20];
+
 
     }
 
