@@ -1,5 +1,6 @@
 package mine.databinding.data;
 
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
@@ -20,14 +21,14 @@ import mine.databinding.component.TimeTextView;
 public class Utilites {
 
 //    @BindingAdapter({"android:text"})
-//    public static void sk(View view, String two) {
-//        System.out.println("~~Utilites.sk~~");
-//        System.out.println("view is " + view);
-//        System.out.println("two is " + two);
-//
-//        TextView textView = (TextView) view;
-//        textView.setText(two);
-//    }
+    public static void sk(View view, String two) {
+        System.out.println("~~Utilites.sk~~");
+        System.out.println("view is " + view);
+        System.out.println("two is " + two);
+
+        TextView textView = (TextView) view;
+        textView.setText(two);
+    }
 
 
 //    @BindingAdapter({"four", "five"})

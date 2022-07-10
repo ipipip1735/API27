@@ -31,9 +31,11 @@ public class ObservableActivity extends AppCompatActivity {
 
 
         ActivityObservableBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_observable);
-        binding.setCat(new CatObservable("Tom"));
 
-        binding.setMap(new ObservableArrayMap<>());
+        binding.setPerson(new Person("Mack")); //可观察字段
+        binding.setCat(new CatObservable("Tom")); //可观察对象
+
+        binding.setMap(new ObservableArrayMap<>()); //可观察容器
         binding.getMap().put("one", 111);
         binding.getMap().put("two", "22222");
         binding.getMap().addOnMapChangedCallback(new ObservableMap.OnMapChangedCallback<ObservableMap<String, Object>, String, Object>() {
@@ -45,7 +47,8 @@ public class ObservableActivity extends AppCompatActivity {
             }
         });
 
-        binding.setPerson(new Person("Mack"));
+
+
 
     }
 
@@ -132,11 +135,15 @@ public class ObservableActivity extends AppCompatActivity {
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
+        ActivityObservableBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.textView4.setText("Tom");
+        System.out.println("binding.getPerson().name = " + binding.getPerson().name.get());
 
     }
 
     public void reloading(View view) {
         System.out.println("~~button.reloading~~");
+
 
     }
 

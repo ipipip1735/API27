@@ -64,17 +64,24 @@ public class RVAdapter<T> extends RecyclerView.Adapter {
         return new RecyclerView.ViewHolder(v){};
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List payloads) {
+        System.out.println("~~" + getClass().getSimpleName() + ".onBindViewHolder~~");
+        System.out.println("holder = " + holder + ", position = " + position + ", payloads = " + payloads);
+        if (!payloads.isEmpty()) ((TextView) holder.itemView).setText((String) payloads.get(position));
+    }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        println("~~onBindViewHolder~~");
-        println(holder.itemView + "|" + holder);
-
-        String s = dataset.get(position).toString();
-        println(s);
-        ((TextView)holder.itemView).setText(s);
-
-        println(((TextView)holder.itemView).getText() + "|" + holder);
+        System.out.println("~~" + getClass().getSimpleName() + ".onBindViewHolder~~");
+        System.out.println("holder = " + holder + ", position = " + position);
+//        println(holder.itemView + "|" + holder);
+//
+//        String s = dataset.get(position).toString();
+//        println(s);
+//        ((TextView)holder.itemView).setText(s);
+//
+//        println(((TextView)holder.itemView).getText() + "|" + holder);
     }
 
     @Override

@@ -1,13 +1,8 @@
 package mine.databinding.data;
 
-import android.widget.TextView;
-
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-import androidx.databinding.BindingMethod;
-import androidx.databinding.BindingMethods;
-
 import java.util.Random;
+
+import mine.databinding.R;
 
 /**
  * Created by Administrator on 2020/11/1.
@@ -16,6 +11,7 @@ public class Dog {
     String name;
     boolean gender;
     int age;
+    int resourceId;
 
 
 
@@ -23,7 +19,8 @@ public class Dog {
         System.out.println("--- " + getClass().getSimpleName() + ".Constructor ---");
         this.name = name;
         gender = false;
-        age = 2;
+        age = new Random().nextInt(100);
+        resourceId = 0;
     }
 
     public void setName(String name) {
@@ -53,5 +50,11 @@ public class Dog {
         this.age = age;
     }
 
+    public int getResourceId() {
+        return resourceId;
+    }
 
+    public void setResourceId(int resourceId) {
+        this.resourceId = resourceId;
+    }
 }

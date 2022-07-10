@@ -13,9 +13,9 @@
 <!--        <activity android:name=".TwoWayWithConvertersActivity">-->
 <!--        <activity android:name=".TwoWayWithCustomFieldActivity">-->
 <!--        <activity android:name=".TwoWayActivity">-->
-<!--        <activity android:name=".TwoWayActivity">-->
 <!--        <activity android:name=".LifecycleActivity">-->
-        <activity android:name=".AdapterActivity">
+        <activity android:name=".RecycleViewActivity">
+<!--        <activity android:name=".AdapterActivity">-->
 <!--        <activity android:name=".ObservableActivity">-->
 <!--        <activity android:name=".MainActivity">-->
             <intent-filter>

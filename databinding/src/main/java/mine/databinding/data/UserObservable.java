@@ -23,8 +23,8 @@ public class UserObservable extends BaseObservable {
     @Bindable
     public void setAge(Time age) {
         this.age = age;
-//        notifyPropertyChanged(BR.age);
-        notifyChange();
+        notifyPropertyChanged(BR.age);
+//        notifyChange();
     }
 
     public UserObservable(String name) {

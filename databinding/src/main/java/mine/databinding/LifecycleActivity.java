@@ -13,7 +13,6 @@ import mine.databinding.data.User;
 import mine.databinding.data.TheViewModel;
 import mine.databinding.databinding.ActivityLifecycleBinding;
 
-
 /**
  * Created by Administrator on 2020/11/2.
  */
@@ -99,17 +98,17 @@ public class LifecycleActivity extends AppCompatActivity {
         System.out.println("~~button.start~~");
 
         //修改ViewModel(View属性同步变更)
-//        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-//        binding.getViewModel().getUser().setValue(new User("Jack"));
-////        theViewModel.getUser().setValue(new User("Jack"));
+        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getViewModel().getUser().setValue(new User("Jack"));
+//        theViewModel.getUser().setValue(new User("Jack"));
 
 
         //修改View属性(同时更新数据绑定对象)
-        TextView textView = findViewById(R.id.textView7);
-        User user = new User("Jone");
-        textView.setText(user.getName() + " - " + user.getAge());
-        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.getViewModel().getUser().setValue(user);
+//        TextView textView = findViewById(R.id.textView7);
+//        User user = new User("Jone");
+//        textView.setText(user.getName() + " - " + user.getAge());
+//        ActivityLifecycleBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+//        binding.getViewModel().getUser().setValue(user);
 
     }
 

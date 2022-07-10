@@ -23,9 +23,10 @@ public class InverseUtilities {
     //反适配方法
     @BindingAdapter(value = {"age", "ageAttrChanged"}, requireAll = false)
     public static void two(TheTextView theTextView, int age, InverseBindingListener ageAttrChanged){
-        System.out.println("~~InverseUtilites.two~~");
+        System.out.println("~~InverseUtilities.two~~");
         System.out.println("theTextView = " + theTextView + ", age = " + age + ", ageAttrChanged = " + ageAttrChanged);
 
         theTextView.ageAttrChanged = ageAttrChanged;
+        theTextView.age = age;
     }
 }

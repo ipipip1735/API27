@@ -1,10 +1,13 @@
 package mine.databinding;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+
+import java.util.Random;
 
 import mine.databinding.data.Dog;
 import mine.databinding.databinding.ActivityAdaptorBinding;
@@ -24,6 +27,10 @@ public class AdapterActivity extends AppCompatActivity {
 
         ActivityAdaptorBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_adaptor);
         binding.setDog(new Dog("Odie"));
+
+//        setContentView(R.layout.activity_adaptor);
+//        ActivityAdaptorBinding binding = DataBindingUtil.bind(findViewById(R.id.cl));
+//         binding.setDog(new Dog("Luck"));
     }
 
     @Override
@@ -91,7 +98,7 @@ public class AdapterActivity extends AppCompatActivity {
         //方式二：每次使用同一个数据对象实例
         ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
         binding.getDog().setName("twooooo");
-        binding.getDog().setAge(2);
+        binding.getDog().setAge(new Random().nextInt(100));
 //        binding.getDog().setGender(true);
         binding.setDog(binding.getDog());//更新数据绑定对象
     }
@@ -101,7 +108,8 @@ public class AdapterActivity extends AppCompatActivity {
         System.out.println("~~button.stop~~");
 
         ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.tv.setAge(11);
+//        binding.tv.setAge(new Random().nextInt(100)); //默认setter
+        binding.tv.two(new Random().nextInt(100)); //新setter
     }
 
     public void bind(View view) {
@@ -115,7 +123,9 @@ public class AdapterActivity extends AppCompatActivity {
 
     public void unbind(View view) {
         System.out.println("~~button.unbind~~");
-
+        ActivityAdaptorBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.getDog().setResourceId(R.drawable.ic_launcher_background);
+        binding.setDog(binding.getDog());
     }
 
     public void reloading(View view) {

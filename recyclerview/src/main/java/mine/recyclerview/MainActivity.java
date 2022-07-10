@@ -73,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            gridLayoutManager.setSpanCount(new Random().nextInt(5));
+            gridLayoutManager.setSpanCount(Math.max(1, new Random().nextInt(5))); //最小值为1
         }).start();
 
 
-        dataset = new ArrayList<>(12);
-        for (int i = 0; i < 100; i++) {
+        dataset = new ArrayList<>(16);
+        for (int i = 0; i < 10; i++) {
             dataset.add("item" + i);
         }
         adapter = new RVAdapter<>(dataset, this.list);
@@ -162,9 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         //单个更新
-        int postion = 1;
-        dataset.add(postion, "insert-" + dataset.size());//插入到数据集
-        adapter.notifyItemInserted(postion);//更新RecyclerView
+//        int postion = 1;
+//        dataset.add(postion, "insert-" + dataset.size());//插入到数据集
+//        adapter.notifyItemInserted(postion);//更新RecyclerView
+//        adapter.notifyItemInserted(postion);//更新RecyclerView
 
 
         //局部更新
@@ -173,6 +174,11 @@ public class MainActivity extends AppCompatActivity {
 //            dataset.add(start, "insert-" + start);//插入到数据集
 //        }
 //        adapter.notifyItemRangeInserted(start, end - start); //更新适配器，刷新UI
+//        adapter.notifyItemRangeChanged(start, end - start, "ox1"); //指定负载
+
+        //对单个ItemView的子View作更新
+        adapter.notifyItemChanged(1, "ox1"); //指定负载
+        adapter.notifyItemChanged(1, "ox2"); //指定负载
 
 
         //全部更新

@@ -1,27 +1,20 @@
 package mine.databinding;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableArrayMap;
-import androidx.databinding.ObservableMap;
-import androidx.databinding.ViewDataBinding;
-
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+
 import mine.databinding.data.Car;
-import mine.databinding.data.CatObservable;
-import mine.databinding.data.Listener;
-import mine.databinding.data.Person;
 import mine.databinding.data.User;
 import mine.databinding.databinding.ActivityMainBinding;
-
 
 /**
  * Created by Administrator on 2020/10/25.
  */
 public class MainActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +22,25 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onCreate  *********");
 
         //方式一
-//        setContentView(R.layout.activity_main);
-//        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-
-        //方式二
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+//        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main); //渲染布局，并返回数据绑定对象
+//        System.out.println("binding = " + binding);
+//        binding.setUser(new User("Bob")); //设置数据对象
 
 
+        //方法二
+////        ActivityMainBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_main, null, false); //通过膨胀器获取数据绑定对象
+//        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater()); //通过膨胀器获取数据绑定对象
+//        System.out.println("binding = " + binding);
+//        binding.setVariable(BR.user, new User("Tom"));
+//        System.out.println("binding.tv = " + binding.tv); //获取View，布局文件中带ID的都是
+//        System.out.println("binding.getRoot() = " + binding.getRoot());
+//        setContentView(binding.getRoot()); //指定页面根View
 
-        //初始化数据绑定对象
-        binding.setUser(new User("Bob"));
-        setContentView(binding.getRoot());
+        //方法三
+        setContentView(R.layout.activity_main);
+//        ActivityMainBinding binding = DataBindingUtil.bind(findViewById(R.id.cl));
+//        binding.setVariable(BR.user, new User("Tom"));
 
-
-
-        //获取View，布局文件中带ID的都是
-        System.out.println(binding.tv);
     }
 
     @Override
@@ -104,12 +100,18 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("*********  " + getClass().getSimpleName() + ".onDestroy  *********");
     }
 
-
     public void start(View view) {
         System.out.println("~~button.start~~");
 
-        ViewDataBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
-        binding.setVariable(BR.user, new User("Tom"));
+        //方式一
+//        DataBindingUtil.bind(findViewById(R.id.cl));
+//        ViewDataBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+//        binding.setVariable(BR.auto, new Car(135));
+
+        //方式二
+        DataBindingUtil.bind(findViewById(R.id.cl));
+        ActivityMainBinding binding = DataBindingUtil.getBinding(findViewById(R.id.cl));
+        binding.setAuto(new Car(522));
 
     }
 

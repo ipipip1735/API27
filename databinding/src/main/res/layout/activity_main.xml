@@ -6,7 +6,7 @@
     <data>
         <import type="mine.databinding.data.User"/>
         <variable name="user" type="User" />
-        <variable name="car" type="mine.databinding.data.Car" />
+        <variable name="auto" type="mine.databinding.data.Car" />
         <variable name="listener" type="mine.databinding.data.Listener" />
     </data>
 
@@ -124,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text='@{Integer.toString(car.num)}'
+            android:text='@{Integer.toString(auto.num)}'
             app:layout_constraintStart_toEndOf="@+id/tv"
             app:layout_constraintTop_toTopOf="@+id/tv" />
 

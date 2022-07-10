@@ -2,6 +2,7 @@ package minee.profiler
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.os.SystemClock
 import android.widget.FrameLayout
 
@@ -34,5 +35,13 @@ class RanderActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         println("~~RanderActivity.onDestroy~~")
+
+
+
+
+        Thread{
+            Looper.prepare()
+            Looper.loop()
+        }.start()
     }
 }
